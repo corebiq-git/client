@@ -1,0 +1,25 @@
+{
+  "name": "COREBIQ",
+  "short_name": "COREBIQ",
+  "description": "COREBIQ Business Management Dashboard",
+  "start_url": "./COREBIQ_Dashboard_Poppins_Gemini_Improved.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f8fd",
+  "theme_color": "#4a8fd8",
+  "icons": [
+    {
+      "src": "assets/app-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
