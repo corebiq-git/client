@@ -1,12 +1,14 @@
-const CACHE_NAME = "corebiq-v2";
+const CACHE_NAME = "corebiq-v3";
+// ONLY include files that actually exist in your directory.
+// Removed style.css, header.css, etc., since your CSS is inline in index.html.
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./style.css",
-  "./header.css",
-  "./bottomnav.css",
   "./manifest.json",
-  "./404.html"
+  "./assets/logo.png",
+  "./assets/app-name.png",
+  "./assets/App-icon.png",
+  "./assets/fav.png"
 ];
 
 self.addEventListener("install", event => {
@@ -14,6 +16,7 @@ self.addEventListener("install", event => {
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(APP_SHELL))
       .then(() => self.skipWaiting())
+      .catch(err => console.error("SW Install Error: ", err)) // Added error logging
   );
 });
 
@@ -43,3 +46,30 @@ self.addEventListener("fetch", event => {
       .catch(() => caches.match(event.request))
   );
 });
+```eof
+```json:manifest.json
+{
+  "name": "COREBIQ Work Flow",
+  "short_name": "COREBIQ",
+  "description": "Intelligent Business Workspace",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F3F5F8",
+  "theme_color": "#0F4C81",
+  "icons": [
+    {
+      "src": "./assets/App-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/App-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+```eof
+
+**Crucial Next Step for PWA to Work:**
+You must ensure that the file `assets/App-icon.png` is perfectly square and high resolution (ideally 512x512 pixels). If this icon is missing or incorrectly sized, Chrome and iOS will refuse to show the install prompt.
