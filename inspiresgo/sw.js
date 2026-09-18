@@ -7,7 +7,7 @@ const APP_SHELL = [
   "./manifest.json",
   "./assets/logo.png",
   "./assets/app-name.png",
-  "./assets/App-icon.png",
+  "./assets/app-icon.png",
   "./assets/fav.png"
 ];
 
@@ -69,7 +69,3 @@ self.addEventListener("fetch", event => {
     }
   ]
 }
-```eof
-
-**Crucial Next Step for PWA to Work:**
-You must ensure that the file `assets/App-icon.png` is perfectly square and high resolution (ideally 512x512 pixels). If this icon is missing or incorrectly sized, Chrome and iOS will refuse to show the install prompt.
