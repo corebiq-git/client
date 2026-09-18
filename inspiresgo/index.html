@@ -13,7 +13,6 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Using Inter & Poppins for a sleek corporate typography stack -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -22,7 +21,6 @@
    PREMIUM CORPORATE STYLE (CSS REFACTOR)
    ========================================================= */
 :root {
-  /* Premium Corporate Palette */
   --bg: #F3F5F8;
   --surface: #FFFFFF;
   --surface-soft: #FAFBFC;
@@ -36,20 +34,18 @@
   --border: #E2E8F0;
   --border-strong: #CBD5E1;
   
-  /* Deep Corporate Sapphire and Gold accents */
   --primary: #0F4C81; 
   --primary-dark: #0A3153;
   --primary-light: #E6F0FA;
   --primary-pale: #F5F9FF;
   
-  --accent: #D4AF37; /* Premium Gold */
+  --accent: #D4AF37; 
   --accent-light: #FBF5E6;
   
   --success: #059669;
   --warning: #D97706;
   --danger: #DC2626;
   
-  /* Sophisticated Soft Shadows */
   --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
   --shadow-lg: 0 24px 48px rgba(15, 40, 80, 0.12);
@@ -65,6 +61,33 @@ button, input, select, textarea { font: inherit; }
 button { cursor: pointer; transition: all 0.2s ease; }
 h1, h2, h3, h4, h5, h6 { font-family: "Poppins", sans-serif; }
 
+/* -------------------------------------------
+   SPLASH SCREEN
+------------------------------------------- */
+#cb-splash-screen {
+  position: fixed; inset: 0; z-index: 99999;
+  background: var(--bg); display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#cb-splash-screen img {
+  height: 50px; width: auto; max-width: 200px; margin-bottom: 24px;
+  animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  object-fit: contain;
+}
+.cb-splash-loader {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border-strong);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.95); opacity: 0.7; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* -------------------------------------------
+   LAYOUT
+------------------------------------------- */
 #app-container { width: 100%; min-height: 100vh; background: var(--bg); }
 .main-wrapper { min-height: 100vh; position: relative; background: var(--bg); }
 #main-content { padding: 28px 24px 110px; min-height: calc(100vh - 70px); background: var(--bg); }
@@ -104,7 +127,7 @@ h1, h2, h3, h4, h5, h6 { font-family: "Poppins", sans-serif; }
 .welcome-access, .welcome-branch {
   min-height: 38px; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px;
   background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF; font-size: 13px; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF !important; font-size: 13px; font-weight: 500;
 }
 .welcome-access .material-symbols-rounded, .welcome-branch .material-symbols-rounded { font-size: 18px; color: var(--accent); }
 .welcome-art { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); width: 240px; height: 180px; z-index: 2; opacity: 0.9; }
@@ -154,10 +177,10 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 .mini-stat-label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: var(--text-soft); }
 .mini-stat-val { font-family: "Poppins", sans-serif; margin-top: 6px; font-size: 24px; font-weight: 600; color: var(--text-strong); }
 .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-.cb-inline-0156 { background: var(--warning); } /* Pending */
-.cb-inline-0157 { background: var(--success); } /* Completed */
-.cb-inline-0158 { background: var(--text-soft); } /* Rescheduled */
-.cb-inline-0159 { background: var(--danger); } /* Cancelled */
+.cb-inline-0156 { background: var(--warning); } 
+.cb-inline-0157 { background: var(--success); } 
+.cb-inline-0158 { background: var(--text-soft); } 
+.cb-inline-0159 { background: var(--danger); } 
 
 /* Calendar Widget */
 .cal-header-row { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 8px; margin-bottom: 16px; }
@@ -201,19 +224,17 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
    COREBIQ STATIC APP SHELL (Desktop + Mobile)
 ------------------------------------------- */
 .cb-header-shell { min-height: 72px; padding: 10px 24px; display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(226,232,240,0.8); box-shadow: 0 4px 20px rgba(15,23,42,0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-.cb-header-menu, .cb-header-action, .cb-header-profile { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-strong); display: grid; place-items: center; transition: all 0.2s; }
-.cb-header-menu:hover, .cb-header-action:hover, .cb-header-profile:hover { background: var(--primary-light); color: var(--primary); border-color: transparent; }
+.cb-header-action, .cb-header-profile { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-strong); display: grid; place-items: center; transition: all 0.2s; }
+.cb-header-action:hover, .cb-header-profile:hover { background: var(--primary-light); color: var(--primary); border-color: transparent; }
 .cb-header-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-.cb-header-brand img { width: 38px; height: 38px; object-fit: contain; }
-.cb-header-brand strong { display: block; font-family: "Poppins", sans-serif; font-size: 18px; font-weight: 700; color: var(--text-strong); line-height: 1.1; letter-spacing: -0.5px; }
-.cb-header-brand small { display: block; font-size: 11px; color: var(--text-soft); margin-top: 2px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+.cb-header-brand img { height: 40px; width: auto; max-width: 160px; object-fit: contain; }
 .cb-header-spacer { flex: 1; }
 .cb-header-clock { height: 44px; padding: 0 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); color: var(--text-strong); display: flex; align-items: center; gap: 10px; }
 .cb-header-clock .material-symbols-rounded { font-size: 20px; color: var(--primary); }
 .cb-header-clock b { display: block; font-size: 13px; line-height: 1.1; font-weight: 600; }
 .cb-header-clock small { display: block; font-size: 10px; color: var(--text-soft); margin-top: 2px; text-transform: uppercase; }
 
-/* Sidebar (Corporate Dark Mode Base or Ultra Crisp White) - Opting for Crisp White for branding clarity */
+/* Sidebar */
 .cb-sidebar-shell { width: 280px; height: 100%; min-height: 100vh; background: var(--surface); border-right: 1px solid var(--border); box-shadow: 4px 0 24px rgba(15,23,42,0.04); display: flex; flex-direction: column; }
 .cb-sidebar-top { height: 72px; padding: 12px 20px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
 .cb-sidebar-brand { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
@@ -235,8 +256,8 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 .cb-sidebar-footer img { width: 28px; height: 28px; object-fit: contain; }
 .cb-sidebar-footer span { font-size: 11px; font-weight: 500; color: var(--text-soft); }
 
-/* Bottom Nav (Mobile) - Glassmorphism */
-.cb-bottom-shell { min-height: 70px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-around; gap: 4px; background: rgba(255,255,255,0.9); border-top: 1px solid rgba(226,232,240,0.8); box-shadow: 0 -8px 30px rgba(15,23,42,0.06); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+/* Bottom Nav (Mobile) */
+.cb-bottom-shell { min-height: 70px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-around; gap: 4px; background: rgba(255,255,255,0.95); border-top: 1px solid rgba(226,232,240,0.8); box-shadow: 0 -8px 30px rgba(15,23,42,0.06); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 .cb-bottom-link { min-width: 64px; height: 54px; border: none; border-radius: 12px; background: transparent; color: var(--text-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 500; transition: all 0.2s; }
 .cb-bottom-link .material-symbols-rounded { font-size: 24px; }
 .cb-bottom-link.active { color: var(--primary); }
@@ -249,7 +270,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   #sidebar-container { position: fixed !important; left: 0; top: 0; bottom: 0; width: 280px; display: block !important; }
   #header-container { margin-left: 280px; }
   .main-wrapper { margin-left: 280px; }
-  .cb-header-menu { display: none; }
   .cb-bottom-shell { min-width: 400px; border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow-lg); padding: 8px; margin: 0 auto; }
   .cb-bottom-link { min-width: 72px; }
   .cb-bottom-main { top: 0; height: 54px; width: 72px; border-radius: 16px; box-shadow: none; }
@@ -262,7 +282,8 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   #sidebar-container { position: fixed !important; left: 0; top: 0; bottom: 0; width: 280px; transform: translateX(-105%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: var(--surface); box-shadow: 20px 0 40px rgba(15,23,42,0.15); z-index: 6000 !important; }
   #sidebar-container.open { transform: translateX(0); }
   #main-content { margin-left: 0; padding: 20px 16px 100px; }
-  .cb-header-shell { padding: 12px 16px; }
+  .cb-header-shell { padding: 12px 16px; justify-content: space-between; }
+  .cb-header-brand img { height: 32px; }
   .cb-header-clock { padding: 0 12px; }
   .cb-header-clock span:last-child { display: none; }
   .cb-header-action { display: none; }
@@ -286,10 +307,8 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   .cb-inline-0163 { width: 100%; justify-content: center; }
 }
 @media(max-width:420px) {
-  .cb-header-brand div { display: none; }
   .cb-header-clock { margin-left: auto; }
   .cb-header-profile { width: 40px; height: 40px; }
-  .cb-header-menu { width: 40px; height: 40px; }
   .fin-amount { font-size: 26px !important; }
   .welcome-title { font-size: 26px !important; }
 }
@@ -311,7 +330,7 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 #calc-popup-content { flex: 1; min-height: 0; background: var(--surface); overflow: hidden; }
 
 /* -------------------------------------------
-   PWA INSTALL UI (Premium iOS Sheet Style)
+   PWA INSTALL UI
 ------------------------------------------- */
 .corebiq-install-overlay { position: fixed !important; inset: 0 !important; z-index: 7000 !important; display: none; align-items: flex-end; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .corebiq-install-overlay.show { display: flex !important; animation: fadeIn 0.3s ease-out; }
@@ -334,7 +353,14 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 </head>
 
 <body>
-<div id="app-container">
+
+<!-- SPLASH SCREEN -->
+<div id="cb-splash-screen">
+  <img src="assets/logo.png" alt="COREBIQ" onerror="this.src='assets/app-name.png'">
+  <div class="cb-splash-loader"></div>
+</div>
+
+<div id="app-container" style="visibility: hidden;">
 
     <div id="sidebar-container">
 <div class="cb-sidebar-shell">
@@ -439,26 +465,17 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
     <div class="main-wrapper">
         <div id="header-container">
 <div class="cb-header-shell">
-  <button class="cb-header-menu" type="button" onclick="window.toggleMenu()" aria-label="Menu">
-    <span class="material-symbols-rounded">menu</span>
-  </button>
   <div class="cb-header-brand">
     <img src="assets/logo.png" alt="COREBIQ" onerror="this.style.display='none'">
-    <div>
-      <strong>COREBIQ</strong>
-      <small>Work Flow</small>
-    </div>
   </div>
   <div class="cb-header-spacer"></div>
   <button class="cb-header-clock" type="button" id="cb-live-clock" aria-label="Current date and time">
     <span class="material-symbols-rounded">schedule</span>
     <span><b id="cb-clock-time">--:--</b><small id="cb-clock-date">--</small></span>
   </button>
-  <button class="cb-header-action" type="button" onclick="window.toggleUpdates?.()" aria-label="Updates">
-    <span class="material-symbols-rounded">notifications</span>
-  </button>
-  <button class="cb-header-profile" type="button" onclick="window.toggleProfile?.()" aria-label="Profile">
-    <span class="material-symbols-rounded">account_circle</span>
+  
+  <button class="cb-header-profile" type="button" onclick="window.handleLogout()" aria-label="Logout">
+    <span class="material-symbols-rounded">logout</span>
   </button>
 </div>
 </div>
@@ -474,7 +491,7 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 
                 <div class="welcome-card" aria-label="COREBIQ welcome">
                     <div class="welcome-copy">
-                        <div class="welcome-eyebrow"><span class="welcome-spark"></span> COREBIQ Work Flow</div>
+                        <div class="welcome-eyebrow"><span class="welcome-spark"></span> COREBIQ WORK FLOW</div>
                         <div class="welcome-title">Welcome to the <strong>Intelligent Workspace.</strong></div>
                         <div class="welcome-text">Here is your Dashboard for a clear view of your financial overview, daily operations and business activity — connected in one place.</div>
                         <div class="welcome-meta">
@@ -710,9 +727,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   </div>
 </div>
 
-<!-- ==========================================
-     SCRIPTS (Strictly Unchanged per Instructions)
-     ========================================== -->
 <script type="module">
 import { auth, db } from './firebase-config.js';
 import {
@@ -778,16 +792,27 @@ window.onerror = function(message, source, lineno) {
     return false;
 };
 
+// Handle Logout & Redirect
 window.handleLogout = async function() {
-    try { await signOut(auth); }
-    catch (error) { console.error("Error signing out:", error); }
+    try { 
+        await signOut(auth); 
+        window.location.href = 'login.html'; // Instantly redirect
+    } catch (error) { 
+        console.error("Error signing out:", error); 
+        alert("Failed to log out. Please try again.");
+    }
 };
 
 onAuthStateChanged(auth, async (user) => {
+    const splashScreen = document.getElementById('cb-splash-screen');
+    
     if (!user) {
-        window.location.href = 'login.html';
+        // Hide Splash Screen and Redirect to Login
+        if (splashScreen) splashScreen.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 300);
         return;
     }
+    
     try {
         const emailLower = (user.email || '').toLowerCase();
         if (!emailLower) throw new Error("Authenticated account has no email.");
@@ -802,21 +827,32 @@ onAuthStateChanged(auth, async (user) => {
         };
         const app = document.getElementById('app-container');
         if (app) app.style.visibility = 'visible';
+        
         const branchTextElement = document.getElementById('dash-branch-text');
         if (branchTextElement) {
             if (window.currentUser.role === 'admin') {
                 branchTextElement.innerText = "Master Access (All Branches)";
-                branchTextElement.style.color = "var(--primary)";
+                // Let it inherit the white text color safely
             } else {
                 branchTextElement.innerText = window.currentUser.branch;
             }
         }
+        
         window.applyRoleVisibility();
         if (window.fetchDashboardData) window.fetchDashboardData();
+        
+        // Hide Splash Screen On Success
+        if (splashScreen) {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => { splashScreen.style.display = 'none'; }, 500);
+        }
+        
     } catch (error) {
         console.error(error);
         try { await signOut(auth); } catch (_) {}
         alert(error.message || "Unable to authenticate.");
+        if (splashScreen) splashScreen.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 300);
     }
 });
 
@@ -1002,7 +1038,6 @@ window.renderChart = function(pending, completed, rescheduled, cancelled) {
         if (window.apptChartInstance) window.apptChartInstance.destroy();
         const total = pending + completed + rescheduled + cancelled;
         const dataValues = total === 0 ? [1] : [pending, completed, rescheduled, cancelled];
-        // Updated Chart colors slightly to align with Corporate Theme without breaking logic
         const bgColors = total === 0 ? ['#E2E8F0'] : ['#F59E0B', '#059669', '#64748B', '#DC2626'];
         const labels = total === 0 ? ['No Data'] : ['Pending', 'Completed', 'Rescheduled', 'Cancelled'];
         window.apptChartInstance = new Chart(ctx, {
@@ -1179,65 +1214,70 @@ if ('serviceWorker' in navigator) {
 </script>
 
 <script>
+/* =========================================
+   PWA INSTALL SCRIPT (CONSOLIDATED & FIXED)
+   ========================================= */
 (function(){
   let deferredPrompt = null;
   const popup = () => document.getElementById('corebiq-install-popup');
   const btn = () => document.getElementById('corebiq-install-btn');
-  const close = () => document.getElementById('corebiq-install-close');
-  const later = () => document.getElementById('corebiq-install-later');
-  const help = () => document.getElementById('corebiq-install-help');
+  const closeBtn = () => document.getElementById('corebiq-install-close');
+  const laterBtn = () => document.getElementById('corebiq-install-later');
+  const helpText = () => document.getElementById('corebiq-install-help');
 
   function isStandalone(){
-    return window.matchMedia('(display-mode: standalone)').matches ||
-           window.navigator.standalone === true;
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   }
 
   function showInstallPopup(){
-    if(isStandalone()) return;
+    if(isStandalone() || sessionStorage.getItem('corebiqInstallSeen')) return;
     const p = popup();
-    if(!p) return;
-    p.classList.add('show');
-    p.setAttribute('aria-hidden','false');
+    if(p){
+      p.classList.add('show');
+      p.setAttribute('aria-hidden','false');
+      sessionStorage.setItem('corebiqInstallSeen', '1');
+    }
   }
 
   function hideInstallPopup(){
     const p = popup();
-    if(!p) return;
-    p.classList.remove('show');
-    p.setAttribute('aria-hidden','true');
+    if(p){
+      p.classList.remove('show');
+      p.setAttribute('aria-hidden','true');
+    }
   }
 
-  window.addEventListener('beforeinstallprompt', function(e){
+  window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     showInstallPopup();
   });
 
-  window.addEventListener('appinstalled', function(){
+  window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     hideInstallPopup();
   });
 
-  document.addEventListener('DOMContentLoaded', function(){
-    close()?.addEventListener('click', hideInstallPopup);
-    later()?.addEventListener('click', hideInstallPopup);
+  document.addEventListener('DOMContentLoaded', () => {
+    closeBtn()?.addEventListener('click', hideInstallPopup);
+    laterBtn()?.addEventListener('click', hideInstallPopup);
 
-    btn()?.addEventListener('click', async function(){
-      if(deferredPrompt){
+    btn()?.addEventListener('click', async () => {
+      if (deferredPrompt) {
         deferredPrompt.prompt();
-        try{
-          await deferredPrompt.userChoice;
-        }catch(e){}
+        try {
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log(`User response to the install prompt: ${outcome}`);
+        } catch(e) {
+          console.error(e);
+        }
         deferredPrompt = null;
         hideInstallPopup();
-      }else{
-        if(help()) help().hidden = false;
+      } else {
+        const h = helpText();
+        if (h) h.hidden = false;
       }
     });
-
-    setTimeout(function(){
-      if(!isStandalone() && deferredPrompt) showInstallPopup();
-    }, 1200);
   });
 })();
 </script>
@@ -1252,37 +1292,6 @@ if ('serviceWorker' in navigator) {
     d.textContent=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
   }
   document.addEventListener('DOMContentLoaded',function(){cbUpdateClock();setInterval(cbUpdateClock,1000);});
-})();
-</script>
-
-<script>
-(function(){
-  let corebiqDeferred=null;
-  function corebiqShow(){
-    if(window.matchMedia('(display-mode: standalone)').matches || navigator.standalone===true) return;
-    const p=document.getElementById('corebiq-install-popup');
-    if(p){p.classList.add('show');p.setAttribute('aria-hidden','false');}
-  }
-  window.addEventListener('beforeinstallprompt',function(e){
-    e.preventDefault(); corebiqDeferred=e; corebiqShow();
-  });
-  document.addEventListener('DOMContentLoaded',function(){
-    const p=document.getElementById('corebiq-install-popup');
-    const b=document.getElementById('corebiq-install-btn');
-    const c=document.getElementById('corebiq-install-close');
-    const l=document.getElementById('corebiq-install-later');
-    function hide(){if(p){p.classList.remove('show');p.setAttribute('aria-hidden','true');}}
-    c&&c.addEventListener('click',hide); l&&l.addEventListener('click',hide);
-    b&&b.addEventListener('click',async function(){
-      if(corebiqDeferred){corebiqDeferred.prompt();try{await corebiqDeferred.userChoice}catch(e){}corebiqDeferred=null;hide();}
-      else { const h=document.getElementById('corebiq-install-help'); if(h)h.hidden=false; }
-    });
-    if(!sessionStorage.getItem('corebiqInstallSeen') &&
-       !window.matchMedia('(display-mode: standalone)').matches &&
-       navigator.standalone!==true){
-      setTimeout(function(){corebiqShow();sessionStorage.setItem('corebiqInstallSeen','1');},900);
-    }
-  });
 })();
 </script>
 
@@ -1343,4 +1352,3 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
-```eof
