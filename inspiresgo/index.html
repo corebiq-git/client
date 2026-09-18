@@ -14,20 +14,137 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="header.css">
-<link rel="stylesheet" href="bottomnav.css">
 </head>
 
 <body>
 <div id="app-container">
 
-    <div id="sidebar-container"></div>
+    <div id="sidebar-container">
+<div class="cb-sidebar-shell">
+  <div class="cb-sidebar-top">
+    <div class="cb-sidebar-brand">
+      <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
+      <div class="cb-sidebar-brand-text"><strong>COREBIQ</strong><small>Work Flow</small></div>
+    </div>
+    <button class="cb-sidebar-close" type="button" onclick="window.toggleMenu()" aria-label="Close menu">
+      <span class="material-symbols-rounded">close</span>
+    </button>
+  </div>
+
+  <nav class="cb-sidebar-nav">
+    <button class="cb-side-link active" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this)">
+      <span class="material-symbols-rounded">dashboard</span><span>Dashboard</span>
+    </button>
+    <button class="cb-side-link" data-target="view-patients" onclick="window.switchView('view-patients',this)">
+      <span class="material-symbols-rounded">groups</span><span>Clients Data</span>
+    </button>
+    <button class="cb-side-link" data-target="view-appointments" onclick="window.switchView('view-appointments',this)">
+      <span class="material-symbols-rounded">event_note</span><span>Appointments</span>
+    </button>
+    <button class="cb-side-link" data-target="view-calender" onclick="window.switchView('view-calender',this)">
+      <span class="material-symbols-rounded">calendar_month</span><span>Calendar</span>
+    </button>
+
+    <div class="cb-side-divider"></div>
+
+    <button class="cb-side-link" data-target="view-transaction" onclick="window.switchView('view-transaction',this)">
+      <span class="material-symbols-rounded">receipt_long</span><span>Transactions</span>
+    </button>
+    <button class="cb-side-link" data-target="view-qr" onclick="window.switchView('view-qr',this)">
+      <span class="material-symbols-rounded">qr_code_scanner</span><span>UPI Payment QR</span>
+    </button>
+
+    <div class="cb-side-divider"></div>
+
+    <button class="cb-side-link" data-target="view-branches" onclick="window.switchView('view-branches',this)">
+      <span class="material-symbols-rounded">apartment</span><span>Branches</span>
+    </button>
+    <button class="cb-side-link" data-target="view-therapist" onclick="window.switchView('view-therapist',this)">
+      <span class="material-symbols-rounded">medical_services</span><span>Management / Partners</span>
+    </button>
+    <button class="cb-side-link" data-target="view-staff" onclick="window.switchView('view-staff',this)">
+      <span class="material-symbols-rounded">badge</span><span>Staff Directory</span>
+    </button>
+    <button class="cb-side-link" data-target="view-attendance" onclick="window.switchView('view-attendance',this)">
+      <span class="material-symbols-rounded">how_to_reg</span><span>Daily Attendance</span>
+    </button>
+
+    <div class="cb-side-divider"></div>
+
+    <button class="cb-side-link" data-target="view-users" onclick="window.switchView('view-users',this)">
+      <span class="material-symbols-rounded">manage_accounts</span><span>Users (Admin)</span>
+    </button>
+    <button class="cb-side-link" data-target="view-clinic-details" onclick="window.switchView('view-clinic-details',this)">
+      <span class="material-symbols-rounded">settings</span><span>Office Details</span>
+    </button>
+    <button class="cb-side-link" data-target="view-company" onclick="window.switchView('view-company',this)">
+      <span class="material-symbols-rounded">domain</span><span>Company Profile</span>
+    </button>
+    <button class="cb-side-link" data-target="view-letterhead" onclick="window.switchView('view-letterhead',this)">
+      <span class="material-symbols-rounded">description</span><span>Letterheads</span>
+    </button>
+    <button class="cb-side-link" data-target="view-seal" onclick="window.switchView('view-seal',this)">
+      <span class="material-symbols-rounded">verified</span><span>Digital Seals</span>
+    </button>
+
+    <div class="cb-side-divider"></div>
+
+    <button class="cb-side-link" data-target="view-calc" onclick="window.switchView('view-calc',this)">
+      <span class="material-symbols-rounded">calculate</span><span>Calculator Tool</span>
+    </button>
+    <button class="cb-side-link" data-target="view-backup" onclick="window.switchView('view-backup',this)">
+      <span class="material-symbols-rounded">cloud_download</span><span>Export &amp; Backup</span>
+    </button>
+    <button class="cb-side-link" data-target="view-updates" onclick="window.switchView('view-updates',this)">
+      <span class="material-symbols-rounded">campaign</span><span>App Updates</span>
+    </button>
+
+    <div class="cb-side-divider"></div>
+
+    <button class="cb-side-link" data-target="view-licenceinfo" onclick="window.switchView('view-licenceinfo',this)">
+      <span class="material-symbols-rounded">workspace_premium</span><span>Licence Info</span>
+    </button>
+    <button class="cb-side-link" data-target="view-aboutapp" onclick="window.switchView('view-aboutapp',this)">
+      <span class="material-symbols-rounded">info</span><span>About App</span>
+    </button>
+    <button class="cb-side-link" data-target="view-privacy" onclick="window.switchView('view-privacy',this)">
+      <span class="material-symbols-rounded">privacy_tip</span><span>Privacy Policy</span>
+    </button>
+  </nav>
+
+  <div class="cb-sidebar-footer">
+    <img src="assets/logo-corebiq.png" alt="COREBIQ" onerror="this.style.display='none'">
+    <span>Version 1.2.0</span>
+  </div>
+</div>
+</div>
 
     <div class="main-wrapper">
-        <div id="header-container"></div>
+        <div id="header-container">
+<div class="cb-header-shell">
+  <button class="cb-header-menu" type="button" onclick="window.toggleMenu()" aria-label="Menu">
+    <span class="material-symbols-rounded">menu</span>
+  </button>
+  <div class="cb-header-brand">
+    <img src="assets/logo.png" alt="COREBIQ" onerror="this.style.display='none'">
+    <div>
+      <strong>COREBIQ</strong>
+      <small>Work Flow</small>
+    </div>
+  </div>
+  <div class="cb-header-spacer"></div>
+  <button class="cb-header-clock" type="button" id="cb-live-clock" aria-label="Current date and time">
+    <span class="material-symbols-rounded">schedule</span>
+    <span><b id="cb-clock-time">--:--</b><small id="cb-clock-date">--</small></span>
+  </button>
+  <button class="cb-header-action" type="button" onclick="window.toggleUpdates?.()" aria-label="Updates">
+    <span class="material-symbols-rounded">notifications</span>
+  </button>
+  <button class="cb-header-profile" type="button" onclick="window.toggleProfile?.()" aria-label="Profile">
+    <span class="material-symbols-rounded">account_circle</span>
+  </button>
+</div>
+</div>
 
         <main id="main-content">
 
@@ -213,7 +330,25 @@
 
         </main>
 
-        <div id="bottomnav-container"></div>
+        <div id="bottomnav-container">
+<div class="cb-bottom-shell">
+  <button class="cb-bottom-link active" onclick="window.switchView('view-dashboard',this)">
+    <span class="material-symbols-rounded">home</span><small>Home</small>
+  </button>
+  <button class="cb-bottom-link" onclick="window.switchView('view-patients',this)">
+    <span class="material-symbols-rounded">groups</span><small>Clients</small>
+  </button>
+  <button class="cb-bottom-link cb-bottom-main" onclick="window.switchView('view-appointments',this)">
+    <span class="material-symbols-rounded">event_note</span><small>Bookings</small>
+  </button>
+  <button class="cb-bottom-link" onclick="window.switchView('view-transaction',this)">
+    <span class="material-symbols-rounded">receipt_long</span><small>Payments</small>
+  </button>
+  <button class="cb-bottom-link" onclick="window.toggleMenu()">
+    <span class="material-symbols-rounded">menu</span><small>Menu</small>
+  </button>
+</div>
+</div>
     </div>
 
     <div id="calc-popup-container">
@@ -835,6 +970,52 @@ if ('serviceWorker' in navigator) {
     setTimeout(function(){
       if(!isStandalone() && deferredPrompt) showInstallPopup();
     }, 1200);
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  function cbUpdateClock(){
+    const t=document.getElementById('cb-clock-time'), d=document.getElementById('cb-clock-date');
+    if(!t||!d)return;
+    const now=new Date();
+    t.textContent=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+    d.textContent=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  document.addEventListener('DOMContentLoaded',function(){cbUpdateClock();setInterval(cbUpdateClock,1000);});
+})();
+</script>
+
+
+<script>
+(function(){
+  let corebiqDeferred=null;
+  function corebiqShow(){
+    if(window.matchMedia('(display-mode: standalone)').matches || navigator.standalone===true) return;
+    const p=document.getElementById('corebiq-install-popup');
+    if(p){p.classList.add('show');p.setAttribute('aria-hidden','false');}
+  }
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault(); corebiqDeferred=e; corebiqShow();
+  });
+  document.addEventListener('DOMContentLoaded',function(){
+    const p=document.getElementById('corebiq-install-popup');
+    const b=document.getElementById('corebiq-install-btn');
+    const c=document.getElementById('corebiq-install-close');
+    const l=document.getElementById('corebiq-install-later');
+    function hide(){if(p){p.classList.remove('show');p.setAttribute('aria-hidden','true');}}
+    c&&c.addEventListener('click',hide); l&&l.addEventListener('click',hide);
+    b&&b.addEventListener('click',async function(){
+      if(corebiqDeferred){corebiqDeferred.prompt();try{await corebiqDeferred.userChoice}catch(e){}corebiqDeferred=null;hide();}
+      else { const h=document.getElementById('corebiq-install-help'); if(h)h.hidden=false; }
+    });
+    if(!sessionStorage.getItem('corebiqInstallSeen') &&
+       !window.matchMedia('(display-mode: standalone)').matches &&
+       navigator.standalone!==true){
+      setTimeout(function(){corebiqShow();sessionStorage.setItem('corebiqInstallSeen','1');},900);
+    }
   });
 })();
 </script>
