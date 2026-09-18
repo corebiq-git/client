@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#f4f8fd">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>COREBIQ | Dashboard</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="header.css">
+<link rel="stylesheet" href="bottomnav.css">
+</head>
+
+<body>
+<div id="app-container">
+
+    <div id="sidebar-container"></div>
+
+    <div class="main-wrapper">
+        <div id="header-container"></div>
+
+        <main id="main-content">
+
+            <div id="view-dashboard" class="view-section active">
+
+                <div id="dash-error-banner" class="dash-error">
+                    <span class="material-symbols-rounded">error</span>
+                    <span id="dash-error-text">Database connection failed.</span>
+                </div>
+
+                <div class="welcome-card" aria-label="COREBIQ welcome">
+                    <div class="welcome-copy">
+                        <div class="welcome-eyebrow"><span class="welcome-spark"></span> COREBIQ Dashboard</div>
+                        <div class="welcome-title">Welcome to <strong>Stra Care</strong></div>
+                        <div class="welcome-text">A clear view of appointments, attendance and daily operations — connected in one place.</div>
+                    </div>
+                    <div class="welcome-art" aria-hidden="true">
+                        <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="177" cy="88" r="53" stroke="#9bc8ed" stroke-width="1.5" opacity=".7"/>
+                            <circle cx="177" cy="88" r="36" fill="#ffffff" opacity=".62"/>
+                            <path d="M129 119C144 97 161 86 185 82C202 79 214 70 221 57" stroke="#74b4e7" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+                            <path d="M145 55C159 42 180 36 198 39" stroke="#a9d3f2" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M166 107L178 73L190 107L179 101L166 107Z" fill="#4b8fd1" opacity=".72"/>
+                            <path d="M176 74L207 93" stroke="#4b8fd1" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+                            <circle cx="207" cy="93" r="5" fill="#75b7ea" opacity=".7"/>
+                            <circle cx="145" cy="55" r="4" fill="#a4cff0"/>
+                            <circle cx="221" cy="57" r="4" fill="#8fc5ed"/>
+                            <path d="M35 139C58 120 78 116 99 123" stroke="#b8d9f1" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M43 149C64 137 81 135 95 139" stroke="#d0e7f8" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <h2 class="cb-inline-0150">
+                    <span class="cb-inline-0151">Welcome,</span>
+                    <span class="cb-inline-0152">Stra Care</span>
+                </h2>
+
+                <h3 class="cb-inline-0153">
+                    <span class="material-symbols-rounded cb-inline-0154">storefront</span>
+                    <span id="dash-branch-text">Loading...</span>
+                </h3>
+
+                <p class="cb-inline-0155">
+                    Administration Overview.
+                </p>
+
+                <div class="dash-top-row">
+
+                    <div class="dash-card">
+                        <div class="card-title">Today's Attendance Overview</div>
+                        <div class="fin-stat-container">
+                            <div class="fin-stat success-box">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Present / Half-Day</div>
+                                    <div class="fin-amount" id="dashPresent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">how_to_reg</span>
+                            </div>
+
+                            <div class="fin-stat alert">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">On Leave / Absent</div>
+                                    <div class="fin-amount" id="dashAbsent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">event_busy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">Schedule Breakdown</div>
+                        <div class="chart-container">
+                            <canvas id="apptDonutChart"></canvas>
+                        </div>
+
+                        <div class="mini-stats-grid">
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0156"></div> Pending
+                                </div>
+                                <div class="mini-stat-val" id="dashPending">0</div>
+                            </div>
+
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0157"></div> Completed
+                                </div>
+                                <div class="mini-stat-val" id="dashCompleted">0</div>
+                            </div>
+
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0158"></div> Moved
+                                </div>
+                                <div class="mini-stat-val" id="dashRescheduled">0</div>
+                            </div>
+
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0159"></div> Cancelled
+                                </div>
+                                <div class="mini-stat-val" id="dashCancelled">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">
+                            Calendar
+                            <span class="material-symbols-rounded cb-inline-0160"
+                                  onclick="window.setCalToToday()"
+                                  title="Go to Today">today</span>
+                        </div>
+
+                        <div class="cal-header-row">
+                            <button class="cal-nav-btn material-symbols-rounded" onclick="window.changeMonth(-1)">chevron_left</button>
+                            <div class="cal-month-title" id="calMonthDisplay">Loading...</div>
+                            <button class="cal-nav-btn material-symbols-rounded" onclick="window.changeMonth(1)">chevron_right</button>
+                        </div>
+
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                    </div>
+
+                </div>
+
+                <div class="dash-table-wrapper">
+                    <div class="cb-inline-0161">
+                        <h4 class="cb-inline-0162">
+                            Schedule for:
+                            <span id="dashListTitle" class="cb-inline-0152">Today</span>
+                        </h4>
+
+                        <button onclick="window.switchView('view-appointments',null)" class="cb-inline-0163">
+                            View Full Module
+                            <span class="material-symbols-rounded cb-inline-0164">arrow_forward</span>
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="saas-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Patient Details</th>
+                                    <th>Branch & Therapist</th>
+                                    <th>Financial Status</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashAptTableBody">
+                                <tr>
+                                    <td colspan="5" class="cb-inline-0165">Loading live schedule...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="view-patients" class="view-section"></div>
+            <div id="view-appointments" class="view-section"></div>
+            <div id="view-transaction" class="view-section"></div>
+            <div id="view-branches" class="view-section"></div>
+            <div id="view-therapist" class="view-section"></div>
+            <div id="view-calender" class="view-section"></div>
+            <div id="view-staff" class="view-section"></div>
+            <div id="view-attendance" class="view-section"></div>
+            <div id="view-users" class="view-section"></div>
+            <div id="view-clinic-details" class="view-section"></div>
+            <div id="view-company" class="view-section"></div>
+            <div id="view-letterhead" class="view-section"></div>
+            <div id="view-seal" class="view-section"></div>
+            <div id="view-qr" class="view-section"></div>
+            <div id="view-mytask" class="view-section"></div>
+            <div id="view-updates" class="view-section"></div>
+            <div id="view-licenceinfo" class="view-section"></div>
+            <div id="view-aboutapp" class="view-section"></div>
+            <div id="view-privacy" class="view-section"></div>
+            <div id="view-backup" class="view-section"></div>
+            <div id="view-calc" class="view-section"></div>
+
+        </main>
+
+        <div id="bottomnav-container"></div>
+    </div>
+
+    <div id="calc-popup-container">
+        <div id="calc-popup-header">
+            <span class="cb-inline-0166">
+                <span class="material-symbols-rounded cb-inline-0167">calculate</span>
+                Calculator
+            </span>
+            <span class="material-symbols-rounded cb-inline-0168"
+                  onclick="window.toggleCalculator()">close</span>
+        </div>
+        <div id="calc-popup-content" class="cb-inline-0169"></div>
+    </div>
+
+</div>
+
+<script type="module">
+import { auth, db } from './firebase-config.js';
+import {
+    doc,
+    getDoc,
+    collection,
+    getDocs,
+    query,
+    where
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+window.currentUser = null;
+window.allApts = [];
+window.aptDatesSet = new Set();
+window.apptChartInstance = null;
+window.currentDate = new Date();
+window.calYear = window.currentDate.getFullYear();
+window.calMonth = window.currentDate.getMonth();
+
+window.getLocalDateString = function(date = new Date()) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+};
+window.selectedDateStr = window.getLocalDateString();
+
+window.cmAppFileMap = {
+    "view-patients": "patients.html",
+    "view-appointments": "appointments.html",
+    "view-transaction": "transaction.html",
+    "view-branches": "branches.html",
+    "view-therapist": "therapist.html",
+    "view-calender": "calender.html",
+    "view-staff": "staff.html",
+    "view-attendance": "attendance.html",
+    "view-users": "users.html",
+    "view-clinic-details": "clinic-details.html",
+    "view-company": "company.html",
+    "view-letterhead": "letterhead.html",
+    "view-seal": "seal.html",
+    "view-qr": "qr.html",
+    "view-mytask": "mytask.html",
+    "view-updates": "updates.html",
+    "view-licenceinfo": "licenceinfo.html",
+    "view-aboutapp": "aboutapp.html",
+    "view-privacy": "privacy.html",
+    "view-backup": "backup.html",
+    "view-calc": "calc.html"
+};
+
+window.onerror = function(message, source, lineno) {
+    const errDiv = document.getElementById('dash-error-banner');
+    const errText = document.getElementById('dash-error-text');
+    if (errDiv && errText) {
+        errDiv.style.display = 'flex';
+        errText.innerText = `Error at Line ${lineno || '?'}: ${message}`;
+    }
+    return false;
+};
+
+window.handleLogout = async function() {
+    try { await signOut(auth); }
+    catch (error) { console.error("Error signing out:", error); }
+};
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+    try {
+        const emailLower = (user.email || '').toLowerCase();
+        if (!emailLower) throw new Error("Authenticated account has no email.");
+        const userDocRef = doc(db, "users", emailLower);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) throw new Error("No database access found. Contact Administrator.");
+        const userData = userDoc.data();
+        window.currentUser = {
+            email: emailLower,
+            role: userData.role || "user",
+            branch: userData.branch || "Unknown"
+        };
+        const app = document.getElementById('app-container');
+        if (app) app.style.visibility = 'visible';
+        const branchTextElement = document.getElementById('dash-branch-text');
+        if (branchTextElement) {
+            if (window.currentUser.role === 'admin') {
+                branchTextElement.innerText = "Master Access (All Branches)";
+                branchTextElement.style.color = "var(--primary)";
+            } else {
+                branchTextElement.innerText = window.currentUser.branch;
+            }
+        }
+        window.applyRoleVisibility();
+        if (window.fetchDashboardData) window.fetchDashboardData();
+    } catch (error) {
+        console.error(error);
+        try { await signOut(auth); } catch (_) {}
+        alert(error.message || "Unable to authenticate.");
+    }
+});
+
+window.applyRoleVisibility = function() {
+    if (!window.currentUser || window.currentUser.role === 'admin') return;
+    const selectors = [
+        '#nav-users-btn',
+        '[data-target="view-users"]',
+        '[onclick*="view-users"]'
+    ];
+    selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+            el.style.display = 'none';
+        });
+    });
+};
+
+window.toggleMenu = function() {
+    const sidebar = document.getElementById('sidebar-container');
+    if (sidebar) sidebar.classList.toggle('open');
+};
+window.toggleSidebar = window.toggleMenu;
+
+window.formatIndianDate = function(dateStr) {
+    if (!dateStr) return '';
+    if (dateStr instanceof Date) {
+        const d = dateStr;
+        return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
+    }
+    const value = String(dateStr);
+    const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (isoMatch) return `${isoMatch[3]}-${isoMatch[2]}-${isoMatch[1]}`;
+    const slashMatch = value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if (slashMatch) return `${slashMatch[1].padStart(2,'0')}-${slashMatch[2].padStart(2,'0')}-${slashMatch[3]}`;
+    return value;
+};
+
+window.fetchFresh = async function(filename) {
+    const separator = filename.includes('?') ? '&' : '?';
+    const url = `${filename}${separator}v=${Date.now()}`;
+    return fetch(url, {
+        cache: 'no-store',
+        headers: {'Cache-Control': 'no-cache'}
+    });
+};
+
+window.loadComponent = async function(elementId, filename) {
+    try {
+        const response = await window.fetchFresh(filename);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        element.innerHTML = await response.text();
+        window.applyRoleVisibility();
+        if (filename === 'header.html') window.updateGlobalClock();
+    } catch (error) {
+        console.error(`Error loading ${filename}:`, error);
+    }
+};
+
+window.toggleCalculator = function() {
+    const popup = document.getElementById('calc-popup-container');
+    if (!popup) return;
+    if (popup.style.display === 'flex') {
+        popup.style.display = 'none';
+        return;
+    }
+    popup.style.display = 'flex';
+    const contentDiv = document.getElementById('calc-popup-content');
+    if (contentDiv && contentDiv.innerHTML.trim() === '') {
+        contentDiv.innerHTML =
+            '<iframe src="calc.html?v=' + Date.now() +
+            '" style="width:100%;height:100%;border:none;background:transparent"></iframe>';
+    }
+};
+
+function dragElement(elmnt) {
+    if (!elmnt) return;
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    const header = document.getElementById(elmnt.id + "-header");
+    if (!header) return;
+    header.onmousedown = dragMouseDown;
+    function dragMouseDown(e) {
+        if (window.innerWidth <= 768) return;
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        elmnt.style.bottom = "auto";
+        elmnt.style.right = "auto";
+    }
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}
+
+window.switchView = async function(targetId, navElement) {
+    if (targetId === 'view-calc') {
+        window.toggleCalculator();
+        return;
+    }
+    document.querySelectorAll('.nav-link, .nav-item, .bottom-nav-item')
+        .forEach(el => el.classList.remove('active'));
+    if (navElement && !navElement.classList.contains('close-menu-btn')) navElement.classList.add('active');
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    const targetDiv = document.getElementById(targetId);
+    if (!targetDiv) return;
+    if (targetId === 'view-dashboard') {
+        targetDiv.classList.add('active');
+        if (window.fetchDashboardData) window.fetchDashboardData();
+        if (window.innerWidth <= 768 && document.getElementById('sidebar-container')?.classList.contains('open')) {
+            window.toggleMenu();
+        }
+        return;
+    }
+    const filename = window.cmAppFileMap[targetId];
+    if (!filename) {
+        targetDiv.innerHTML = '<div style="padding:40px;text-align:center;color:var(--danger)">Module mapping not found.</div>';
+        targetDiv.classList.add('active');
+        return;
+    }
+    if (targetDiv.dataset.loaded !== 'true') {
+        targetDiv.innerHTML = '<div style="text-align:center;padding:40px;color:var(--primary)">Loading module...</div>';
+        targetDiv.classList.add('active');
+        try {
+            const response = await window.fetchFresh(filename);
+            if (!response.ok) throw new Error(`File fetch failed: HTTP ${response.status}`);
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+            const moduleContent = doc.querySelector('.module-container') || doc.body;
+            targetDiv.innerHTML = '';
+            if (moduleContent === doc.body) {
+                Array.from(moduleContent.childNodes).forEach(node => targetDiv.appendChild(node));
+            } else {
+                targetDiv.appendChild(moduleContent);
+            }
+            targetDiv.querySelectorAll('script').forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+            targetDiv.dataset.loaded = 'true';
+        } catch (error) {
+            console.error(`Error loading ${filename}:`, error);
+            targetDiv.innerHTML = `
+                <div style="text-align:center;padding:40px;color:var(--danger);background:#FEF2F2;border-radius:12px;border:1px solid #FEE2E2;">
+                    <span class="material-symbols-rounded" style="font-size:32px;margin-bottom:8px">error</span>
+                    <br><b>Module Not Found.</b><br>
+                    Ensure the file <b>${filename}</b> exists in the /development/ folder.
+                    <br><br>
+                    <button onclick="window.switchView('${targetId}',null)" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600;">Retry</button>
+                </div>`;
+        }
+    } else {
+        targetDiv.classList.add('active');
+    }
+    if (window.innerWidth <= 768 && document.getElementById('sidebar-container')?.classList.contains('open')) {
+        window.toggleMenu();
+    }
+};
+
+window.renderChart = function(pending, completed, rescheduled, cancelled) {
+    try {
+        if (typeof Chart === 'undefined') return;
+        const canvas = document.getElementById('apptDonutChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (window.apptChartInstance) window.apptChartInstance.destroy();
+        const total = pending + completed + rescheduled + cancelled;
+        const dataValues = total === 0 ? [1] : [pending, completed, rescheduled, cancelled];
+        const bgColors = total === 0 ? ['#F0F0F0'] : ['#FB923C', '#10B981', '#64748B', '#EF4444'];
+        const labels = total === 0 ? ['No Data'] : ['Pending', 'Completed', 'Rescheduled', 'Cancelled'];
+        window.apptChartInstance = new Chart(ctx, {
+            type:'doughnut',
+            data:{labels,datasets:[{data:dataValues,backgroundColor:bgColors,borderWidth:0,hoverOffset:4}]},
+            options:{responsive:true,maintainAspectRatio:false,cutout:'75%',plugins:{legend:{display:false},tooltip:{enabled:total>0}}}
+        });
+    } catch(e){ console.warn("Chart rendering skipped:",e); }
+};
+
+window.renderCalendar = function() {
+    const title = document.getElementById('calMonthDisplay');
+    const grid = document.getElementById('calendarGrid');
+    if (!title || !grid) return;
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    title.innerText = `${monthNames[window.calMonth]} ${window.calYear}`;
+    let html = '<div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div><div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>';
+    const firstDay = new Date(window.calYear, window.calMonth, 1).getDay();
+    const daysInMonth = new Date(window.calYear, window.calMonth + 1, 0).getDate();
+    for (let i=0;i<firstDay;i++) html += '<div class="cal-day empty"></div>';
+    for (let i=1;i<=daysInMonth;i++) {
+        const loopDateStr = `${window.calYear}-${String(window.calMonth+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+        let classes='cal-day';
+        if (loopDateStr===window.selectedDateStr) classes+=' active';
+        if (window.aptDatesSet.has(loopDateStr)) classes+=' has-event';
+        html += `<div class="${classes}" onclick="window.selectDate('${loopDateStr}')">${i}</div>`;
+    }
+    grid.innerHTML=html;
+};
+window.changeMonth=function(dir){
+    window.calMonth+=dir;
+    if(window.calMonth>11){window.calMonth=0;window.calYear++;}
+    if(window.calMonth<0){window.calMonth=11;window.calYear--;}
+    window.renderCalendar();
+};
+window.selectDate=function(dateStr){
+    window.selectedDateStr=dateStr;
+    window.renderCalendar();
+    window.renderLiveTable();
+};
+window.setCalToToday=function(){
+    const today=new Date();
+    window.calYear=today.getFullYear();
+    window.calMonth=today.getMonth();
+    window.selectDate(window.getLocalDateString(today));
+};
+window.getBalanceDisplay=function(value){
+    const balance=Number(value||0);
+    if(Math.abs(balance)<0.005)return{text:'No Due',className:'balance-no-due'};
+    if(balance>0)return{text:`Due ₹${balance.toFixed(2)}`,className:'balance-due'};
+    return{text:`Excess ₹${Math.abs(balance).toFixed(2)}`,className:'balance-excess'};
+};
+window.renderLiveTable=function(){
+    const tableBody=document.getElementById('dashAptTableBody');
+    if(!tableBody)return;
+    const todayStr=window.getLocalDateString();
+    const title=document.getElementById('dashListTitle');
+    if(title)title.innerText=window.selectedDateStr===todayStr?"Today":window.formatIndianDate(window.selectedDateStr);
+    const dayApts=window.allApts.filter(a=>a.date===window.selectedDateStr);
+    if(dayApts.length===0){
+        tableBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted);font-size:13px;display:block;width:100%">No appointments scheduled for this date.</td></tr>';
+        return;
+    }
+    let rowsHtml='';
+    dayApts.forEach(data=>{
+        let badgeClass='badge-pending';
+        const st=(data.status||'').toLowerCase();
+        if(st==='completed')badgeClass='badge-completed';
+        else if(st==='rescheduled')badgeClass='badge-rescheduled';
+        else if(st==='cancelled')badgeClass='badge-cancelled';
+        const balance=window.getBalanceDisplay(data.balance);
+        rowsHtml+=`<tr>
+<td><strong style="color:var(--text-main);font-size:14px">${data.time||'--:--'}</strong></td>
+<td><strong style="font-size:14px;display:block;margin-bottom:2px">${data.name||'Unknown'}</strong><span style="font-size:12px;color:var(--text-muted);font-weight:600">+91 ${data.mobile||''}</span></td>
+<td><strong style="font-size:13px;color:var(--primary);display:block;margin-bottom:2px">${data.branch||''}</strong><span style="font-size:12px;color:var(--text-muted);font-weight:600">Dr. ${data.therapist||'N/A'}</span></td>
+<td><span style="font-size:12px;color:var(--text-muted);font-weight:600">Fee: ₹${Number(data.fee||0).toFixed(2)}</span><br><strong class="${balance.className}" style="font-size:13px">${balance.text}</strong></td>
+<td><span class="badge ${badgeClass}">${data.status||'Pending'}</span></td>
+</tr>`;
+    });
+    tableBody.innerHTML=rowsHtml;
+};
+window.updateGlobalClock=function(){
+    const ddVal=document.getElementById('dd-val');
+    if(!ddVal)return;
+    const now=new Date();
+    const circumference=131.95;
+    const isAm=now.getHours()<12;
+    let hours12=now.getHours()%12;if(hours12===0)hours12=12;
+    const pad=n=>n<10?'0'+n:String(n);
+    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.innerText=value;};
+    set('dd-val',pad(now.getDate()));
+    set('dd-context',["SUN","MON","TUE","WED","THU","FRI","SAT"][now.getDay()]);
+    set('mm-val',["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][now.getMonth()]);
+    set('mm-context',now.getFullYear());
+    set('hh-val',pad(hours12));set('hh-context',isAm?"AM":"PM");set('min-val',pad(now.getMinutes()));
+    const dayProgress=now.getDate()/new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+    const setArc=(id,value)=>{const el=document.getElementById(id);if(el)el.style.strokeDashoffset=value;};
+    setArc('dd-arc',circumference-circumference*dayProgress);
+    setArc('mm-arc',circumference-circumference*((now.getMonth()+1)/12));
+    setArc('hh-arc',circumference-circumference*(now.getHours()/24));
+    setArc('min-arc',circumference-circumference*(now.getMinutes()/60));
+};
+window.fetchDashboardData=async function(){
+    if(!window.currentUser)return;
+    try{
+        const errBanner=document.getElementById('dash-error-banner');
+        if(errBanner)errBanner.style.display='none';
+        let qApt;
+        if(window.currentUser.role==='admin')qApt=query(collection(db,"appointments"));
+        else qApt=query(collection(db,"appointments"),where("branch","==",window.currentUser.branch));
+        const snapApt=await getDocs(qApt);
+        let cPending=0,cCompleted=0,cRescheduled=0,cCancelled=0;
+        window.allApts=[];window.aptDatesSet.clear();
+        snapApt.forEach(docSnap=>{
+            const data=docSnap.data();
+            window.allApts.push({...data,id:docSnap.id});
+            if(data.date)window.aptDatesSet.add(data.date);
+            const status=(data.status||'').toLowerCase();
+            if(status==='pending')cPending++;
+            else if(status==='completed')cCompleted++;
+            else if(status==='rescheduled')cRescheduled++;
+            else if(status==='cancelled')cCancelled++;
+        });
+        window.allApts.sort((a,b)=>{
+            const dateCompare=String(b.date||'').localeCompare(String(a.date||''));
+            if(dateCompare!==0)return dateCompare;
+            return String(a.time||'').localeCompare(String(b.time||''));
+        });
+        const dPend=document.getElementById('dashPending');if(dPend)dPend.innerText=cPending;
+        const dComp=document.getElementById('dashCompleted');if(dComp)dComp.innerText=cCompleted;
+        const dResch=document.getElementById('dashRescheduled');if(dResch)dResch.innerText=cRescheduled;
+        const dCanc=document.getElementById('dashCancelled');if(dCanc)dCanc.innerText=cCancelled;
+        window.renderChart(cPending,cCompleted,cRescheduled,cCancelled);
+        window.renderCalendar();window.renderLiveTable();
+        const todayStr=window.getLocalDateString();
+        let qAtt;
+        if(window.currentUser.role==='admin')qAtt=query(collection(db,"daily_attendance"),where("date","==",todayStr));
+        else qAtt=query(collection(db,"daily_attendance"),where("date","==",todayStr),where("branch","==",window.currentUser.branch));
+        const snapAtt=await getDocs(qAtt);
+        let attPresent=0,attAbsent=0;
+        snapAtt.forEach(docSnap=>{
+            const status=(docSnap.data().status||'').toLowerCase();
+            if(status==='present'||status==='half-day')attPresent++;
+            else if(status==='absent'||status==='leave')attAbsent++;
+        });
+        const dAttPresent=document.getElementById('dashPresent');if(dAttPresent)dAttPresent.innerText=attPresent;
+        const dAttAbsent=document.getElementById('dashAbsent');if(dAttAbsent)dAttAbsent.innerText=attAbsent;
+    }catch(error){
+        console.error("Dashboard Load Error:",error);
+        const errorBanner=document.getElementById('dash-error-banner');
+        const errorText=document.getElementById('dash-error-text');
+        if(errorBanner)errorBanner.style.display='flex';
+        if(errorText)errorText.innerText="Data Sync Error: "+(error.message||"Unknown error");
+    }
+};
+
+document.addEventListener('DOMContentLoaded',()=>{
+    dragElement(document.getElementById("calc-popup-container"));
+    window.loadComponent('header-container','header.html');
+    window.loadComponent('sidebar-container','sidebar.html');
+    window.loadComponent('bottomnav-container','bottomnav.html');
+    setInterval(window.updateGlobalClock,1000);
+    setTimeout(window.applyRoleVisibility,300);
+    setTimeout(window.applyRoleVisibility,1000);
+});
+
+/* =========================================================
+   PWA REGISTRATION
+   NOTE: Real service workers require a separate same-origin sw.js.
+   ========================================================= */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log('COREBIQ service worker registered'))
+            .catch(err => console.warn('COREBIQ service worker registration failed:', err));
+    });
+}
+</script>
+
+
+<!-- COREBIQ PWA INSTALL POPUP -->
+<div id="corebiq-install-popup" class="corebiq-install-overlay" aria-hidden="true">
+  <div class="corebiq-install-card" role="dialog" aria-modal="true" aria-labelledby="corebiq-install-title">
+    <button type="button" class="corebiq-install-close" id="corebiq-install-close" aria-label="Close">
+      <span class="material-symbols-rounded">close</span>
+    </button>
+
+    <div class="corebiq-install-icon">
+      <img src="assets/logo.png" alt="COREBIQ">
+    </div>
+
+    <div class="corebiq-install-copy">
+      <div class="corebiq-install-kicker">COREBIQ</div>
+      <h2 id="corebiq-install-title">Install COREBIQ Work Flow</h2>
+      <p>Install the app for quick access from your home screen.</p>
+    </div>
+
+    <button type="button" class="corebiq-install-btn" id="corebiq-install-btn">
+      <span class="material-symbols-rounded">install_mobile</span>
+      Install COREBIQ
+    </button>
+
+    <button type="button" class="corebiq-install-later" id="corebiq-install-later">
+      Maybe later
+    </button>
+
+    <div id="corebiq-install-help" class="corebiq-install-help" hidden>
+      Use your browser's <strong>Install app</strong> or <strong>Add to Home screen</strong> option.
+    </div>
+  </div>
+</div>
+
+<style>
+.corebiq-install-overlay{
+  position:fixed;inset:0;z-index:9999;display:none;align-items:flex-end;justify-content:center;
+  padding:18px;background:rgba(17,31,46,.28);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+}
+.corebiq-install-overlay.show{display:flex}
+.corebiq-install-card{
+  position:relative;width:min(440px,100%);background:#fff;border:1px solid #dbe5ef;
+  border-radius:20px;padding:22px;box-shadow:0 18px 55px rgba(25,55,82,.18);
+  animation:corebiqInstallIn .22s ease-out;
+}
+@keyframes corebiqInstallIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.corebiq-install-close{
+  position:absolute;right:13px;top:13px;width:34px;height:34px;border:1px solid #dbe5ef;
+  border-radius:10px;background:#f7faff;color:#536273;display:grid;place-items:center;
+}
+.corebiq-install-close .material-symbols-rounded{font-size:19px}
+.corebiq-install-icon{
+  width:58px;height:58px;border:1px solid #cfe3f5;border-radius:15px;background:#eaf6ff;
+  display:grid;place-items:center;overflow:hidden;margin-bottom:15px;
+}
+.corebiq-install-icon img{width:100%;height:100%;object-fit:contain;padding:8px}
+.corebiq-install-kicker{font-size:10px;font-weight:700;letter-spacing:.12em;color:#3476b5;margin-bottom:4px}
+.corebiq-install-copy h2{font-size:20px;line-height:1.3;font-weight:600;color:#17202b;margin:0 35px 6px 0}
+.corebiq-install-copy p{font-size:12px;line-height:1.65;color:#687484;margin:0}
+.corebiq-install-btn{
+  width:100%;height:46px;margin-top:18px;border:0;border-radius:11px;background:#4b8fd1;color:#fff;
+  display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:600;
+  box-shadow:0 6px 16px rgba(75,143,209,.22);
+}
+.corebiq-install-btn .material-symbols-rounded{font-size:19px}
+.corebiq-install-later{
+  width:100%;height:40px;margin-top:4px;border:0;background:transparent;color:#687484;
+  font-size:12px;font-weight:500;
+}
+.corebiq-install-help{margin-top:10px;padding:9px 10px;border:1px solid #dbe5ef;border-radius:9px;background:#f7faff;color:#687484;font-size:10px;line-height:1.5}
+@media(min-width:769px){
+  .corebiq-install-overlay{align-items:center}
+}
+</style>
+
+<script>
+/* COREBIQ PWA INSTALL UI — isolated; does not modify existing application scripts. */
+(function(){
+  let deferredPrompt = null;
+  const popup = () => document.getElementById('corebiq-install-popup');
+  const btn = () => document.getElementById('corebiq-install-btn');
+  const close = () => document.getElementById('corebiq-install-close');
+  const later = () => document.getElementById('corebiq-install-later');
+  const help = () => document.getElementById('corebiq-install-help');
+
+  function isStandalone(){
+    return window.matchMedia('(display-mode: standalone)').matches ||
+           window.navigator.standalone === true;
+  }
+
+  function showInstallPopup(){
+    if(isStandalone()) return;
+    const p = popup();
+    if(!p) return;
+    p.classList.add('show');
+    p.setAttribute('aria-hidden','false');
+  }
+
+  function hideInstallPopup(){
+    const p = popup();
+    if(!p) return;
+    p.classList.remove('show');
+    p.setAttribute('aria-hidden','true');
+  }
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallPopup();
+  });
+
+  window.addEventListener('appinstalled', function(){
+    deferredPrompt = null;
+    hideInstallPopup();
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    close()?.addEventListener('click', hideInstallPopup);
+    later()?.addEventListener('click', hideInstallPopup);
+
+    btn()?.addEventListener('click', async function(){
+      if(deferredPrompt){
+        deferredPrompt.prompt();
+        try{
+          await deferredPrompt.userChoice;
+        }catch(e){}
+        deferredPrompt = null;
+        hideInstallPopup();
+      }else{
+        if(help()) help().hidden = false;
+      }
+    });
+
+    /* If the browser has not exposed beforeinstallprompt yet, wait briefly.
+       This avoids creating a popup that cannot perform a native install. */
+    setTimeout(function(){
+      if(!isStandalone() && deferredPrompt) showInstallPopup();
+    }, 1200);
+  });
+})();
+</script>
+
+</body>
+</html>
