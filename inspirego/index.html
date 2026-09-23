@@ -392,6 +392,50 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 <div id="app-container" style="visibility: hidden;">
 
     <div id="sidebar-container">
+<style>
+/* =========================================================
+   COREBIQ INDEX SIDEBAR — MAIN MODULES + SUB MODULES
+   Navigation links intentionally point directly to exact .html files.
+   ========================================================= */
+.cb-sidebar-nav .cb-nav-group { margin: 2px 0 6px; }
+.cb-sidebar-nav .cb-nav-summary {
+  list-style: none; cursor: pointer; width: 100%; min-height: 46px;
+  border: none; border-radius: 12px; background: transparent;
+  color: var(--text-soft); display: flex; align-items: center; gap: 14px;
+  padding: 0 16px; font-size: 14px; font-weight: 600;
+  transition: all .2s ease;
+}
+.cb-sidebar-nav .cb-nav-summary::-webkit-details-marker { display:none; }
+.cb-sidebar-nav .cb-nav-summary::after {
+  content:'chevron_right'; font-family:'Material Symbols Rounded';
+  margin-left:auto; font-size:20px; transition:transform .2s ease;
+}
+.cb-sidebar-nav details[open] > .cb-nav-summary::after { transform:rotate(90deg); }
+.cb-sidebar-nav .cb-nav-summary:hover { background:var(--surface-soft); color:var(--text-strong); }
+.cb-sidebar-nav .cb-nav-summary .material-symbols-rounded { font-size:22px; color:var(--muted); }
+.cb-sidebar-nav .cb-nav-sub {
+  margin: 2px 0 6px 18px; padding: 2px 0 2px 14px;
+  border-left:1px solid var(--border);
+}
+.cb-sidebar-nav .cb-nav-sub a {
+  display:flex; align-items:center; min-height:38px; padding:0 12px;
+  border-radius:9px; color:var(--text-soft); text-decoration:none;
+  font-size:13px; font-weight:500; transition:all .2s ease;
+}
+.cb-sidebar-nav .cb-nav-sub a:hover { background:var(--surface-soft); color:var(--primary); }
+.cb-sidebar-nav .cb-nav-sub a::before {
+  content:'arrow_right'; font-family:'Material Symbols Rounded';
+  font-size:16px; margin-right:7px; color:var(--muted);
+}
+.cb-sidebar-nav .cb-nav-dashboard {
+  width:100%; min-height:46px; border:none; border-radius:12px;
+  background:var(--primary); color:#fff; display:flex; align-items:center;
+  gap:14px; padding:0 16px; margin-bottom:8px; font-size:14px; font-weight:600;
+  text-decoration:none; box-shadow:0 4px 12px rgba(15,76,129,.2);
+}
+.cb-sidebar-nav .cb-nav-dashboard .material-symbols-rounded { color:#fff; font-size:22px; }
+</style>
+
 <div class="cb-sidebar-shell">
   <div class="cb-sidebar-top">
     <div class="cb-sidebar-brand">
@@ -403,84 +447,120 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   </div>
 
   <nav class="cb-sidebar-nav">
-    <button class="cb-side-link active" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this)">
+    <a class="cb-nav-dashboard" href="index.html">
       <span class="material-symbols-rounded">dashboard</span><span>Dashboard</span>
-    </button>
-    <button class="cb-side-link" data-target="view-patients" onclick="window.switchView('view-patients',this)">
-      <span class="material-symbols-rounded">groups</span><span>Clients Data</span>
-    </button>
-    <button class="cb-side-link" data-target="view-appointments" onclick="window.switchView('view-appointments',this)">
-      <span class="material-symbols-rounded">event_note</span><span>Appointments</span>
-    </button>
-    <button class="cb-side-link" data-target="view-calender" onclick="window.switchView('view-calender',this)">
-      <span class="material-symbols-rounded">calendar_month</span><span>Calendar</span>
-    </button>
+    </a>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">groups</span><span>CRM</span></summary>
+      <div class="cb-nav-sub">
+        <a href="clients.html">Customers</a>
+        <a href="contacts.html">Contacts</a>
+        <a href="leads.html">Leads</a>
+        <a href="sales.html">Sales / Bookings</a>
+        <a href="followups.html">Follow-ups</a>
+        <a href="services.html">Services</a>
+        <a href="quotations.html">Quotations</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-transaction" onclick="window.switchView('view-transaction',this)">
-      <span class="material-symbols-rounded">receipt_long</span><span>Transactions</span>
-    </button>
-    <button class="cb-side-link" data-target="view-qr" onclick="window.switchView('view-qr',this)">
-      <span class="material-symbols-rounded">qr_code_scanner</span><span>UPI Payment QR</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">account_balance_wallet</span><span>ACCOUNTS</span></summary>
+      <div class="cb-nav-sub">
+        <a href="ledgers.html">Ledgers</a>
+        <a href="transactions.html">Transactions</a>
+        <a href="vouchers.html">Vouchers</a>
+        <a href="receipts.html">Receipts</a>
+        <a href="payments.html">Payments</a>
+        <a href="bank-cash-books.html">Bank &amp; Cash Books</a>
+        <a href="cheque-status.html">Cheque Status</a>
+        <a href="accounts-reports.html">Reports</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">badge</span><span>EMPLOYEES</span></summary>
+      <div class="cb-nav-sub">
+        <a href="staff.html">Employees</a>
+        <a href="attendance.html">Attendance</a>
+        <a href="payroll.html">Payroll</a>
+        <a href="employee-reports.html">Reports</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-branches" onclick="window.switchView('view-branches',this)">
-      <span class="material-symbols-rounded">apartment</span><span>Branches</span>
-    </button>
-    <button class="cb-side-link" data-target="view-therapist" onclick="window.switchView('view-therapist',this)">
-      <span class="material-symbols-rounded">medical_services</span><span>Management / Partners</span>
-    </button>
-    <button class="cb-side-link" data-target="view-staff" onclick="window.switchView('view-staff',this)">
-      <span class="material-symbols-rounded">badge</span><span>Staff Directory</span>
-    </button>
-    <button class="cb-side-link" data-target="view-attendance" onclick="window.switchView('view-attendance',this)">
-      <span class="material-symbols-rounded">how_to_reg</span><span>Daily Attendance</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">description</span><span>TEMPLATES</span></summary>
+      <div class="cb-nav-sub">
+        <a href="letterhead.html">Letterhead</a>
+        <a href="invoice.html">Invoice</a>
+        <a href="quotation.html">Quotation</a>
+        <a href="estimate.html">Estimate</a>
+        <a href="receipt-voucher.html">Receipt Voucher</a>
+        <a href="payment-voucher.html">Payment Voucher</a>
+        <a href="seals.html">Digital Seals</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">build</span><span>TOOLS</span></summary>
+      <div class="cb-nav-sub">
+        <a href="calc.html">Calculator</a>
+        <a href="tax-calculator.html">Tax Calculator</a>
+        <a href="qr.html">UPI QR</a>
+        <a href="document-tools.html">Document Tools</a>
+        <a href="utilities.html">Utilities</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-users" onclick="window.switchView('view-users',this)">
-      <span class="material-symbols-rounded">manage_accounts</span><span>Users (Admin)</span>
-    </button>
-    <button class="cb-side-link" data-target="view-clinic-details" onclick="window.switchView('view-clinic-details',this)">
-      <span class="material-symbols-rounded">settings</span><span>Office Details</span>
-    </button>
-    <button class="cb-side-link" data-target="view-company" onclick="window.switchView('view-company',this)">
-      <span class="material-symbols-rounded">domain</span><span>Company Profile</span>
-    </button>
-    <button class="cb-side-link" data-target="view-letterhead" onclick="window.switchView('view-letterhead',this)">
-      <span class="material-symbols-rounded">description</span><span>Letterheads</span>
-    </button>
-    <button class="cb-side-link" data-target="view-seal" onclick="window.switchView('view-seal',this)">
-      <span class="material-symbols-rounded">verified</span><span>Digital Seals</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">domain</span><span>COMPANY</span></summary>
+      <div class="cb-nav-sub">
+        <a href="company.html">Company Profile</a>
+        <a href="branches.html">Branches</a>
+        <a href="bank-accounts.html">Bank Accounts</a>
+        <a href="payment-gateway.html">Payment Gateway</a>
+        <a href="payment-settings.html">Payment Settings</a>
+        <a href="company-preferences.html">Company Preferences</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">database</span><span>DATA</span></summary>
+      <div class="cb-nav-sub">
+        <a href="data.html">Data Centre</a>
+        <a href="import.html">Import Data</a>
+        <a href="export.html">Export Data</a>
+        <a href="backup.html">Backup</a>
+        <a href="restore.html">Restore</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-calc" onclick="window.switchView('view-calc',this)">
-      <span class="material-symbols-rounded">calculate</span><span>Calculator Tool</span>
-    </button>
-    <button class="cb-side-link" data-target="view-backup" onclick="window.switchView('view-backup',this)">
-      <span class="material-symbols-rounded">cloud_download</span><span>Export &amp; Backup</span>
-    </button>
-    <button class="cb-side-link" data-target="view-updates" onclick="window.switchView('view-updates',this)">
-      <span class="material-symbols-rounded">campaign</span><span>App Updates</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">verified</span><span>COMPLIANCE</span></summary>
+      <div class="cb-nav-sub">
+        <a href="compliance.html">Compliance Dashboard</a>
+        <a href="gst.html">GST</a>
+        <a href="tds.html">TDS / TCS</a>
+        <a href="income-tax.html">Income Tax</a>
+        <a href="pf-esi.html">PF / ESI</a>
+        <a href="fssai.html">FSSAI</a>
+        <a href="iec.html">IEC</a>
+        <a href="trademark.html">Trademark</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
-
-    <button class="cb-side-link" data-target="view-licenceinfo" onclick="window.switchView('view-licenceinfo',this)">
-      <span class="material-symbols-rounded">workspace_premium</span><span>Licence Info</span>
-    </button>
-    <button class="cb-side-link" data-target="view-aboutapp" onclick="window.switchView('view-aboutapp',this)">
-      <span class="material-symbols-rounded">info</span><span>About App</span>
-    </button>
-    <button class="cb-side-link" data-target="view-privacy" onclick="window.switchView('view-privacy',this)">
-      <span class="material-symbols-rounded">privacy_tip</span><span>Privacy Policy</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">apps</span><span>MORE</span></summary>
+      <div class="cb-nav-sub">
+        <a href="mytask.html">Tasks</a>
+        <a href="reports.html">Reports</a>
+        <a href="users.html">Users &amp; Access</a>
+        <a href="updates.html">App Updates</a>
+        <a href="licence-info.html">Licence Info</a>
+        <a href="aboutapp.html">About App</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </details>
   </nav>
 
   <div class="cb-sidebar-footer">
@@ -489,7 +569,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   </div>
 </div>
 </div>
-
     <div class="main-wrapper">
         <div id="header-container">
 <div class="cb-header-shell">
@@ -1244,7 +1323,7 @@ window.fetchDashboardData=async function(){
 document.addEventListener('DOMContentLoaded',()=>{
     dragElement(document.getElementById("calc-popup-container"));
     window.loadComponent('header-container','header.html');
-    window.loadComponent('sidebar-container','sidebar.html');
+    // Sidebar is defined directly in index.html; do not overwrite it with sidebar.html.
     window.loadComponent('bottomnav-container','bottomnav.html');
     setInterval(window.updateGlobalClock,1000);
     setTimeout(window.applyRoleVisibility,300);
