@@ -228,7 +228,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 .cb-header-action, .cb-header-profile, .cb-header-menu { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-strong); display: grid; place-items: center; transition: all 0.2s; }
 .cb-header-action:hover, .cb-header-profile:hover, .cb-header-menu:hover { background: var(--primary-light); color: var(--primary); border-color: transparent; }
 
-/* FIX: Header Logo Dimension Fix */
 .cb-header-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .cb-header-brand img { height: 40px; width: auto; object-fit: contain; }
 
@@ -242,7 +241,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 .cb-sidebar-shell { width: 280px; height: 100%; min-height: 100vh; background: var(--surface); border-right: 1px solid var(--border); box-shadow: 4px 0 24px rgba(15,23,42,0.04); display: flex; flex-direction: column; }
 .cb-sidebar-top { height: 72px; padding: 12px 20px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
 .cb-sidebar-brand { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-/* FIX: Header Logo Dimension Fix */
 .cb-sidebar-brand img { height: 32px; width: auto; object-fit: contain; }
 .cb-sidebar-brand-text strong { display: block; font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 700; color: var(--text-strong); }
 .cb-sidebar-brand-text small { font-size: 10px; color: var(--text-soft); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
@@ -254,16 +252,17 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 .cb-side-link .material-symbols-rounded { font-size: 22px; color: var(--muted); transition: color 0.2s; }
 .cb-side-link:hover { background: var(--surface-soft); color: var(--text-strong); }
 .cb-side-link:hover .material-symbols-rounded { color: var(--primary); }
+
+/* SIDEBAR ACTIVE STATE FIX */
 .cb-side-link.active { background: var(--primary); color: #fff; font-weight: 600; box-shadow: 0 4px 12px rgba(15, 76, 129, 0.2); }
 .cb-side-link.active .material-symbols-rounded { color: #fff; }
+
 .cb-side-divider { height: 1px; background: var(--border); margin: 16px 8px; }
 .cb-sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--surface-soft); }
-/* Bottom Nav Sidebar Logo */
 .cb-sidebar-footer img { width: 28px; height: 28px; object-fit: contain; }
 .cb-sidebar-footer span { font-size: 11px; font-weight: 500; color: var(--text-soft); }
 
 /* Bottom Nav (Mobile Only) */
-/* FIX: Hide completely on desktop */
 .cb-bottom-shell { display: none; }
 
 /* Layout Queries */
@@ -271,21 +270,27 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   #sidebar-container { position: fixed !important; left: 0; top: 0; bottom: 0; width: 280px; display: block !important; }
   #header-container { margin-left: 280px; }
   .main-wrapper { margin-left: 280px; }
-  /* FIX: Hide menu and bottom nav entirely on desktop */
+  
+  /* STRICT DESKTOP FIXES: Hides mobile elements from desktop view */
   .cb-header-menu { display: none !important; }
+  .cb-header-brand { display: none !important; } /* Prevents double logo on desktop */
   #bottomnav-container { display: none !important; }
 }
+
 @media(max-width:1000px) {
   .dash-top-row { grid-template-columns: 1fr 1fr; }
   .dash-top-row .dash-card:last-child { grid-column: 1 / -1; }
 }
+
 @media(max-width:768px) {
   #sidebar-container { position: fixed !important; left: 0; top: 0; bottom: 0; width: 280px; transform: translateX(-105%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: var(--surface); box-shadow: 20px 0 40px rgba(15,23,42,0.15); z-index: 6000 !important; }
   #sidebar-container.open { transform: translateX(0); }
   #main-content { margin-left: 0; padding: 20px 16px 100px; }
+  
+  /* Show header elements correctly on mobile */
   .cb-header-shell { padding: 12px 16px; justify-content: flex-start; }
-  /* Show menu icon on mobile */
   .cb-header-menu { display: grid !important; margin-right: 8px; }
+  .cb-header-brand { display: flex !important; } 
   
   .cb-header-clock { padding: 0 12px; }
   .cb-header-clock span:last-child { display: none; }
@@ -309,7 +314,7 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   .cb-inline-0161 { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
   .cb-inline-0163 { width: 100%; justify-content: center; }
 
-  /* Display bottom nav on mobile */
+  /* DISPLAY BOTTOM NAV ON MOBILE */
   .cb-bottom-shell { 
     display: flex; 
     min-height: 70px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); 
@@ -319,6 +324,18 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
   }
 }
+
+/* BOTTOM NAV ACTIVE STATE FIXES */
+.cb-bottom-link { min-width: 64px; height: 54px; border: none; border-radius: 12px; background: transparent; color: var(--text-soft); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 500; transition: all 0.2s; }
+.cb-bottom-link .material-symbols-rounded { font-size: 24px; }
+.cb-bottom-link.active { color: var(--primary); font-weight: 600; }
+.cb-bottom-link.active .material-symbols-rounded { font-variation-settings: 'FILL' 1; }
+
+/* The central Bookings Button fix */
+.cb-bottom-main { position: relative; top: -10px; background: var(--primary); color: #fff !important; height: 64px; width: 64px; border-radius: 20px; box-shadow: 0 8px 20px rgba(15,76,129,0.3); }
+.cb-bottom-main.active { background: var(--primary-dark); color: #fff !important; transform: translateY(-2px); }
+.cb-bottom-main .material-symbols-rounded { color: #fff !important; }
+
 @media(max-width:420px) {
   .cb-header-clock { margin-left: auto; }
   .cb-header-profile { width: 40px; height: 40px; }
@@ -368,7 +385,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 
 <!-- SPLASH SCREEN -->
 <div id="cb-splash-screen">
-  <!-- Updated Splash Logo link -->
   <img src="assets/name-splash.png" alt="COREBIQ" onerror="this.src='assets/name.png'">
   <div class="cb-splash-loader"></div>
 </div>
@@ -379,7 +395,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 <div class="cb-sidebar-shell">
   <div class="cb-sidebar-top">
     <div class="cb-sidebar-brand">
-      <!-- Updated Sidebar Top Logo -->
       <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
     </div>
     <button class="cb-sidebar-close" type="button" onclick="window.toggleMenu()" aria-label="Close menu">
@@ -469,7 +484,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   </nav>
 
   <div class="cb-sidebar-footer">
-    <!-- Updated Sidebar Bottom Logo -->
     <img src="assets/logo.png" alt="COREBIQ" onerror="this.style.display='none'">
     <span>Version 1.2.0</span>
   </div>
@@ -479,13 +493,12 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
     <div class="main-wrapper">
         <div id="header-container">
 <div class="cb-header-shell">
-  <!-- FIX: Mobile Menu Button explicitly placed here for mobile flow -->
-  <button class="cb-header-menu" type="button" onclick="window.toggleMenu()" aria-label="Menu" style="display:none;">
+  <!-- Removed display:none inline style to allow CSS to manage visibility -->
+  <button class="cb-header-menu" type="button" onclick="window.toggleMenu()" aria-label="Menu">
     <span class="material-symbols-rounded">menu</span>
   </button>
   
   <div class="cb-header-brand">
-    <!-- Updated Header Logo -->
     <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
   </div>
   <div class="cb-header-spacer"></div>
@@ -682,16 +695,17 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 
         <div id="bottomnav-container">
 <div class="cb-bottom-shell">
-  <button class="cb-bottom-link active" onclick="window.switchView('view-dashboard',this)">
+  <!-- Added data-target properties to cleanly map these buttons for active states -->
+  <button class="cb-bottom-link active" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this)">
     <span class="material-symbols-rounded">home</span><small>Home</small>
   </button>
-  <button class="cb-bottom-link" onclick="window.switchView('view-patients',this)">
+  <button class="cb-bottom-link" data-target="view-patients" onclick="window.switchView('view-patients',this)">
     <span class="material-symbols-rounded">groups</span><small>Clients</small>
   </button>
-  <button class="cb-bottom-link cb-bottom-main" onclick="window.switchView('view-appointments',this)">
+  <button class="cb-bottom-link cb-bottom-main" data-target="view-appointments" onclick="window.switchView('view-appointments',this)">
     <span class="material-symbols-rounded">event_note</span><small>Bookings</small>
   </button>
-  <button class="cb-bottom-link" onclick="window.switchView('view-transaction',this)">
+  <button class="cb-bottom-link" data-target="view-transaction" onclick="window.switchView('view-transaction',this)">
     <span class="material-symbols-rounded">receipt_long</span><small>Payments</small>
   </button>
   <button class="cb-bottom-link" onclick="window.toggleMenu()">
@@ -723,7 +737,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
     </button>
 
     <div class="corebiq-install-icon">
-      <!-- Updated App Icon in PWA prompt -->
       <img src="assets/logo-app.png" alt="COREBIQ App Icon" onerror="this.src='assets/logo.png'">
     </div>
 
@@ -853,7 +866,6 @@ onAuthStateChanged(auth, async (user) => {
         if (branchTextElement) {
             if (window.currentUser.role === 'admin') {
                 branchTextElement.innerText = "Master Access (All Branches)";
-                // Let it inherit the white text color safely
             } else {
                 branchTextElement.innerText = window.currentUser.branch;
             }
@@ -988,9 +1000,15 @@ window.switchView = async function(targetId, navElement) {
         window.toggleCalculator();
         return;
     }
-    document.querySelectorAll('.nav-link, .nav-item, .bottom-nav-item')
-        .forEach(el => el.classList.remove('active'));
-    if (navElement && !navElement.classList.contains('close-menu-btn')) navElement.classList.add('active');
+    
+    // FIX: Clear active state exactly on the classes that sidebar and bottom nav use
+    document.querySelectorAll('.cb-side-link, .cb-bottom-link').forEach(el => el.classList.remove('active'));
+    
+    // FIX: Add active state to ANY link matching this target (syncs sidebar and bottom nav)
+    document.querySelectorAll(`[data-target="${targetId}"]`).forEach(el => {
+        el.classList.add('active');
+    });
+
     document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
     const targetDiv = document.getElementById(targetId);
     if (!targetDiv) return;
