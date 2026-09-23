@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>90's Calc by CorbIQ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- VT323 for the LCD screen, Orbitron for a subtle tech look on branding if needed, standard sans for buttons -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #2a3b4c; /* Dark desk background */
+            background-image: repeating-linear-gradient(45deg, #2a3b4c 25%, transparent 25%, transparent 75%, #2a3b4c 75%, #2a3b4c), repeating-linear-gradient(45deg, #2a3b4c 25%, #233140 25%, #233140 75%, #2a3b4c 75%, #2a3b4c);
+            background-position: 0 0, 10px 10px;
+            background-size: 20px 20px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+
+        /* The main chunky chassis */
+        .calculator-chassis {
+            background: linear-gradient(135deg, #e6e2d3 0%, #c5c0af 100%);
+            border-radius: 12px;
+            padding: 30px 25px;
+            box-shadow: 
+                -5px -5px 15px rgba(255, 255, 255, 0.5),
+                10px 10px 25px rgba(0, 0, 0, 0.4),
+                inset 1px 1px 3px rgba(255, 255, 255, 0.8),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #a8a494;
+            width: 320px;
+            position: relative;
+        }
+
+        /* Branding styling */
+        .brand-text {
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            color: #555;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.7), -1px -1px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Screen bezel (dark grey plastic around LCD) */
+        .screen-bezel {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 
+                inset 2px 2px 5px rgba(0,0,0,0.8),
+                inset -1px -1px 2px rgba(255,255,255,0.2),
+                1px 1px 1px rgba(255,255,255,0.5);
+            margin-bottom: 25px;
+        }
+
+        /* The actual LCD screen */
+        .lcd-screen {
+            background-color: #9ea786; /* Classic LCD green-grey */
+            box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.4);
+            border-radius: 3px;
+            padding: 10px;
+            text-align: right;
+            font-family: 'VT323', monospace;
+            font-size: 2.5rem;
+            color: #2b3021;
+            overflow-x: hidden;
+            white-space: nowrap;
+            /* Faint grid/shadow to simulate LCD backing */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 4px 4px;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.1);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* Base Button Styles */
+        .btn {
+            background: linear-gradient(to bottom, #f0ede1 0%, #dcd7c5 100%);
+            border: none;
+            border-radius: 6px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 
+                0 4px 0 #b3ae9d,
+                0 5px 5px rgba(0,0,0,0.3),
+                inset 1px 1px 2px rgba(255,255,255,0.8);
+            position: relative;
+            transition: all 0.05s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+        }
+
+        .btn:active {
+            top: 4px;
+            box-shadow: 
+                0 0px 0 #b3ae9d,
+                0 1px 2px rgba(0,0,0,0.3),
+                inset 2px 2px 5px rgba(0,0,0,0.2);
+            background: #dcd7c5;
+        }
+
+        /* Operator Buttons (Darker Grey) */
+        .btn-op {
+            background: linear-gradient(to bottom, #8a8d91 0%, #6b6e73 100%);
+            color: white;
+            box-shadow: 
+                0 4px 0 #4a4d52,
+                0 5px 5px rgba(0,0,0,0.3),
+                inset 1px 1px 2px rgba(255,255,255,0.4);
+        }
+        .btn-op:active {
+            box-shadow: 
+                0 0px 0 #4a4d52,
+                0 1px 2px rgba(0,0,0,0.3),
+                inset 2px 2px 5px rgba(0,0,0,0.5);
+            background: #6b6e73;
+        }
+
+        /* Clear Button (Red) */
+        .btn-clear {
+            background: linear-gradient(to bottom, #d6645e 0%, #b8433d 100%);
+            color: white;
+            box-shadow: 
+                0 4px 0 #8a2a25,
+                0 5px 5px rgba(0,0,0,0.3),
+                inset 1px 1px 2px rgba(255,255,255,0.4);
+        }
+        .btn-clear:active {
+            box-shadow: 
+                0 0px 0 #8a2a25,
+                0 1px 2px rgba(0,0,0,0.3),
+                inset 2px 2px 5px rgba(0,0,0,0.5);
+            background: #b8433d;
+        }
+
+        /* Equals Button (Orange/Yellowish) */
+        .btn-eq {
+            background: linear-gradient(to bottom, #e39d4b 0%, #c97e28 100%);
+            color: white;
+            box-shadow: 
+                0 4px 0 #945712,
+                0 5px 5px rgba(0,0,0,0.3),
+                inset 1px 1px 2px rgba(255,255,255,0.4);
+        }
+        .btn-eq:active {
+            box-shadow: 
+                0 0px 0 #945712,
+                0 1px 2px rgba(0,0,0,0.3),
+                inset 2px 2px 5px rgba(0,0,0,0.5);
+            background: #c97e28;
+        }
+
+        /* Grid Layout */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            /* Extra padding at bottom to account for button shadow dropping out */
+            padding-bottom: 5px; 
+        }
+
+        .col-span-2 {
+            grid-column: span 2;
+        }
+        
+        .row-span-2 {
+            grid-row: span 2;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-chassis">
+        
+        <!-- Branding -->
+        <div class="brand-text">
+            90's Calc by CorbIQ
+        </div>
+
+        <!-- Display Area -->
+        <div class="screen-bezel">
+            <div class="lcd-screen" id="display">0</div>
+        </div>
+
+        <!-- Keypad Area -->
+        <div class="keypad">
+            <!-- Row 1 -->
+            <button class="btn btn-clear col-span-2" onclick="clearDisplay()">C</button>
+            <button class="btn btn-op" onclick="appendOperator('/')">&divide;</button>
+            <button class="btn btn-op" onclick="appendOperator('*')">&times;</button>
+            
+            <!-- Row 2 -->
+            <button class="btn" onclick="appendNumber('7')">7</button>
+            <button class="btn" onclick="appendNumber('8')">8</button>
+            <button class="btn" onclick="appendNumber('9')">9</button>
+            <button class="btn btn-op" onclick="appendOperator('-')">&minus;</button>
+            
+            <!-- Row 3 -->
+            <button class="btn" onclick="appendNumber('4')">4</button>
+            <button class="btn" onclick="appendNumber('5')">5</button>
+            <button class="btn" onclick="appendNumber('6')">6</button>
+            <button class="btn btn-op" onclick="appendOperator('+')">+</button>
+            
+            <!-- Row 4 -->
+            <button class="btn" onclick="appendNumber('1')">1</button>
+            <button class="btn" onclick="appendNumber('2')">2</button>
+            <button class="btn" onclick="appendNumber('3')">3</button>
+            <!-- Equals button spans two rows for that classic layout -->
+            <button class="btn btn-eq row-span-2" style="height: 112px;" onclick="calculate()">=</button>
+            
+            <!-- Row 5 -->
+            <button class="btn col-span-2" onclick="appendNumber('0')">0</button>
+            <button class="btn" onclick="appendNumber('.')">.</button>
+        </div>
+
+    </div>
+
+    <script>
+        // State variables
+        let currentInput = '0';
+        let previousInput = '';
+        let operator = null;
+        let shouldResetDisplay = false;
+
+        const displayElement = document.getElementById('display');
+
+        function updateDisplay() {
+            // Limit length so it doesn't overflow the LCD completely
+            if (currentInput.length > 12) {
+                displayElement.innerText = currentInput.substring(0, 12);
+            } else {
+                displayElement.innerText = currentInput;
+            }
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            previousInput = '';
+            operator = null;
+            shouldResetDisplay = false;
+            updateDisplay();
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' && number !== '.') {
+                currentInput = number;
+            } else if (shouldResetDisplay) {
+                currentInput = number;
+                shouldResetDisplay = false;
+            } else {
+                if (number === '.' && currentInput.includes('.')) return; // Prevent multiple decimals
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(op) {
+            if (operator !== null && !shouldResetDisplay) {
+                calculate();
+            }
+            previousInput = currentInput;
+            operator = op;
+            shouldResetDisplay = true;
+        }
+
+        function calculate() {
+            if (operator === null || shouldResetDisplay) return;
+
+            let prev = parseFloat(previousInput);
+            let current = parseFloat(currentInput);
+            let result;
+
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        result = "ERR: DIV/0";
+                    } else {
+                        result = prev / current;
+                    }
+                    break;
+                default:
+                    return;
+            }
+
+            // Format result to avoid super long floats
+            if (typeof result === 'number') {
+                // Keep to a reasonable precision and strip trailing zeros
+                result = parseFloat(result.toPrecision(10)).toString();
+            }
+            
+            currentInput = result.toString();
+            operator = null;
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
+        
+        // Keyboard support for ease of use
+        document.addEventListener('keydown', (event) => {
+            if (event.key >= '0' && event.key <= '9') {
+                appendNumber(event.key);
+            }
+            if (event.key === '.') {
+                appendNumber('.');
+            }
+            if (event.key === '=' || event.key === 'Enter') {
+                event.preventDefault(); // prevent form submission or scrolling
+                calculate();
+            }
+            if (event.key === 'Escape' || event.key === 'c' || event.key === 'C') {
+                clearDisplay();
+            }
+            if (['+', '-', '*', '/'].includes(event.key)) {
+                appendOperator(event.key);
+            }
+            if (event.key === 'Backspace') {
+                if (!shouldResetDisplay) {
+                    currentInput = currentInput.slice(0, -1);
+                    if (currentInput === '' || currentInput === '-') currentInput = '0';
+                    updateDisplay();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
