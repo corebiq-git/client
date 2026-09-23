@@ -1,4 +1,4 @@
-const CACHE_NAME = "corebiq-v3";
+const CACHE_NAME = "corebiq-v4";
 // ONLY include files that actually exist in your directory.
 // Removed style.css, header.css, etc., since your CSS is inline in index.html.
 const APP_SHELL = [
