@@ -3,4832 +3,1374 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-
-<meta name="theme-color" content="#f4f8fd">
+<meta name="theme-color" content="#0F4C81">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>COREBIQ | Dashboard</title>
 
-<title>COREBIQ | Intelligent Business Workspace</title>
-
+<!-- Updated Favicon -->
+<link rel="icon" href="assets/logo-favicon.png" type="image/png">
 <link rel="manifest" href="manifest.json">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-:root{
-  --bg:#f5f9fe;
-  --surface:#ffffff;
-  --surface-soft:#eef6ff;
-  --surface-blue:#e7f3ff;
-
-  --text:#20252d;
-  --text-strong:#17202b;
-  --text-soft:#46515e;
-  --muted:#687484;
-
-  --border:#dbe5ef;
-  --border-strong:#cbd9e7;
-
-  --primary:#4b8fd1;
-  --primary-dark:#3476b5;
-  --primary-light:#d9edff;
-  --primary-pale:#edf7ff;
-
-  --success:#20ad82;
-  --warning:#ef983d;
-  --danger:#e55353;
-
-  --shadow:
-    0 3px 12px rgba(45,72,101,.07),
-    0 12px 30px rgba(45,72,101,.045);
-
-  --radius:20px;
-  --radius-sm:13px;
-
-  --header-height:68px;
-  --sidebar-width:250px;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:"Poppins",Arial,sans-serif;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body{
-  width:100%;
-  min-height:100%;
-  background:#eaf0f6;
-  color:var(--text);
-}
-
-body{
-  overflow-x:hidden;
-}
-
-button,
-input,
-select,
-textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.material-symbols-rounded{
-  vertical-align:middle;
-  user-select:none;
-}
-
-#app-container{
-  width:100%;
-  min-height:100vh;
-  background:var(--bg);
-}
-
-.main-wrapper{
-  min-height:100vh;
-  position:relative;
-  background:var(--bg);
-  padding-left:var(--sidebar-width);
-}
-
-#main-content{
-  padding:22px 20px 100px;
-  min-height:calc(100vh - var(--header-height));
-  background:var(--bg);
-}
-
-.view-section{
-  display:none;
-}
-
-.view-section.active{
-  display:block;
-}
-
 /* =========================================================
-   HEADER
-========================================================= */
-
-#header-container{
-  position:sticky;
-  top:0;
-  z-index:100;
-  height:var(--header-height);
-}
-
-.core-header{
-  height:var(--header-height);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-
-  padding:0 22px;
-
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-
-  border-bottom:1px solid var(--border);
-
-  box-shadow:
-    0 2px 10px rgba(45,72,101,.035);
-}
-
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  min-width:0;
-}
-
-.header-menu{
-  display:none;
-  width:40px;
-  height:40px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:#f7fbff;
-  color:var(--primary-dark);
-  align-items:center;
-  justify-content:center;
-}
-
-.header-brand{
-  display:flex;
-  align-items:center;
-  min-width:0;
-  height:40px;
-}
-
-.header-brand img{
-  width:160px;
-  max-width:42vw;
-  height:40px;
-  object-fit:contain;
-  object-position:left center;
-}
-
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.header-action{
-  width:40px;
-  height:40px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border:1px solid var(--border);
-  border-radius:12px;
-
-  background:#f7fbff;
-  color:#4d5b69;
-}
-
-.header-action:hover{
-  background:var(--primary-pale);
-  color:var(--primary-dark);
-}
-
-.header-clock{
-  display:flex;
-  align-items:center;
-  gap:7px;
-
-  padding:8px 12px;
-
-  border:1px solid var(--border);
-  border-radius:12px;
-
-  background:#f7fbff;
-  color:#4b5967;
-
-  font-size:11px;
-  font-weight:600;
-}
-
-.header-user{
-  position:relative;
-}
-
-.header-user-btn{
-  display:flex;
-  align-items:center;
-  gap:9px;
-
-  border:1px solid var(--border);
-  border-radius:13px;
-
-  padding:6px 10px 6px 6px;
-
-  background:#fff;
-}
-
-.header-avatar{
-  width:31px;
-  height:31px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:10px;
-
-  background:var(--primary-light);
-  color:var(--primary-dark);
-
-  font-size:13px;
-  font-weight:700;
-}
-
-.header-user-info{
-  text-align:left;
-  line-height:1.2;
-}
-
-.header-user-name{
-  font-size:11px;
-  font-weight:600;
-  color:var(--text-strong);
-}
-
-.header-user-role{
-  margin-top:2px;
-  font-size:9px;
-  color:var(--muted);
-}
-
-.user-dropdown{
-  display:none;
-
-  position:absolute;
-  top:50px;
-  right:0;
-
-  width:230px;
-
-  padding:10px;
-
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:16px;
-
-  box-shadow:var(--shadow);
-
-  z-index:300;
-}
-
-.user-dropdown.open{
-  display:block;
-}
-
-.user-dropdown-email{
-  padding:10px;
-
-  border-radius:11px;
-
-  background:#f5f9fd;
-
-  color:#556270;
-
-  font-size:10px;
-
-  word-break:break-word;
-
-  margin-bottom:7px;
-}
-
-.dropdown-item{
-  width:100%;
-
-  display:flex;
-  align-items:center;
-  gap:9px;
-
-  padding:10px;
-
-  border:0;
-  border-radius:10px;
-
-  background:transparent;
-
-  color:#46515e;
-
-  font-size:11px;
-
-  text-align:left;
-}
-
-.dropdown-item:hover{
-  background:var(--primary-pale);
-  color:var(--primary-dark);
-}
-
-.dropdown-item.logout{
-  color:#c62828;
-}
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-#sidebar-container{
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-
-  width:var(--sidebar-width);
-
-  z-index:250;
-
-  background:#fff;
-
-  border-right:1px solid var(--border);
-
-  box-shadow:
-    3px 0 20px rgba(45,72,101,.045);
-}
-
-.core-sidebar{
-  height:100%;
-  display:flex;
-  flex-direction:column;
-}
-
-.sidebar-brand{
-  height:var(--header-height);
-
-  display:flex;
-  align-items:center;
-
-  padding:0 20px;
-
-  border-bottom:1px solid var(--border);
-}
-
-.sidebar-brand img{
-  width:170px;
-  max-width:100%;
-  height:42px;
-  object-fit:contain;
-  object-position:left center;
-}
-
-.sidebar-scroll{
-  flex:1;
-  overflow-y:auto;
-  padding:15px 11px 20px;
-}
-
-.sidebar-section-title{
-  padding:8px 11px 7px;
-
-  color:#8a96a4;
-
-  font-size:9px;
-  font-weight:700;
-
-  letter-spacing:.8px;
-  text-transform:uppercase;
-}
-
-.nav-link{
-  width:100%;
-
-  display:flex;
-  align-items:center;
-  gap:11px;
-
-  min-height:43px;
-
-  margin:3px 0;
-
-  padding:9px 11px;
-
-  border:1px solid transparent;
-  border-radius:12px;
-
-  background:transparent;
-
-  color:#586574;
-
-  font-size:12px;
-  font-weight:500;
-
-  text-align:left;
-
-  transition:.18s ease;
-}
-
-.nav-link .material-symbols-rounded{
-  width:22px;
-  text-align:center;
-  font-size:20px;
-  color:#738293;
-}
-
-.nav-link:hover{
-  background:#f3f8fd;
-  color:var(--primary-dark);
-}
-
-.nav-link:hover .material-symbols-rounded{
-  color:var(--primary);
-}
-
-.nav-link.active{
-  background:var(--primary-pale);
-  border-color:#d6eafb;
-  color:var(--primary-dark);
-  font-weight:600;
-}
-
-.nav-link.active .material-symbols-rounded{
-  color:var(--primary-dark);
-}
-
-.sidebar-footer{
-  padding:11px;
-  border-top:1px solid var(--border);
-}
-
-.sidebar-profile{
-  display:flex;
-  align-items:center;
-  gap:9px;
-
-  padding:10px;
-
-  border-radius:13px;
-
-  background:#f6faff;
-  border:1px solid #e1ebf4;
-}
-
-.sidebar-profile-avatar{
-  width:32px;
-  height:32px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:10px;
-
-  background:var(--primary-light);
-  color:var(--primary-dark);
-
-  font-size:12px;
-  font-weight:700;
-}
-
-.sidebar-profile-text{
-  min-width:0;
-}
-
-.sidebar-profile-role{
-  color:var(--text-strong);
-  font-size:10px;
-  font-weight:600;
-}
-
-.sidebar-profile-email{
-  margin-top:2px;
-  color:var(--muted);
-  font-size:8px;
-
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-}
-
-/* =========================================================
-   MOBILE SIDEBAR
-========================================================= */
-
-.sidebar-overlay{
-  display:none;
-
-  position:fixed;
-  inset:0;
-
-  z-index:220;
-
-  background:rgba(20,35,50,.28);
-
-  backdrop-filter:blur(2px);
-}
-
-.sidebar-overlay.show{
-  display:block;
-}
-
-/* =========================================================
-   BOTTOM NAV
-========================================================= */
-
-#bottomnav-container{
-  position:fixed;
-
-  left:50%;
-  bottom:15px;
-
-  transform:translateX(-50%);
-
-  z-index:180;
-}
-
-.bottom-nav{
-  display:flex;
-  align-items:center;
-  gap:4px;
-
-  padding:7px;
-
-  background:rgba(255,255,255,.94);
-
-  border:1px solid var(--border);
-
-  border-radius:19px;
-
-  box-shadow:
-    0 8px 28px rgba(42,66,91,.13);
-
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-}
-
-.bottom-nav-item{
-  min-width:67px;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:2px;
-
-  min-height:51px;
-
-  padding:6px 10px;
-
-  border:0;
-  border-radius:13px;
-
-  background:transparent;
-
-  color:#718090;
-
-  font-size:9px;
-  font-weight:500;
-}
-
-.bottom-nav-item .material-symbols-rounded{
-  font-size:21px;
-}
-
-.bottom-nav-item.active{
-  background:var(--primary-pale);
-  color:var(--primary-dark);
-}
-
-.bottom-nav-item.active .material-symbols-rounded{
-  color:var(--primary-dark);
-}
-
-.bottom-nav-item:hover{
-  background:#f2f7fc;
-}
-
-/* =========================================================
-   DASHBOARD
-========================================================= */
-
-.dash-error{
-  display:none;
-  align-items:center;
-  gap:9px;
-
-  margin-bottom:16px;
-  padding:11px 14px;
-
-  border:1px solid #f2c9c9;
-  border-radius:12px;
-
-  background:#fff5f5;
-  color:#b42318;
-
-  font-size:12px;
-}
-
-.welcome-card{
-  position:relative;
-
-  min-height:190px;
-  margin-bottom:22px;
-
-  overflow:hidden;
-
-  border:1px solid #cfe3f5;
-  border-radius:22px;
-
-  background:
-    linear-gradient(
-      112deg,
-      #eaf6ff 0%,
-      #e3f1ff 54%,
-      #f1f8ff 100%
-    );
-
-  box-shadow:var(--shadow);
-
-  display:flex;
-  align-items:center;
-
-  padding:28px 30px;
-}
-
-.welcome-card:before{
-  content:"";
-
-  position:absolute;
-
-  width:270px;
-  height:270px;
-
-  right:-85px;
-  top:-125px;
-
-  border:1px solid rgba(75,143,209,.16);
-  border-radius:50%;
-
-  box-shadow:
-    0 0 0 28px rgba(75,143,209,.035),
-    0 0 0 58px rgba(75,143,209,.025);
-}
-
-.welcome-card:after{
-  content:"";
-
-  position:absolute;
-
-  width:170px;
-  height:170px;
-
-  right:50px;
-  bottom:-110px;
-
-  background:rgba(255,255,255,.42);
-
-  border-radius:50%;
-}
-
-.welcome-copy{
-  position:relative;
-  z-index:3;
-  max-width:62%;
-}
-
-.welcome-eyebrow{
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  color:var(--primary-dark);
-
-  font-size:12px;
-  font-weight:600;
-
-  margin-bottom:9px;
-}
-
-.welcome-spark{
-  width:9px;
-  height:9px;
-
-  display:inline-block;
-
-  border-radius:50%;
-
-  background:#69b5ee;
-
-  box-shadow:0 0 0 5px rgba(105,181,238,.12);
-}
-
-.welcome-title{
-  font-size:29px;
-  line-height:1.18;
-  letter-spacing:-.7px;
-
-  color:var(--text-strong);
-
-  font-weight:500;
-}
-
-.welcome-title strong{
-  color:var(--primary-dark);
-  font-weight:700;
-}
-
-.welcome-text{
-  margin-top:9px;
-
-  color:#526171;
-
-  font-size:13px;
-  line-height:1.6;
-
-  max-width:530px;
-}
-
-.welcome-art{
-  position:absolute;
-
-  right:18px;
-  top:15px;
-
-  width:210px;
-  height:160px;
-
-  z-index:2;
-
-  opacity:.82;
-}
-
-.welcome-art svg{
-  width:100%;
-  height:100%;
-  overflow:visible;
-}
-
-h2{
-  font-size:28px;
-  line-height:1.25;
-  font-weight:600;
-
-  letter-spacing:-.5px;
-
-  color:var(--text-strong);
-
-  margin:0 0 7px;
-}
-
-.cb-inline-0150{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:7px;
-}
-
-.cb-inline-0151{
-  font-weight:400;
-  color:#39424d;
-}
-
-.cb-inline-0152{
-  color:var(--primary-dark);
-  font-weight:700;
-}
-
-.cb-inline-0153{
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  font-size:15px;
-  font-weight:500;
-
-  color:#424d5a;
-
-  margin-bottom:5px;
-}
-
-.cb-inline-0154{
-  font-size:20px;
-  color:var(--primary);
-}
-
-.cb-inline-0155{
-  color:#626e7c;
-
-  font-size:14px;
-  line-height:1.55;
-
-  margin-bottom:20px;
-}
-
-/* =========================================================
+   PREMIUM CORPORATE STYLE (CSS REFACTOR)
+   ========================================================= */
+:root {
+  --bg: #F3F5F8;
+  --surface: #FFFFFF;
+  --surface-soft: #FAFBFC;
+  --surface-blue: #F0F4F8;
+  
+  --text: #334155;
+  --text-strong: #0F172A;
+  --text-soft: #64748B;
+  --muted: #94A3B8;
+  
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+  
+  --primary: #0F4C81; 
+  --primary-dark: #0A3153;
+  --primary-light: #E6F0FA;
+  --primary-pale: #F5F9FF;
+  
+  --accent: #D4AF37; 
+  --accent-light: #FBF5E6;
+  
+  --success: #059669;
+  --warning: #D97706;
+  --danger: #DC2626;
+  
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 24px 48px rgba(15, 40, 80, 0.12);
+  
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: "Inter", "Poppins", Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; min-height: 100%; background: var(--bg); color: var(--text); }
+body { overflow-x: hidden; font-size: 15px; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; transition: all 0.2s ease; }
+h1, h2, h3, h4, h5, h6 { font-family: "Poppins", sans-serif; }
+
+/* -------------------------------------------
+   SPLASH SCREEN
+------------------------------------------- */
+#cb-splash-screen {
+  position: fixed; inset: 0; z-index: 99999;
+  background: var(--bg); display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+#cb-splash-screen img {
+  height: 60px; width: auto; max-width: 240px; margin-bottom: 24px;
+  animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  object-fit: contain;
+}
+.cb-splash-loader {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border-strong);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(0.95); opacity: 0.7; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* -------------------------------------------
+   LAYOUT
+------------------------------------------- */
+#app-container { width: 100%; min-height: 100vh; background: var(--bg); }
+.main-wrapper { min-height: 100vh; position: relative; background: var(--bg); }
+#main-content { padding: 28px 24px 110px; min-height: calc(100vh - 70px); background: var(--bg); }
+.view-section { display: none; animation: fadeIn 0.3s ease-out; }
+.view-section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+#sidebar-container { z-index: 200; }
+
+.dash-error { display: none; align-items: center; gap: 10px; margin-bottom: 20px; padding: 14px 18px; border: 1px solid #FECACA; border-radius: var(--radius-sm); background: #FEF2F2; color: #991B1B; font-size: 14px; font-weight: 500; }
+.material-symbols-rounded { vertical-align: middle; }
+
+/* -------------------------------------------
+   PREMIUM WELCOME HERO
+------------------------------------------- */
+.welcome-card {
+  position: relative; min-height: 220px; margin-bottom: 28px; overflow: hidden; 
+  border: none; border-radius: 24px; 
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  box-shadow: var(--shadow-lg); display: flex; align-items: center; padding: 36px 40px;
+  color: #FFFFFF;
+}
+.welcome-card:before {
+  content: ""; position: absolute; width: 400px; height: 400px; right: -100px; top: -150px; 
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%); border-radius: 50%;
+}
+.welcome-card:after {
+  content: ""; position: absolute; width: 250px; height: 250px; left: -50px; bottom: -100px; 
+  background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0) 70%); border-radius: 50%;
+}
+.welcome-copy { position: relative; z-index: 3; max-width: 65%; }
+.welcome-eyebrow { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 12px; }
+.welcome-spark { width: 8px; height: 8px; display: inline-block; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px rgba(212,175,55,0.5); }
+.welcome-title { font-size: 34px; line-height: 1.2; letter-spacing: -0.5px; color: #FFFFFF; font-weight: 400; margin-bottom: 12px; }
+.welcome-title strong { color: #FFFFFF; font-weight: 700; }
+.welcome-text { color: #CBD5E1; font-size: 15px; line-height: 1.6; max-width: 550px; font-weight: 400; }
+.welcome-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.welcome-access, .welcome-branch {
+  min-height: 38px; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px;
+  background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: inline-flex; align-items: center; gap: 8px; color: #FFFFFF !important; font-size: 13px; font-weight: 500;
+}
+.welcome-access .material-symbols-rounded, .welcome-branch .material-symbols-rounded { font-size: 18px; color: var(--accent); }
+.welcome-art { position: absolute; right: 24px; top: 50%; transform: translateY(-50%); width: 240px; height: 180px; z-index: 2; opacity: 0.9; }
+.welcome-art svg { width: 100%; height: 100%; overflow: visible; }
+.welcome-art path, .welcome-art circle { stroke: rgba(255,255,255,0.2) !important; }
+.welcome-art path[fill], .welcome-art circle[fill] { fill: rgba(255,255,255,0.1) !important; }
+.welcome-art circle[fill="#ffffff"] { fill: rgba(255,255,255,0.05) !important; stroke: none !important; }
+.welcome-art circle[fill="#75b7ea"], .welcome-art circle[fill="#a4cff0"], .welcome-art circle[fill="#8fc5ed"] { fill: var(--accent) !important; opacity: 0.8; }
+
+/* -------------------------------------------
+   HEADINGS & UTILITIES
+------------------------------------------- */
+h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5px; color: var(--text-strong); margin: 0 0 10px; }
+.cb-inline-0150 { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.cb-inline-0151 { font-weight: 400; color: var(--text); }
+.cb-inline-0152 { color: var(--primary); font-weight: 600; }
+.cb-inline-0153 { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; color: var(--text-strong); margin-bottom: 8px; }
+.cb-inline-0154 { font-size: 22px; color: var(--primary); }
+.cb-inline-0155 { color: var(--text-soft); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+
+/* -------------------------------------------
    DASH CARDS
-========================================================= */
+------------------------------------------- */
+.dash-top-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-bottom: 24px; }
+.dash-card { min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.dash-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.card-title { font-family: "Poppins", sans-serif; color: var(--text-strong); font-size: 18px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 8px; letter-spacing: -0.2px; }
+.cb-inline-0160 { font-size: 22px; color: var(--text-soft); cursor: pointer; padding: 4px; border-radius: 8px; background: var(--surface-soft); transition: all 0.2s; }
+.cb-inline-0160:hover { color: var(--primary); background: var(--primary-light); }
 
-.dash-top-row{
-  display:grid;
+/* Financial / KPI Stats */
+.fin-stat-container { display: grid; gap: 16px; }
+.fin-stat { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-soft); position: relative; overflow: hidden; }
+.fin-stat::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 4px 0 0 4px; }
+.fin-stat.success-box::before { background: var(--success); }
+.fin-stat.alert::before { background: var(--warning); }
+.fin-label { font-size: 13px; font-weight: 500; color: var(--text-soft); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.fin-amount { font-family: "Poppins", sans-serif; font-size: 32px; line-height: 1; font-weight: 600; color: var(--text-strong); }
+.fin-icon { font-size: 32px; color: var(--primary); opacity: 0.8; }
+.alert .fin-icon { color: var(--warning); }
+.success-box .fin-icon { color: var(--success); }
 
-  grid-template-columns:
-    repeat(3,minmax(0,1fr));
+/* Chart & Mini Stats */
+.chart-container { height: 140px; position: relative; margin: 0 auto 20px; max-width: 180px; }
+.mini-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mini-stat { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface-soft); }
+.mini-stat-label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: var(--text-soft); }
+.mini-stat-val { font-family: "Poppins", sans-serif; margin-top: 6px; font-size: 24px; font-weight: 600; color: var(--text-strong); }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.cb-inline-0156 { background: var(--warning); } 
+.cb-inline-0157 { background: var(--success); } 
+.cb-inline-0158 { background: var(--text-soft); } 
+.cb-inline-0159 { background: var(--danger); } 
 
-  gap:16px;
+/* Calendar Widget */
+.cal-header-row { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 8px; margin-bottom: 16px; }
+.cal-nav-btn { width: 40px; height: 40px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-strong); font-size: 20px; box-shadow: var(--shadow-sm); }
+.cal-nav-btn:hover { background: var(--primary-light); color: var(--primary); border-color: transparent; }
+.cal-month-title { text-align: center; font-family: "Poppins", sans-serif; font-size: 15px; font-weight: 600; color: var(--text-strong); }
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-day-name { text-align: center; font-size: 11px; font-weight: 600; color: var(--text-soft); padding: 4px 0 8px; text-transform: uppercase; }
+.cal-day { min-height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 13px; font-weight: 500; color: var(--text); cursor: pointer; transition: all 0.2s; }
+.cal-day:hover { background: var(--primary-light); color: var(--primary); }
+.cal-day.active { background: var(--primary); color: #FFF; font-weight: 600; box-shadow: 0 4px 10px rgba(15, 76, 129, 0.3); }
+.cal-day.has-event:not(.active) { background: var(--surface-soft); border: 1px solid var(--border-strong); color: var(--primary-dark); font-weight: 600; }
+.cal-day.empty { cursor: default; background: transparent; border: none; }
 
-  margin-bottom:18px;
+/* -------------------------------------------
+   TABLES
+------------------------------------------- */
+.dash-table-wrapper { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
+.cb-inline-0161 { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; border-bottom: 1px solid var(--border); background: var(--surface-soft); }
+.cb-inline-0162 { font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 600; color: var(--text-strong); }
+.cb-inline-0163 { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text-strong); padding: 10px 16px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; box-shadow: var(--shadow-sm); }
+.cb-inline-0163:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.cb-inline-0164 { font-size: 18px; }
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.saas-table { width: 100%; min-width: 800px; border-collapse: collapse; }
+.saas-table th { padding: 16px 24px; background: var(--surface); color: var(--text-soft); text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border); white-space: nowrap; }
+.saas-table td { padding: 18px 24px; color: var(--text); font-size: 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.saas-table tbody tr { transition: background 0.2s; }
+.saas-table tbody tr:hover { background: var(--primary-pale); }
+.cb-inline-0165 { text-align: center !important; padding: 60px !important; color: var(--muted) !important; font-size: 14px; }
+.badge { display: inline-flex; align-items: center; justify-content: center; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: capitalize; letter-spacing: 0.3px; }
+.badge-pending { background: #FEF3C7; color: #B45309; }
+.badge-completed { background: #D1FAE5; color: #047857; }
+.badge-rescheduled { background: #F1F5F9; color: #475569; }
+.badge-cancelled { background: #FEE2E2; color: #B91C1C; }
+.balance-no-due { color: var(--success); }
+.balance-due { color: var(--warning); }
+.balance-excess { color: var(--primary); }
+
+/* -------------------------------------------
+   COREBIQ STATIC APP SHELL (Desktop + Mobile)
+------------------------------------------- */
+.cb-header-shell { min-height: 72px; padding: 10px 24px; display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(226,232,240,0.8); box-shadow: 0 4px 20px rgba(15,23,42,0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.cb-header-action, .cb-header-profile, .cb-header-menu { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text-strong); display: grid; place-items: center; transition: all 0.2s; }
+.cb-header-action:hover, .cb-header-profile:hover, .cb-header-menu:hover { background: var(--primary-light); color: var(--primary); border-color: transparent; }
+
+/* FIX: Header Logo Dimension Fix */
+.cb-header-brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.cb-header-brand img { height: 40px; width: auto; object-fit: contain; }
+
+.cb-header-spacer { flex: 1; }
+.cb-header-clock { height: 44px; padding: 0 16px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); color: var(--text-strong); display: flex; align-items: center; gap: 10px; }
+.cb-header-clock .material-symbols-rounded { font-size: 20px; color: var(--primary); }
+.cb-header-clock b { display: block; font-size: 13px; line-height: 1.1; font-weight: 600; }
+.cb-header-clock small { display: block; font-size: 10px; color: var(--text-soft); margin-top: 2px; text-transform: uppercase; }
+
+/* Sidebar */
+.cb-sidebar-shell { width: 280px; height: 100%; min-height: 100vh; background: var(--surface); border-right: 1px solid var(--border); box-shadow: 4px 0 24px rgba(15,23,42,0.04); display: flex; flex-direction: column; }
+.cb-sidebar-top { height: 72px; padding: 12px 20px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+.cb-sidebar-brand { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+/* FIX: Header Logo Dimension Fix */
+.cb-sidebar-brand img { height: 32px; width: auto; object-fit: contain; }
+.cb-sidebar-brand-text strong { display: block; font-family: "Poppins", sans-serif; font-size: 16px; font-weight: 700; color: var(--text-strong); }
+.cb-sidebar-brand-text small { font-size: 10px; color: var(--text-soft); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+.cb-sidebar-close { width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); color: var(--text-strong); display: grid; place-items: center; }
+.cb-sidebar-nav { flex: 1; overflow: auto; padding: 20px 16px; }
+.cb-sidebar-nav::-webkit-scrollbar { width: 6px; }
+.cb-sidebar-nav::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
+.cb-side-link { width: 100%; min-height: 46px; border: none; border-radius: 12px; background: transparent; color: var(--text-soft); display: flex; align-items: center; gap: 14px; padding: 0 16px; margin: 4px 0; text-align: left; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+.cb-side-link .material-symbols-rounded { font-size: 22px; color: var(--muted); transition: color 0.2s; }
+.cb-side-link:hover { background: var(--surface-soft); color: var(--text-strong); }
+.cb-side-link:hover .material-symbols-rounded { color: var(--primary); }
+.cb-side-link.active { background: var(--primary); color: #fff; font-weight: 600; box-shadow: 0 4px 12px rgba(15, 76, 129, 0.2); }
+.cb-side-link.active .material-symbols-rounded { color: #fff; }
+.cb-side-divider { height: 1px; background: var(--border); margin: 16px 8px; }
+.cb-sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--surface-soft); }
+/* Bottom Nav Sidebar Logo */
+.cb-sidebar-footer img { width: 28px; height: 28px; object-fit: contain; }
+.cb-sidebar-footer span { font-size: 11px; font-weight: 500; color: var(--text-soft); }
+
+/* Bottom Nav (Mobile Only) */
+/* FIX: Hide completely on desktop */
+.cb-bottom-shell { display: none; }
+
+/* Layout Queries */
+@media(min-width:769px) {
+  #sidebar-container { position: fixed !important; left: 0; top: 0; bottom: 0; width: 280px; display: block !important; }
+  #header-container { margin-left: 280px; }
+  .main-wrapper { margin-left: 280px; }
+  /* FIX: Hide menu and bottom nav entirely on desktop */
+  .cb-header-menu { display: none !important; }
+  #bottomnav-container { display: none !important; }
 }
-
-.dash-card{
-  min-width:0;
-
-  background:rgba(255,255,255,.98);
-
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-
-  padding:19px;
-
-  box-shadow:var(--shadow);
+@media(max-width:1000px) {
+  .dash-top-row { grid-template-columns: 1fr 1fr; }
+  .dash-top-row .dash-card:last-child { grid-column: 1 / -1; }
 }
-
-.card-title{
-  color:#343e49;
-
-  font-size:15px;
-  font-weight:600;
-
-  margin-bottom:15px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:8px;
-}
-
-.cb-inline-0160{
-  font-size:20px;
-  color:var(--primary);
-  cursor:pointer;
-}
-
-.fin-stat-container{
-  display:grid;
-  gap:11px;
-}
-
-.fin-stat{
-  min-height:78px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:10px;
-
-  padding:14px;
-
-  border:1px solid #d9e8f1;
-  border-radius:15px;
-
-  background:#f4f9fd;
-}
-
-.fin-stat.success-box{
-  background:#edf9f5;
-  border-color:#d3eee4;
-}
-
-.fin-stat.alert{
-  background:#fff7ec;
-  border-color:#f8e6cc;
-}
-
-.fin-label{
-  font-size:12px;
-  color:#687584;
-  margin-bottom:5px;
-}
-
-.fin-amount{
-  font-size:28px;
-  line-height:1.05;
-  font-weight:600;
-  color:#202a35;
-}
-
-.fin-icon{
-  font-size:29px;
-  color:var(--primary);
-}
-
-.alert .fin-icon{
-  color:var(--warning);
-}
-
-.chart-container{
-  height:132px;
-  position:relative;
-
-  margin:0 auto 12px;
-
-  max-width:175px;
-}
-
-.mini-stats-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-}
-
-.mini-stat{
-  padding:10px 11px;
-
-  border:1px solid var(--border);
-  border-radius:12px;
-
-  background:#fbfdff;
-}
-
-.mini-stat-label{
-  display:flex;
-  align-items:center;
-  gap:6px;
-
-  font-size:11px;
-  color:#657181;
-}
-
-.mini-stat-val{
-  margin-top:3px;
-
-  font-size:20px;
-  font-weight:600;
-
-  color:#202a35;
-}
-
-.dot{
-  width:8px;
-  height:8px;
-
-  border-radius:50%;
-
-  flex:none;
-}
-
-.cb-inline-0156{background:#fb923c}
-.cb-inline-0157{background:#20ad82}
-.cb-inline-0158{background:#6c7b8d}
-.cb-inline-0159{background:#e55353}
-
-/* =========================================================
-   CALENDAR
-========================================================= */
-
-.cal-header-row{
-  display:grid;
-
-  grid-template-columns:38px 1fr 38px;
-
-  align-items:center;
-
-  gap:6px;
-
-  margin-bottom:10px;
-}
-
-.cal-nav-btn{
-  width:36px;
-  height:36px;
-
-  border:1px solid #d5e2ed;
-  border-radius:10px;
-
-  background:#edf6fd;
-  color:#364454;
-}
-
-.cal-month-title{
-  text-align:center;
-
-  font-size:13px;
-  font-weight:600;
-
-  color:#3c4855;
-}
-
-.calendar-grid{
-  display:grid;
-
-  grid-template-columns:
-    repeat(7,1fr);
-
-  gap:5px;
-}
-
-.cal-day-name{
-  text-align:center;
-
-  font-size:10px;
-  color:#7a8795;
-
-  padding:2px 0 6px;
-}
-
-.cal-day{
-  min-height:31px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  border-radius:9px;
-
-  font-size:11px;
-  color:#46515e;
-
-  cursor:pointer;
-}
-
-.cal-day:hover{
-  background:#edf7ff;
-}
-
-.cal-day.active{
-  background:var(--primary);
-  color:#fff;
-  font-weight:600;
-}
-
-.cal-day.has-event:not(.active){
-  background:#e5f3ff;
-  color:var(--primary-dark);
-  font-weight:600;
-}
-
-.cal-day.empty{
-  cursor:default;
-}
-
-/* =========================================================
-   TABLE
-========================================================= */
-
-.dash-table-wrapper{
-  background:#fff;
-
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-
-  box-shadow:var(--shadow);
-
-  overflow:hidden;
-}
-
-.cb-inline-0161{
-  min-height:60px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:12px;
-
-  padding:0 18px;
-
-  border-bottom:1px solid var(--border);
-}
-
-.cb-inline-0162{
-  font-size:15px;
-  font-weight:600;
-  color:#394450;
-}
-
-.cb-inline-0163{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-
-  border:1px solid #cfe3f3;
-  background:#edf7ff;
-
-  color:var(--primary-dark);
-
-  padding:9px 12px;
-
-  border-radius:10px;
-
-  font-size:11px;
-  font-weight:600;
-}
-
-.cb-inline-0164{
-  font-size:17px;
-}
-
-.table-responsive{
-  overflow-x:auto;
-}
-
-.saas-table{
-  width:100%;
-  min-width:720px;
-  border-collapse:collapse;
-}
-
-.saas-table th{
-  padding:12px 14px;
-
-  background:#f5f9fd;
-
-  color:#657181;
-
-  text-align:left;
-
-  font-size:11px;
-  font-weight:600;
-
-  border-bottom:1px solid var(--border);
-
-  white-space:nowrap;
-}
-
-.saas-table td{
-  padding:13px 14px;
-
-  color:#46515e;
-
-  font-size:12px;
-
-  border-bottom:1px solid #edf1f5;
-
-  vertical-align:middle;
-}
-
-.saas-table tbody tr:hover{
-  background:#f8fbff;
-}
-
-.cb-inline-0165{
-  text-align:center!important;
-  padding:42px!important;
-  color:var(--muted)!important;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-
-  padding:5px 9px;
-
-  border-radius:999px;
-
-  font-size:10px;
-  font-weight:600;
-}
-
-.badge-pending{
-  background:#fff2e6;
-  color:#c56d1c;
-}
-
-.badge-completed{
-  background:#e9f8f2;
-  color:#087f5b;
-}
-
-.badge-rescheduled{
-  background:#eef2f7;
-  color:#526173;
-}
-
-.badge-cancelled{
-  background:#fff0f0;
-  color:#c62828;
-}
-
-.balance-no-due{
-  color:#087f5b;
-}
-
-.balance-due{
-  color:#c56d1c;
-}
-
-.balance-excess{
-  color:#3476b5;
-}
-
-/* =========================================================
-   CALCULATOR
-========================================================= */
-
-#calc-popup-container{
-  display:none;
-
-  position:fixed;
-
-  width:350px;
-  height:470px;
-
-  right:24px;
-  bottom:85px;
-
-  z-index:500;
-
-  flex-direction:column;
-
-  overflow:hidden;
-
-  background:#fff;
-
-  border:1px solid var(--border);
-  border-radius:20px;
-
-  box-shadow:
-    0 20px 55px rgba(35,59,83,.22);
-}
-
-#calc-popup-header{
-  height:52px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:0 15px;
-
-  background:#f5faff;
-
-  border-bottom:1px solid var(--border);
-
-  cursor:move;
-}
-
-.cb-inline-0166{
-  display:flex;
-  align-items:center;
-  gap:7px;
-
-  color:var(--primary-dark);
-
-  font-size:13px;
-  font-weight:600;
-}
-
-.cb-inline-0167{
-  font-size:20px;
-}
-
-.cb-inline-0168{
-  cursor:pointer;
-
-  color:#667382;
-
-  font-size:20px;
-}
-
-#calc-popup-content{
-  flex:1;
-  min-height:0;
-}
-
-.cb-inline-0169{
-  width:100%;
-  height:100%;
-}
-
-/* =========================================================
-   MODULE LOADING
-========================================================= */
-
-.module-loading{
-  padding:70px 20px;
-
-  text-align:center;
-
-  color:var(--primary);
-
-  font-size:13px;
-}
-
-.module-error{
-  max-width:600px;
-
-  margin:40px auto;
-
-  padding:25px;
-
-  text-align:center;
-
-  border:1px solid #fee2e2;
-  border-radius:16px;
-
-  background:#fff5f5;
-
-  color:#b42318;
-}
-
-.module-error .material-symbols-rounded{
-  font-size:35px;
-  margin-bottom:8px;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:1100px){
-
-  :root{
-    --sidebar-width:225px;
+@media(max-width:768px) {
+  #sidebar-container { position: fixed !important; left: 0; top: 0; bottom: 0; width: 280px; transform: translateX(-105%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: var(--surface); box-shadow: 20px 0 40px rgba(15,23,42,0.15); z-index: 6000 !important; }
+  #sidebar-container.open { transform: translateX(0); }
+  #main-content { margin-left: 0; padding: 20px 16px 100px; }
+  .cb-header-shell { padding: 12px 16px; justify-content: flex-start; }
+  /* Show menu icon on mobile */
+  .cb-header-menu { display: grid !important; margin-right: 8px; }
+  
+  .cb-header-clock { padding: 0 12px; }
+  .cb-header-clock span:last-child { display: none; }
+  .cb-header-action { display: none; }
+  
+  .welcome-card { min-height: 240px; padding: 28px 24px; border-radius: 20px; }
+  .welcome-copy { max-width: 100%; text-align: left; }
+  .welcome-title { font-size: 28px !important; line-height: 1.2 !important; }
+  .welcome-text { font-size: 14px !important; line-height: 1.6 !important; max-width: 90%; margin-bottom: 16px; }
+  .welcome-meta { gap: 8px; margin-top: 16px; flex-direction: column; align-items: flex-start; }
+  .welcome-access, .welcome-branch { padding: 8px 12px; font-size: 12px; width: auto; }
+  .welcome-art { right: -20px; top: auto; bottom: 10px; width: 160px; height: 120px; opacity: 0.6; transform: none; }
+  
+  .dash-top-row { grid-template-columns: 1fr; gap: 16px; }
+  .dash-top-row .dash-card:last-child { grid-column: auto; }
+  .dash-card { padding: 20px; border-radius: 20px; }
+  .fin-stat { min-height: 80px; padding: 16px; }
+  .fin-amount { font-size: 28px !important; }
+  .fin-icon { font-size: 28px; }
+  
+  .cb-inline-0161 { flex-direction: column; align-items: flex-start; padding: 16px; gap: 12px; }
+  .cb-inline-0163 { width: 100%; justify-content: center; }
+
+  /* Display bottom nav on mobile */
+  .cb-bottom-shell { 
+    display: flex; 
+    min-height: 70px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); 
+    align-items: center; justify-content: space-around; gap: 4px; 
+    background: rgba(255,255,255,0.95); border-top: 1px solid rgba(226,232,240,0.8); 
+    box-shadow: 0 -8px 30px rgba(15,23,42,0.06); 
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); 
   }
-
-  .dash-top-row{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .dash-top-row .dash-card:last-child{
-    grid-column:1/-1;
-  }
-
+}
+@media(max-width:420px) {
+  .cb-header-clock { margin-left: auto; }
+  .cb-header-profile { width: 40px; height: 40px; }
+  .fin-amount { font-size: 26px !important; }
+  .welcome-title { font-size: 26px !important; }
 }
 
-@media(max-width:800px){
+/* Structural Components */
+#header-container { position: sticky; top: 0; z-index: 3000; }
+#bottomnav-container { position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; z-index: 4500 !important; }
 
-  :root{
-    --sidebar-width:0px;
-    --header-height:62px;
-  }
-
-  .main-wrapper{
-    padding-left:0;
-  }
-
-  #sidebar-container{
-    width:270px;
-
-    transform:translateX(-100%);
-
-    transition:transform .22s ease;
-
-    box-shadow:
-      10px 0 35px rgba(25,45,65,.16);
-  }
-
-  #sidebar-container.open{
-    transform:translateX(0);
-  }
-
-  .header-menu{
-    display:flex;
-  }
-
-  .header-clock{
-    display:none;
-  }
-
-  .header-user-info{
-    display:none;
-  }
-
-  .header-user-btn{
-    padding:5px;
-  }
-
-  .header-brand img{
-    width:145px;
-    height:38px;
-  }
-
-  #main-content{
-    padding:16px 14px 94px;
-  }
-
-  #bottomnav-container{
-    left:10px;
-    right:10px;
-    bottom:9px;
-
-    transform:none;
-  }
-
-  .bottom-nav{
-    width:100%;
-
-    justify-content:space-around;
-
-    padding:6px;
-
-    border-radius:17px;
-  }
-
-  .bottom-nav-item{
-    flex:1;
-    min-width:0;
-    min-height:49px;
-  }
-
-  .welcome-card{
-    min-height:190px;
-
-    padding:25px 22px;
-
-    margin-bottom:20px;
-  }
-
-  .welcome-copy{
-    max-width:68%;
-  }
-
-  .welcome-title{
-    font-size:25px;
-  }
-
-  .welcome-text{
-    font-size:12px;
-    line-height:1.55;
-  }
-
-  .welcome-art{
-    right:-3px;
-    top:18px;
-
-    width:175px;
-    height:145px;
-
-    opacity:.7;
-  }
-
-  h2{
-    font-size:25px;
-  }
-
-  .cb-inline-0153{
-    font-size:14px;
-  }
-
-  .cb-inline-0155{
-    font-size:13px;
-    margin-bottom:17px;
-  }
-
-  .dash-top-row{
-    grid-template-columns:1fr;
-    gap:14px;
-  }
-
-  .dash-top-row .dash-card:last-child{
-    grid-column:auto;
-  }
-
-  .dash-card{
-    padding:18px;
-    border-radius:19px;
-  }
-
-  .card-title{
-    font-size:16px;
-  }
-
-  .fin-stat{
-    min-height:82px;
-    padding:14px 15px;
-  }
-
-  .fin-label{
-    font-size:12px;
-  }
-
-  .fin-amount{
-    font-size:29px;
-  }
-
-  .fin-icon{
-    font-size:30px;
-  }
-
-  .chart-container{
-    height:120px;
-    max-width:160px;
-    margin-bottom:10px;
-  }
-
-  .mini-stat{
-    padding:11px 12px;
-  }
-
-  .mini-stat-label{
-    font-size:12px;
-  }
-
-  .mini-stat-val{
-    font-size:21px;
-  }
-
-  .cal-day{
-    min-height:34px;
-    font-size:12px;
-  }
-
-  .cal-day-name{
-    font-size:10px;
-  }
-
-  .cb-inline-0161{
-    min-height:62px;
-
-    padding:12px 14px;
-
-    align-items:flex-start;
-  }
-
-  .cb-inline-0162{
-    font-size:14px;
-  }
-
-  .cb-inline-0163{
-    font-size:10px;
-    padding:8px 9px;
-  }
-
-  #calc-popup-container{
-    width:calc(100vw - 24px);
-    height:470px;
-
-    left:12px;
-    right:12px;
-
-    bottom:78px;
-  }
-
+/* Calculator / Popups */
+#calc-popup-container {
+  display: none; position: fixed; right: 24px; bottom: 100px; width: min(400px, calc(100vw - 32px)); height: min(600px, calc(100vh - 120px));
+  z-index: 5000; flex-direction: column; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow-lg);
 }
+#calc-popup-header { min-height: 56px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; background: var(--surface-soft); border-bottom: 1px solid var(--border); color: var(--text-strong); font-size: 15px; font-weight: 600; font-family: "Poppins", sans-serif; cursor: grab; }
+#calc-popup-header:active { cursor: grabbing; }
+#calc-popup-header .material-symbols-rounded { cursor: pointer; color: var(--text-soft); font-size: 24px; transition: color 0.2s; }
+#calc-popup-header .material-symbols-rounded:hover { color: var(--danger); }
+#calc-popup-content { flex: 1; min-height: 0; background: var(--surface); overflow: hidden; }
 
-@media(max-width:390px){
-
-  .header-brand img{
-    width:125px;
-  }
-
-  .welcome-card{
-    min-height:205px;
-  }
-
-  .welcome-copy{
-    max-width:73%;
-  }
-
-  .welcome-title{
-    font-size:23px;
-  }
-
-  .welcome-text{
-    font-size:11px;
-  }
-
-  .welcome-art{
-    right:-28px;
-    opacity:.58;
-  }
-
-  .fin-amount{
-    font-size:27px;
-  }
-
-  .bottom-nav-item{
-    font-size:8px;
-  }
-
-  .bottom-nav-item .material-symbols-rounded{
-    font-size:20px;
-  }
-
-}
+/* -------------------------------------------
+   PWA INSTALL UI
+------------------------------------------- */
+.corebiq-install-overlay { position: fixed !important; inset: 0 !important; z-index: 7000 !important; display: none; align-items: flex-end; justify-content: center; padding: 24px; background: rgba(15,23,42,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.corebiq-install-overlay.show { display: flex !important; animation: fadeIn 0.3s ease-out; }
+.corebiq-install-card { position: relative; width: min(420px, 100%); background: var(--surface); border: none; border-radius: 28px; padding: 32px; box-shadow: var(--shadow-lg); text-align: center; transform: translateY(100%); animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes slideUp { to { transform: translateY(0); } }
+.corebiq-install-close { position: absolute; right: 20px; top: 20px; width: 36px; height: 36px; border: none; border-radius: 50%; background: var(--surface-soft); color: var(--text-soft); display: grid; place-items: center; cursor: pointer; transition: background 0.2s; }
+.corebiq-install-close:hover { background: var(--border); color: var(--text-strong); }
+.corebiq-install-icon { width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); display: grid; place-items: center; overflow: hidden; }
+.corebiq-install-icon img { width: 100%; height: 100%; object-fit: cover; }
+.corebiq-install-kicker { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; }
+.corebiq-install-copy h2 { font-family: "Poppins", sans-serif; font-size: 24px; line-height: 1.3; font-weight: 700; color: var(--text-strong); margin: 0 0 12px 0; }
+.corebiq-install-copy p { font-size: 14px; line-height: 1.6; color: var(--text-soft); margin: 0 0 24px 0; }
+.corebiq-install-btn { width: 100%; height: 52px; border: none; border-radius: 14px; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 600; box-shadow: 0 8px 20px rgba(15,76,129,0.25); transition: transform 0.2s, box-shadow 0.2s; }
+.corebiq-install-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(15,76,129,0.35); }
+.corebiq-install-later { width: 100%; height: 44px; margin-top: 12px; border: none; background: transparent; color: var(--text-soft); font-size: 14px; font-weight: 500; }
+.corebiq-install-later:hover { color: var(--text-strong); }
+.corebiq-install-help { margin-top: 16px; font-size: 13px; color: var(--text-soft); background: var(--surface-soft); padding: 12px; border-radius: 10px; }
+@media(max-width:768px) { .corebiq-install-overlay { padding: 16px 16px 24px; } .corebiq-install-card { border-radius: 32px 32px 24px 24px; padding: 28px 24px; } }
 </style>
 </head>
 
 <body>
 
-<div id="app-container">
+<!-- SPLASH SCREEN -->
+<div id="cb-splash-screen">
+  <!-- Updated Splash Logo link -->
+  <img src="assets/name-splash.png" alt="COREBIQ" onerror="this.src='assets/name.png'">
+  <div class="cb-splash-loader"></div>
+</div>
 
-<!-- ======================================================
-     SIDEBAR OVERLAY
-====================================================== -->
+<div id="app-container" style="visibility: hidden;">
 
-<div class="sidebar-overlay" id="sidebar-overlay"
-     onclick="window.toggleMenu()"></div>
-
-
-<!-- ======================================================
-     SIDEBAR
-====================================================== -->
-
-<aside id="sidebar-container">
-
-  <div class="core-sidebar">
-
-    <div class="sidebar-brand">
-      <img src="assets/name.png" alt="COREBIQ">
+    <div id="sidebar-container">
+<div class="cb-sidebar-shell">
+  <div class="cb-sidebar-top">
+    <div class="cb-sidebar-brand">
+      <!-- Updated Sidebar Top Logo -->
+      <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
     </div>
-
-    <div class="sidebar-scroll">
-
-      <div class="sidebar-section-title">
-        Workspace
-      </div>
-
-      <button class="nav-link active"
-              data-target="view-dashboard"
-              onclick="window.switchView('view-dashboard',this)">
-        <span class="material-symbols-rounded">dashboard</span>
-        <span>Dashboard</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-patients"
-              id="nav-patients-btn"
-              onclick="window.switchView('view-patients',this)">
-        <span class="material-symbols-rounded">group</span>
-        <span>Customers</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-appointments"
-              id="nav-appointments-btn"
-              onclick="window.switchView('view-appointments',this)">
-        <span class="material-symbols-rounded">receipt_long</span>
-        <span>Sales</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-transaction"
-              onclick="window.switchView('view-transaction',this)">
-        <span class="material-symbols-rounded">account_balance_wallet</span>
-        <span>Transactions</span>
-      </button>
-
-      <div class="sidebar-section-title">
-        Operations
-      </div>
-
-      <button class="nav-link"
-              data-target="view-branches"
-              onclick="window.switchView('view-branches',this)">
-        <span class="material-symbols-rounded">business</span>
-        <span>Branches</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-therapist"
-              onclick="window.switchView('view-therapist',this)">
-        <span class="material-symbols-rounded">badge</span>
-        <span>Team</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-calender"
-              onclick="window.switchView('view-calender',this)">
-        <span class="material-symbols-rounded">calendar_month</span>
-        <span>Calendar</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-staff"
-              onclick="window.switchView('view-staff',this)">
-        <span class="material-symbols-rounded">groups</span>
-        <span>Staff</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-attendance"
-              onclick="window.switchView('view-attendance',this)">
-        <span class="material-symbols-rounded">fact_check</span>
-        <span>Attendance</span>
-      </button>
-
-      <div class="sidebar-section-title">
-        Administration
-      </div>
-
-      <button class="nav-link"
-              id="nav-users-btn"
-              data-target="view-users"
-              onclick="window.switchView('view-users',this)">
-        <span class="material-symbols-rounded">manage_accounts</span>
-        <span>Users & Access</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-company"
-              onclick="window.switchView('view-company',this)">
-        <span class="material-symbols-rounded">domain</span>
-        <span>Company Setup</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-clinic-details"
-              onclick="window.switchView('view-clinic-details',this)">
-        <span class="material-symbols-rounded">storefront</span>
-        <span>Business Details</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-letterhead"
-              onclick="window.switchView('view-letterhead',this)">
-        <span class="material-symbols-rounded">description</span>
-        <span>Letterhead</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-seal"
-              onclick="window.switchView('view-seal',this)">
-        <span class="material-symbols-rounded">verified</span>
-        <span>Digital Seal</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-qr"
-              onclick="window.switchView('view-qr',this)">
-        <span class="material-symbols-rounded">qr_code_2</span>
-        <span>Payment QR</span>
-      </button>
-
-      <div class="sidebar-section-title">
-        Tools
-      </div>
-
-      <button class="nav-link"
-              data-target="view-mytask"
-              onclick="window.switchView('view-mytask',this)">
-        <span class="material-symbols-rounded">task_alt</span>
-        <span>My Tasks</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-updates"
-              onclick="window.switchView('view-updates',this)">
-        <span class="material-symbols-rounded">campaign</span>
-        <span>Updates</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-backup"
-              onclick="window.switchView('view-backup',this)">
-        <span class="material-symbols-rounded">cloud_backup</span>
-        <span>Backup</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-calc"
-              onclick="window.switchView('view-calc',this)">
-        <span class="material-symbols-rounded">calculate</span>
-        <span>Calculator</span>
-      </button>
-
-      <div class="sidebar-section-title">
-        Information
-      </div>
-
-      <button class="nav-link"
-              data-target="view-licenceinfo"
-              onclick="window.switchView('view-licenceinfo',this)">
-        <span class="material-symbols-rounded">license</span>
-        <span>Licence</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-aboutapp"
-              onclick="window.switchView('view-aboutapp',this)">
-        <span class="material-symbols-rounded">info</span>
-        <span>About COREBIQ</span>
-      </button>
-
-      <button class="nav-link"
-              data-target="view-privacy"
-              onclick="window.switchView('view-privacy',this)">
-        <span class="material-symbols-rounded">privacy_tip</span>
-        <span>Privacy</span>
-      </button>
-
-    </div>
-
-    <div class="sidebar-footer">
-
-      <div class="sidebar-profile">
-
-        <div class="sidebar-profile-avatar" id="sidebar-avatar">
-          C
-        </div>
-
-        <div class="sidebar-profile-text">
-
-          <div class="sidebar-profile-role"
-               id="sidebar-role">
-            Workspace
-          </div>
-
-          <div class="sidebar-profile-email"
-               id="sidebar-email">
-            Loading...
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
+    <button class="cb-sidebar-close" type="button" onclick="window.toggleMenu()" aria-label="Close menu">
+      <span class="material-symbols-rounded">close</span>
+    </button>
   </div>
 
-</aside>
-
-
-<!-- ======================================================
-     MAIN WRAPPER
-====================================================== -->
-
-<div class="main-wrapper">
-
-
-<!-- ======================================================
-     HEADER
-====================================================== -->
-
-<header id="header-container">
-
-  <div class="core-header">
-
-    <div class="header-left">
-
-      <button class="header-menu"
-              onclick="window.toggleMenu()"
-              aria-label="Menu">
-
-        <span class="material-symbols-rounded">
-          menu
-        </span>
-
-      </button>
-
-      <div class="header-brand">
-        <img src="assets/name.png"
-             alt="COREBIQ">
-      </div>
-
-    </div>
-
-
-    <div class="header-right">
-
-      <div class="header-clock">
-
-        <span class="material-symbols-rounded"
-              style="font-size:17px">
-          schedule
-        </span>
-
-        <span id="header-clock-text">
-          --:--
-        </span>
-
-      </div>
-
-
-      <button class="header-action"
-              onclick="window.switchView('view-updates',null)"
-              title="Updates">
-
-        <span class="material-symbols-rounded">
-          notifications
-        </span>
-
-      </button>
-
-
-      <div class="header-user">
-
-        <button class="header-user-btn"
-                onclick="window.toggleUserDropdown()">
-
-          <div class="header-avatar"
-               id="header-avatar">
-            C
-          </div>
-
-          <div class="header-user-info">
-
-            <div class="header-user-name"
-                 id="header-user-name">
-              COREBIQ
-            </div>
-
-            <div class="header-user-role"
-                 id="header-user-role">
-              User
-            </div>
-
-          </div>
-
-          <span class="material-symbols-rounded"
-                style="font-size:16px;color:#748292">
-            expand_more
-          </span>
-
-        </button>
-
-
-        <div class="user-dropdown"
-             id="user-dropdown">
-
-          <div class="user-dropdown-email"
-               id="dropdown-email">
-            Loading...
-          </div>
-
-          <button class="dropdown-item"
-                  onclick="window.switchView('view-company',null);window.toggleUserDropdown()">
-
-            <span class="material-symbols-rounded">
-              settings
-            </span>
-
-            Company Setup
-
-          </button>
-
-          <button class="dropdown-item"
-                  onclick="window.switchView('view-aboutapp',null);window.toggleUserDropdown()">
-
-            <span class="material-symbols-rounded">
-              info
-            </span>
-
-            About COREBIQ
-
-          </button>
-
-          <button class="dropdown-item logout"
-                  onclick="window.handleLogout()">
-
-            <span class="material-symbols-rounded">
-              logout
-            </span>
-
-            Sign Out
-
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</header>
-
-
-<!-- ======================================================
-     MAIN CONTENT
-====================================================== -->
-
-<main id="main-content">
-
-
-<!-- ======================================================
-     DASHBOARD
-====================================================== -->
-
-<div id="view-dashboard"
-     class="view-section active">
-
-
-  <div id="dash-error-banner"
-       class="dash-error">
-
-    <span class="material-symbols-rounded">
-      error
-    </span>
-
-    <span id="dash-error-text">
-      Database connection failed.
-    </span>
-
-  </div>
-
-
-  <!-- WELCOME -->
-
-  <div class="welcome-card"
-       aria-label="COREBIQ welcome">
-
-    <div class="welcome-copy">
-
-      <div class="welcome-eyebrow">
-
-        <span class="welcome-spark"></span>
-
-        COREBIQ BUSINESS WORKSPACE
-
-      </div>
-
-      <div class="welcome-title">
-
-        Welcome back to
-        <strong>COREBIQ</strong>
-
-      </div>
-
-      <div class="welcome-text">
-
-        A clear view of your customers, sales,
-        transactions and daily operations —
-        connected in one intelligent workspace.
-
-      </div>
-
-    </div>
-
-
-    <div class="welcome-art"
-         aria-hidden="true">
-
-      <svg viewBox="0 0 240 180"
-           fill="none"
-           xmlns="http://www.w3.org/2000/svg">
-
-        <circle cx="177"
-                cy="88"
-                r="53"
-                stroke="#9bc8ed"
-                stroke-width="1.5"
-                opacity=".7"/>
-
-        <circle cx="177"
-                cy="88"
-                r="36"
-                fill="#ffffff"
-                opacity=".62"/>
-
-        <path d="M129 119C144 97 161 86 185 82C202 79 214 70 221 57"
-              stroke="#74b4e7"
-              stroke-width="3"
-              stroke-linecap="round"
-              opacity=".7"/>
-
-        <path d="M145 55C159 42 180 36 198 39"
-              stroke="#a9d3f2"
-              stroke-width="2"
-              stroke-linecap="round"/>
-
-        <path d="M166 107L178 73L190 107L179 101L166 107Z"
-              fill="#4b8fd1"
-              opacity=".72"/>
-
-        <path d="M176 74L207 93"
-              stroke="#4b8fd1"
-              stroke-width="2"
-              stroke-linecap="round"
-              opacity=".55"/>
-
-        <circle cx="207"
-                cy="93"
-                r="5"
-                fill="#75b7ea"
-                opacity=".7"/>
-
-        <circle cx="145"
-                cy="55"
-                r="4"
-                fill="#a4cff0"/>
-
-        <circle cx="221"
-                cy="57"
-                r="4"
-                fill="#8fc5ed"/>
-
-        <path d="M35 139C58 120 78 116 99 123"
-              stroke="#b8d9f1"
-              stroke-width="2"
-              stroke-linecap="round"/>
-
-        <path d="M43 149C64 137 81 135 95 139"
-              stroke="#d0e7f8"
-              stroke-width="2"
-              stroke-linecap="round"/>
-
-      </svg>
-
-    </div>
-
-  </div>
-
-
-  <h2 class="cb-inline-0150">
-
-    <span class="cb-inline-0151">
-      Welcome,
-    </span>
-
-    <span class="cb-inline-0152"
-          id="dash-workspace-name">
-      Business Administration
-    </span>
-
-  </h2>
-
-
-  <h3 class="cb-inline-0153">
-
-    <span class="material-symbols-rounded cb-inline-0154">
-      business
-    </span>
-
-    <span id="dash-branch-text">
-      Loading...
-    </span>
-
-  </h3>
-
-
-  <p class="cb-inline-0155">
-    Business Overview.
-  </p>
-
-
-  <!-- DASHBOARD CARDS -->
-
-  <div class="dash-top-row">
-
-
-    <!-- SALES -->
-
-    <div class="dash-card">
-
-      <div class="card-title">
-
-        Today's Sales
-
-        <span class="material-symbols-rounded"
-              style="font-size:20px;color:var(--primary)">
-          trending_up
-        </span>
-
-      </div>
-
-
-      <div class="fin-stat-container">
-
-        <div class="fin-stat success-box">
-
-          <div class="fin-stat-info">
-
-            <div class="fin-label">
-              Completed Sales
-            </div>
-
-            <div class="fin-amount"
-                 id="dashPresent">
-              0
-            </div>
-
-          </div>
-
-          <span class="material-symbols-rounded fin-icon">
-            shopping_cart
-          </span>
-
-        </div>
-
-
-        <div class="fin-stat alert">
-
-          <div class="fin-stat-info">
-
-            <div class="fin-label">
-              Pending / Cancelled
-            </div>
-
-            <div class="fin-amount"
-                 id="dashAbsent">
-              0
-            </div>
-
-          </div>
-
-          <span class="material-symbols-rounded fin-icon">
-            pending_actions
-          </span>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- SALES BREAKDOWN -->
-
-    <div class="dash-card">
-
-      <div class="card-title">
-        Sales Breakdown
-      </div>
-
-
-      <div class="chart-container">
-
-        <canvas id="apptDonutChart"></canvas>
-
-      </div>
-
-
-      <div class="mini-stats-grid">
-
-
-        <div class="mini-stat">
-
-          <div class="mini-stat-label">
-
-            <div class="dot cb-inline-0156"></div>
-
-            Pending
-
-          </div>
-
-          <div class="mini-stat-val"
-               id="dashPending">
-            0
-          </div>
-
-        </div>
-
-
-        <div class="mini-stat">
-
-          <div class="mini-stat-label">
-
-            <div class="dot cb-inline-0157"></div>
-
-            Completed
-
-          </div>
-
-          <div class="mini-stat-val"
-               id="dashCompleted">
-            0
-          </div>
-
-        </div>
-
-
-        <div class="mini-stat">
-
-          <div class="mini-stat-label">
-
-            <div class="dot cb-inline-0158"></div>
-
-            Rescheduled
-
-          </div>
-
-          <div class="mini-stat-val"
-               id="dashRescheduled">
-            0
-          </div>
-
-        </div>
-
-
-        <div class="mini-stat">
-
-          <div class="mini-stat-label">
-
-            <div class="dot cb-inline-0159"></div>
-
-            Cancelled
-
-          </div>
-
-          <div class="mini-stat-val"
-               id="dashCancelled">
-            0
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- CALENDAR -->
-
-    <div class="dash-card">
-
-      <div class="card-title">
-
-        Calendar
-
-        <span class="material-symbols-rounded cb-inline-0160"
-              onclick="window.setCalToToday()"
-              title="Go to Today">
-
-          today
-
-        </span>
-
-      </div>
-
-
-      <div class="cal-header-row">
-
-        <button class="cal-nav-btn material-symbols-rounded"
-                onclick="window.changeMonth(-1)">
-
-          chevron_left
-
-        </button>
-
-
-        <div class="cal-month-title"
-             id="calMonthDisplay">
-
-          Loading...
-
-        </div>
-
-
-        <button class="cal-nav-btn material-symbols-rounded"
-                onclick="window.changeMonth(1)">
-
-          chevron_right
-
-        </button>
-
-      </div>
-
-
-      <div class="calendar-grid"
-           id="calendarGrid">
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- SALES LIST -->
-
-  <div class="dash-table-wrapper">
-
-    <div class="cb-inline-0161">
-
-      <h4 class="cb-inline-0162">
-
-        Sales for:
-
-        <span id="dashListTitle"
-              class="cb-inline-0152">
-          Today
-        </span>
-
-      </h4>
-
-
-      <button onclick="window.switchView('view-appointments',null)"
-              class="cb-inline-0163">
-
-        View Sales
-
-        <span class="material-symbols-rounded cb-inline-0164">
-          arrow_forward
-        </span>
-
-      </button>
-
-    </div>
-
-
-    <div class="table-responsive">
-
-      <table class="saas-table">
-
-        <thead>
-
-          <tr>
-
-            <th>
-              Time
-            </th>
-
-            <th>
-              Customer
-            </th>
-
-            <th>
-              Branch & Staff
-            </th>
-
-            <th>
-              Financial Status
-            </th>
-
-            <th>
-              Sales Status
-            </th>
-
-          </tr>
-
-        </thead>
-
-
-        <tbody id="dashAptTableBody">
-
-          <tr>
-
-            <td colspan="5"
-                class="cb-inline-0165">
-
-              Loading live sales...
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ======================================================
-     MODULE CONTAINERS
-====================================================== -->
-
-<div id="view-patients"
-     class="view-section">
-</div>
-
-<div id="view-appointments"
-     class="view-section">
-</div>
-
-<div id="view-transaction"
-     class="view-section">
-</div>
-
-<div id="view-branches"
-     class="view-section">
-</div>
-
-<div id="view-therapist"
-     class="view-section">
-</div>
-
-<div id="view-calender"
-     class="view-section">
-</div>
-
-<div id="view-staff"
-     class="view-section">
-</div>
-
-<div id="view-attendance"
-     class="view-section">
-</div>
-
-<div id="view-users"
-     class="view-section">
-</div>
-
-<div id="view-clinic-details"
-     class="view-section">
-</div>
-
-<div id="view-company"
-     class="view-section">
-</div>
-
-<div id="view-letterhead"
-     class="view-section">
-</div>
-
-<div id="view-seal"
-     class="view-section">
-</div>
-
-<div id="view-qr"
-     class="view-section">
-</div>
-
-<div id="view-mytask"
-     class="view-section">
-</div>
-
-<div id="view-updates"
-     class="view-section">
-</div>
-
-<div id="view-licenceinfo"
-     class="view-section">
-</div>
-
-<div id="view-aboutapp"
-     class="view-section">
-</div>
-
-<div id="view-privacy"
-     class="view-section">
-</div>
-
-<div id="view-backup"
-     class="view-section">
-</div>
-
-<div id="view-calc"
-     class="view-section">
-</div>
-
-
-</main>
-
-
-<!-- ======================================================
-     BOTTOM NAV
-====================================================== -->
-
-<div id="bottomnav-container">
-
-  <nav class="bottom-nav">
-
-    <button class="bottom-nav-item active"
-            data-target="view-dashboard"
-            onclick="window.switchView('view-dashboard',this)">
-
-      <span class="material-symbols-rounded">
-        home
-      </span>
-
-      <span>
-        Home
-      </span>
-
+  <nav class="cb-sidebar-nav">
+    <button class="cb-side-link active" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this)">
+      <span class="material-symbols-rounded">dashboard</span><span>Dashboard</span>
+    </button>
+    <button class="cb-side-link" data-target="view-patients" onclick="window.switchView('view-patients',this)">
+      <span class="material-symbols-rounded">groups</span><span>Clients Data</span>
+    </button>
+    <button class="cb-side-link" data-target="view-appointments" onclick="window.switchView('view-appointments',this)">
+      <span class="material-symbols-rounded">event_note</span><span>Appointments</span>
+    </button>
+    <button class="cb-side-link" data-target="view-calender" onclick="window.switchView('view-calender',this)">
+      <span class="material-symbols-rounded">calendar_month</span><span>Calendar</span>
     </button>
 
+    <div class="cb-side-divider"></div>
 
-    <button class="bottom-nav-item"
-            data-target="view-patients"
-            onclick="window.switchView('view-patients',this)">
-
-      <span class="material-symbols-rounded">
-        group
-      </span>
-
-      <span>
-        Customers
-      </span>
-
+    <button class="cb-side-link" data-target="view-transaction" onclick="window.switchView('view-transaction',this)">
+      <span class="material-symbols-rounded">receipt_long</span><span>Transactions</span>
+    </button>
+    <button class="cb-side-link" data-target="view-qr" onclick="window.switchView('view-qr',this)">
+      <span class="material-symbols-rounded">qr_code_scanner</span><span>UPI Payment QR</span>
     </button>
 
+    <div class="cb-side-divider"></div>
 
-    <button class="bottom-nav-item"
-            data-target="view-appointments"
-            onclick="window.switchView('view-appointments',this)">
-
-      <span class="material-symbols-rounded">
-        receipt_long
-      </span>
-
-      <span>
-        Sales
-      </span>
-
+    <button class="cb-side-link" data-target="view-branches" onclick="window.switchView('view-branches',this)">
+      <span class="material-symbols-rounded">apartment</span><span>Branches</span>
+    </button>
+    <button class="cb-side-link" data-target="view-therapist" onclick="window.switchView('view-therapist',this)">
+      <span class="material-symbols-rounded">medical_services</span><span>Management / Partners</span>
+    </button>
+    <button class="cb-side-link" data-target="view-staff" onclick="window.switchView('view-staff',this)">
+      <span class="material-symbols-rounded">badge</span><span>Staff Directory</span>
+    </button>
+    <button class="cb-side-link" data-target="view-attendance" onclick="window.switchView('view-attendance',this)">
+      <span class="material-symbols-rounded">how_to_reg</span><span>Daily Attendance</span>
     </button>
 
+    <div class="cb-side-divider"></div>
 
-    <button class="bottom-nav-item"
-            data-target="view-transaction"
-            onclick="window.switchView('view-transaction',this)">
-
-      <span class="material-symbols-rounded">
-        account_balance_wallet
-      </span>
-
-      <span>
-        Finance
-      </span>
-
+    <button class="cb-side-link" data-target="view-users" onclick="window.switchView('view-users',this)">
+      <span class="material-symbols-rounded">manage_accounts</span><span>Users (Admin)</span>
+    </button>
+    <button class="cb-side-link" data-target="view-clinic-details" onclick="window.switchView('view-clinic-details',this)">
+      <span class="material-symbols-rounded">settings</span><span>Office Details</span>
+    </button>
+    <button class="cb-side-link" data-target="view-company" onclick="window.switchView('view-company',this)">
+      <span class="material-symbols-rounded">domain</span><span>Company Profile</span>
+    </button>
+    <button class="cb-side-link" data-target="view-letterhead" onclick="window.switchView('view-letterhead',this)">
+      <span class="material-symbols-rounded">description</span><span>Letterheads</span>
+    </button>
+    <button class="cb-side-link" data-target="view-seal" onclick="window.switchView('view-seal',this)">
+      <span class="material-symbols-rounded">verified</span><span>Digital Seals</span>
     </button>
 
+    <div class="cb-side-divider"></div>
 
-    <button class="bottom-nav-item"
-            onclick="window.toggleMenu()">
-
-      <span class="material-symbols-rounded">
-        menu
-      </span>
-
-      <span>
-        Menu
-      </span>
-
+    <button class="cb-side-link" data-target="view-calc" onclick="window.switchView('view-calc',this)">
+      <span class="material-symbols-rounded">calculate</span><span>Calculator Tool</span>
+    </button>
+    <button class="cb-side-link" data-target="view-backup" onclick="window.switchView('view-backup',this)">
+      <span class="material-symbols-rounded">cloud_download</span><span>Export &amp; Backup</span>
+    </button>
+    <button class="cb-side-link" data-target="view-updates" onclick="window.switchView('view-updates',this)">
+      <span class="material-symbols-rounded">campaign</span><span>App Updates</span>
     </button>
 
+    <div class="cb-side-divider"></div>
+
+    <button class="cb-side-link" data-target="view-licenceinfo" onclick="window.switchView('view-licenceinfo',this)">
+      <span class="material-symbols-rounded">workspace_premium</span><span>Licence Info</span>
+    </button>
+    <button class="cb-side-link" data-target="view-aboutapp" onclick="window.switchView('view-aboutapp',this)">
+      <span class="material-symbols-rounded">info</span><span>About App</span>
+    </button>
+    <button class="cb-side-link" data-target="view-privacy" onclick="window.switchView('view-privacy',this)">
+      <span class="material-symbols-rounded">privacy_tip</span><span>Privacy Policy</span>
+    </button>
   </nav>
 
-</div>
-
-
-</div>
-
-
-<!-- ======================================================
-     CALCULATOR POPUP
-====================================================== -->
-
-<div id="calc-popup-container">
-
-  <div id="calc-popup-header">
-
-    <span class="cb-inline-0166">
-
-      <span class="material-symbols-rounded cb-inline-0167">
-        calculate
-      </span>
-
-      Calculator
-
-    </span>
-
-
-    <span class="material-symbols-rounded cb-inline-0168"
-          onclick="window.toggleCalculator()">
-
-      close
-
-    </span>
-
+  <div class="cb-sidebar-footer">
+    <!-- Updated Sidebar Bottom Logo -->
+    <img src="assets/logo.png" alt="COREBIQ" onerror="this.style.display='none'">
+    <span>Version 1.2.0</span>
   </div>
+</div>
+</div>
 
-
-  <div id="calc-popup-content"
-       class="cb-inline-0169">
+    <div class="main-wrapper">
+        <div id="header-container">
+<div class="cb-header-shell">
+  <!-- FIX: Mobile Menu Button explicitly placed here for mobile flow -->
+  <button class="cb-header-menu" type="button" onclick="window.toggleMenu()" aria-label="Menu" style="display:none;">
+    <span class="material-symbols-rounded">menu</span>
+  </button>
+  
+  <div class="cb-header-brand">
+    <!-- Updated Header Logo -->
+    <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
   </div>
+  <div class="cb-header-spacer"></div>
+  <button class="cb-header-clock" type="button" id="cb-live-clock" aria-label="Current date and time">
+    <span class="material-symbols-rounded">schedule</span>
+    <span><b id="cb-clock-time">--:--</b><small id="cb-clock-date">--</small></span>
+  </button>
+  
+  <button class="cb-header-profile" type="button" onclick="window.handleLogout()" aria-label="Logout">
+    <span class="material-symbols-rounded">logout</span>
+  </button>
+</div>
+</div>
+
+        <main id="main-content">
+
+            <div id="view-dashboard" class="view-section active">
+
+                <div id="dash-error-banner" class="dash-error">
+                    <span class="material-symbols-rounded">error</span>
+                    <span id="dash-error-text">Database connection failed.</span>
+                </div>
+
+                <div class="welcome-card" aria-label="COREBIQ welcome">
+                    <div class="welcome-copy">
+                        <div class="welcome-eyebrow"><span class="welcome-spark"></span> COREBIQ WORK FLOW</div>
+                        <div class="welcome-title">Welcome to the <strong>Intelligent Workspace.</strong></div>
+                        <div class="welcome-text">Here is your Dashboard for a clear view of your financial overview, daily operations and business activity — connected in one place.</div>
+                        <div class="welcome-meta">
+                            <span class="welcome-access">
+                                <span class="material-symbols-rounded">verified_user</span>
+                                <span id="dash-role-text">Access Level: Loading...</span>
+                            </span>
+                            <span class="welcome-branch">
+                                <span class="material-symbols-rounded">business</span>
+                                <span id="dash-branch-text">Loading...</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="welcome-art" aria-hidden="true">
+                        <svg viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="177" cy="88" r="53" stroke="#9bc8ed" stroke-width="1.5" opacity=".7"/>
+                            <circle cx="177" cy="88" r="36" fill="#ffffff" opacity=".62"/>
+                            <path d="M129 119C144 97 161 86 185 82C202 79 214 70 221 57" stroke="#74b4e7" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+                            <path d="M145 55C159 42 180 36 198 39" stroke="#a9d3f2" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M166 107L178 73L190 107L179 101L166 107Z" fill="#4b8fd1" opacity=".72"/>
+                            <path d="M176 74L207 93" stroke="#4b8fd1" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+                            <circle cx="207" cy="93" r="5" fill="#75b7ea" opacity=".7"/>
+                            <circle cx="145" cy="55" r="4" fill="#a4cff0"/>
+                            <circle cx="221" cy="57" r="4" fill="#8fc5ed"/>
+                            <path d="M35 139C58 120 78 116 99 123" stroke="#b8d9f1" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M43 149C64 137 81 135 95 139" stroke="#d0e7f8" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="dash-top-row">
+
+                    <div class="dash-card">
+                        <div class="card-title">Today's Attendance Overview</div>
+                        <div class="fin-stat-container">
+                            <div class="fin-stat success-box">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Present / Half-Day</div>
+                                    <div class="fin-amount" id="dashPresent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">how_to_reg</span>
+                            </div>
+
+                            <div class="fin-stat alert">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">On Leave / Absent</div>
+                                    <div class="fin-amount" id="dashAbsent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">event_busy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">Schedule Breakdown</div>
+                        <div class="chart-container">
+                            <canvas id="apptDonutChart"></canvas>
+                        </div>
+
+                        <div class="mini-stats-grid">
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0156"></div> Pending
+                                </div>
+                                <div class="mini-stat-val" id="dashPending">0</div>
+                            </div>
+
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0157"></div> Completed
+                                </div>
+                                <div class="mini-stat-val" id="dashCompleted">0</div>
+                            </div>
+
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0158"></div> Moved
+                                </div>
+                                <div class="mini-stat-val" id="dashRescheduled">0</div>
+                            </div>
+
+                            <div class="mini-stat">
+                                <div class="mini-stat-label">
+                                    <div class="dot cb-inline-0159"></div> Cancelled
+                                </div>
+                                <div class="mini-stat-val" id="dashCancelled">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">
+                            Calendar
+                            <span class="material-symbols-rounded cb-inline-0160"
+                                  onclick="window.setCalToToday()"
+                                  title="Go to Today">today</span>
+                        </div>
+
+                        <div class="cal-header-row">
+                            <button class="cal-nav-btn material-symbols-rounded" onclick="window.changeMonth(-1)">chevron_left</button>
+                            <div class="cal-month-title" id="calMonthDisplay">Loading...</div>
+                            <button class="cal-nav-btn material-symbols-rounded" onclick="window.changeMonth(1)">chevron_right</button>
+                        </div>
+
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                    </div>
+
+                </div>
+
+                <div class="dash-table-wrapper">
+                    <div class="cb-inline-0161">
+                        <h4 class="cb-inline-0162">
+                            Schedule for:
+                            <span id="dashListTitle" class="cb-inline-0152">Today</span>
+                        </h4>
+
+                        <button onclick="window.switchView('view-appointments',null)" class="cb-inline-0163">
+                            View Full Module
+                            <span class="material-symbols-rounded cb-inline-0164">arrow_forward</span>
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="saas-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Client Details</th>
+                                    <th>Branch & Management</th>
+                                    <th>Financial Status</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashAptTableBody">
+                                <tr>
+                                    <td colspan="5" class="cb-inline-0165">Loading live schedule...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="view-patients" class="view-section"></div>
+            <div id="view-appointments" class="view-section"></div>
+            <div id="view-transaction" class="view-section"></div>
+            <div id="view-branches" class="view-section"></div>
+            <div id="view-therapist" class="view-section"></div>
+            <div id="view-calender" class="view-section"></div>
+            <div id="view-staff" class="view-section"></div>
+            <div id="view-attendance" class="view-section"></div>
+            <div id="view-users" class="view-section"></div>
+            <div id="view-clinic-details" class="view-section"></div>
+            <div id="view-company" class="view-section"></div>
+            <div id="view-letterhead" class="view-section"></div>
+            <div id="view-seal" class="view-section"></div>
+            <div id="view-qr" class="view-section"></div>
+            <div id="view-mytask" class="view-section"></div>
+            <div id="view-updates" class="view-section"></div>
+            <div id="view-licenceinfo" class="view-section"></div>
+            <div id="view-aboutapp" class="view-section"></div>
+            <div id="view-privacy" class="view-section"></div>
+            <div id="view-backup" class="view-section"></div>
+            <div id="view-calc" class="view-section"></div>
+
+        </main>
+
+        <div id="bottomnav-container">
+<div class="cb-bottom-shell">
+  <button class="cb-bottom-link active" onclick="window.switchView('view-dashboard',this)">
+    <span class="material-symbols-rounded">home</span><small>Home</small>
+  </button>
+  <button class="cb-bottom-link" onclick="window.switchView('view-patients',this)">
+    <span class="material-symbols-rounded">groups</span><small>Clients</small>
+  </button>
+  <button class="cb-bottom-link cb-bottom-main" onclick="window.switchView('view-appointments',this)">
+    <span class="material-symbols-rounded">event_note</span><small>Bookings</small>
+  </button>
+  <button class="cb-bottom-link" onclick="window.switchView('view-transaction',this)">
+    <span class="material-symbols-rounded">receipt_long</span><small>Payments</small>
+  </button>
+  <button class="cb-bottom-link" onclick="window.toggleMenu()">
+    <span class="material-symbols-rounded">menu</span><small>Menu</small>
+  </button>
+</div>
+</div>
+    </div>
+
+    <div id="calc-popup-container">
+        <div id="calc-popup-header">
+            <span class="cb-inline-0166" style="display:flex;align-items:center;gap:8px;">
+                <span class="material-symbols-rounded cb-inline-0167" style="color:var(--primary);font-size:20px">calculate</span>
+                Calculator
+            </span>
+            <span class="material-symbols-rounded cb-inline-0168"
+                  onclick="window.toggleCalculator()">close</span>
+        </div>
+        <div id="calc-popup-content" class="cb-inline-0169"></div>
+    </div>
 
 </div>
 
+<!-- COREBIQ PWA INSTALL POPUP -->
+<div id="corebiq-install-popup" class="corebiq-install-overlay" aria-hidden="true">
+  <div class="corebiq-install-card" role="dialog" aria-modal="true" aria-labelledby="corebiq-install-title">
+    <button type="button" class="corebiq-install-close" id="corebiq-install-close" aria-label="Close">
+      <span class="material-symbols-rounded">close</span>
+    </button>
 
+    <div class="corebiq-install-icon">
+      <!-- Updated App Icon in PWA prompt -->
+      <img src="assets/logo-app.png" alt="COREBIQ App Icon" onerror="this.src='assets/logo.png'">
+    </div>
+
+    <div class="corebiq-install-copy">
+      <div class="corebiq-install-kicker">COREBIQ Workspace</div>
+      <h2 id="corebiq-install-title">Install Application</h2>
+      <p>Add COREBIQ Work Flow to your home screen for a seamless, full-screen native experience.</p>
+    </div>
+
+    <button type="button" class="corebiq-install-btn" id="corebiq-install-btn">
+      <span class="material-symbols-rounded">install_mobile</span>
+      Install Now
+    </button>
+
+    <button type="button" class="corebiq-install-later" id="corebiq-install-later">
+      Maybe later
+    </button>
+
+    <div id="corebiq-install-help" class="corebiq-install-help" hidden>
+      Use your browser's <strong>Install app</strong> or <strong>Add to Home screen</strong> option in the menu.
+    </div>
+  </div>
 </div>
-
 
 <script type="module">
-
-/* =========================================================
-   FIREBASE
-========================================================= */
-
 import { auth, db } from './firebase-config.js';
-
 import {
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-  query,
-  where
-}
-from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
+    doc,
+    getDoc,
+    collection,
+    getDocs,
+    query,
+    where
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import {
-  onAuthStateChanged,
-  signOut
-}
-from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
-
-/* =========================================================
-   GLOBAL STATE
-========================================================= */
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 window.currentUser = null;
-
 window.allApts = [];
-
 window.aptDatesSet = new Set();
-
 window.apptChartInstance = null;
-
 window.currentDate = new Date();
+window.calYear = window.currentDate.getFullYear();
+window.calMonth = window.currentDate.getMonth();
 
-window.calYear =
-  window.currentDate.getFullYear();
-
-window.calMonth =
-  window.currentDate.getMonth();
-
-
-/* =========================================================
-   LOCAL DATE
-========================================================= */
-
-window.getLocalDateString =
-function(date = new Date()){
-
-  const y =
-    date.getFullYear();
-
-  const m =
-    String(date.getMonth()+1)
-      .padStart(2,'0');
-
-  const d =
-    String(date.getDate())
-      .padStart(2,'0');
-
-  return `${y}-${m}-${d}`;
+window.getLocalDateString = function(date = new Date()) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
 };
-
-
-window.selectedDateStr =
-  window.getLocalDateString();
-
-
-/* =========================================================
-   MODULE MAP
-========================================================= */
+window.selectedDateStr = window.getLocalDateString();
 
 window.cmAppFileMap = {
-
-  "view-patients":
-    "patients.html",
-
-  "view-appointments":
-    "appointments.html",
-
-  "view-transaction":
-    "transaction.html",
-
-  "view-branches":
-    "branches.html",
-
-  "view-therapist":
-    "therapist.html",
-
-  "view-calender":
-    "calender.html",
-
-  "view-staff":
-    "staff.html",
-
-  "view-attendance":
-    "attendance.html",
-
-  "view-users":
-    "users.html",
-
-  "view-clinic-details":
-    "clinic-details.html",
-
-  "view-company":
-    "company.html",
-
-  "view-letterhead":
-    "letterhead.html",
-
-  "view-seal":
-    "seal.html",
-
-  "view-qr":
-    "qr.html",
-
-  "view-mytask":
-    "mytask.html",
-
-  "view-updates":
-    "updates.html",
-
-  "view-licenceinfo":
-    "licenceinfo.html",
-
-  "view-aboutapp":
-    "aboutapp.html",
-
-  "view-privacy":
-    "privacy.html",
-
-  "view-backup":
-    "backup.html",
-
-  "view-calc":
-    "calc.html"
-
+    "view-patients": "patients.html",
+    "view-appointments": "appointments.html",
+    "view-transaction": "transaction.html",
+    "view-branches": "branches.html",
+    "view-therapist": "therapist.html",
+    "view-calender": "calender.html",
+    "view-staff": "staff.html",
+    "view-attendance": "attendance.html",
+    "view-users": "users.html",
+    "view-clinic-details": "clinic-details.html",
+    "view-company": "company.html",
+    "view-letterhead": "letterhead.html",
+    "view-seal": "seal.html",
+    "view-qr": "qr.html",
+    "view-mytask": "mytask.html",
+    "view-updates": "updates.html",
+    "view-licenceinfo": "licenceinfo.html",
+    "view-aboutapp": "aboutapp.html",
+    "view-privacy": "privacy.html",
+    "view-backup": "backup.html",
+    "view-calc": "calc.html"
 };
 
-
-/* =========================================================
-   GLOBAL ERROR
-========================================================= */
-
-window.onerror =
-function(message,source,lineno){
-
-  const errDiv =
-    document.getElementById(
-      'dash-error-banner'
-    );
-
-  const errText =
-    document.getElementById(
-      'dash-error-text'
-    );
-
-  if(errDiv && errText){
-
-    errDiv.style.display='flex';
-
-    errText.innerText =
-      `Error at Line ${lineno || '?'}: ${message}`;
-
-  }
-
-  return false;
-
-};
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-window.handleLogout =
-async function(){
-
-  try{
-
-    await signOut(auth);
-
-  }catch(error){
-
-    console.error(
-      "Error signing out:",
-      error
-    );
-
-  }
-
-};
-
-
-/* =========================================================
-   USER DROPDOWN
-========================================================= */
-
-window.toggleUserDropdown =
-function(){
-
-  const dropdown =
-    document.getElementById(
-      'user-dropdown'
-    );
-
-  if(dropdown){
-
-    dropdown.classList.toggle('open');
-
-  }
-
-};
-
-
-document.addEventListener(
-  'click',
-  function(e){
-
-    const userBox =
-      document.querySelector(
-        '.header-user'
-      );
-
-    const dropdown =
-      document.getElementById(
-        'user-dropdown'
-      );
-
-    if(
-      dropdown &&
-      userBox &&
-      !userBox.contains(e.target)
-    ){
-
-      dropdown.classList.remove(
-        'open'
-      );
-
+window.onerror = function(message, source, lineno) {
+    const errDiv = document.getElementById('dash-error-banner');
+    const errText = document.getElementById('dash-error-text');
+    if (errDiv && errText) {
+        errDiv.style.display = 'flex';
+        errText.innerText = `Error at Line ${lineno || '?'}: ${message}`;
     }
+    return false;
+};
 
-  }
-);
-
-
-/* =========================================================
-   AUTH
-========================================================= */
-
-onAuthStateChanged(
-  auth,
-  async(user)=>{
-
-    if(!user){
-
-      window.location.href =
-        'login.html';
-
-      return;
-
+// Handle Logout & Redirect
+window.handleLogout = async function() {
+    try { 
+        await signOut(auth); 
+        window.location.href = 'login.html'; // Instantly redirect
+    } catch (error) { 
+        console.error("Error signing out:", error); 
+        alert("Failed to log out. Please try again.");
     }
+};
 
-
-    try{
-
-      const emailLower =
-        (user.email || '').toLowerCase();
-
-
-      if(!emailLower){
-
-        throw new Error(
-          "Authenticated account has no email."
-        );
-
-      }
-
-
-      const userDocRef =
-        doc(
-          db,
-          "users",
-          emailLower
-        );
-
-
-      const userDoc =
-        await getDoc(
-          userDocRef
-        );
-
-
-      if(!userDoc.exists()){
-
-        throw new Error(
-          "No database access found. Contact Administrator."
-        );
-
-      }
-
-
-      const userData =
-        userDoc.data();
-
-
-      window.currentUser = {
-
-        email:
-          emailLower,
-
-        role:
-          userData.role || "user",
-
-        branch:
-          userData.branch || "Unknown"
-
-      };
-
-
-      /* HEADER */
-
-      const initials =
-        emailLower
-          .charAt(0)
-          .toUpperCase();
-
-
-      const headerAvatar =
-        document.getElementById(
-          'header-avatar'
-        );
-
-      const sidebarAvatar =
-        document.getElementById(
-          'sidebar-avatar'
-        );
-
-
-      if(headerAvatar)
-        headerAvatar.innerText =
-          initials;
-
-
-      if(sidebarAvatar)
-        sidebarAvatar.innerText =
-          initials;
-
-
-      const headerName =
-        document.getElementById(
-          'header-user-name'
-        );
-
-      const headerRole =
-        document.getElementById(
-          'header-user-role'
-        );
-
-      const sidebarRole =
-        document.getElementById(
-          'sidebar-role'
-        );
-
-      const sidebarEmail =
-        document.getElementById(
-          'sidebar-email'
-        );
-
-      const dropdownEmail =
-        document.getElementById(
-          'dropdown-email'
-        );
-
-
-      if(headerName)
-        headerName.innerText =
-          emailLower.split('@')[0];
-
-
-      if(headerRole)
-        headerRole.innerText =
-          window.currentUser.role;
-
-
-      if(sidebarRole)
-        sidebarRole.innerText =
-          window.currentUser.role;
-
-
-      if(sidebarEmail)
-        sidebarEmail.innerText =
-          emailLower;
-
-
-      if(dropdownEmail)
-        dropdownEmail.innerText =
-          emailLower;
-
-
-      /* BRANCH */
-
-      const branchTextElement =
-        document.getElementById(
-          'dash-branch-text'
-        );
-
-
-      if(branchTextElement){
-
-        if(
-          window.currentUser.role ===
-          'admin'
-        ){
-
-          branchTextElement.innerText =
-            "Master Access (All Branches)";
-
-          branchTextElement.style.color =
-            "var(--primary)";
-
-        }else{
-
-          branchTextElement.innerText =
-            window.currentUser.branch;
-
+onAuthStateChanged(auth, async (user) => {
+    const splashScreen = document.getElementById('cb-splash-screen');
+    
+    if (!user) {
+        // Hide Splash Screen and Redirect to Login
+        if (splashScreen) splashScreen.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 300);
+        return;
+    }
+    
+    try {
+        const emailLower = (user.email || '').toLowerCase();
+        if (!emailLower) throw new Error("Authenticated account has no email.");
+        const userDocRef = doc(db, "users", emailLower);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) throw new Error("No database access found. Contact Administrator.");
+        const userData = userDoc.data();
+        window.currentUser = {
+            email: emailLower,
+            role: userData.role || "user",
+            branch: userData.branch || "Unknown"
+        };
+        const app = document.getElementById('app-container');
+        if (app) app.style.visibility = 'visible';
+        
+        const branchTextElement = document.getElementById('dash-branch-text');
+        if (branchTextElement) {
+            if (window.currentUser.role === 'admin') {
+                branchTextElement.innerText = "Master Access (All Branches)";
+                // Let it inherit the white text color safely
+            } else {
+                branchTextElement.innerText = window.currentUser.branch;
+            }
         }
-
-      }
-
-
-      const app =
-        document.getElementById(
-          'app-container'
-        );
-
-
-      if(app)
-        app.style.visibility =
-          'visible';
-
-
-      window.applyRoleVisibility();
-
-
-      if(window.fetchDashboardData)
-        window.fetchDashboardData();
-
-
-    }catch(error){
-
-      console.error(error);
-
-      try{
-        await signOut(auth);
-      }catch(_){}
-
-      alert(
-        error.message ||
-        "Unable to authenticate."
-      );
-
+        
+        window.applyRoleVisibility();
+        if (window.fetchDashboardData) window.fetchDashboardData();
+        
+        // Hide Splash Screen On Success
+        if (splashScreen) {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => { splashScreen.style.display = 'none'; }, 500);
+        }
+        
+    } catch (error) {
+        console.error(error);
+        try { await signOut(auth); } catch (_) {}
+        alert(error.message || "Unable to authenticate.");
+        if (splashScreen) splashScreen.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 300);
     }
+});
 
-  }
-);
-
-
-/* =========================================================
-   ROLE VISIBILITY
-========================================================= */
-
-window.applyRoleVisibility =
-function(){
-
-  if(
-    !window.currentUser ||
-    window.currentUser.role === 'admin'
-  )
-    return;
-
-
-  const selectors = [
-
-    '#nav-users-btn',
-
-    '[data-target="view-users"]',
-
-    '[onclick*="view-users"]'
-
-  ];
-
-
-  selectors.forEach(
-    selector=>{
-
-      document
-        .querySelectorAll(selector)
-        .forEach(el=>{
-
-          el.style.display='none';
-
+window.applyRoleVisibility = function() {
+    if (!window.currentUser || window.currentUser.role === 'admin') return;
+    const selectors = [
+        '#nav-users-btn',
+        '[data-target="view-users"]',
+        '[onclick*="view-users"]'
+    ];
+    selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+            el.style.display = 'none';
         });
+    });
+};
 
+window.toggleMenu = function() {
+    const sidebar = document.getElementById('sidebar-container');
+    if (sidebar) sidebar.classList.toggle('open');
+};
+window.toggleSidebar = window.toggleMenu;
+
+window.formatIndianDate = function(dateStr) {
+    if (!dateStr) return '';
+    if (dateStr instanceof Date) {
+        const d = dateStr;
+        return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
     }
-  );
-
+    const value = String(dateStr);
+    const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (isoMatch) return `${isoMatch[3]}-${isoMatch[2]}-${isoMatch[1]}`;
+    const slashMatch = value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if (slashMatch) return `${slashMatch[1].padStart(2,'0')}-${slashMatch[2].padStart(2,'0')}-${slashMatch[3]}`;
+    return value;
 };
 
-
-/* =========================================================
-   MOBILE MENU
-========================================================= */
-
-window.toggleMenu =
-function(){
-
-  const sidebar =
-    document.getElementById(
-      'sidebar-container'
-    );
-
-  const overlay =
-    document.getElementById(
-      'sidebar-overlay'
-    );
-
-
-  if(!sidebar)
-    return;
-
-
-  sidebar.classList.toggle(
-    'open'
-  );
-
-
-  if(overlay){
-
-    overlay.classList.toggle(
-      'show',
-      sidebar.classList.contains('open')
-    );
-
-  }
-
+window.fetchFresh = async function(filename) {
+    const separator = filename.includes('?') ? '&' : '?';
+    const url = `${filename}${separator}v=${Date.now()}`;
+    return fetch(url, {
+        cache: 'no-store',
+        headers: {'Cache-Control': 'no-cache'}
+    });
 };
 
-
-window.toggleSidebar =
-window.toggleMenu;
-
-
-/* =========================================================
-   DATE FORMAT
-========================================================= */
-
-window.formatIndianDate =
-function(dateStr){
-
-  if(!dateStr)
-    return '';
-
-
-  if(dateStr instanceof Date){
-
-    const d = dateStr;
-
-    return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
-
-  }
-
-
-  const value =
-    String(dateStr);
-
-
-  const isoMatch =
-    value.match(
-      /^(\d{4})-(\d{2})-(\d{2})/
-    );
-
-
-  if(isoMatch){
-
-    return `${isoMatch[3]}-${isoMatch[2]}-${isoMatch[1]}`;
-
-  }
-
-
-  const slashMatch =
-    value.match(
-      /^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/
-    );
-
-
-  if(slashMatch){
-
-    return `${slashMatch[1].padStart(2,'0')}-${slashMatch[2].padStart(2,'0')}-${slashMatch[3]}`;
-
-  }
-
-
-  return value;
-
-};
-
-
-/* =========================================================
-   FETCH WITHOUT CACHE
-========================================================= */
-
-window.fetchFresh =
-async function(filename){
-
-  const separator =
-    filename.includes('?')
-      ? '&'
-      : '?';
-
-
-  const url =
-    `${filename}${separator}v=${Date.now()}`;
-
-
-  return fetch(
-    url,
-    {
-      cache:'no-store',
-
-      headers:{
-        'Cache-Control':
-          'no-cache'
-      }
+window.loadComponent = async function(elementId, filename) {
+    try {
+        const response = await window.fetchFresh(filename);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        element.innerHTML = await response.text();
+        window.applyRoleVisibility();
+        if (filename === 'header.html') window.updateGlobalClock();
+    } catch (error) {
+        console.error(`Error loading ${filename}:`, error);
     }
-  );
-
 };
 
-
-/* =========================================================
-   CALCULATOR
-========================================================= */
-
-window.toggleCalculator =
-function(){
-
-  const popup =
-    document.getElementById(
-      'calc-popup-container'
-    );
-
-
-  if(!popup)
-    return;
-
-
-  if(
-    popup.style.display ===
-    'flex'
-  ){
-
-    popup.style.display =
-      'none';
-
-    return;
-
-  }
-
-
-  popup.style.display =
-    'flex';
-
-
-  const contentDiv =
-    document.getElementById(
-      'calc-popup-content'
-    );
-
-
-  if(
-    contentDiv &&
-    contentDiv.innerHTML.trim()===''
-  ){
-
-    contentDiv.innerHTML =
-      '<iframe src="calc.html?v=' +
-      Date.now() +
-      '" style="width:100%;height:100%;border:none;background:transparent"></iframe>';
-
-  }
-
+window.toggleCalculator = function() {
+    const popup = document.getElementById('calc-popup-container');
+    if (!popup) return;
+    if (popup.style.display === 'flex') {
+        popup.style.display = 'none';
+        return;
+    }
+    popup.style.display = 'flex';
+    const contentDiv = document.getElementById('calc-popup-content');
+    if (contentDiv && contentDiv.innerHTML.trim() === '') {
+        contentDiv.innerHTML =
+            '<iframe src="calc.html?v=' + Date.now() +
+            '" style="width:100%;height:100%;border:none;background:transparent"></iframe>';
+    }
 };
 
-
-/* =========================================================
-   DRAG CALCULATOR
-========================================================= */
-
-function dragElement(elmnt){
-
-  if(!elmnt)
-    return;
-
-
-  let pos1=0,
-      pos2=0,
-      pos3=0,
-      pos4=0;
-
-
-  const header =
-    document.getElementById(
-      elmnt.id +
-      "-header"
-    );
-
-
-  if(!header)
-    return;
-
-
-  header.onmousedown =
-    dragMouseDown;
-
-
-  function dragMouseDown(e){
-
-    if(window.innerWidth<=768)
-      return;
-
-
-    e=e || window.event;
-
-    e.preventDefault();
-
-
-    pos3=e.clientX;
-    pos4=e.clientY;
-
-
-    document.onmouseup =
-      closeDragElement;
-
-    document.onmousemove =
-      elementDrag;
-
-  }
-
-
-  function elementDrag(e){
-
-    e=e || window.event;
-
-    e.preventDefault();
-
-
-    pos1 =
-      pos3-e.clientX;
-
-    pos2 =
-      pos4-e.clientY;
-
-    pos3=e.clientX;
-    pos4=e.clientY;
-
-
-    elmnt.style.top =
-      (elmnt.offsetTop-pos2)
-      +'px';
-
-
-    elmnt.style.left =
-      (elmnt.offsetLeft-pos1)
-      +'px';
-
-
-    elmnt.style.bottom =
-      'auto';
-
-    elmnt.style.right =
-      'auto';
-
-  }
-
-
-  function closeDragElement(){
-
-    document.onmouseup=null;
-
-    document.onmousemove=null;
-
-  }
-
+function dragElement(elmnt) {
+    if (!elmnt) return;
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    const header = document.getElementById(elmnt.id + "-header");
+    if (!header) return;
+    header.onmousedown = dragMouseDown;
+    function dragMouseDown(e) {
+        if (window.innerWidth <= 768) return;
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        elmnt.style.bottom = "auto";
+        elmnt.style.right = "auto";
+    }
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
 }
 
-
-/* =========================================================
-   SWITCH VIEW
-========================================================= */
-
-window.switchView =
-async function(
-  targetId,
-  navElement
-){
-
-  if(targetId === 'view-calc'){
-
-    window.toggleCalculator();
-
-    return;
-
-  }
-
-
-  document
-    .querySelectorAll(
-      '.nav-link, .bottom-nav-item'
-    )
-    .forEach(el=>{
-
-      el.classList.remove(
-        'active'
-      );
-
-    });
-
-
-  if(
-    navElement &&
-    !navElement.classList.contains(
-      'close-menu-btn'
-    )
-  ){
-
-    navElement.classList.add(
-      'active'
-    );
-
-  }
-
-
-  document
-    .querySelectorAll(
-      '.view-section'
-    )
-    .forEach(el=>{
-
-      el.classList.remove(
-        'active'
-      );
-
-    });
-
-
-  const targetDiv =
-    document.getElementById(
-      targetId
-    );
-
-
-  if(!targetDiv)
-    return;
-
-
-  if(
-    targetId ===
-    'view-dashboard'
-  ){
-
-    targetDiv.classList.add(
-      'active'
-    );
-
-
-    if(window.fetchDashboardData)
-      window.fetchDashboardData();
-
-
-    if(
-      window.innerWidth<=768 &&
-      document
-        .getElementById(
-          'sidebar-container'
-        )
-        ?.classList.contains('open')
-    ){
-
-      window.toggleMenu();
-
+window.switchView = async function(targetId, navElement) {
+    if (targetId === 'view-calc') {
+        window.toggleCalculator();
+        return;
     }
-
-
-    return;
-
-  }
-
-
-  const filename =
-    window.cmAppFileMap[
-      targetId
-    ];
-
-
-  if(!filename){
-
-    targetDiv.innerHTML =
-      '<div class="module-error">Module mapping not found.</div>';
-
-    targetDiv.classList.add(
-      'active'
-    );
-
-    return;
-
-  }
-
-
-  if(
-    targetDiv.dataset.loaded !==
-    'true'
-  ){
-
-    targetDiv.innerHTML =
-      '<div class="module-loading">Loading module...</div>';
-
-    targetDiv.classList.add(
-      'active'
-    );
-
-
-    try{
-
-      const response =
-        await window.fetchFresh(
-          filename
-        );
-
-
-      if(!response.ok)
-        throw new Error(
-          `File fetch failed: HTTP ${response.status}`
-        );
-
-
-      const htmlText =
-        await response.text();
-
-
-      const parser =
-        new DOMParser();
-
-
-      const doc =
-        parser.parseFromString(
-          htmlText,
-          'text/html'
-        );
-
-
-      const moduleContent =
-        doc.querySelector(
-          '.module-container'
-        ) ||
-        doc.body;
-
-
-      targetDiv.innerHTML='';
-
-
-      if(
-        moduleContent ===
-        doc.body
-      ){
-
-        Array.from(
-          moduleContent.childNodes
-        ).forEach(
-          node =>
-            targetDiv.appendChild(
-              node
-            )
-        );
-
-      }else{
-
-        targetDiv.appendChild(
-          moduleContent
-        );
-
-      }
-
-
-      targetDiv
-        .querySelectorAll('script')
-        .forEach(oldScript=>{
-
-          const newScript =
-            document.createElement(
-              'script'
-            );
-
-
-          Array.from(
-            oldScript.attributes
-          ).forEach(
-            attr =>
-              newScript.setAttribute(
-                attr.name,
-                attr.value
-              )
-          );
-
-
-          newScript.appendChild(
-            document.createTextNode(
-              oldScript.innerHTML
-            )
-          );
-
-
-          oldScript.parentNode.replaceChild(
-            newScript,
-            oldScript
-          );
-
-        });
-
-
-      targetDiv.dataset.loaded =
-        'true';
-
-
-    }catch(error){
-
-      console.error(
-        `Error loading ${filename}:`,
-        error
-      );
-
-
-      targetDiv.innerHTML = `
-
-        <div class="module-error">
-
-          <span class="material-symbols-rounded">
-            error
-          </span>
-
-          <br>
-
-          <b>
-            Module Not Found
-          </b>
-
-          <br><br>
-
-          Ensure the file
-          <b>${filename}</b>
-          exists.
-
-          <br><br>
-
-          <button
-            onclick="window.switchView('${targetId}',null)"
-            style="
-              border:1px solid var(--border);
-              background:#fff;
-              border-radius:8px;
-              padding:8px 14px;
-              cursor:pointer;
-              font-weight:600;
-            ">
-
-            Retry
-
-          </button>
-
-        </div>
-
-      `;
-
-    }
-
-  }else{
-
-    targetDiv.classList.add(
-      'active'
-    );
-
-  }
-
-
-  if(
-    window.innerWidth<=768 &&
-    document
-      .getElementById(
-        'sidebar-container'
-      )
-      ?.classList.contains('open')
-  ){
-
-    window.toggleMenu();
-
-  }
-
-};
-
-
-/* =========================================================
-   CHART
-========================================================= */
-
-window.renderChart =
-function(
-  pending,
-  completed,
-  rescheduled,
-  cancelled
-){
-
-  try{
-
-    if(
-      typeof Chart ===
-      'undefined'
-    )
-      return;
-
-
-    const canvas =
-      document.getElementById(
-        'apptDonutChart'
-      );
-
-
-    if(!canvas)
-      return;
-
-
-    const ctx =
-      canvas.getContext('2d');
-
-
-    if(window.apptChartInstance)
-      window.apptChartInstance.destroy();
-
-
-    const total =
-      pending +
-      completed +
-      rescheduled +
-      cancelled;
-
-
-    const dataValues =
-      total===0
-        ? [1]
-        : [
-            pending,
-            completed,
-            rescheduled,
-            cancelled
-          ];
-
-
-    const bgColors =
-      total===0
-        ? ['#F0F0F0']
-        : [
-            '#FB923C',
-            '#10B981',
-            '#64748B',
-            '#EF4444'
-          ];
-
-
-    const labels =
-      total===0
-        ? ['No Data']
-        : [
-            'Pending',
-            'Completed',
-            'Rescheduled',
-            'Cancelled'
-          ];
-
-
-    window.apptChartInstance =
-      new Chart(
-        ctx,
-        {
-          type:'doughnut',
-
-          data:{
-            labels,
-
-            datasets:[
-              {
-                data:dataValues,
-                backgroundColor:bgColors,
-                borderWidth:0,
-                hoverOffset:4
-              }
-            ]
-          },
-
-          options:{
-            responsive:true,
-            maintainAspectRatio:false,
-
-            cutout:'75%',
-
-            plugins:{
-              legend:{
-                display:false
-              },
-
-              tooltip:{
-                enabled:
-                  total>0
-              }
-            }
-          }
+    document.querySelectorAll('.nav-link, .nav-item, .bottom-nav-item')
+        .forEach(el => el.classList.remove('active'));
+    if (navElement && !navElement.classList.contains('close-menu-btn')) navElement.classList.add('active');
+    document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+    const targetDiv = document.getElementById(targetId);
+    if (!targetDiv) return;
+    if (targetId === 'view-dashboard') {
+        targetDiv.classList.add('active');
+        if (window.fetchDashboardData) window.fetchDashboardData();
+        if (window.innerWidth <= 768 && document.getElementById('sidebar-container')?.classList.contains('open')) {
+            window.toggleMenu();
         }
-      );
-
-
-  }catch(e){
-
-    console.warn(
-      "Chart rendering skipped:",
-      e
-    );
-
-  }
-
+        return;
+    }
+    const filename = window.cmAppFileMap[targetId];
+    if (!filename) {
+        targetDiv.innerHTML = '<div style="padding:40px;text-align:center;color:var(--danger)">Module mapping not found.</div>';
+        targetDiv.classList.add('active');
+        return;
+    }
+    if (targetDiv.dataset.loaded !== 'true') {
+        targetDiv.innerHTML = '<div style="text-align:center;padding:40px;color:var(--primary)">Loading module...</div>';
+        targetDiv.classList.add('active');
+        try {
+            const response = await window.fetchFresh(filename);
+            if (!response.ok) throw new Error(`File fetch failed: HTTP ${response.status}`);
+            const htmlText = await response.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+            const moduleContent = doc.querySelector('.module-container') || doc.body;
+            targetDiv.innerHTML = '';
+            if (moduleContent === doc.body) {
+                Array.from(moduleContent.childNodes).forEach(node => targetDiv.appendChild(node));
+            } else {
+                targetDiv.appendChild(moduleContent);
+            }
+            targetDiv.querySelectorAll('script').forEach(oldScript => {
+                const newScript = document.createElement('script');
+                Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+            targetDiv.dataset.loaded = 'true';
+        } catch (error) {
+            console.error(`Error loading ${filename}:`, error);
+            targetDiv.innerHTML = `
+                <div style="text-align:center;padding:40px;color:var(--danger);background:#FEF2F2;border-radius:12px;border:1px solid #FEE2E2;">
+                    <span class="material-symbols-rounded" style="font-size:32px;margin-bottom:8px">error</span>
+                    <br><b>Module Not Found.</b><br>
+                    Ensure the file <b>${filename}</b> exists in the folder.
+                    <br><br>
+                    <button onclick="window.switchView('${targetId}',null)" style="border:1px solid var(--border);background:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600;">Retry</button>
+                </div>`;
+        }
+    } else {
+        targetDiv.classList.add('active');
+    }
+    if (window.innerWidth <= 768 && document.getElementById('sidebar-container')?.classList.contains('open')) {
+        window.toggleMenu();
+    }
 };
 
-
-/* =========================================================
-   CALENDAR
-========================================================= */
-
-window.renderCalendar =
-function(){
-
-  const title =
-    document.getElementById(
-      'calMonthDisplay'
-    );
-
-
-  const grid =
-    document.getElementById(
-      'calendarGrid'
-    );
-
-
-  if(!title || !grid)
-    return;
-
-
-  const monthNames = [
-
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-
-  ];
-
-
-  title.innerText =
-    `${monthNames[window.calMonth]} ${window.calYear}`;
-
-
-  let html =
-    '<div class="cal-day-name">Sun</div>' +
-    '<div class="cal-day-name">Mon</div>' +
-    '<div class="cal-day-name">Tue</div>' +
-    '<div class="cal-day-name">Wed</div>' +
-    '<div class="cal-day-name">Thu</div>' +
-    '<div class="cal-day-name">Fri</div>' +
-    '<div class="cal-day-name">Sat</div>';
-
-
-  const firstDay =
-    new Date(
-      window.calYear,
-      window.calMonth,
-      1
-    ).getDay();
-
-
-  const daysInMonth =
-    new Date(
-      window.calYear,
-      window.calMonth+1,
-      0
-    ).getDate();
-
-
-  for(
-    let i=0;
-    i<firstDay;
-    i++
-  ){
-
-    html +=
-      '<div class="cal-day empty"></div>';
-
-  }
-
-
-  for(
-    let i=1;
-    i<=daysInMonth;
-    i++
-  ){
-
-    const loopDateStr =
-      `${window.calYear}-${String(window.calMonth+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
-
-
-    let classes =
-      'cal-day';
-
-
-    if(
-      loopDateStr ===
-      window.selectedDateStr
-    )
-      classes +=
-        ' active';
-
-
-    if(
-      window.aptDatesSet.has(
-        loopDateStr
-      )
-    )
-      classes +=
-        ' has-event';
-
-
-    html +=
-      `<div class="${classes}" onclick="window.selectDate('${loopDateStr}')">${i}</div>`;
-
-  }
-
-
-  grid.innerHTML =
-    html;
-
+window.renderChart = function(pending, completed, rescheduled, cancelled) {
+    try {
+        if (typeof Chart === 'undefined') return;
+        const canvas = document.getElementById('apptDonutChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (window.apptChartInstance) window.apptChartInstance.destroy();
+        const total = pending + completed + rescheduled + cancelled;
+        const dataValues = total === 0 ? [1] : [pending, completed, rescheduled, cancelled];
+        const bgColors = total === 0 ? ['#E2E8F0'] : ['#F59E0B', '#059669', '#64748B', '#DC2626'];
+        const labels = total === 0 ? ['No Data'] : ['Pending', 'Completed', 'Rescheduled', 'Cancelled'];
+        window.apptChartInstance = new Chart(ctx, {
+            type:'doughnut',
+            data:{labels,datasets:[{data:dataValues,backgroundColor:bgColors,borderWidth:0,hoverOffset:4}]},
+            options:{responsive:true,maintainAspectRatio:false,cutout:'75%',plugins:{legend:{display:false},tooltip:{enabled:total>0}}}
+        });
+    } catch(e){ console.warn("Chart rendering skipped:",e); }
 };
 
-
-window.changeMonth =
-function(dir){
-
-  window.calMonth +=
-    dir;
-
-
-  if(
-    window.calMonth>11
-  ){
-
-    window.calMonth=0;
-    window.calYear++;
-
-  }
-
-
-  if(
-    window.calMonth<0
-  ){
-
-    window.calMonth=11;
-    window.calYear--;
-
-  }
-
-
-  window.renderCalendar();
-
+window.renderCalendar = function() {
+    const title = document.getElementById('calMonthDisplay');
+    const grid = document.getElementById('calendarGrid');
+    if (!title || !grid) return;
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    title.innerText = `${monthNames[window.calMonth]} ${window.calYear}`;
+    let html = '<div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div><div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>';
+    const firstDay = new Date(window.calYear, window.calMonth, 1).getDay();
+    const daysInMonth = new Date(window.calYear, window.calMonth + 1, 0).getDate();
+    for (let i=0;i<firstDay;i++) html += '<div class="cal-day empty"></div>';
+    for (let i=1;i<=daysInMonth;i++) {
+        const loopDateStr = `${window.calYear}-${String(window.calMonth+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+        let classes='cal-day';
+        if (loopDateStr===window.selectedDateStr) classes+=' active';
+        if (window.aptDatesSet.has(loopDateStr)) classes+=' has-event';
+        html += `<div class="${classes}" onclick="window.selectDate('${loopDateStr}')">${i}</div>`;
+    }
+    grid.innerHTML=html;
+};
+window.changeMonth=function(dir){
+    window.calMonth+=dir;
+    if(window.calMonth>11){window.calMonth=0;window.calYear++;}
+    if(window.calMonth<0){window.calMonth=11;window.calYear--;}
+    window.renderCalendar();
+};
+window.selectDate=function(dateStr){
+    window.selectedDateStr=dateStr;
+    window.renderCalendar();
+    window.renderLiveTable();
+};
+window.setCalToToday=function(){
+    const today=new Date();
+    window.calYear=today.getFullYear();
+    window.calMonth=today.getMonth();
+    window.selectDate(window.getLocalDateString(today));
+};
+window.getBalanceDisplay=function(value){
+    const balance=Number(value||0);
+    if(Math.abs(balance)<0.005)return{text:'No Due',className:'balance-no-due'};
+    if(balance>0)return{text:`Due ₹${balance.toFixed(2)}`,className:'balance-due'};
+    return{text:`Excess ₹${Math.abs(balance).toFixed(2)}`,className:'balance-excess'};
+};
+window.renderLiveTable=function(){
+    const tableBody=document.getElementById('dashAptTableBody');
+    if(!tableBody)return;
+    const todayStr=window.getLocalDateString();
+    const title=document.getElementById('dashListTitle');
+    if(title)title.innerText=window.selectedDateStr===todayStr?"Today":window.formatIndianDate(window.selectedDateStr);
+    const dayApts=window.allApts.filter(a=>a.date===window.selectedDateStr);
+    if(dayApts.length===0){
+        tableBody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-soft);font-size:14px;font-weight:500;display:block;width:100%">No appointments scheduled for this date.</td></tr>';
+        return;
+    }
+    let rowsHtml='';
+    dayApts.forEach(data=>{
+        let badgeClass='badge-pending';
+        const st=(data.status||'').toLowerCase();
+        if(st==='completed')badgeClass='badge-completed';
+        else if(st==='rescheduled')badgeClass='badge-rescheduled';
+        else if(st==='cancelled')badgeClass='badge-cancelled';
+        const balance=window.getBalanceDisplay(data.balance);
+        rowsHtml+=`<tr>
+<td><strong style="color:var(--text-strong);font-size:15px">${data.time||'--:--'}</strong></td>
+<td><strong style="font-size:15px;display:block;margin-bottom:4px;color:var(--text-strong)">${data.name||'Unknown'}</strong><span style="font-size:13px;color:var(--text-soft);font-weight:500">+91 ${data.mobile||''}</span></td>
+<td><strong style="font-size:14px;color:var(--primary);display:block;margin-bottom:4px">${data.branch||''}</strong><span style="font-size:13px;color:var(--text-soft);font-weight:500">Dr. ${data.therapist||'N/A'}</span></td>
+<td><span style="font-size:13px;color:var(--text-soft);font-weight:500;display:block;margin-bottom:4px">Fee: ₹${Number(data.fee||0).toFixed(2)}</span><strong class="${balance.className}" style="font-size:14px">${balance.text}</strong></td>
+<td><span class="badge ${badgeClass}">${data.status||'Pending'}</span></td>
+</tr>`;
+    });
+    tableBody.innerHTML=rowsHtml;
+};
+window.updateGlobalClock=function(){
+    const ddVal=document.getElementById('dd-val');
+    if(!ddVal)return;
+    const now=new Date();
+    const circumference=131.95;
+    const isAm=now.getHours()<12;
+    let hours12=now.getHours()%12;if(hours12===0)hours12=12;
+    const pad=n=>n<10?'0'+n:String(n);
+    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.innerText=value;};
+    set('dd-val',pad(now.getDate()));
+    set('dd-context',["SUN","MON","TUE","WED","THU","FRI","SAT"][now.getDay()]);
+    set('mm-val',["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][now.getMonth()]);
+    set('mm-context',now.getFullYear());
+    set('hh-val',pad(hours12));set('hh-context',isAm?"AM":"PM");set('min-val',pad(now.getMinutes()));
+    const dayProgress=now.getDate()/new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+    const setArc=(id,value)=>{const el=document.getElementById(id);if(el)el.style.strokeDashoffset=value;};
+    setArc('dd-arc',circumference-circumference*dayProgress);
+    setArc('mm-arc',circumference-circumference*((now.getMonth()+1)/12));
+    setArc('hh-arc',circumference-circumference*(now.getHours()/24));
+    setArc('min-arc',circumference-circumference*(now.getMinutes()/60));
+};
+window.fetchDashboardData=async function(){
+    if(!window.currentUser)return;
+    try{
+        const errBanner=document.getElementById('dash-error-banner');
+        if(errBanner)errBanner.style.display='none';
+        let qApt;
+        if(window.currentUser.role==='admin')qApt=query(collection(db,"appointments"));
+        else qApt=query(collection(db,"appointments"),where("branch","==",window.currentUser.branch));
+        const snapApt=await getDocs(qApt);
+        let cPending=0,cCompleted=0,cRescheduled=0,cCancelled=0;
+        window.allApts=[];window.aptDatesSet.clear();
+        snapApt.forEach(docSnap=>{
+            const data=docSnap.data();
+            window.allApts.push({...data,id:docSnap.id});
+            if(data.date)window.aptDatesSet.add(data.date);
+            const status=(data.status||'').toLowerCase();
+            if(status==='pending')cPending++;
+            else if(status==='completed')cCompleted++;
+            else if(status==='rescheduled')cRescheduled++;
+            else if(status==='cancelled')cCancelled++;
+        });
+        window.allApts.sort((a,b)=>{
+            const dateCompare=String(b.date||'').localeCompare(String(a.date||''));
+            if(dateCompare!==0)return dateCompare;
+            return String(a.time||'').localeCompare(String(b.time||''));
+        });
+        const dPend=document.getElementById('dashPending');if(dPend)dPend.innerText=cPending;
+        const dComp=document.getElementById('dashCompleted');if(dComp)dComp.innerText=cCompleted;
+        const dResch=document.getElementById('dashRescheduled');if(dResch)dResch.innerText=cRescheduled;
+        const dCanc=document.getElementById('dashCancelled');if(dCanc)dCanc.innerText=cCancelled;
+        window.renderChart(cPending,cCompleted,cRescheduled,cCancelled);
+        window.renderCalendar();window.renderLiveTable();
+        const todayStr=window.getLocalDateString();
+        let qAtt;
+        if(window.currentUser.role==='admin')qAtt=query(collection(db,"daily_attendance"),where("date","==",todayStr));
+        else qAtt=query(collection(db,"daily_attendance"),where("date","==",todayStr),where("branch","==",window.currentUser.branch));
+        const snapAtt=await getDocs(qAtt);
+        let attPresent=0,attAbsent=0;
+        snapAtt.forEach(docSnap=>{
+            const status=(docSnap.data().status||'').toLowerCase();
+            if(status==='present'||status==='half-day')attPresent++;
+            else if(status==='absent'||status==='leave')attAbsent++;
+        });
+        const dAttPresent=document.getElementById('dashPresent');if(dAttPresent)dAttPresent.innerText=attPresent;
+        const dAttAbsent=document.getElementById('dashAbsent');if(dAttAbsent)dAttAbsent.innerText=attAbsent;
+    }catch(error){
+        console.error("Dashboard Load Error:",error);
+        const errorBanner=document.getElementById('dash-error-banner');
+        const errorText=document.getElementById('dash-error-text');
+        if(errorBanner)errorBanner.style.display='flex';
+        if(errorText)errorText.innerText="Data Sync Error: "+(error.message||"Unknown error");
+    }
 };
 
+document.addEventListener('DOMContentLoaded',()=>{
+    dragElement(document.getElementById("calc-popup-container"));
+    window.loadComponent('header-container','header.html');
+    window.loadComponent('sidebar-container','sidebar.html');
+    window.loadComponent('bottomnav-container','bottomnav.html');
+    setInterval(window.updateGlobalClock,1000);
+    setTimeout(window.applyRoleVisibility,300);
+    setTimeout(window.applyRoleVisibility,1000);
+});
 
-window.selectDate =
-function(dateStr){
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(() => console.log('COREBIQ service worker registered'))
+            .catch(err => console.warn('COREBIQ service worker registration failed:', err));
+    });
+}
+</script>
 
-  window.selectedDateStr =
-    dateStr;
+<script>
+/* =========================================
+   PWA INSTALL SCRIPT (CONSOLIDATED & FIXED)
+   ========================================= */
+(function(){
+  let deferredPrompt = null;
+  const popup = () => document.getElementById('corebiq-install-popup');
+  const btn = () => document.getElementById('corebiq-install-btn');
+  const closeBtn = () => document.getElementById('corebiq-install-close');
+  const laterBtn = () => document.getElementById('corebiq-install-later');
+  const helpText = () => document.getElementById('corebiq-install-help');
 
-  window.renderCalendar();
-  window.renderLiveTable();
-
-};
-
-
-window.setCalToToday =
-function(){
-
-  const today =
-    new Date();
-
-
-  window.calYear =
-    today.getFullYear();
-
-  window.calMonth =
-    today.getMonth();
-
-
-  window.selectDate(
-    window.getLocalDateString(
-      today
-    )
-  );
-
-};
-
-
-/* =========================================================
-   BALANCE
-========================================================= */
-
-window.getBalanceDisplay =
-function(value){
-
-  const balance =
-    Number(value || 0);
-
-
-  if(
-    Math.abs(balance)<0.005
-  ){
-
-    return{
-      text:'No Due',
-      className:
-        'balance-no-due'
-    };
-
+  function isStandalone(){
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   }
 
-
-  if(balance>0){
-
-    return{
-      text:
-        `Due ₹${balance.toFixed(2)}`,
-      className:
-        'balance-due'
-    };
-
+  function showInstallPopup(){
+    if(isStandalone() || sessionStorage.getItem('corebiqInstallSeen')) return;
+    const p = popup();
+    if(p){
+      p.classList.add('show');
+      p.setAttribute('aria-hidden','false');
+      sessionStorage.setItem('corebiqInstallSeen', '1');
+    }
   }
 
+  function hideInstallPopup(){
+    const p = popup();
+    if(p){
+      p.classList.remove('show');
+      p.setAttribute('aria-hidden','true');
+    }
+  }
 
-  return{
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallPopup();
+  });
 
-    text:
-      `Excess ₹${Math.abs(balance).toFixed(2)}`,
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    hideInstallPopup();
+  });
 
-    className:
-      'balance-excess'
+  document.addEventListener('DOMContentLoaded', () => {
+    closeBtn()?.addEventListener('click', hideInstallPopup);
+    laterBtn()?.addEventListener('click', hideInstallPopup);
 
+    btn()?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        try {
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log(`User response to the install prompt: ${outcome}`);
+        } catch(e) {
+          console.error(e);
+        }
+        deferredPrompt = null;
+        hideInstallPopup();
+      } else {
+        const h = helpText();
+        if (h) h.hidden = false;
+      }
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  function cbUpdateClock(){
+    const t=document.getElementById('cb-clock-time'), d=document.getElementById('cb-clock-date');
+    if(!t||!d)return;
+    const now=new Date();
+    t.textContent=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+    d.textContent=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  }
+  document.addEventListener('DOMContentLoaded',function(){cbUpdateClock();setInterval(cbUpdateClock,1000);});
+})();
+</script>
+
+<script>
+(function(){
+  function updateRole(){
+    const el=document.getElementById('dash-role-text');
+    if(!el) return;
+    const u=window.currentUser;
+    if(!u) return;
+    const role=String(u.role||'user').replace(/[_-]+/g,' ');
+    const pretty=role.charAt(0).toUpperCase()+role.slice(1);
+    el.textContent='Access Level: '+pretty;
+  }
+  const timer=setInterval(updateRole,250);
+  document.addEventListener('DOMContentLoaded',updateRole);
+  setTimeout(()=>clearInterval(timer),15000);
+})();
+</script>
+
+<script>
+(function(){
+  function sidebar(){return document.getElementById('sidebar-container');}
+  window.corebiqOpenMenu=function(){
+    const s=sidebar();
+    if(s) s.classList.add('open');
+  };
+  window.corebiqCloseMenu=function(){
+    const s=sidebar();
+    if(s) s.classList.remove('open');
+  };
+  window.corebiqToggleMenu=function(){
+    const s=sidebar();
+    if(s) s.classList.toggle('open');
   };
 
-};
-
-
-/* =========================================================
-   LIVE SALES TABLE
-========================================================= */
-
-window.renderLiveTable =
-function(){
-
-  const tableBody =
-    document.getElementById(
-      'dashAptTableBody'
-    );
-
-
-  if(!tableBody)
-    return;
-
-
-  const todayStr =
-    window.getLocalDateString();
-
-
-  const title =
-    document.getElementById(
-      'dashListTitle'
-    );
-
-
-  if(title){
-
-    title.innerText =
-      window.selectedDateStr ===
-      todayStr
-
-        ? "Today"
-
-        : window.formatIndianDate(
-            window.selectedDateStr
-          );
-
-  }
-
-
-  const dayApts =
-    window.allApts.filter(
-      a =>
-        a.date ===
-        window.selectedDateStr
-    );
-
-
-  if(dayApts.length===0){
-
-    tableBody.innerHTML = `
-
-      <tr>
-
-        <td colspan="5"
-            style="
-              text-align:center;
-              padding:40px;
-              color:var(--muted);
-              font-size:13px;
-            ">
-
-          No sales scheduled for this date.
-
-        </td>
-
-      </tr>
-
-    `;
-
-    return;
-
-  }
-
-
-  let rowsHtml='';
-
-
-  dayApts.forEach(
-    data=>{
-
-      let badgeClass =
-        'badge-pending';
-
-
-      const st =
-        (data.status || '')
-          .toLowerCase();
-
-
-      if(
-        st === 'completed'
-      )
-        badgeClass =
-          'badge-completed';
-
-
-      else if(
-        st === 'rescheduled'
-      )
-        badgeClass =
-          'badge-rescheduled';
-
-
-      else if(
-        st === 'cancelled'
-      )
-        badgeClass =
-          'badge-cancelled';
-
-
-      const balance =
-        window.getBalanceDisplay(
-          data.balance
-        );
-
-
-      rowsHtml += `
-
-        <tr>
-
-          <td>
-
-            <strong
-              style="
-                color:var(--text-strong);
-                font-size:14px
-              ">
-
-              ${data.time || '--:--'}
-
-            </strong>
-
-          </td>
-
-
-          <td>
-
-            <strong
-              style="
-                font-size:14px;
-                display:block;
-                margin-bottom:2px
-              ">
-
-              ${data.name || 'Unknown'}
-
-            </strong>
-
-
-            <span
-              style="
-                font-size:12px;
-                color:var(--muted);
-                font-weight:600
-              ">
-
-              +91 ${data.mobile || ''}
-
-            </span>
-
-          </td>
-
-
-          <td>
-
-            <strong
-              style="
-                font-size:13px;
-                color:var(--primary);
-                display:block;
-                margin-bottom:2px
-              ">
-
-              ${data.branch || ''}
-
-            </strong>
-
-
-            <span
-              style="
-                font-size:12px;
-                color:var(--muted);
-                font-weight:600
-              ">
-
-              ${data.therapist || 'N/A'}
-
-            </span>
-
-          </td>
-
-
-          <td>
-
-            <span
-              style="
-                font-size:12px;
-                color:var(--muted);
-                font-weight:600
-              ">
-
-              Fee:
-              ₹${Number(data.fee || 0).toFixed(2)}
-
-            </span>
-
-            <br>
-
-            <strong
-              class="${balance.className}"
-              style="font-size:13px">
-
-              ${balance.text}
-
-            </strong>
-
-          </td>
-
-
-          <td>
-
-            <span
-              class="badge ${badgeClass}">
-
-              ${data.status || 'Pending'}
-
-            </span>
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-  );
-
-
-  tableBody.innerHTML =
-    rowsHtml;
-
-};
-
-
-/* =========================================================
-   GLOBAL CLOCK
-========================================================= */
-
-window.updateGlobalClock =
-function(){
-
-  const now =
-    new Date();
-
-
-  const hh =
-    String(
-      now.getHours()
-    ).padStart(2,'0');
-
-
-  const mm =
-    String(
-      now.getMinutes()
-    ).padStart(2,'0');
-
-
-  const ss =
-    String(
-      now.getSeconds()
-    ).padStart(2,'0');
-
-
-  const clock =
-    document.getElementById(
-      'header-clock-text'
-    );
-
-
-  if(clock){
-
-    clock.innerText =
-      `${hh}:${mm}:${ss}`;
-
-  }
-
-};
-
-
-/* =========================================================
-   DASHBOARD DATA
-========================================================= */
-
-window.fetchDashboardData =
-async function(){
-
-  if(!window.currentUser)
-    return;
-
-
-  try{
-
-    const errBanner =
-      document.getElementById(
-        'dash-error-banner'
+  document.addEventListener('DOMContentLoaded',function(){
+    const s=sidebar();
+    if(!s) return;
+    document.addEventListener('click',function(e){
+      const menuBtn=e.target.closest(
+        '#header-container .cb-header-menu, #bottomnav-container .cb-bottom-link:last-child, .cb-sidebar-close'
       );
-
-
-    if(errBanner)
-      errBanner.style.display =
-        'none';
-
-
-    let qApt;
-
-
-    if(
-      window.currentUser.role ===
-      'admin'
-    ){
-
-      qApt =
-        query(
-          collection(
-            db,
-            "appointments"
-          )
-        );
-
-    }else{
-
-      qApt =
-        query(
-          collection(
-            db,
-            "appointments"
-          ),
-
-          where(
-            "branch",
-            "==",
-            window.currentUser.branch
-          )
-        );
-
-    }
-
-
-    const snapApt =
-      await getDocs(qApt);
-
-
-    let cPending=0,
-        cCompleted=0,
-        cRescheduled=0,
-        cCancelled=0;
-
-
-    window.allApts=[];
-    window.aptDatesSet.clear();
-
-
-    snapApt.forEach(
-      docSnap=>{
-
-        const data =
-          docSnap.data();
-
-
-        window.allApts.push({
-          ...data,
-          id:docSnap.id
-        });
-
-
-        if(data.date){
-
-          window.aptDatesSet.add(
-            data.date
-          );
-
-        }
-
-
-        const status =
-          (data.status || '')
-            .toLowerCase();
-
-
-        if(status==='pending')
-          cPending++;
-
-
-        else if(
-          status==='completed'
-        )
-          cCompleted++;
-
-
-        else if(
-          status==='rescheduled'
-        )
-          cRescheduled++;
-
-
-        else if(
-          status==='cancelled'
-        )
-          cCancelled++;
-
+      if(menuBtn){
+        e.preventDefault();
+        e.stopPropagation();
+        window.corebiqToggleMenu();
+        return;
       }
-    );
-
-
-    window.allApts.sort(
-      (a,b)=>{
-
-        const dateCompare =
-          String(b.date || '')
-            .localeCompare(
-              String(a.date || '')
-            );
-
-
-        if(dateCompare!==0)
-          return dateCompare;
-
-
-        return String(
-          a.time || ''
-        ).localeCompare(
-          String(
-            b.time || ''
-          )
-        );
-
+      if(window.innerWidth<=768 && s.classList.contains('open') &&
+         e.target.closest('.cb-side-link')){
+        window.corebiqCloseMenu();
       }
-    );
-
-
-    const dPend =
-      document.getElementById(
-        'dashPending'
-      );
-
-
-    const dComp =
-      document.getElementById(
-        'dashCompleted'
-      );
-
-
-    const dResch =
-      document.getElementById(
-        'dashRescheduled'
-      );
-
-
-    const dCanc =
-      document.getElementById(
-        'dashCancelled'
-      );
-
-
-    if(dPend)
-      dPend.innerText =
-        cPending;
-
-
-    if(dComp)
-      dComp.innerText =
-        cCompleted;
-
-
-    if(dResch)
-      dResch.innerText =
-        cRescheduled;
-
-
-    if(dCanc)
-      dCanc.innerText =
-        cCancelled;
-
-
-    window.renderChart(
-      cPending,
-      cCompleted,
-      cRescheduled,
-      cCancelled
-    );
-
-
-    window.renderCalendar();
-
-    window.renderLiveTable();
-
-
-    /* SALES SUMMARY */
-
-    const dSales =
-      document.getElementById(
-        'dashPresent'
-      );
-
-
-    const dPendingSales =
-      document.getElementById(
-        'dashAbsent'
-      );
-
-
-    if(dSales)
-      dSales.innerText =
-        cCompleted;
-
-
-    if(dPendingSales)
-      dPendingSales.innerText =
-        cPending +
-        cCancelled;
-
-
-  }catch(error){
-
-    console.error(
-      "Dashboard Load Error:",
-      error
-    );
-
-
-    const errorBanner =
-      document.getElementById(
-        'dash-error-banner'
-      );
-
-
-    const errorText =
-      document.getElementById(
-        'dash-error-text'
-      );
-
-
-    if(errorBanner)
-      errorBanner.style.display =
-        'flex';
-
-
-    if(errorText)
-      errorText.innerText =
-        "Data Sync Error: " +
-        (
-          error.message ||
-          "Unknown error"
-        );
-
-  }
-
-};
-
-
-/* =========================================================
-   INITIALIZATION
-========================================================= */
-
-document.addEventListener(
-  'DOMContentLoaded',
-  ()=>{
-
-    dragElement(
-      document.getElementById(
-        "calc-popup-container"
-      )
-    );
-
-
-    window.renderCalendar();
-
-    window.updateGlobalClock();
-
-
-    setInterval(
-      window.updateGlobalClock,
-      1000
-    );
-
-
-    setTimeout(
-      window.applyRoleVisibility,
-      300
-    );
-
-
-    setTimeout(
-      window.applyRoleVisibility,
-      1000
-    );
-
-  }
-);
-
-
-/* =========================================================
-   PWA
-========================================================= */
-
-if(
-  'serviceWorker' in navigator
-){
-
-  window.addEventListener(
-    'load',
-    ()=>{
-
-      navigator.serviceWorker
-        .register('./sw.js')
-
-        .then(
-          ()=>{
-            console.log(
-              'COREBIQ service worker registered'
-            );
-          }
-        )
-
-        .catch(
-          err=>{
-            console.warn(
-              'COREBIQ service worker registration failed:',
-              err
-            );
-          }
-        );
-
-    }
-  );
-
-}
-
+    },true);
+  });
+})();
 </script>
 
 </body>
 </html>
+```eof
