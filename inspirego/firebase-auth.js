@@ -1,8 +1,10 @@
-// COREBIQ Firebase Authentication Configuration
+// COREBIQ Firebase Configuration
 // Firebase project: corebic--inspirego
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+// You MUST import Firestore so the dashboard can load data
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDShAm9FNnIj7sodlfzQF727pc9WhU-fc",
@@ -17,7 +19,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase Authentication
+// Initialize Authentication
 const auth = getAuth(app);
 
-export { app, auth, firebaseConfig };
+// Initialize Firestore Database (This was missing!)
+const db = getFirestore(app);
+
+// Export all so index.html and login.html can use them
+export { app, auth, db, firebaseConfig };
