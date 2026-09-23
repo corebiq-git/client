@@ -1,11 +1,13 @@
 <!-- =========================================================
-     COMPANY MODULE
+     COMPANY PROFILE MODULE
      File: company.html
-     CSS: Main style.css
-     Container: #module-container
+     
+     IMPORTANT:
+     Main style.css must already be loaded by index.html.
+     This module intentionally contains NO internal CSS.
      ========================================================= -->
 
-<div class="company-module">
+<div id="company-module" class="company-module">
 
     <!-- =====================================================
          TOOLBAR
@@ -14,6 +16,7 @@
 
         <div class="comp-toolbar-left">
 
+            <!-- BACK -->
             <button
                 type="button"
                 class="comp-icon-btn"
@@ -22,10 +25,11 @@
                 <span class="material-symbols-rounded">arrow_back</span>
             </button>
 
+            <!-- SEARCH -->
             <div class="comp-search">
                 <span class="material-symbols-rounded">search</span>
                 <input
-                    type="text"
+                    type="search"
                     id="companySearch"
                     placeholder="Search company..."
                     autocomplete="off">
@@ -35,67 +39,67 @@
 
         <div class="comp-toolbar-right">
 
+            <!-- FILTER -->
             <button
                 type="button"
                 class="comp-action-btn"
-                id="companyFilterBtn">
+                id="companyFilterBtn"
+                title="Filter">
                 <span class="material-symbols-rounded">filter_list</span>
-                Filter
+                <span>Filter</span>
             </button>
 
+            <!-- SORT -->
             <button
                 type="button"
                 class="comp-action-btn"
-                id="companySortBtn">
+                id="companySortBtn"
+                title="Sort">
                 <span class="material-symbols-rounded">sort</span>
-                Sort
+                <span>Sort</span>
             </button>
 
+            <!-- IMPORT -->
             <button
                 type="button"
                 class="comp-action-btn"
-                id="companyImportBtn">
+                id="companyImportBtn"
+                title="Import Company">
                 <span class="material-symbols-rounded">upload_file</span>
-                Import
+                <span>Import</span>
             </button>
 
+            <!-- EXPORT -->
             <button
                 type="button"
                 class="comp-action-btn"
-                id="companyExportBtn">
+                id="companyExportBtn"
+                title="Export Company">
                 <span class="material-symbols-rounded">download</span>
-                Export
+                <span>Export</span>
             </button>
 
+            <!-- ADD / EDIT -->
             <button
                 type="button"
                 class="comp-action-btn primary"
                 id="companyAddBtn">
                 <span class="material-symbols-rounded">add</span>
-                Add Company
+                <span id="companyAddBtnText">Add Company</span>
             </button>
 
-            <input
-                type="file"
-                id="companyImportFile"
-                accept=".csv"
-                hidden>
-
         </div>
-
     </div>
 
 
     <!-- =====================================================
-         HEADER
+         PAGE HEADER
          ===================================================== -->
     <div class="comp-header-banner">
 
-        <h1 id="companyPageTitle">
-            COMPANY PROFILE
-        </h1>
+        <h1>COMPANY PROFILE</h1>
 
-        <p id="companyPageSubtitle">
+        <p id="companyPageDescription">
             Create your company profile for this application
         </p>
 
@@ -111,9 +115,9 @@
          ===================================================== -->
     <form id="companyForm" novalidate>
 
-        <!-- ================================================
-             1. BASIC COMPANY INFORMATION
-             ================================================ -->
+        <!-- =================================================
+             1. COMPANY INFORMATION
+             ================================================= -->
         <div class="comp-form-section">
 
             <h2>
@@ -123,7 +127,7 @@
 
             <div class="comp-grid">
 
-                <!-- Company Name -->
+                <!-- COMPANY NAME -->
                 <div class="g-input-group">
 
                     <input
@@ -141,7 +145,7 @@
                 </div>
 
 
-                <!-- Legal Name -->
+                <!-- LEGAL NAME -->
                 <div class="g-input-group">
 
                     <input
@@ -149,6 +153,7 @@
                         id="legalName"
                         name="legalName"
                         placeholder=" "
+                        autocomplete="organization"
                         required>
 
                     <label for="legalName">
@@ -158,7 +163,7 @@
                 </div>
 
 
-                <!-- Business Type -->
+                <!-- BUSINESS TYPE -->
                 <div class="g-input-group">
 
                     <select
@@ -176,7 +181,7 @@
                             Partnership
                         </option>
 
-                        <option value="LLP">
+                        <option value="Limited Liability Partnership">
                             Limited Liability Partnership (LLP)
                         </option>
 
@@ -189,7 +194,7 @@
                         </option>
 
                         <option value="One Person Company">
-                            One Person Company
+                            One Person Company (OPC)
                         </option>
 
                         <option value="Trust">
@@ -217,7 +222,7 @@
                 </div>
 
 
-                <!-- Industry -->
+                <!-- INDUSTRY -->
                 <div class="g-input-group">
 
                     <select
@@ -292,7 +297,7 @@
                 </div>
 
 
-                <!-- Company Status -->
+                <!-- STATUS -->
                 <div class="g-input-group">
 
                     <select
@@ -321,7 +326,7 @@
                 </div>
 
 
-                <!-- Established Date -->
+                <!-- ESTABLISHED DATE -->
                 <div class="g-input-group">
 
                     <input
@@ -341,9 +346,9 @@
         </div>
 
 
-        <!-- ================================================
+        <!-- =================================================
              2. COMPANY LOGO
-             ================================================ -->
+             ================================================= -->
         <div class="comp-form-section">
 
             <h2>
@@ -353,63 +358,70 @@
 
             <div class="comp-grid">
 
-                <div class="upload-box"
-                     id="logoUploadBox">
+                <div>
 
-                    <span class="material-symbols-rounded">
-                        cloud_upload
-                    </span>
+                    <div
+                        class="upload-box"
+                        id="companyLogoUploadBox">
 
-                    <strong>
-                        Upload Company Logo
-                    </strong>
+                        <span class="material-symbols-rounded">
+                            cloud_upload
+                        </span>
 
-                    <p>
-                        PNG / JPG / WEBP<br>
-                        Used for invoices and QR documents
-                    </p>
+                        <strong>
+                            Upload Company Logo
+                        </strong>
 
-                    <input
-                        type="file"
-                        id="companyLogo"
-                        accept="image/png,image/jpeg,image/webp"
-                        hidden>
+                        <p>
+                            PNG / JPG / WEBP
+                        </p>
+
+                        <p>
+                            Used for invoices and QR documents
+                        </p>
+
+                        <input
+                            type="file"
+                            id="companyLogo"
+                            name="companyLogo"
+                            accept="image/png,image/jpeg,image/webp"
+                            hidden>
+
+                    </div>
 
                 </div>
 
 
-                <div
-                    id="logoPreviewContainer"
-                    style="
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        min-height:160px;
-                        border:1px solid #dadce0;
-                        border-radius:8px;
-                        background:#f8f9fa;
-                        overflow:hidden;
-                    ">
+                <!-- LOGO PREVIEW -->
+                <div>
 
-                    <img
-                        id="companyLogoPreview"
-                        src=""
-                        alt="Company Logo"
-                        style="
-                            max-width:220px;
-                            max-height:130px;
-                            object-fit:contain;
-                            display:none;
-                        ">
+                    <div
+                        class="upload-box"
+                        id="companyLogoPreviewBox">
 
-                    <span
-                        id="noLogoText"
-                        style="
-                            color:#80868b;
-                            font-size:13px;
-                        ">
-                        No logo uploaded
-                    </span>
+                        <span
+                            class="material-symbols-rounded"
+                            id="companyLogoPreviewIcon">
+                            image
+                        </span>
+
+                        <img
+                            id="companyLogoPreview"
+                            src=""
+                            alt="Company Logo"
+                            style="
+                                display:none;
+                                max-width:180px;
+                                max-height:120px;
+                                object-fit:contain;
+                                border-radius:8px;
+                            ">
+
+                        <p id="companyLogoPreviewText">
+                            Logo preview
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -418,13 +430,15 @@
         </div>
 
 
-        <!-- ================================================
+        <!-- =================================================
              3. CONTACT INFORMATION
-             ================================================ -->
+             ================================================= -->
         <div class="comp-form-section">
 
             <h2>
-                <span class="material-symbols-rounded">contact_phone</span>
+                <span class="material-symbols-rounded">
+                    contact_phone
+                </span>
                 3. CONTACT INFORMATION
             </h2>
 
@@ -434,13 +448,13 @@
 
                     <input
                         type="email"
-                        id="companyEmail"
-                        name="companyEmail"
+                        id="email"
+                        name="email"
                         placeholder=" "
-                        required>
+                        autocomplete="email">
 
-                    <label for="companyEmail">
-                        Official Email *
+                    <label for="email">
+                        Official Email
                     </label>
 
                 </div>
@@ -452,7 +466,8 @@
                         type="email"
                         id="supportEmail"
                         name="supportEmail"
-                        placeholder=" ">
+                        placeholder=" "
+                        autocomplete="email">
 
                     <label for="supportEmail">
                         Support Email
@@ -468,25 +483,10 @@
                         id="phone"
                         name="phone"
                         placeholder=" "
-                        required>
+                        autocomplete="tel">
 
                     <label for="phone">
-                        Phone Number *
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="tel"
-                        id="alternatePhone"
-                        name="alternatePhone"
-                        placeholder=" ">
-
-                    <label for="alternatePhone">
-                        Alternate Phone
+                        Phone Number
                     </label>
 
                 </div>
@@ -498,7 +498,8 @@
                         type="tel"
                         id="whatsapp"
                         name="whatsapp"
-                        placeholder=" ">
+                        placeholder=" "
+                        autocomplete="tel">
 
                     <label for="whatsapp">
                         WhatsApp Number
@@ -507,13 +508,16 @@
                 </div>
 
 
-                <div class="g-input-group">
+                <div
+                    class="g-input-group"
+                    style="grid-column:1 / -1;">
 
                     <input
                         type="url"
                         id="website"
                         name="website"
-                        placeholder=" ">
+                        placeholder=" "
+                        autocomplete="url">
 
                     <label for="website">
                         Website
@@ -526,18 +530,25 @@
         </div>
 
 
-        <!-- ================================================
+        <!-- =================================================
              4. REGISTERED ADDRESS
-             ================================================ -->
+             ================================================= -->
         <div class="comp-form-section">
 
             <h2>
-                <span class="material-symbols-rounded">location_on</span>
+
+                <span class="material-symbols-rounded">
+                    location_on
+                </span>
+
                 4. REGISTERED ADDRESS
+
             </h2>
+
 
             <div class="comp-grid">
 
+                <!-- COUNTRY -->
                 <div class="g-input-group">
 
                     <select
@@ -572,81 +583,68 @@
                 </div>
 
 
+                <!-- PIN -->
                 <div class="g-input-group">
 
                     <input
                         type="text"
-                        id="pinCode"
-                        name="pinCode"
+                        id="pin"
+                        name="pin"
                         placeholder=" "
-                        required>
+                        autocomplete="postal-code">
 
-                    <label for="pinCode">
-                        PIN / ZIP Code *
+                    <label for="pin">
+                        PIN / ZIP Code
                     </label>
 
                 </div>
 
 
+                <!-- ADDRESS -->
                 <div
                     class="g-input-group"
                     style="grid-column:1 / -1;">
 
                     <textarea
-                        id="addressLine1"
-                        name="addressLine1"
+                        id="address"
+                        name="address"
                         placeholder=" "
-                        required></textarea>
+                        rows="3"></textarea>
 
-                    <label for="addressLine1">
-                        Address *
+                    <label for="address">
+                        Registered Address
                     </label>
 
                 </div>
 
 
+                <!-- CITY -->
                 <div class="g-input-group">
 
                     <input
                         type="text"
                         id="city"
                         name="city"
-                        placeholder=" "
-                        required>
-
-                    <label for="city">
-                        City *
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="district"
-                        name="district"
                         placeholder=" ">
 
-                    <label for="district">
-                        District
+                    <label for="city">
+                        City
                     </label>
 
                 </div>
 
 
+                <!-- STATE -->
                 <div class="g-input-group">
 
                     <input
                         type="text"
                         id="state"
                         name="state"
-                        placeholder=" "
-                        required>
+                        placeholder=" ">
 
                     <label for="state">
-                        State / Province *
+                        State / Province
                     </label>
 
                 </div>
@@ -656,50 +654,25 @@
         </div>
 
 
-        <!-- ================================================
-             5. TAX INFORMATION
-             ================================================ -->
+        <!-- =================================================
+             5. TAX & REGISTRATION
+             ================================================= -->
         <div class="comp-form-section">
 
             <h2>
-                <span class="material-symbols-rounded">receipt_long</span>
+
+                <span class="material-symbols-rounded">
+                    receipt_long
+                </span>
+
                 5. TAX & REGISTRATION
+
             </h2>
+
 
             <div class="comp-grid">
 
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="pan"
-                        name="pan"
-                        placeholder=" "
-                        maxlength="10">
-
-                    <label for="pan">
-                        PAN
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="tan"
-                        name="tan"
-                        placeholder=" "
-                        maxlength="10">
-
-                    <label for="tan">
-                        TAN
-                    </label>
-
-                </div>
-
-
+                <!-- GSTIN -->
                 <div class="g-input-group">
 
                     <input
@@ -707,7 +680,8 @@
                         id="gstin"
                         name="gstin"
                         placeholder=" "
-                        maxlength="15">
+                        maxlength="15"
+                        style="text-transform:uppercase;">
 
                     <label for="gstin">
                         GSTIN
@@ -716,11 +690,48 @@
                 </div>
 
 
+                <!-- PAN -->
+                <div class="g-input-group">
+
+                    <input
+                        type="text"
+                        id="pan"
+                        name="pan"
+                        placeholder=" "
+                        maxlength="10"
+                        style="text-transform:uppercase;">
+
+                    <label for="pan">
+                        PAN
+                    </label>
+
+                </div>
+
+
+                <!-- TAN -->
+                <div class="g-input-group">
+
+                    <input
+                        type="text"
+                        id="tan"
+                        name="tan"
+                        placeholder=" "
+                        maxlength="10"
+                        style="text-transform:uppercase;">
+
+                    <label for="tan">
+                        TAN
+                    </label>
+
+                </div>
+
+
+                <!-- GST TYPE -->
                 <div class="g-input-group">
 
                     <select
-                        id="gstRegistrationType"
-                        name="gstRegistrationType">
+                        id="gstType"
+                        name="gstType">
 
                         <option value="" selected>
                             Not Applicable
@@ -742,17 +753,13 @@
                             SEZ
                         </option>
 
-                        <option value="ISD">
-                            ISD
-                        </option>
-
                         <option value="Non-Resident Taxable Person">
                             Non-Resident Taxable Person
                         </option>
 
                     </select>
 
-                    <label for="gstRegistrationType">
+                    <label for="gstType">
                         GST Registration Type
                     </label>
 
@@ -763,6 +770,7 @@
                 </div>
 
 
+                <!-- GST STATE -->
                 <div class="g-input-group">
 
                     <input
@@ -778,13 +786,15 @@
                 </div>
 
 
+                <!-- CIN -->
                 <div class="g-input-group">
 
                     <input
                         type="text"
                         id="cin"
                         name="cin"
-                        placeholder=" ">
+                        placeholder=" "
+                        style="text-transform:uppercase;">
 
                     <label for="cin">
                         CIN
@@ -793,28 +803,32 @@
                 </div>
 
 
+                <!-- UDYAM -->
                 <div class="g-input-group">
 
                     <input
                         type="text"
                         id="udyam"
                         name="udyam"
-                        placeholder=" ">
+                        placeholder=" "
+                        style="text-transform:uppercase;">
 
                     <label for="udyam">
-                        UDYAM Registration
+                        UDYAM Registration No.
                     </label>
 
                 </div>
 
 
+                <!-- IEC -->
                 <div class="g-input-group">
 
                     <input
                         type="text"
                         id="iec"
                         name="iec"
-                        placeholder=" ">
+                        placeholder=" "
+                        style="text-transform:uppercase;">
 
                     <label for="iec">
                         IEC
@@ -823,6 +837,7 @@
                 </div>
 
 
+                <!-- FSSAI -->
                 <div class="g-input-group">
 
                     <input
@@ -832,11 +847,33 @@
                         placeholder=" ">
 
                     <label for="fssai">
-                        FSSAI Number
+                        FSSAI No.
                     </label>
 
                 </div>
 
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             6. UAE TAX DETAILS
+             ================================================= -->
+        <div class="comp-form-section">
+
+            <h2>
+
+                <span class="material-symbols-rounded">
+                    public
+                </span>
+
+                6. UAE TAX & REGISTRATION
+
+            </h2>
+
+
+            <div class="comp-grid">
 
                 <div class="g-input-group">
 
@@ -847,7 +884,7 @@
                         placeholder=" ">
 
                     <label for="trn">
-                        UAE TRN
+                        TRN
                     </label>
 
                 </div>
@@ -862,7 +899,37 @@
                         placeholder=" ">
 
                     <label for="tradeLicense">
-                        UAE Trade License
+                        Trade License No.
+                    </label>
+
+                </div>
+
+
+                <div class="g-input-group">
+
+                    <input
+                        type="text"
+                        id="licenseAuthority"
+                        name="licenseAuthority"
+                        placeholder=" ">
+
+                    <label for="licenseAuthority">
+                        License Authority
+                    </label>
+
+                </div>
+
+
+                <div class="g-input-group">
+
+                    <input
+                        type="text"
+                        id="establishmentCard"
+                        name="establishmentCard"
+                        placeholder=" ">
+
+                    <label for="establishmentCard">
+                        Establishment Card No.
                     </label>
 
                 </div>
@@ -872,17 +939,21 @@
         </div>
 
 
-        <!-- ================================================
-             6. FINANCIAL SETTINGS
-             ================================================ -->
+        <!-- =================================================
+             7. FINANCIAL SETTINGS
+             ================================================= -->
         <div class="comp-form-section">
 
             <h2>
+
                 <span class="material-symbols-rounded">
                     account_balance_wallet
                 </span>
-                6. FINANCIAL SETTINGS
+
+                7. FINANCIAL SETTINGS
+
             </h2>
+
 
             <div class="comp-grid">
 
@@ -957,215 +1028,55 @@
 
                 </div>
 
-
-                <div class="g-input-group">
-
-                    <select
-                        id="dateFormat"
-                        name="dateFormat"
-                        required>
-
-                        <option value="DD/MM/YYYY">
-                            DD/MM/YYYY
-                        </option>
-
-                        <option value="MM/DD/YYYY">
-                            MM/DD/YYYY
-                        </option>
-
-                        <option value="YYYY-MM-DD">
-                            YYYY-MM-DD
-                        </option>
-
-                    </select>
-
-                    <label for="dateFormat">
-                        Date Format *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <select
-                        id="timeZone"
-                        name="timeZone"
-                        required>
-
-                        <option value="Asia/Kolkata">
-                            Asia/Kolkata (IST)
-                        </option>
-
-                        <option value="Asia/Dubai">
-                            Asia/Dubai (GST)
-                        </option>
-
-                        <option value="UTC">
-                            UTC
-                        </option>
-
-                    </select>
-
-                    <label for="timeZone">
-                        Time Zone *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
             </div>
 
         </div>
 
 
-        <!-- ================================================
-             7. INVOICE INFORMATION
-             ================================================ -->
+        <!-- =================================================
+             8. COMPANY NOTES
+             ================================================= -->
         <div class="comp-form-section">
 
             <h2>
+
                 <span class="material-symbols-rounded">
-                    description
+                    notes
                 </span>
-                7. INVOICE & DOCUMENT SETTINGS
+
+                8. NOTES
+
             </h2>
 
-            <div class="comp-grid">
 
-                <div class="g-input-group">
+            <div class="g-input-group">
 
-                    <input
-                        type="text"
-                        id="invoicePrefix"
-                        name="invoicePrefix"
-                        placeholder=" "
-                        value="INV">
+                <textarea
+                    id="notes"
+                    name="notes"
+                    placeholder=" "
+                    rows="4"></textarea>
 
-                    <label for="invoicePrefix">
-                        Invoice Prefix
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="number"
-                        id="invoiceStart"
-                        name="invoiceStart"
-                        placeholder=" "
-                        value="1">
-
-                    <label for="invoiceStart">
-                        Invoice Number Start
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="quotationPrefix"
-                        name="quotationPrefix"
-                        placeholder=" "
-                        value="QT">
-
-                    <label for="quotationPrefix">
-                        Quotation Prefix
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="proformaPrefix"
-                        name="proformaPrefix"
-                        placeholder=" "
-                        value="PI">
-
-                    <label for="proformaPrefix">
-                        Proforma Prefix
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="receiptPrefix"
-                        name="receiptPrefix"
-                        placeholder=" "
-                        value="RC">
-
-                    <label for="receiptPrefix">
-                        Receipt Prefix
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="paymentPrefix"
-                        name="paymentPrefix"
-                        placeholder=" "
-                        value="PAY">
-
-                    <label for="paymentPrefix">
-                        Payment Prefix
-                    </label>
-
-                </div>
+                <label for="notes">
+                    Company Notes
+                </label>
 
             </div>
 
         </div>
 
 
-        <!-- ================================================
+        <!-- =================================================
              ACTIONS
-             ================================================ -->
+             ================================================= -->
         <div class="comp-footer-actions">
 
             <button
                 type="button"
                 class="comp-action-btn"
-                id="companyCancelBtn">
+                onclick="window.switchView('view-dashboard', null)">
 
                 Cancel
-
-            </button>
-
-
-            <button
-                type="button"
-                class="comp-action-btn"
-                id="companyEditBtn"
-                style="display:none;">
-
-                <span class="material-symbols-rounded">
-                    edit
-                </span>
-
-                Edit Company
 
             </button>
 
@@ -1179,7 +1090,9 @@
                     save
                 </span>
 
-                Save Company
+                <span id="companySaveText">
+                    Save Company
+                </span>
 
             </button>
 
@@ -1189,459 +1102,633 @@
 
 
     <!-- =====================================================
-         HIDDEN SAVED RECORD
+         HIDDEN IMPORT FILE
          ===================================================== -->
-    <div
-        id="companySavedMessage"
-        style="
-            display:none;
-            margin-top:16px;
-            padding:12px 16px;
-            border-radius:8px;
-            background:#e6f4ea;
-            color:#137333;
-            font-size:13px;
-        ">
-
-        Company profile saved successfully.
-
-    </div>
+    <input
+        type="file"
+        id="companyImportFile"
+        accept=".csv,.json"
+        hidden>
 
 </div>
 
 
 <!-- =========================================================
-     COMPANY MODULE SCRIPT
+     COMPANY MODULE JAVASCRIPT
+     
+     This script does NOT contain Firebase credentials.
+     It uses window.db if Firebase is already initialized
+     by index.html.
      ========================================================= -->
-<script type="module">
 
-/*
- * ============================================================
- * FIREBASE
- * ============================================================
- *
- * IMPORTANT:
- * Replace the import below with the SAME Firebase config
- * already used by your CoreBIQ application.
- *
- * If your index.html already exposes Firebase globally,
- * this module will use the existing objects instead.
- * ============================================================
- */
+<script>
 
-import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+(function () {
+
+    "use strict";
 
 
-// ------------------------------------------------------------
-// Firebase instance
-// ------------------------------------------------------------
+    /* =====================================================
+       STATE
+       ===================================================== */
 
-let companyDB = null;
-let companyUser = null;
-
-
-// Try existing global Firebase objects
-if (window.firebaseDB) {
-    companyDB = window.firebaseDB;
-}
-
-if (window.currentUser) {
-    companyUser = window.currentUser;
-}
+    let companyRecord = null;
+    let isEditMode = false;
+    let selectedLogoFile = null;
 
 
-// ------------------------------------------------------------
-// COMPANY CONSTANT
-// One company per application/user
-// ------------------------------------------------------------
+    /* =====================================================
+       CAPITALIZE FIRST LETTER OF EACH WORD
+       Example:
+       "cm admin" → "Cm Admin"
+       "corebiq private limited" → "Corebiq Private Limited"
+       ===================================================== */
 
-const COMPANY_DOC_ID = "company_profile";
+    function capitalizeWords(value) {
 
+        if (!value) return "";
 
-// ------------------------------------------------------------
-// Helpers
-// ------------------------------------------------------------
+        return value
+            .toLowerCase()
+            .replace(/\b\w/g, function (char) {
+                return char.toUpperCase();
+            });
 
-const $ = id => document.getElementById(id);
-
-
-// ------------------------------------------------------------
-// Capitalize text
-// Every word first letter uppercase
-// ------------------------------------------------------------
-
-function capitalizeWords(value) {
-
-    if (!value) return "";
-
-    return value
-        .toLowerCase()
-        .replace(/\s+/g, " ")
-        .trim()
-        .replace(/\b\w/g, char => char.toUpperCase());
-
-}
+    }
 
 
-// ------------------------------------------------------------
-// Apply capitalization automatically
-// ------------------------------------------------------------
+    /* =====================================================
+       FIELD CAPITALIZATION
+       ===================================================== */
 
-const capitalizeFields = [
-    "companyName",
-    "legalName",
-    "city",
-    "district",
-    "state",
-    "gstState",
-    "businessType",
-    "industry",
-    "pinCode",
-    "addressLine1",
-    "supportEmail"
-];
+    function setupCapitalization() {
+
+        const ids = [
+            "companyName",
+            "legalName",
+            "city",
+            "state",
+            "gstState",
+            "address",
+            "notes",
+            "licenseAuthority"
+        ];
+
+        ids.forEach(function (id) {
+
+            const field = document.getElementById(id);
+
+            if (!field) return;
+
+            field.addEventListener("blur", function () {
+
+                if (
+                    field.tagName === "TEXTAREA" ||
+                    field.type === "text"
+                ) {
+
+                    field.value = capitalizeWords(field.value);
+
+                }
+
+            });
+
+        });
 
 
-capitalizeFields.forEach(id => {
+        /* GST / PAN / TAN etc. */
 
-    const field = $(id);
+        const uppercaseIds = [
+            "gstin",
+            "pan",
+            "tan",
+            "cin",
+            "udyam",
+            "iec"
+        ];
 
-    if (!field) return;
+        uppercaseIds.forEach(function (id) {
 
-    field.addEventListener("blur", () => {
+            const field = document.getElementById(id);
 
-        if (
-            field.type !== "email" &&
-            field.id !== "supportEmail"
-        ) {
+            if (!field) return;
 
-            field.value = capitalizeWords(field.value);
+            field.addEventListener("input", function () {
+
+                field.value = field.value
+                    .toUpperCase();
+
+            });
+
+        });
+
+    }
+
+
+    /* =====================================================
+       FIREBASE DATABASE
+       ===================================================== */
+
+    function getDatabase() {
+
+        if (window.db) {
+            return window.db;
+        }
+
+        if (window.firebaseDB) {
+            return window.firebaseDB;
+        }
+
+        return null;
+
+    }
+
+
+    /* =====================================================
+       GET CURRENT USER
+       ===================================================== */
+
+    function getCurrentUser() {
+
+        try {
+
+            if (
+                window.auth &&
+                window.auth.currentUser
+            ) {
+
+                return window.auth.currentUser;
+
+            }
+
+        } catch (error) {
+
+            console.warn(
+                "Firebase Auth not available",
+                error
+            );
 
         }
 
-    });
+        return null;
 
-});
-
-
-// ------------------------------------------------------------
-// Uppercase registration numbers
-// ------------------------------------------------------------
-
-[
-    "pan",
-    "tan",
-    "gstin",
-    "cin",
-    "udyam",
-    "iec",
-    "fssai",
-    "trn",
-    "tradeLicense",
-    "invoicePrefix",
-    "quotationPrefix",
-    "proformaPrefix",
-    "receiptPrefix",
-    "paymentPrefix"
-].forEach(id => {
-
-    const field = $(id);
-
-    if (!field) return;
-
-    field.addEventListener("input", () => {
-
-        field.value = field.value.toUpperCase();
-
-    });
-
-});
+    }
 
 
-// ------------------------------------------------------------
-// Logo upload
-// ------------------------------------------------------------
+    /* =====================================================
+       LOAD COMPANY
+       
+       One company profile per application/user.
+       Firestore path:
 
-$("logoUploadBox")?.addEventListener("click", () => {
+       companies/{uid}
 
-    $("companyLogo")?.click();
+       If you want application-specific data later,
+       the same document can contain appId.
+       ===================================================== */
 
-});
+    async function loadCompany() {
 
+        const db = getDatabase();
+        const user = getCurrentUser();
 
-$("companyLogo")?.addEventListener("change", event => {
+        if (!db || !user) {
 
-    const file = event.target.files?.[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = e => {
-
-        $("companyLogoPreview").src = e.target.result;
-
-        $("companyLogoPreview").style.display = "block";
-
-        $("noLogoText").style.display = "none";
-
-    };
-
-    reader.readAsDataURL(file);
-
-});
-
-
-// ------------------------------------------------------------
-// Load company
-// ------------------------------------------------------------
-
-async function loadCompany() {
-
-    try {
-
-        if (!companyDB) {
-
-            console.warn(
-                "Firebase Firestore instance not found."
-            );
-
-            return;
-
-        }
-
-        if (!companyUser) {
-
-            console.warn(
-                "Firebase user not found."
-            );
+            setNewCompanyMode();
 
             return;
 
         }
 
 
-        /*
-         * Recommended structure:
-         *
-         * users
-         *   └── USER_UID
-         *        └── company
-         *             └── company_profile
-         */
+        try {
 
-        const companyRef = doc(
-            companyDB,
-            "users",
-            companyUser.uid,
-            "company",
-            COMPANY_DOC_ID
-        );
+            /*
+             * Firebase v9 modular API expected:
+             *
+             * window.getDoc
+             * window.doc
+             *
+             * These can be exposed from your main Firebase
+             * initialization file.
+             */
+
+            if (
+                typeof window.doc !== "function" ||
+                typeof window.getDoc !== "function"
+            ) {
+
+                console.warn(
+                    "Firestore helpers are not exposed by index.html."
+                );
+
+                setNewCompanyMode();
+
+                return;
+
+            }
 
 
-        const snapshot = await getDoc(companyRef);
+            const companyRef = window.doc(
+                db,
+                "companies",
+                user.uid
+            );
 
 
-        if (snapshot.exists()) {
+            const snapshot =
+                await window.getDoc(companyRef);
 
-            populateCompany(snapshot.data());
 
-            setEditMode(true);
+            if (snapshot.exists()) {
+
+                companyRecord = {
+                    id: snapshot.id,
+                    ...snapshot.data()
+                };
+
+                isEditMode = true;
+
+                populateCompanyForm(companyRecord);
+
+                updateModeUI();
+
+            } else {
+
+                setNewCompanyMode();
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Company load error:",
+                error
+            );
+
+            setNewCompanyMode();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       NEW COMPANY MODE
+       ===================================================== */
+
+    function setNewCompanyMode() {
+
+        companyRecord = null;
+        isEditMode = false;
+
+        updateModeUI();
+
+    }
+
+
+    /* =====================================================
+       MODE UI
+       ===================================================== */
+
+    function updateModeUI() {
+
+        const addBtnText =
+            document.getElementById(
+                "companyAddBtnText"
+            );
+
+        const saveText =
+            document.getElementById(
+                "companySaveText"
+            );
+
+        const status =
+            document.getElementById(
+                "companyRecordStatus"
+            );
+
+        const description =
+            document.getElementById(
+                "companyPageDescription"
+            );
+
+        if (isEditMode) {
+
+            if (addBtnText)
+                addBtnText.textContent = "Edit Company";
+
+            if (saveText)
+                saveText.textContent = "Update Company";
+
+            if (status)
+                status.textContent =
+                    companyRecord.companyName ||
+                    "Company Profile";
+
+            if (description)
+                description.textContent =
+                    "Edit the company profile used by this application";
 
         } else {
 
-            setCreateMode();
+            if (addBtnText)
+                addBtnText.textContent = "Add Company";
+
+            if (saveText)
+                saveText.textContent = "Save Company";
+
+            if (status)
+                status.textContent = "New Company";
+
+            if (description)
+                description.textContent =
+                    "Create your company profile for this application";
 
         }
-
-    } catch (error) {
-
-        console.error(
-            "Company load error:",
-            error
-        );
-
-    }
-
-}
-
-
-// ------------------------------------------------------------
-// Populate form
-// ------------------------------------------------------------
-
-function populateCompany(data) {
-
-    Object.keys(data).forEach(key => {
-
-        const field = $(key);
-
-        if (!field) return;
-
-        if (
-            field.type === "file" ||
-            key === "logo"
-        ) {
-            return;
-        }
-
-        if (field.tagName === "SELECT") {
-
-            field.value = data[key] ?? "";
-
-        } else {
-
-            field.value = data[key] ?? "";
-
-        }
-
-    });
-
-
-    // Logo
-    if (data.logo) {
-
-        $("companyLogoPreview").src = data.logo;
-
-        $("companyLogoPreview").style.display = "block";
-
-        $("noLogoText").style.display = "none";
 
     }
 
 
-    $("companyRecordStatus").textContent =
-        data.companyId || "Company Profile";
+    /* =====================================================
+       POPULATE FORM
+       ===================================================== */
+
+    function populateCompanyForm(data) {
+
+        const fields = [
+            "companyName",
+            "legalName",
+            "businessType",
+            "industry",
+            "companyStatus",
+            "establishedDate",
+            "email",
+            "supportEmail",
+            "phone",
+            "whatsapp",
+            "website",
+            "country",
+            "pin",
+            "address",
+            "city",
+            "state",
+            "gstin",
+            "pan",
+            "tan",
+            "gstType",
+            "gstState",
+            "cin",
+            "udyam",
+            "iec",
+            "fssai",
+            "trn",
+            "tradeLicense",
+            "licenseAuthority",
+            "establishmentCard",
+            "currency",
+            "financialYear",
+            "notes"
+        ];
 
 
-    $("companyPageSubtitle").textContent =
-        "Company profile saved for this application.";
+        fields.forEach(function (fieldName) {
 
-}
+            const field =
+                document.getElementById(fieldName);
 
+            if (!field) return;
 
-// ------------------------------------------------------------
-// Create mode
-// ------------------------------------------------------------
+            if (
+                data[fieldName] !== undefined &&
+                data[fieldName] !== null
+            ) {
 
-function setCreateMode() {
+                field.value = data[fieldName];
 
-    $("companyPageTitle").textContent =
-        "CREATE COMPANY PROFILE";
+            }
 
-    $("companyPageSubtitle").textContent =
-        "Add the company profile used throughout this application.";
-
-    $("companyRecordStatus").textContent =
-        "New Company";
-
-    $("companySaveBtn").style.display =
-        "inline-flex";
-
-    $("companyEditBtn").style.display =
-        "none";
-
-    enableForm(true);
-
-}
+        });
 
 
-// ------------------------------------------------------------
-// Edit mode
-// ------------------------------------------------------------
+        /* Logo */
 
-function setEditMode() {
+        if (data.logoUrl) {
 
-    $("companyPageTitle").textContent =
-        "COMPANY PROFILE";
+            showLogoPreview(data.logoUrl);
 
-    $("companyPageSubtitle").textContent =
-        "Edit the company profile saved for this application.";
-
-    $("companyRecordStatus").textContent =
-        "Saved Company";
-
-    $("companySaveBtn").style.display =
-        "none";
-
-    $("companyEditBtn").style.display =
-        "inline-flex";
-
-    enableForm(false);
-
-}
-
-
-// ------------------------------------------------------------
-// Enable / Disable form
-// ------------------------------------------------------------
-
-function enableForm(enabled) {
-
-    const form = $("companyForm");
-
-    if (!form) return;
-
-    form.querySelectorAll(
-        "input, select, textarea"
-    ).forEach(field => {
-
-        if (field.id === "companySearch") return;
-
-        field.disabled = !enabled;
-
-    });
-
-
-    $("companyLogo").disabled = !enabled;
-
-}
-
-
-// ------------------------------------------------------------
-// Edit button
-// ------------------------------------------------------------
-
-$("companyEditBtn")?.addEventListener(
-    "click",
-    () => {
-
-        enableForm(true);
-
-        $("companyEditBtn").style.display =
-            "none";
-
-        $("companySaveBtn").style.display =
-            "inline-flex";
-
-        $("companyPageTitle").textContent =
-            "EDIT COMPANY PROFILE";
+        }
 
     }
-);
 
 
-// ------------------------------------------------------------
-// SAVE COMPANY
-// ------------------------------------------------------------
+    /* =====================================================
+       COLLECT FORM DATA
+       ===================================================== */
 
-$("companyForm")?.addEventListener(
-    "submit",
-    async event => {
+    function collectFormData() {
+
+        return {
+
+            companyName:
+                capitalizeWords(
+                    document.getElementById(
+                        "companyName"
+                    ).value.trim()
+                ),
+
+            legalName:
+                capitalizeWords(
+                    document.getElementById(
+                        "legalName"
+                    ).value.trim()
+                ),
+
+            businessType:
+                document.getElementById(
+                    "businessType"
+                ).value,
+
+            industry:
+                document.getElementById(
+                    "industry"
+                ).value,
+
+            companyStatus:
+                document.getElementById(
+                    "companyStatus"
+                ).value,
+
+            establishedDate:
+                document.getElementById(
+                    "establishedDate"
+                ).value,
+
+            email:
+                document.getElementById(
+                    "email"
+                ).value.trim(),
+
+            supportEmail:
+                document.getElementById(
+                    "supportEmail"
+                ).value.trim(),
+
+            phone:
+                document.getElementById(
+                    "phone"
+                ).value.trim(),
+
+            whatsapp:
+                document.getElementById(
+                    "whatsapp"
+                ).value.trim(),
+
+            website:
+                document.getElementById(
+                    "website"
+                ).value.trim(),
+
+            country:
+                document.getElementById(
+                    "country"
+                ).value,
+
+            pin:
+                document.getElementById(
+                    "pin"
+                ).value.trim(),
+
+            address:
+                capitalizeWords(
+                    document.getElementById(
+                        "address"
+                    ).value.trim()
+                ),
+
+            city:
+                capitalizeWords(
+                    document.getElementById(
+                        "city"
+                    ).value.trim()
+                ),
+
+            state:
+                capitalizeWords(
+                    document.getElementById(
+                        "state"
+                    ).value.trim()
+                ),
+
+            gstin:
+                document.getElementById(
+                    "gstin"
+                ).value.trim().toUpperCase(),
+
+            pan:
+                document.getElementById(
+                    "pan"
+                ).value.trim().toUpperCase(),
+
+            tan:
+                document.getElementById(
+                    "tan"
+                ).value.trim().toUpperCase(),
+
+            gstType:
+                document.getElementById(
+                    "gstType"
+                ).value,
+
+            gstState:
+                capitalizeWords(
+                    document.getElementById(
+                        "gstState"
+                    ).value.trim()
+                ),
+
+            cin:
+                document.getElementById(
+                    "cin"
+                ).value.trim().toUpperCase(),
+
+            udyam:
+                document.getElementById(
+                    "udyam"
+                ).value.trim().toUpperCase(),
+
+            iec:
+                document.getElementById(
+                    "iec"
+                ).value.trim().toUpperCase(),
+
+            fssai:
+                document.getElementById(
+                    "fssai"
+                ).value.trim(),
+
+            trn:
+                document.getElementById(
+                    "trn"
+                ).value.trim(),
+
+            tradeLicense:
+                document.getElementById(
+                    "tradeLicense"
+                ).value.trim(),
+
+            licenseAuthority:
+                capitalizeWords(
+                    document.getElementById(
+                        "licenseAuthority"
+                    ).value.trim()
+                ),
+
+            establishmentCard:
+                document.getElementById(
+                    "establishmentCard"
+                ).value.trim(),
+
+            currency:
+                document.getElementById(
+                    "currency"
+                ).value,
+
+            financialYear:
+                document.getElementById(
+                    "financialYear"
+                ).value,
+
+            notes:
+                capitalizeWords(
+                    document.getElementById(
+                        "notes"
+                    ).value.trim()
+                ),
+
+            updatedAt:
+                new Date().toISOString()
+
+        };
+
+    }
+
+
+    /* =====================================================
+       SAVE COMPANY
+       ===================================================== */
+
+    async function saveCompany(event) {
 
         event.preventDefault();
 
 
-        const form = event.currentTarget;
+        const form =
+            document.getElementById(
+                "companyForm"
+            );
 
 
-        // Native validation
         if (!form.checkValidity()) {
 
             form.reportValidity();
@@ -1651,10 +1738,18 @@ $("companyForm")?.addEventListener(
         }
 
 
-        if (!companyDB) {
+        const db = getDatabase();
+        const user = getCurrentUser();
+
+
+        /*
+         * Require Firebase login.
+         */
+
+        if (!db || !user) {
 
             alert(
-                "Firebase is not connected."
+                "Please sign in before saving the company profile."
             );
 
             return;
@@ -1662,239 +1757,132 @@ $("companyForm")?.addEventListener(
         }
 
 
-        if (!companyUser) {
+        const data = collectFormData();
+
+
+        if (!data.companyName) {
 
             alert(
-                "Please login before saving the company."
+                "Company Name is required."
             );
+
+            document
+                .getElementById("companyName")
+                .focus();
 
             return;
 
         }
 
 
-        const saveButton =
-            $("companySaveBtn");
+        if (!data.legalName) {
 
+            alert(
+                "Legal Name is required."
+            );
 
-        saveButton.disabled = true;
+            document
+                .getElementById("legalName")
+                .focus();
 
-        saveButton.innerHTML = `
-            <span class="material-symbols-rounded">
-                progress_activity
-            </span>
-            Saving...
-        `;
+            return;
+
+        }
 
 
         try {
 
-            // ------------------------------------------------
-            // Prepare data
-            // ------------------------------------------------
+            const saveBtn =
+                document.getElementById(
+                    "companySaveBtn"
+                );
 
-            const data = {
-
-                companyId:
-                    "COMPANY-001",
-
-                companyName:
-                    capitalizeWords(
-                        $("companyName").value
-                    ),
-
-                legalName:
-                    capitalizeWords(
-                        $("legalName").value
-                    ),
-
-                businessType:
-                    $("businessType").value,
-
-                industry:
-                    $("industry").value,
-
-                companyStatus:
-                    $("companyStatus").value,
-
-                establishedDate:
-                    $("establishedDate").value,
-
-                companyEmail:
-                    $("companyEmail").value.trim(),
-
-                supportEmail:
-                    $("supportEmail").value.trim(),
-
-                phone:
-                    $("phone").value.trim(),
-
-                alternatePhone:
-                    $("alternatePhone").value.trim(),
-
-                whatsapp:
-                    $("whatsapp").value.trim(),
-
-                website:
-                    $("website").value.trim(),
-
-                country:
-                    $("country").value,
-
-                pinCode:
-                    capitalizeWords(
-                        $("pinCode").value
-                    ),
-
-                addressLine1:
-                    capitalizeWords(
-                        $("addressLine1").value
-                    ),
-
-                city:
-                    capitalizeWords(
-                        $("city").value
-                    ),
-
-                district:
-                    capitalizeWords(
-                        $("district").value
-                    ),
-
-                state:
-                    capitalizeWords(
-                        $("state").value
-                    ),
-
-                pan:
-                    $("pan").value.toUpperCase(),
-
-                tan:
-                    $("tan").value.toUpperCase(),
-
-                gstin:
-                    $("gstin").value.toUpperCase(),
-
-                gstRegistrationType:
-                    $("gstRegistrationType").value,
-
-                gstState:
-                    capitalizeWords(
-                        $("gstState").value
-                    ),
-
-                cin:
-                    $("cin").value.toUpperCase(),
-
-                udyam:
-                    $("udyam").value.toUpperCase(),
-
-                iec:
-                    $("iec").value.toUpperCase(),
-
-                fssai:
-                    $("fssai").value.toUpperCase(),
-
-                trn:
-                    $("trn").value.toUpperCase(),
-
-                tradeLicense:
-                    $("tradeLicense").value.toUpperCase(),
-
-                currency:
-                    $("currency").value,
-
-                financialYear:
-                    $("financialYear").value,
-
-                dateFormat:
-                    $("dateFormat").value,
-
-                timeZone:
-                    $("timeZone").value,
-
-                invoicePrefix:
-                    $("invoicePrefix").value.toUpperCase(),
-
-                invoiceStart:
-                    Number(
-                        $("invoiceStart").value || 1
-                    ),
-
-                quotationPrefix:
-                    $("quotationPrefix").value.toUpperCase(),
-
-                proformaPrefix:
-                    $("proformaPrefix").value.toUpperCase(),
-
-                receiptPrefix:
-                    $("receiptPrefix").value.toUpperCase(),
-
-                paymentPrefix:
-                    $("paymentPrefix").value.toUpperCase(),
-
-                updatedAt:
-                    serverTimestamp()
-
-            };
+            saveBtn.disabled = true;
 
 
-            // ------------------------------------------------
-            // Logo
-            // ------------------------------------------------
+            /*
+             * Upload logo if Firebase Storage helpers
+             * are available.
+             */
 
-            const logoFile =
-                $("companyLogo")?.files?.[0];
+            if (selectedLogoFile) {
 
+                const logoUrl =
+                    await uploadCompanyLogo(
+                        selectedLogoFile,
+                        user.uid
+                    );
 
-            if (logoFile) {
+                if (logoUrl) {
 
-                /*
-                 * This stores a data URL for now.
-                 *
-                 * For production, I recommend Firebase Storage
-                 * and saving only the download URL in Firestore.
-                 */
+                    data.logoUrl = logoUrl;
 
-                const logoData =
-                    await fileToDataURL(logoFile);
-
-                data.logo = logoData;
+                }
 
             }
 
 
-            // ------------------------------------------------
-            // Firestore document
-            // ------------------------------------------------
+            /*
+             * Firestore document:
+             *
+             * companies/{uid}
+             *
+             * This guarantees one company profile per
+             * authenticated application user.
+             */
 
-            const companyRef = doc(
-                companyDB,
-                "users",
-                companyUser.uid,
-                "company",
-                COMPANY_DOC_ID
-            );
+            if (
+                typeof window.doc !== "function" ||
+                typeof window.setDoc !== "function"
+            ) {
+
+                throw new Error(
+                    "Firestore functions are not available."
+                );
+
+            }
 
 
-            await setDoc(
+            const companyRef =
+                window.doc(
+                    db,
+                    "companies",
+                    user.uid
+                );
+
+
+            data.uid = user.uid;
+
+            data.createdAt =
+                companyRecord &&
+                companyRecord.createdAt
+                    ? companyRecord.createdAt
+                    : new Date().toISOString();
+
+
+            await window.setDoc(
                 companyRef,
                 data,
-                { merge: true }
+                {
+                    merge: true
+                }
             );
 
 
-            // ------------------------------------------------
-            // Success
-            // ------------------------------------------------
+            companyRecord = {
+                id: user.uid,
+                ...data
+            };
 
-            $("companySavedMessage").style.display =
-                "block";
 
-            $("companySavedMessage").textContent =
-                "Company profile saved successfully.";
+            isEditMode = true;
 
-            setEditMode();
+            updateModeUI();
+
+
+            alert(
+                "Company profile saved successfully."
+            );
 
 
         } catch (error) {
@@ -1911,281 +1899,573 @@ $("companyForm")?.addEventListener(
 
         } finally {
 
-            saveButton.disabled = false;
+            const saveBtn =
+                document.getElementById(
+                    "companySaveBtn"
+                );
 
-            saveButton.innerHTML = `
-                <span class="material-symbols-rounded">
-                    save
-                </span>
-                Save Company
-            `;
+            if (saveBtn)
+                saveBtn.disabled = false;
 
         }
 
     }
-);
 
 
-// ------------------------------------------------------------
-// File → Data URL
-// ------------------------------------------------------------
+    /* =====================================================
+       LOGO UPLOAD
+       ===================================================== */
 
-function fileToDataURL(file) {
+    function setupLogoUpload() {
 
-    return new Promise(
-        (resolve, reject) => {
-
-            const reader =
-                new FileReader();
-
-            reader.onload =
-                () => resolve(reader.result);
-
-            reader.onerror =
-                reject;
-
-            reader.readAsDataURL(file);
-
-        }
-    );
-
-}
-
-
-// ------------------------------------------------------------
-// Cancel
-// ------------------------------------------------------------
-
-$("companyCancelBtn")?.addEventListener(
-    "click",
-    () => {
-
-        if (
-            typeof window.switchView ===
-            "function"
-        ) {
-
-            window.switchView(
-                "view-dashboard",
-                null
+        const box =
+            document.getElementById(
+                "companyLogoUploadBox"
             );
 
-        }
-
-    }
-);
-
-
-// ------------------------------------------------------------
-// Search
-// ------------------------------------------------------------
-
-$("companySearch")?.addEventListener(
-    "input",
-    event => {
-
-        const query =
-            event.target.value
-                .toLowerCase()
-                .trim();
-
-        const form =
-            $("companyForm");
-
-        if (!query) {
-
-            form.style.display =
-                "block";
-
-            return;
-
-        }
+        const input =
+            document.getElementById(
+                "companyLogo"
+            );
 
 
-        const text =
-            form.innerText.toLowerCase();
+        if (!box || !input) return;
 
 
-        form.style.display =
-            text.includes(query)
-                ? "block"
-                : "none";
+        box.addEventListener(
+            "click",
+            function () {
 
-    }
-);
+                input.click();
 
-
-// ------------------------------------------------------------
-// Import
-// ------------------------------------------------------------
-
-$("companyImportBtn")?.addEventListener(
-    "click",
-    () => {
-
-        $("companyImportFile")?.click();
-
-    }
-);
+            }
+        );
 
 
-$("companyImportFile")?.addEventListener(
-    "change",
-    event => {
+        input.addEventListener(
+            "change",
+            function () {
 
-        const file =
-            event.target.files?.[0];
+                const file =
+                    input.files &&
+                    input.files[0];
 
-        if (!file) return;
+                if (!file) return;
 
-        alert(
-            "CSV selected: " +
-            file.name +
-            "\n\nCSV import mapping can be connected to the company fields."
+                selectedLogoFile = file;
+
+                const reader =
+                    new FileReader();
+
+                reader.onload =
+                    function (event) {
+
+                        showLogoPreview(
+                            event.target.result
+                        );
+
+                    };
+
+                reader.readAsDataURL(file);
+
+            }
         );
 
     }
-);
 
 
-// ------------------------------------------------------------
-// Export
-// ------------------------------------------------------------
+    /* =====================================================
+       LOGO PREVIEW
+       ===================================================== */
 
-$("companyExportBtn")?.addEventListener(
-    "click",
-    () => {
+    function showLogoPreview(src) {
 
-        const rows = [
+        const img =
+            document.getElementById(
+                "companyLogoPreview"
+            );
 
-            ["Field", "Value"],
+        const icon =
+            document.getElementById(
+                "companyLogoPreviewIcon"
+            );
 
-            [
-                "Company Name",
-                $("companyName").value
-            ],
-
-            [
-                "Legal Name",
-                $("legalName").value
-            ],
-
-            [
-                "Business Type",
-                $("businessType").value
-            ],
-
-            [
-                "Industry",
-                $("industry").value
-            ],
-
-            [
-                "GSTIN",
-                $("gstin").value
-            ],
-
-            [
-                "PAN",
-                $("pan").value
-            ],
-
-            [
-                "Email",
-                $("companyEmail").value
-            ],
-
-            [
-                "Phone",
-                $("phone").value
-            ],
-
-            [
-                "Country",
-                $("country").value
-            ],
-
-            [
-                "City",
-                $("city").value
-            ],
-
-            [
-                "State",
-                $("state").value
-            ]
-
-        ];
-
-
-        const csv =
-            rows
-                .map(row =>
-                    row
-                        .map(value =>
-                            `"${String(value ?? "")
-                                .replace(/"/g, '""')}"`
-                        )
-                        .join(",")
-                )
-                .join("\n");
-
-
-        const blob =
-            new Blob(
-                [csv],
-                { type: "text/csv;charset=utf-8;" }
+        const text =
+            document.getElementById(
+                "companyLogoPreviewText"
             );
 
 
-        const url =
-            URL.createObjectURL(blob);
+        if (!img) return;
 
 
-        const a =
-            document.createElement("a");
+        img.src = src;
 
-        a.href = url;
-
-        a.download =
-            "company-profile.csv";
-
-        a.click();
-
-        URL.revokeObjectURL(url);
-
-    }
-);
+        img.style.display =
+            "block";
 
 
-// ------------------------------------------------------------
-// Add Company
-// Because this app allows ONLY ONE company,
-// Add Company opens the form only when no company exists.
-// ------------------------------------------------------------
+        if (icon)
+            icon.style.display =
+                "none";
 
-$("companyAddBtn")?.addEventListener(
-    "click",
-    () => {
 
-        setCreateMode();
-
-        $("companyForm").reset();
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        if (text)
+            text.textContent =
+                "Company logo";
 
     }
-);
 
 
-// ------------------------------------------------------------
-// Initial load
-// ------------------------------------------------------------
+    /* =====================================================
+       FIREBASE STORAGE LOGO
+       
+       Requires these helpers from index.html:
+       
+       window.storage
+       window.ref
+       window.uploadBytes
+       window.getDownloadURL
+       ===================================================== */
 
-loadCompany();
+    async function uploadCompanyLogo(
+        file,
+        uid
+    ) {
 
+        try {
+
+            if (
+                !window.storage ||
+                typeof window.ref !== "function" ||
+                typeof window.uploadBytes !== "function" ||
+                typeof window.getDownloadURL !== "function"
+            ) {
+
+                console.warn(
+                    "Firebase Storage is not configured."
+                );
+
+                return null;
+
+            }
+
+
+            const extension =
+                file.name
+                    .split(".")
+                    .pop()
+                    .toLowerCase();
+
+
+            const logoRef =
+                window.ref(
+                    window.storage,
+                    "companies/" +
+                    uid +
+                    "/logo." +
+                    extension
+                );
+
+
+            await window.uploadBytes(
+                logoRef,
+                file
+            );
+
+
+            return await window.getDownloadURL(
+                logoRef
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Logo upload error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    function setupSearch() {
+
+        const search =
+            document.getElementById(
+                "companySearch"
+            );
+
+        if (!search) return;
+
+
+        search.addEventListener(
+            "input",
+            function () {
+
+                const query =
+                    search.value
+                        .trim()
+                        .toLowerCase();
+
+
+                if (!companyRecord) return;
+
+
+                const name =
+                    String(
+                        companyRecord.companyName || ""
+                    ).toLowerCase();
+
+
+                const legal =
+                    String(
+                        companyRecord.legalName || ""
+                    ).toLowerCase();
+
+
+                if (
+                    query &&
+                    !name.includes(query) &&
+                    !legal.includes(query)
+                ) {
+
+                    document
+                        .getElementById(
+                            "companyForm"
+                        )
+                        .style.opacity = "0.45";
+
+                } else {
+
+                    document
+                        .getElementById(
+                            "companyForm"
+                        )
+                        .style.opacity = "1";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       ADD COMPANY BUTTON
+       
+       If an existing company is present:
+       Add button becomes Edit Company.
+       ===================================================== */
+
+    function setupAddButton() {
+
+        const btn =
+            document.getElementById(
+                "companyAddBtn"
+            );
+
+        if (!btn) return;
+
+
+        btn.addEventListener(
+            "click",
+            function () {
+
+                if (isEditMode) {
+
+                    /*
+                     * Existing profile → edit mode.
+                     */
+
+                    document
+                        .getElementById(
+                            "companyName"
+                        )
+                        .focus();
+
+                    return;
+
+                }
+
+
+                document
+                    .getElementById(
+                        "companyName"
+                    )
+                    .focus();
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       IMPORT
+       ===================================================== */
+
+    function setupImport() {
+
+        const button =
+            document.getElementById(
+                "companyImportBtn"
+            );
+
+        const input =
+            document.getElementById(
+                "companyImportFile"
+            );
+
+
+        if (!button || !input) return;
+
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                input.click();
+
+            }
+        );
+
+
+        input.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    input.files &&
+                    input.files[0];
+
+                if (!file) return;
+
+
+                alert(
+                    "Import selected: " +
+                    file.name +
+                    "\n\nCSV/JSON import processing can be connected to your application data schema."
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       EXPORT
+       ===================================================== */
+
+    function setupExport() {
+
+        const button =
+            document.getElementById(
+                "companyExportBtn"
+            );
+
+        if (!button) return;
+
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                if (!companyRecord) {
+
+                    alert(
+                        "No company profile available to export."
+                    );
+
+                    return;
+
+                }
+
+
+                const data =
+                    JSON.stringify(
+                        companyRecord,
+                        null,
+                        2
+                    );
+
+
+                const blob =
+                    new Blob(
+                        [data],
+                        {
+                            type:
+                                "application/json"
+                        }
+                    );
+
+
+                const url =
+                    URL.createObjectURL(
+                        blob
+                    );
+
+
+                const a =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                a.href = url;
+
+                a.download =
+                    "company-profile.json";
+
+
+                a.click();
+
+
+                URL.revokeObjectURL(
+                    url
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       FILTER / SORT
+       ===================================================== */
+
+    function setupFilterSort() {
+
+        const filter =
+            document.getElementById(
+                "companyFilterBtn"
+            );
+
+        const sort =
+            document.getElementById(
+                "companySortBtn"
+            );
+
+
+        if (filter) {
+
+            filter.addEventListener(
+                "click",
+                function () {
+
+                    alert(
+                        "Company filter options can be connected here."
+                    );
+
+                }
+            );
+
+        }
+
+
+        if (sort) {
+
+            sort.addEventListener(
+                "click",
+                function () {
+
+                    alert(
+                        "Company sort options can be connected here."
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       INITIALIZE
+       ===================================================== */
+
+    async function initCompanyModule() {
+
+        setupCapitalization();
+
+        setupLogoUpload();
+
+        setupSearch();
+
+        setupAddButton();
+
+        setupImport();
+
+        setupExport();
+
+        setupFilterSort();
+
+
+        const form =
+            document.getElementById(
+                "companyForm"
+            );
+
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                saveCompany
+            );
+
+        }
+
+
+        await loadCompany();
+
+    }
+
+
+    /* =====================================================
+       GLOBAL INITIALIZER
+       
+       Important for dynamically loaded modules.
+       index.html can call:
+
+       window.initCompanyModule();
+       ===================================================== */
+
+    window.initCompanyModule =
+        initCompanyModule;
+
+
+    /*
+     * If this file is loaded directly as a complete page,
+     * initialize automatically.
+     */
+
+    if (
+        document.readyState === "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initCompanyModule
+        );
+
+    } else {
+
+        initCompanyModule();
+
+    }
+
+})();
 
 </script>
