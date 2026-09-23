@@ -1,250 +1,1816 @@
-<style>
-    :root {
-        --primary: #0F4C81; 
-        --primary-hover: #0a3153;
-        --border: #dadce0;
-        --text-main: #202124;
-        --text-muted: #5f6368;
-        --error: #d93025;
-        --bg: #f0f4f9;
-        --card-bg: #ffffff;
+/* =========================================================
+   COREBIQ MASTER STYLE.CSS
+   Google Material / Google Forms Inspired UI
+   Shared across ALL modules
+   ========================================================= */
+
+
+/* =========================================================
+   01. CORE VARIABLES
+   ========================================================= */
+
+:root {
+    --primary: #4b8fd1;
+    --primary-dark: #3476b5;
+    --primary-light: #e8f0fe;
+
+    --text: #202124;
+    --text-secondary: #5f6368;
+    --text-muted: #80868b;
+
+    --border: #dadce0;
+    --border-light: #e8eaed;
+
+    --surface: #ffffff;
+    --surface-soft: #f8f9fa;
+    --surface-hover: #f1f3f4;
+
+    --success: #188038;
+    --success-bg: #e6f4ea;
+
+    --danger: #d93025;
+    --danger-bg: #fce8e6;
+
+    --warning: #f9ab00;
+    --warning-bg: #fef7e0;
+
+    --info: #1967d2;
+    --info-bg: #e8f0fe;
+
+    --shadow-sm:
+        0 1px 2px rgba(60, 64, 67, 0.10);
+
+    --shadow:
+        0 1px 3px rgba(60, 64, 67, 0.12);
+
+    --shadow-md:
+        0 2px 8px rgba(60, 64, 67, 0.15);
+
+    --radius-sm: 6px;
+    --radius: 8px;
+    --radius-lg: 12px;
+
+    --toolbar-height: 36px;
+
+    --font:
+        'Inter',
+        'Poppins',
+        Arial,
+        sans-serif;
+}
+
+
+/* =========================================================
+   02. GLOBAL RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--text);
+    background: #f8f9fa;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+input,
+select,
+textarea {
+    max-width: 100%;
+}
+
+::selection {
+    background: var(--primary-light);
+    color: var(--text);
+}
+
+
+/* =========================================================
+   03. COMMON MODULE CONTAINER
+   ========================================================= */
+
+.cb-module {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+    color: var(--text);
+
+    animation:
+        cbFadeIn 0.3s ease-out;
+}
+
+@keyframes cbFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-    
-    body {
-        background-color: var(--bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        color: var(--text-main);
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   04. MODULE HEADER
+   ========================================================= */
+
+.cb-module-header {
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.cb-module-header h1 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--primary-dark);
+}
+
+.cb-module-header p {
+    margin: 0 0 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.cb-record-id {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 14px;
+
+    border-radius: 16px;
+
+    background: var(--primary-light);
+    color: var(--info);
+
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   05. COMMON TOOLBAR
+   ========================================================= */
+
+.cb-toolbar {
+    position: sticky;
+    top: 10px;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    width: 100%;
+
+    padding: 12px 16px;
+
+    margin-bottom: 24px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.cb-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex: 1;
+    min-width: 250px;
+}
+
+.cb-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   06. ICON BUTTON
+   ========================================================= */
+
+.cb-icon-btn {
+    display: grid;
+    place-items: center;
+
+    width: 36px;
+    height: 36px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--text-secondary);
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.cb-icon-btn:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+.cb-icon-btn:active {
+    transform: scale(0.95);
+}
+
+.cb-icon-btn .material-symbols-rounded {
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   07. SEARCH
+   ========================================================= */
+
+.cb-search {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    flex: 1;
+    max-width: 320px;
+
+    height: 36px;
+
+    padding: 0 12px;
+
+    background: var(--surface-soft);
+
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+
+    transition:
+        background 0.2s ease,
+        border 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.cb-search:focus-within {
+    background: var(--surface);
+    border-color: var(--primary);
+    box-shadow:
+        0 0 0 2px rgba(75, 143, 209, 0.12);
+}
+
+.cb-search .material-symbols-rounded {
+    flex-shrink: 0;
+
+    color: var(--text-secondary);
+    font-size: 19px;
+}
+
+.cb-search input {
+    width: 100%;
+
+    padding: 8px;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+.cb-search input::placeholder {
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   08. COMMON ACTION BUTTON
+   ========================================================= */
+
+.cb-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    min-height: 36px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    background: var(--surface);
+    color: #3c4043;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
+}
+
+.cb-action-btn:hover {
+    background: var(--surface-soft);
+    border-color: #c7cacf;
+}
+
+.cb-action-btn:active {
+    transform: translateY(1px);
+}
+
+.cb-action-btn .material-symbols-rounded {
+    font-size: 18px;
+}
+
+.cb-action-btn.primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.cb-action-btn.primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.cb-action-btn.danger {
+    color: var(--danger);
+}
+
+.cb-action-btn.success {
+    color: var(--success);
+}
+
+
+/* =========================================================
+   09. TOOLBAR DATE RANGE
+   ========================================================= */
+
+.cb-date-range {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    height: 36px;
+
+    padding: 0 10px;
+
+    background: var(--surface-soft);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+.cb-date-range input {
+    width: 120px;
+
+    padding: 0;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   10. FORM SECTION / CARD
+   ========================================================= */
+
+.cb-form-section {
+    width: 100%;
+
+    padding: 24px;
+
+    margin-bottom: 24px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow:
+        0 1px 3px rgba(60, 64, 67, 0.04);
+}
+
+.cb-form-section h2 {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin: 0 0 24px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid var(--surface-hover);
+
+    color: var(--primary);
+
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.cb-form-section h2 .material-symbols-rounded {
+    font-size: 22px;
+}
+
+
+/* =========================================================
+   11. FORM GRID
+   ========================================================= */
+
+.cb-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 24px 20px;
+}
+
+.cb-grid.col-3 {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+}
+
+.cb-grid.col-4 {
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+}
+
+.cb-full {
+    grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   12. GOOGLE FORMS FLOATING INPUT
+   ========================================================= */
+
+.cb-input-group {
+    position: relative;
+    width: 100%;
+}
+
+.cb-input-group input,
+.cb-input-group select,
+.cb-input-group textarea {
+    display: block;
+
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 14px 16px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    outline: none;
+
+    background: var(--surface);
+    color: var(--text);
+
+    font-size: 14px;
+    line-height: 1.4;
+
+    appearance: none;
+
+    transition:
+        border 0.18s ease,
+        box-shadow 0.18s ease,
+        padding 0.18s ease;
+}
+
+.cb-input-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.cb-input-group input::placeholder,
+.cb-input-group textarea::placeholder {
+    color: transparent;
+}
+
+
+/* Floating Label */
+
+.cb-input-group label {
+    position: absolute;
+
+    left: 12px;
+    top: 15px;
+
+    z-index: 2;
+
+    padding: 0 4px;
+
+    background: var(--surface);
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+
+    line-height: 1;
+
+    pointer-events: none;
+
+    white-space: nowrap;
+
+    transition:
+        top 0.15s ease,
+        font-size 0.15s ease,
+        color 0.15s ease;
+}
+
+
+/* Focus */
+
+.cb-input-group input:focus,
+.cb-input-group select:focus,
+.cb-input-group textarea:focus {
+    border: 2px solid var(--primary);
+
+    padding:
+        13px 15px;
+
+    box-shadow:
+        0 0 0 1px rgba(75, 143, 209, 0.05);
+}
+
+
+/* Floating state */
+
+.cb-input-group input:focus ~ label,
+.cb-input-group input:not(:placeholder-shown) ~ label,
+
+.cb-input-group textarea:focus ~ label,
+.cb-input-group textarea:not(:placeholder-shown) ~ label,
+
+.cb-input-group select:focus ~ label,
+.cb-input-group select:valid ~ label {
+    top: -7px;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    color: var(--text-secondary);
+}
+
+.cb-input-group input:focus ~ label,
+.cb-input-group textarea:focus ~ label,
+.cb-input-group select:focus ~ label {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   13. SELECT
+   ========================================================= */
+
+.cb-input-group select {
+    cursor: pointer;
+
+    padding-right: 42px;
+}
+
+.cb-select-arrow {
+    position: absolute;
+
+    right: 12px;
+    top: 15px;
+
+    z-index: 3;
+
+    color: var(--text-secondary);
+
+    font-size: 20px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   14. REQUIRED FIELD
+   ========================================================= */
+
+.cb-required::after {
+    content: " *";
+
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   15. VALIDATION
+   ========================================================= */
+
+.cb-input-error input,
+.cb-input-error select,
+.cb-input-error textarea {
+    border-color: var(--danger);
+}
+
+.cb-input-error label {
+    color: var(--danger);
+}
+
+.cb-error-text {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--danger);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   16. CHECKBOXES
+   ========================================================= */
+
+.cb-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 16px;
+
+    margin: 12px 0;
+}
+
+.cb-checkbox {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #3c4043;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.cb-checkbox input {
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    accent-color: var(--primary);
+}
+
+
+/* =========================================================
+   17. RADIO
+   ========================================================= */
+
+.cb-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 16px;
+}
+
+.cb-radio {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #3c4043;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.cb-radio input {
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+
+    accent-color: var(--primary);
+}
+
+
+/* =========================================================
+   18. UPLOAD BOX
+   ========================================================= */
+
+.cb-upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 130px;
+
+    padding: 24px;
+
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+
+    background: var(--surface-soft);
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border 0.2s ease;
+}
+
+.cb-upload-box:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary);
+}
+
+.cb-upload-box .material-symbols-rounded {
+    margin-bottom: 8px;
+
+    color: var(--primary);
+
+    font-size: 28px;
+}
+
+.cb-upload-box strong {
+    color: var(--primary);
+
+    font-size: 13px;
+}
+
+.cb-upload-box p {
+    margin: 4px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   19. SUB CARD
+   ========================================================= */
+
+.cb-sub-card {
+    position: relative;
+
+    padding: 24px;
+
+    margin-bottom: 16px;
+
+    background: #fdfdfd;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.cb-delete-btn {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    display: grid;
+    place-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: var(--danger);
+
+    cursor: pointer;
+}
+
+.cb-delete-btn:hover {
+    background: var(--danger-bg);
+}
+
+
+/* =========================================================
+   20. SAVED RECORD / TABLE
+   ========================================================= */
+
+.cb-data-card {
+    width: 100%;
+
+    overflow: hidden;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.cb-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.cb-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+.cb-table th {
+    padding: 12px 14px;
+
+    background: var(--surface-soft);
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: left;
+
+    white-space: nowrap;
+}
+
+.cb-table td {
+    padding: 13px 14px;
+
+    border-bottom: 1px solid var(--border-light);
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    vertical-align: middle;
+}
+
+.cb-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.cb-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+
+/* =========================================================
+   21. SORTABLE TABLE HEADER
+   ========================================================= */
+
+.cb-sort-header {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: inherit;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+
+.cb-sort-header:hover {
+    color: var(--primary);
+}
+
+.cb-sort-icon {
+    font-size: 17px;
+    color: var(--text-muted);
+}
+
+.cb-sort-header.active {
+    color: var(--primary);
+}
+
+.cb-sort-header.active .cb-sort-icon {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   22. STATUS BADGES
+   ========================================================= */
+
+.cb-status {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 24px;
+
+    padding: 4px 9px;
+
+    border-radius: 12px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.cb-status.active,
+.cb-status.success {
+    background: var(--success-bg);
+    color: var(--success);
+}
+
+.cb-status.inactive,
+.cb-status.danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+}
+
+.cb-status.pending,
+.cb-status.warning {
+    background: var(--warning-bg);
+    color: #b06000;
+}
+
+
+/* =========================================================
+   23. TABLE ACTIONS
+   ========================================================= */
+
+.cb-table-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+}
+
+.cb-table-action {
+    display: grid;
+    place-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    cursor: pointer;
+}
+
+.cb-table-action:hover {
+    background: var(--surface-hover);
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   24. EMPTY STATE
+   ========================================================= */
+
+.cb-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 220px;
+
+    padding: 40px 20px;
+
+    text-align: center;
+}
+
+.cb-empty-state .material-symbols-rounded {
+    margin-bottom: 12px;
+
+    color: #9aa0a6;
+
+    font-size: 42px;
+}
+
+.cb-empty-state h3 {
+    margin: 0 0 6px;
+
+    color: var(--text);
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.cb-empty-state p {
+    margin: 0;
+
+    max-width: 420px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   25. MODAL / POPUP
+   ========================================================= */
+
+.cb-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(32, 33, 36, 0.45);
+
+    backdrop-filter: blur(2px);
+}
+
+.cb-modal-overlay.active {
+    display: flex;
+}
+
+.cb-modal {
+    width: 100%;
+    max-width: 720px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: var(--surface);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 8px 28px rgba(60, 64, 67, 0.25);
+
+    animation:
+        cbModalIn 0.2s ease-out;
+}
+
+@keyframes cbModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
     }
 
-    /* Google-style Card */
-    .login-wrapper {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.cb-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.cb-modal-title {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.cb-modal-close {
+    display: grid;
+    place-items: center;
+
+    width: 36px;
+    height: 36px;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    cursor: pointer;
+}
+
+.cb-modal-close:hover {
+    background: var(--surface-hover);
+}
+
+.cb-modal-body {
+    padding: 20px;
+}
+
+.cb-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 16px 20px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   26. FILTER / SORT POPUP
+   ========================================================= */
+
+.cb-filter-panel,
+.cb-sort-panel {
+    position: absolute;
+
+    z-index: 500;
+
+    width: 280px;
+
+    padding: 16px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-md);
+}
+
+.cb-filter-row {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    margin-bottom: 14px;
+}
+
+.cb-filter-row:last-child {
+    margin-bottom: 0;
+}
+
+.cb-filter-label {
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   27. IMPORT / EXPORT MENU
+   ========================================================= */
+
+.cb-menu {
+    position: absolute;
+
+    z-index: 600;
+
+    min-width: 180px;
+
+    padding: 6px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow-md);
+}
+
+.cb-menu-item {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    gap: 10px;
+
+    padding: 9px 10px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.cb-menu-item:hover {
+    background: var(--surface-hover);
+}
+
+.cb-menu-item .material-symbols-rounded {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   28. FORM FOOTER
+   ========================================================= */
+
+.cb-form-footer {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    padding: 20px 0;
+
+    margin-top: 24px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   29. HELPER TEXT
+   ========================================================= */
+
+.cb-help-text {
+    margin-top: 5px;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.cb-section-description {
+    margin: -12px 0 20px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   30. LOADING
+   ========================================================= */
+
+.cb-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 180px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+.cb-spinner {
+    width: 20px;
+    height: 20px;
+
+    margin-right: 8px;
+
+    border: 2px solid var(--border);
+    border-top-color: var(--primary);
+
+    border-radius: 50%;
+
+    animation: cbSpin 0.8s linear infinite;
+}
+
+@keyframes cbSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   31. TOAST
+   ========================================================= */
+
+.cb-toast {
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    z-index: 2000;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    max-width: 360px;
+
+    padding: 12px 16px;
+
+    background: #323232;
+
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.2);
+
+    animation:
+        cbToastIn 0.2s ease-out;
+}
+
+@keyframes cbToastIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   32. LOGO PREVIEW
+   ========================================================= */
+
+.cb-logo-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100px;
+    height: 100px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: var(--surface-soft);
+}
+
+.cb-logo-preview img {
+    display: block;
+
+    max-width: 90%;
+    max-height: 90%;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   33. ACTION ICON GROUP
+   ========================================================= */
+
+.cb-action-group {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+/* =========================================================
+   34. DIVIDER
+   ========================================================= */
+
+.cb-divider {
+    width: 100%;
+    height: 1px;
+
+    margin: 20px 0;
+
+    background: var(--border-light);
+}
+
+
+/* =========================================================
+   35. READ ONLY
+   ========================================================= */
+
+.cb-readonly {
+    background: var(--surface-soft) !important;
+    color: var(--text-secondary) !important;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   36. REQUIRED SAVE NOTICE
+   ========================================================= */
+
+.cb-required-note {
+    margin: 0 0 18px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+.cb-required-note span {
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   37. PAGINATION
+   ========================================================= */
+
+.cb-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 4px;
+
+    padding: 12px 14px;
+
+    border-top: 1px solid var(--border);
+}
+
+.cb-page-btn {
+    display: grid;
+    place-items: center;
+
+    min-width: 32px;
+    height: 32px;
+
+    padding: 0 8px;
+
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+.cb-page-btn:hover {
+    background: var(--surface-hover);
+}
+
+.cb-page-btn.active {
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    border-color: rgba(75, 143, 209, 0.2);
+}
+
+
+/* =========================================================
+   38. MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .cb-module {
+        padding-bottom: 80px;
+    }
+
+    /* Toolbar */
+
+    .cb-toolbar {
+        position: sticky;
+
+        top: 4px;
+
+        flex-direction: column;
+        align-items: stretch;
+
+        padding: 10px;
+
+        gap: 8px;
+    }
+
+    .cb-toolbar-left {
         width: 100%;
-        max-width: 450px;
-        padding: 48px 40px 36px;
-        margin: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        text-align: center;
+
+        min-width: 0;
+
+        flex-wrap: wrap;
     }
+
+    .cb-toolbar-right {
+        width: 100%;
+
+        justify-content: flex-start;
+
+        overflow-x: auto;
+
+        flex-wrap: nowrap;
+
+        padding-bottom: 3px;
+
+        scrollbar-width: none;
+    }
+
+    .cb-toolbar-right::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cb-search {
+        order: 3;
+
+        width: 100%;
+        max-width: none;
+
+        flex-basis: 100%;
+    }
+
+    .cb-action-btn {
+        flex-shrink: 0;
+    }
+
 
     /* Header */
-    .brand-logo {
-        height: 36px;
+
+    .cb-module-header {
+        padding: 16px 10px;
+    }
+
+    .cb-module-header h1 {
+        font-size: 21px;
+    }
+
+
+    /* Grid */
+
+    .cb-grid,
+    .cb-grid.col-3,
+    .cb-grid.col-4 {
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+    }
+
+    .cb-full {
+        grid-column: auto;
+    }
+
+
+    /* Form */
+
+    .cb-form-section {
+        padding: 20px 16px;
+
         margin-bottom: 16px;
-        object-fit: contain;
-    }
-    .login-title {
-        font-size: 24px;
-        font-weight: 400;
-        margin-bottom: 8px;
-    }
-    .login-subtitle {
-        font-size: 16px;
-        font-weight: 400;
-        color: var(--text-muted);
-        margin-bottom: 40px;
     }
 
-    /* Error Message */
-    .error-box {
-        display: none;
-        align-items: center;
-        gap: 8px;
-        background: #fce8e6;
-        color: var(--error);
-        padding: 12px 16px;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: 500;
-        margin-bottom: 24px;
-        text-align: left;
-    }
-    .error-box.active { display: flex; }
-    .success-box {
-        background: #e6f4ea;
-        color: #137333;
+    .cb-form-section h2 {
+        font-size: 15px;
+
+        margin-bottom: 20px;
     }
 
-    /* Floating Label Inputs */
-    .input-group {
-        position: relative;
-        margin-bottom: 24px;
-        text-align: left;
+
+    /* Inputs */
+
+    .cb-input-group input,
+    .cb-input-group select,
+    .cb-input-group textarea {
+        font-size: 14px;
+
+        min-height: 50px;
     }
-    .input-group input {
-        width: 100%;
-        padding: 13px 15px;
-        font-size: 16px;
-        color: var(--text-main);
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        outline: none;
-        background: transparent;
-        transition: border 0.2s ease;
+
+
+    /* Sub cards */
+
+    .cb-sub-card {
+        padding: 20px 16px;
     }
-    .input-group label {
-        position: absolute;
+
+
+    /* Modal */
+
+    .cb-modal-overlay {
+        align-items: flex-end;
+
+        padding: 0;
+    }
+
+    .cb-modal {
+        max-height: 94vh;
+
+        border-radius:
+            16px 16px 0 0;
+    }
+
+    .cb-modal-body {
+        padding: 16px;
+    }
+
+    .cb-modal-footer {
+        padding: 14px 16px;
+    }
+
+
+    /* Filter */
+
+    .cb-filter-panel,
+    .cb-sort-panel {
+        position: fixed;
+
         left: 12px;
-        top: 15px;
-        background: var(--card-bg);
-        padding: 0 4px;
-        color: var(--text-muted);
-        font-size: 16px;
-        transition: 0.15s ease-out;
-        pointer-events: none;
-    }
-    
-    /* Input Focus States */
-    .input-group input:focus {
-        border: 2px solid var(--primary);
-        padding: 12px 14px; /* Adjust padding to prevent shift due to border width */
-    }
-    .input-group input:focus ~ label,
-    .input-group input:not(:placeholder-shown) ~ label {
-        top: -9px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    .input-group input:focus ~ label {
-        color: var(--primary);
-    }
-
-    /* Password Toggle */
-    .toggle-password {
-        position: absolute;
         right: 12px;
-        top: 13px;
-        color: var(--text-muted);
-        cursor: pointer;
-        user-select: none;
-        font-size: 22px;
-        padding: 2px;
-    }
-    .toggle-password:hover { color: var(--text-main); }
 
-    /* Remember Me & Forgot Password */
-    .form-options {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 32px;
-    }
-    .remember-me {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-        color: var(--text-muted);
-        cursor: pointer;
-    }
-    .remember-me input {
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-        accent-color: var(--primary);
-    }
-    .text-link {
-        color: var(--primary);
-        font-size: 14px;
-        font-weight: 500;
-        text-decoration: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        border-radius: 4px;
-        transition: background 0.2s;
-    }
-    .text-link:hover { background: #f6fafe; }
+        bottom: 12px;
 
-    /* Buttons */
-    .btn-primary {
+        width: auto;
+    }
+
+
+    /* Form footer */
+
+    .cb-form-footer {
+        flex-direction: column-reverse;
+    }
+
+    .cb-form-footer .cb-action-btn {
         width: 100%;
-        background: var(--primary);
-        color: #fff;
-        border: none;
-        padding: 12px;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background 0.2s, box-shadow 0.2s;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
     }
-    .btn-primary:hover {
-        background: var(--primary-hover);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+
+
+    /* Toast */
+
+    .cb-toast {
+        right: 12px;
+        left: 12px;
+
+        bottom: 12px;
+
+        max-width: none;
     }
-    .btn-primary:disabled {
-        background: #a8c7fa;
-        cursor: not-allowed;
+}
+
+
+/* =========================================================
+   39. SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .cb-module-header h1 {
+        font-size: 19px;
     }
-    
-    .divider {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        margin: 24px 0;
-        color: var(--text-muted);
+
+    .cb-form-section {
+        border-radius: 10px;
+    }
+
+    .cb-action-btn {
+        min-height: 38px;
+
+        padding: 0 12px;
+
         font-size: 12px;
     }
-    .divider::before, .divider::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid var(--border);
-    }
-    .divider:not(:empty)::before { margin-right: .5em; }
-    .divider:not(:empty)::after { margin-left: .5em; }
 
-    .btn-google {
-        width: 100%;
-        background: #fff;
-        color: var(--text-main);
-        border: 1px solid var(--border);
-        padding: 10px;
-        border-radius: 4px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .cb-icon-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .cb-search {
+        height: 38px;
+    }
+
+    .cb-checkbox-group,
+    .cb-radio-group {
+        flex-direction: column;
+
         gap: 12px;
-        transition: background 0.2s;
     }
-    .btn-google:hover { background: #f8f9fa; }
-    .btn-google svg { width: 20px; height: 20px; }
+}
 
-    .loader {
-        border: 2px solid #ffffff;
-        border-top-color: transparent;
-        border-radius: 50%;
-        width: 16px;
-        height: 16px;
-        animation: spin 1s linear infinite;
-        display: none;
-    }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    @media (max-width: 480px) {
-        .login-wrapper {
-            border: none;
-            box-shadow: none;
-            padding: 24px 20px;
-            background: transparent;
-            margin: 0;
-        }
-        body { background: var(--card-bg); align-items: flex-start; padding-top: 40px; }
-        .input-group label { background: var(--card-bg); }
-    }
-</style>
+/* =========================================================
+   40. ACCESSIBILITY
+   ========================================================= */
+
+.cb-action-btn:focus-visible,
+.cb-icon-btn:focus-visible,
+.cb-table-action:focus-visible,
+.cb-page-btn:focus-visible,
+.cb-menu-item:focus-visible,
+.cb-modal-close:focus-visible {
+    outline: 2px solid var(--primary);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   END COREBIQ MASTER STYLE.CSS
+   ========================================================= */
