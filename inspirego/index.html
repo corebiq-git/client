@@ -669,49 +669,60 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 
             </div>
 
-            <div id="view-patients" class="view-section"></div>
-            <div id="view-appointments" class="view-section"></div>
-            <div id="view-transaction" class="view-section"></div>
-            <div id="view-branches" class="view-section"></div>
-            <div id="view-therapist" class="view-section"></div>
-            <div id="view-calender" class="view-section"></div>
-            <div id="view-staff" class="view-section"></div>
+            <div id="view-clients" class="view-section"></div>
+            <div id="view-contacts" class="view-section"></div>
+            <div id="view-services" class="view-section"></div>
+            <div id="view-transactions" class="view-section"></div>
+            <div id="view-staff/management" class="view-section"></div>
             <div id="view-attendance" class="view-section"></div>
-            <div id="view-users" class="view-section"></div>
-            <div id="view-clinic-details" class="view-section"></div>
             <div id="view-company" class="view-section"></div>
-            <div id="view-letterhead" class="view-section"></div>
-            <div id="view-seal" class="view-section"></div>
-            <div id="view-qr" class="view-section"></div>
-            <div id="view-mytask" class="view-section"></div>
-            <div id="view-updates" class="view-section"></div>
-            <div id="view-licenceinfo" class="view-section"></div>
-            <div id="view-aboutapp" class="view-section"></div>
+            <div id="view-branches" class="view-section"></div>
+            <div id="view-users" class="view-section"></div>
+            <div id="view-templates" class="view-section"></div>
+            <div id="view-tools" class="view-section"></div>
+            <div id="view-data" class="view-section"></div>
             <div id="view-privacy" class="view-section"></div>
-            <div id="view-backup" class="view-section"></div>
-            <div id="view-calc" class="view-section"></div>
+            <div id="view-licence-info" class="view-section"></div>
+            <div id="view-mytask" class="view-section"></div>
+            <div id="view-compliance" class="view-section"></div>
+            <div id="view-more" class="view-section"></div>
 
         </main>
 
         <div id="bottomnav-container">
-<div class="cb-bottom-shell">
-  <!-- Added data-target properties to cleanly map these buttons for active states -->
-  <button class="cb-bottom-link active" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this)">
-    <span class="material-symbols-rounded">home</span><small>Home</small>
-  </button>
-  <button class="cb-bottom-link" data-target="view-patients" onclick="window.switchView('view-patients',this)">
-    <span class="material-symbols-rounded">groups</span><small>Clients</small>
-  </button>
-  <button class="cb-bottom-link cb-bottom-main" data-target="view-appointments" onclick="window.switchView('view-appointments',this)">
-    <span class="material-symbols-rounded">event_note</span><small>Bookings</small>
-  </button>
-  <button class="cb-bottom-link" data-target="view-transaction" onclick="window.switchView('view-transaction',this)">
-    <span class="material-symbols-rounded">receipt_long</span><small>Payments</small>
-  </button>
-  <button class="cb-bottom-link" onclick="window.toggleMenu()">
-    <span class="material-symbols-rounded">menu</span><small>Menu</small>
-  </button>
-</div>
+  <div class="cb-bottom-shell">
+
+    <!-- Home -->
+    <button class="cb-bottom-link active"
+            data-target="view-dashboard"
+            onclick="window.switchView('view-dashboard',this)">
+      <span class="material-symbols-rounded">home</span>
+      <small>Home</small>
+    </button>
+
+    <!-- Contacts -->
+    <button class="cb-bottom-link"
+            data-target="view-patients"
+            onclick="window.switchView('view-patients',this)">
+      <span class="material-symbols-rounded">contacts</span>
+      <small>Contacts</small>
+    </button>
+
+    <!-- Calculator -->
+    <button class="cb-bottom-link"
+            onclick="window.location.href='calc.html'">
+      <span class="material-symbols-rounded">calculate</span>
+      <small>Calculator</small>
+    </button>
+
+    <!-- Menu -->
+    <button class="cb-bottom-link"
+            onclick="window.toggleMenu()">
+      <span class="material-symbols-rounded">menu</span>
+      <small>Menu</small>
+    </button>
+
+  </div>
 </div>
     </div>
 
@@ -793,27 +804,24 @@ window.getLocalDateString = function(date = new Date()) {
 window.selectedDateStr = window.getLocalDateString();
 
 window.cmAppFileMap = {
-    "view-patients": "patients.html",
-    "view-appointments": "appointments.html",
-    "view-transaction": "transaction.html",
-    "view-branches": "branches.html",
-    "view-therapist": "therapist.html",
-    "view-calender": "calender.html",
-    "view-staff": "staff.html",
-    "view-attendance": "attendance.html",
-    "view-users": "users.html",
-    "view-clinic-details": "clinic-details.html",
+    "view-clients": "clients.html",
+    "view-contacts": "contacts.html",
+    "view-sercices": "services.html",
+    "view-transactions": "transactions.html",
+    "view-staff/management": "staff.html",
+    "view-attendance": "attendace.html",
     "view-company": "company.html",
-    "view-letterhead": "letterhead.html",
-    "view-seal": "seal.html",
-    "view-qr": "qr.html",
-    "view-mytask": "mytask.html",
-    "view-updates": "updates.html",
-    "view-licenceinfo": "licenceinfo.html",
-    "view-aboutapp": "aboutapp.html",
+    "view-branches": "branches.html",
+    "view-users": "users.html",
+    "view-templates": "templates.html",
+    "view-tools": "calc.html",
+    "view-data": "data.html",
     "view-privacy": "privacy.html",
-    "view-backup": "backup.html",
-    "view-calc": "calc.html"
+    "view-licence-info": "licence-info.html",
+    "view-mytask": "mytask.html",
+    "view-compliance": "compliance.html",
+    "view-more": "more.html",
+    
 };
 
 window.onerror = function(message, source, lineno) {
