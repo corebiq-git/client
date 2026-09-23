@@ -1,0 +1,2308 @@
+<!-- =========================================================
+     COREBIQ — FIXED MODULE HEADER SYSTEM
+     COMPANY MODULE
+     
+     STANDARD:
+     Back | Search | Filter | Sort | Import | Export | Add New
+     
+     Saved Form View:
+     All Headers + ↑↓ Sort
+     ========================================================= -->
+
+<div class="company-module">
+
+<style>
+/* =========================================================
+   COREBIQ FIXED MODULE SYSTEM
+   ========================================================= */
+
+.company-module {
+    font-family: 'Inter', 'Poppins', sans-serif;
+    color: #202124;
+    animation: cbModuleFade .25s ease;
+    padding-bottom: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@keyframes cbModuleFade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   FIXED MODULE TOOLBAR
+   ========================================================= */
+
+.company-module .cb-module-toolbar {
+    position: sticky;
+    top: 8px;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 12px;
+    margin-bottom: 18px;
+
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+
+/* BACK */
+
+.company-module .cb-back-btn {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #5f6368;
+
+    cursor: pointer;
+}
+
+.company-module .cb-back-btn:hover {
+    background: #f1f3f4;
+    color: #202124;
+}
+
+.company-module .cb-back-btn .material-symbols-rounded {
+    font-size: 21px;
+}
+
+
+/* SEARCH */
+
+.company-module .cb-module-search {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    flex: 1;
+    min-width: 180px;
+    max-width: 330px;
+
+    height: 38px;
+
+    background: #f1f3f4;
+    border-radius: 9px;
+
+    transition: .2s;
+}
+
+.company-module .cb-module-search:focus-within {
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(75,143,209,.18);
+}
+
+.company-module .cb-module-search > .material-symbols-rounded {
+    margin-left: 11px;
+    color: #5f6368;
+    font-size: 19px;
+}
+
+.company-module .cb-module-search input {
+    width: 100%;
+    height: 100%;
+
+    padding: 0 34px 0 9px;
+
+    border: 0;
+    outline: 0;
+    background: transparent;
+
+    font-family: inherit;
+    font-size: 13px;
+    color: #202124;
+}
+
+.company-module .cb-search-clear {
+    position: absolute;
+    right: 6px;
+
+    width: 28px;
+    height: 28px;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #777;
+
+    cursor: pointer;
+}
+
+.company-module .cb-search-clear:hover {
+    background: #e8eaed;
+}
+
+
+/* COMMON ACTION BUTTON */
+
+.company-module .cb-module-btn {
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 0 12px;
+
+    border: 1px solid #dadce0;
+    border-radius: 9px;
+
+    background: #fff;
+    color: #3c4043;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: .18s;
+}
+
+.company-module .cb-module-btn:hover {
+    background: #f8f9fa;
+    border-color: #c8ccd0;
+}
+
+.company-module .cb-module-btn .material-symbols-rounded {
+    font-size: 19px;
+}
+
+
+/* ADD NEW */
+
+.company-module .cb-module-btn.cb-primary {
+    background: var(--primary, #4b8fd1);
+    border-color: var(--primary, #4b8fd1);
+    color: #fff;
+}
+
+.company-module .cb-module-btn.cb-primary:hover {
+    background: var(--primary-dark, #3476b5);
+    border-color: var(--primary-dark, #3476b5);
+}
+
+
+/* TOOLBAR SPACER */
+
+.company-module .cb-toolbar-spacer {
+    flex: 1;
+}
+
+
+/* =========================================================
+   DROPDOWN MENU
+   ========================================================= */
+
+.company-module .cb-menu-wrap {
+    position: relative;
+}
+
+.company-module .cb-menu {
+    position: absolute;
+
+    top: calc(100% + 7px);
+    right: 0;
+
+    min-width: 190px;
+
+    padding: 6px;
+
+    background: #fff;
+
+    border: 1px solid #dadce0;
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.10),
+        0 12px 28px rgba(0,0,0,.08);
+
+    display: none;
+
+    z-index: 500;
+}
+
+.company-module .cb-menu.show {
+    display: block;
+    animation: cbMenuIn .15s ease;
+}
+
+@keyframes cbMenuIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.company-module .cb-menu-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #3c4043;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.company-module .cb-menu-item:hover {
+    background: #f1f3f4;
+}
+
+.company-module .cb-menu-item .material-symbols-rounded {
+    font-size: 19px;
+    color: #5f6368;
+}
+
+
+/* =========================================================
+   FILTER / SORT PANEL
+   ========================================================= */
+
+.company-module .cb-popover {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 270px;
+
+    padding: 14px;
+
+    background: #fff;
+
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+
+    box-shadow: 0 8px 28px rgba(0,0,0,.12);
+
+    display: none;
+
+    z-index: 600;
+}
+
+.company-module .cb-popover.show {
+    display: block;
+}
+
+.company-module .cb-popover-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+
+    border-bottom: 1px solid #f1f3f4;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.company-module .cb-popover-row {
+    margin-bottom: 12px;
+}
+
+.company-module .cb-popover-row label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #5f6368;
+
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.company-module .cb-popover-row select,
+.company-module .cb-popover-row input {
+    width: 100%;
+    height: 36px;
+
+    padding: 0 9px;
+
+    border: 1px solid #dadce0;
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #fff;
+
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.company-module .cb-popover-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+
+    padding-top: 8px;
+}
+
+
+/* =========================================================
+   SAVED FORM VIEW
+   ========================================================= */
+
+.company-module .cb-saved-view {
+    margin-bottom: 22px;
+
+    background: #fff;
+
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+.company-module .cb-saved-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #dadce0;
+}
+
+.company-module .cb-saved-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #202124;
+}
+
+.company-module .cb-saved-title .material-symbols-rounded {
+    font-size: 20px;
+    color: var(--primary, #4b8fd1);
+}
+
+.company-module .cb-record-count {
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    background: #e8f0fe;
+    color: #1967d2;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* TABLE WRAPPER */
+
+.company-module .cb-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+/* TABLE */
+
+.company-module .cb-data-table {
+    width: 100%;
+    min-width: 950px;
+
+    border-collapse: collapse;
+
+    font-size: 12px;
+}
+
+.company-module .cb-data-table th {
+    height: 44px;
+
+    padding: 0 13px;
+
+    background: #f8f9fa;
+
+    border-bottom: 1px solid #dadce0;
+
+    color: #5f6368;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-align: left;
+
+    white-space: nowrap;
+}
+
+.company-module .cb-data-table td {
+    height: 48px;
+
+    padding: 0 13px;
+
+    border-bottom: 1px solid #f1f3f4;
+
+    color: #3c4043;
+
+    white-space: nowrap;
+}
+
+.company-module .cb-data-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+
+/* SORTABLE HEADER */
+
+.company-module .cb-sort-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    border: 0;
+    background: transparent;
+
+    padding: 0;
+
+    color: inherit;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+
+.company-module .cb-sort-head:hover {
+    color: var(--primary, #4b8fd1);
+}
+
+.company-module .cb-sort-head .material-symbols-rounded {
+    font-size: 15px;
+    color: #9aa0a6;
+}
+
+.company-module .cb-sort-head.active .material-symbols-rounded {
+    color: var(--primary, #4b8fd1);
+}
+
+
+/* STATUS */
+
+.company-module .cb-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.company-module .cb-status.active {
+    background: #e6f4ea;
+    color: #188038;
+}
+
+.company-module .cb-status.inactive {
+    background: #fce8e6;
+    color: #d93025;
+}
+
+
+/* TABLE ACTION */
+
+.company-module .cb-row-action {
+    width: 32px;
+    height: 32px;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #5f6368;
+
+    cursor: pointer;
+}
+
+.company-module .cb-row-action:hover {
+    background: #f1f3f4;
+}
+
+
+/* =========================================================
+   FORM AREA
+   ========================================================= */
+
+.company-module .comp-header-banner {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 20px;
+}
+
+.company-module .comp-header-banner h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+}
+
+.company-module .comp-header-banner p {
+    font-size: 13px;
+    color: #5f6368;
+}
+
+.company-module .comp-id {
+    display: inline-block;
+
+    margin-top: 4px;
+
+    background: #e8f0fe;
+    color: #1967d2;
+
+    padding: 6px 14px;
+
+    border-radius: 16px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ADD NEW POPUP
+   ========================================================= */
+
+.company-module .cb-modal-backdrop {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: rgba(32,33,36,.42);
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.company-module .cb-modal-backdrop.show {
+    display: flex;
+}
+
+.company-module .cb-modal {
+    width: min(560px, 100%);
+
+    max-height: 90vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #fff;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,.20);
+}
+
+.company-module .cb-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 18px;
+
+    border-bottom: 1px solid #dadce0;
+}
+
+.company-module .cb-modal-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.company-module .cb-modal-title .material-symbols-rounded {
+    color: var(--primary, #4b8fd1);
+}
+
+.company-module .cb-modal-close {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #5f6368;
+
+    cursor: pointer;
+}
+
+.company-module .cb-modal-close:hover {
+    background: #f1f3f4;
+}
+
+.company-module .cb-modal-body {
+    padding: 18px;
+
+    overflow-y: auto;
+}
+
+.company-module .cb-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.company-module .cb-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.company-module .cb-modal-field.full {
+    grid-column: 1 / -1;
+}
+
+.company-module .cb-modal-field label {
+    font-size: 11px;
+    color: #5f6368;
+    font-weight: 500;
+}
+
+.company-module .cb-modal-field input,
+.company-module .cb-modal-field select {
+    height: 40px;
+
+    padding: 0 11px;
+
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+
+    outline: none;
+
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.company-module .cb-modal-field input:focus,
+.company-module .cb-modal-field select:focus {
+    border-color: var(--primary, #4b8fd1);
+    box-shadow: 0 0 0 2px rgba(75,143,209,.10);
+}
+
+.company-module .cb-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    padding: 14px 18px;
+
+    border-top: 1px solid #dadce0;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:768px) {
+
+    .company-module {
+        padding-bottom: 25px;
+    }
+
+    .company-module .cb-module-toolbar {
+        top: 4px;
+
+        flex-wrap: wrap;
+        padding: 9px;
+    }
+
+    .company-module .cb-module-search {
+        order: 10;
+
+        flex: 1 0 100%;
+        max-width: none;
+
+        width: 100%;
+    }
+
+    .company-module .cb-toolbar-spacer {
+        display: none;
+    }
+
+    .company-module .cb-module-btn {
+        padding: 0 10px;
+    }
+
+    .company-module .cb-module-btn .cb-btn-text {
+        display: none;
+    }
+
+    .company-module .cb-module-btn.cb-primary {
+        padding: 0 12px;
+    }
+
+    .company-module .cb-module-btn.cb-primary .cb-btn-text {
+        display: inline;
+    }
+
+    .company-module .cb-modal-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .company-module .cb-modal-field.full {
+        grid-column: auto;
+    }
+
+    .company-module .cb-saved-header {
+        padding: 12px;
+    }
+}
+
+
+/* VERY SMALL MOBILE */
+
+@media(max-width:400px) {
+
+    .company-module .cb-module-toolbar {
+        gap: 5px;
+    }
+
+    .company-module .cb-back-btn {
+        width: 34px;
+        height: 34px;
+        flex-basis: 34px;
+    }
+
+    .company-module .cb-module-btn {
+        width: 38px;
+        height: 36px;
+        padding: 0;
+    }
+
+    .company-module .cb-module-btn.cb-primary {
+        width: auto;
+        padding: 0 10px;
+    }
+}
+</style>
+
+
+<!-- =========================================================
+     FIXED TOOLBAR
+     ========================================================= -->
+
+<div class="cb-module-toolbar">
+
+    <!-- BACK -->
+    <button
+        type="button"
+        class="cb-back-btn"
+        onclick="window.switchView('view-dashboard', null)"
+        title="Back">
+        <span class="material-symbols-rounded">arrow_back</span>
+    </button>
+
+
+    <!-- SEARCH -->
+    <div class="cb-module-search">
+
+        <span class="material-symbols-rounded">search</span>
+
+        <input
+            type="search"
+            id="companySearch"
+            placeholder="Search saved companies..."
+            autocomplete="off"
+            oninput="cbCompanySearch(this.value)"
+        >
+
+        <button
+            type="button"
+            class="cb-search-clear"
+            id="companySearchClear"
+            onclick="cbCompanyClearSearch()"
+            hidden>
+            <span class="material-symbols-rounded">close</span>
+        </button>
+
+    </div>
+
+
+    <!-- FILTER -->
+    <div class="cb-menu-wrap">
+
+        <button
+            type="button"
+            class="cb-module-btn"
+            onclick="cbCompanyToggleFilter()"
+            title="Filter">
+
+            <span class="material-symbols-rounded">
+                filter_list
+            </span>
+
+            <span class="cb-btn-text">Filter</span>
+
+        </button>
+
+        <div
+            class="cb-popover"
+            id="companyFilterPanel">
+
+            <div class="cb-popover-title">
+                <span>Filter</span>
+
+                <button
+                    type="button"
+                    class="cb-row-action"
+                    onclick="cbCompanyClosePanels()">
+
+                    <span class="material-symbols-rounded">
+                        close
+                    </span>
+
+                </button>
+            </div>
+
+            <div class="cb-popover-row">
+
+                <label>Company Status</label>
+
+                <select id="companyFilterStatus">
+                    <option value="">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+
+            </div>
+
+            <div class="cb-popover-row">
+
+                <label>Business Type</label>
+
+                <select id="companyFilterType">
+                    <option value="">All Types</option>
+                    <option value="Sole Proprietorship">Sole Proprietorship</option>
+                    <option value="Partnership">Partnership</option>
+                    <option value="LLP">LLP</option>
+                    <option value="Private Limited">Private Limited</option>
+                    <option value="Public Limited">Public Limited</option>
+                </select>
+
+            </div>
+
+            <div class="cb-popover-footer">
+
+                <button
+                    type="button"
+                    class="cb-module-btn"
+                    onclick="cbCompanyResetFilter()">
+                    Clear
+                </button>
+
+                <button
+                    type="button"
+                    class="cb-module-btn cb-primary"
+                    onclick="cbCompanyApplyFilter()">
+                    Apply
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SORT -->
+    <div class="cb-menu-wrap">
+
+        <button
+            type="button"
+            class="cb-module-btn"
+            onclick="cbCompanyToggleSort()"
+            title="Sort">
+
+            <span class="material-symbols-rounded">
+                sort
+            </span>
+
+            <span class="cb-btn-text">Sort</span>
+
+        </button>
+
+        <div
+            class="cb-popover"
+            id="companySortPanel">
+
+            <div class="cb-popover-title">
+                <span>Sort Records</span>
+            </div>
+
+            <div class="cb-popover-row">
+
+                <label>Sort By</label>
+
+                <select id="companySortField">
+
+                    <option value="company">Company Name</option>
+                    <option value="id">Company ID</option>
+                    <option value="type">Business Type</option>
+                    <option value="status">Status</option>
+                    <option value="date">Created Date</option>
+
+                </select>
+
+            </div>
+
+            <div class="cb-popover-row">
+
+                <label>Order</label>
+
+                <select id="companySortOrder">
+
+                    <option value="asc">Ascending ↑</option>
+                    <option value="desc">Descending ↓</option>
+
+                </select>
+
+            </div>
+
+            <div class="cb-popover-footer">
+
+                <button
+                    type="button"
+                    class="cb-module-btn cb-primary"
+                    onclick="cbCompanyApplySort()">
+                    Apply Sort
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- IMPORT -->
+    <div class="cb-menu-wrap">
+
+        <button
+            type="button"
+            class="cb-module-btn"
+            onclick="cbCompanyToggleImport()"
+            title="Import">
+
+            <span class="material-symbols-rounded">
+                upload_file
+            </span>
+
+            <span class="cb-btn-text">Import</span>
+
+        </button>
+
+        <div
+            class="cb-menu"
+            id="companyImportMenu">
+
+            <button
+                type="button"
+                class="cb-menu-item"
+                onclick="cbCompanySampleCSV()">
+
+                <span class="material-symbols-rounded">
+                    table_view
+                </span>
+
+                <span>Sample CSV</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="cb-menu-item"
+                onclick="cbCompanyImportData()">
+
+                <span class="material-symbols-rounded">
+                    upload
+                </span>
+
+                <span>Import Data</span>
+
+            </button>
+
+        </div>
+
+        <input
+            type="file"
+            id="companyImportFile"
+            accept=".csv,.xlsx,.xls"
+            hidden
+        >
+
+    </div>
+
+
+    <!-- EXPORT -->
+    <div class="cb-menu-wrap">
+
+        <button
+            type="button"
+            class="cb-module-btn"
+            onclick="cbCompanyToggleExport()"
+            title="Export">
+
+            <span class="material-symbols-rounded">
+                download
+            </span>
+
+            <span class="cb-btn-text">Export</span>
+
+        </button>
+
+        <div
+            class="cb-menu"
+            id="companyExportMenu">
+
+            <button
+                type="button"
+                class="cb-menu-item"
+                onclick="cbCompanyExportCSV()">
+
+                <span class="material-symbols-rounded">
+                    table_view
+                </span>
+
+                <span>Export CSV</span>
+
+            </button>
+
+            <button
+                type="button"
+                class="cb-menu-item"
+                onclick="cbCompanyExportPDF()">
+
+                <span class="material-symbols-rounded">
+                    picture_as_pdf
+                </span>
+
+                <span>Export PDF</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="cb-toolbar-spacer"></div>
+
+
+    <!-- ADD NEW -->
+    <button
+        type="button"
+        class="cb-module-btn cb-primary"
+        onclick="cbOpenCompanyAddNew()"
+        title="Add New Company">
+
+        <span class="material-symbols-rounded">
+            add
+        </span>
+
+        <span class="cb-btn-text">Add New</span>
+
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     SAVED FORM VIEW
+     ========================================================= -->
+
+<div class="cb-saved-view">
+
+    <div class="cb-saved-header">
+
+        <div class="cb-saved-title">
+
+            <span class="material-symbols-rounded">
+                view_list
+            </span>
+
+            <span>Saved Form View</span>
+
+            <span
+                class="cb-record-count"
+                id="companyRecordCount">
+                3 Records
+            </span>
+
+        </div>
+
+        <button
+            type="button"
+            class="cb-row-action"
+            title="Refresh"
+            onclick="cbCompanyRefresh()">
+
+            <span class="material-symbols-rounded">
+                refresh
+            </span>
+
+        </button>
+
+    </div>
+
+
+    <div class="cb-table-wrap">
+
+        <table
+            class="cb-data-table"
+            id="companySavedTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        <button
+                            class="cb-sort-head"
+                            onclick="cbCompanyHeaderSort('id')">
+                            Company ID
+                            <span class="material-symbols-rounded">
+                                unfold_more
+                            </span>
+                        </button>
+                    </th>
+
+                    <th>
+                        <button
+                            class="cb-sort-head"
+                            onclick="cbCompanyHeaderSort('company')">
+                            Company Name
+                            <span class="material-symbols-rounded">
+                                unfold_more
+                            </span>
+                        </button>
+                    </th>
+
+                    <th>
+                        <button
+                            class="cb-sort-head"
+                            onclick="cbCompanyHeaderSort('type')">
+                            Business Type
+                            <span class="material-symbols-rounded">
+                                unfold_more
+                            </span>
+                        </button>
+                    </th>
+
+                    <th>
+                        <button
+                            class="cb-sort-head"
+                            onclick="cbCompanyHeaderSort('industry')">
+                            Industry
+                            <span class="material-symbols-rounded">
+                                unfold_more
+                            </span>
+                        </button>
+                    </th>
+
+                    <th>
+                        <button
+                            class="cb-sort-head"
+                            onclick="cbCompanyHeaderSort('status')">
+                            Status
+                            <span class="material-symbols-rounded">
+                                unfold_more
+                            </span>
+                        </button>
+                    </th>
+
+                    <th>
+                        <button
+                            class="cb-sort-head"
+                            onclick="cbCompanyHeaderSort('date')">
+                            Created Date
+                            <span class="material-symbols-rounded">
+                                unfold_more
+                            </span>
+                        </button>
+                    </th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="companySavedBody">
+
+                <tr
+                    data-company="CM Filings"
+                    data-id="COMIQ-001"
+                    data-type="Private Limited"
+                    data-industry="Professional Services"
+                    data-status="Active"
+                    data-date="2026-09-23">
+
+                    <td>COMIQ-001</td>
+
+                    <td>
+                        <strong>CM Filings</strong>
+                    </td>
+
+                    <td>Private Limited</td>
+
+                    <td>Professional Services</td>
+
+                    <td>
+                        <span class="cb-status active">
+                            Active
+                        </span>
+                    </td>
+
+                    <td>23-Sep-2026</td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="cb-row-action"
+                            title="Edit"
+                            onclick="cbEditCompany('COMIQ-001')">
+
+                            <span class="material-symbols-rounded">
+                                edit
+                            </span>
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+
+                <tr
+                    data-company="Example Company"
+                    data-id="COMIQ-002"
+                    data-type="Partnership"
+                    data-industry="Retail"
+                    data-status="Active"
+                    data-date="2026-09-20">
+
+                    <td>COMIQ-002</td>
+
+                    <td>
+                        <strong>Example Company</strong>
+                    </td>
+
+                    <td>Partnership</td>
+
+                    <td>Retail</td>
+
+                    <td>
+                        <span class="cb-status active">
+                            Active
+                        </span>
+                    </td>
+
+                    <td>20-Sep-2026</td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="cb-row-action"
+                            title="Edit"
+                            onclick="cbEditCompany('COMIQ-002')">
+
+                            <span class="material-symbols-rounded">
+                                edit
+                            </span>
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+
+                <tr
+                    data-company="Demo Trading"
+                    data-id="COMIQ-003"
+                    data-type="Sole Proprietorship"
+                    data-industry="Trading"
+                    data-status="Inactive"
+                    data-date="2026-09-15">
+
+                    <td>COMIQ-003</td>
+
+                    <td>
+                        <strong>Demo Trading</strong>
+                    </td>
+
+                    <td>Sole Proprietorship</td>
+
+                    <td>Trading</td>
+
+                    <td>
+                        <span class="cb-status inactive">
+                            Inactive
+                        </span>
+                    </td>
+
+                    <td>15-Sep-2026</td>
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="cb-row-action"
+                            title="Edit"
+                            onclick="cbEditCompany('COMIQ-003')">
+
+                            <span class="material-symbols-rounded">
+                                edit
+                            </span>
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ADD NEW COMPANY POPUP
+     ========================================================= -->
+
+<div
+    class="cb-modal-backdrop"
+    id="companyAddModal">
+
+    <div
+        class="cb-modal"
+        role="dialog"
+        aria-modal="true">
+
+        <div class="cb-modal-header">
+
+            <div class="cb-modal-title">
+
+                <span class="material-symbols-rounded">
+                    domain_add
+                </span>
+
+                <span>Add New Company</span>
+
+            </div>
+
+            <button
+                type="button"
+                class="cb-modal-close"
+                onclick="cbCloseCompanyAddNew()">
+
+                <span class="material-symbols-rounded">
+                    close
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <div class="cb-modal-body">
+
+            <div class="cb-modal-grid">
+
+                <div class="cb-modal-field full">
+
+                    <label>Company Name *</label>
+
+                    <input
+                        type="text"
+                        id="newCompanyName"
+                        placeholder="Enter company name">
+
+                </div>
+
+
+                <div class="cb-modal-field">
+
+                    <label>Business Type</label>
+
+                    <select id="newCompanyType">
+
+                        <option value="">Select type</option>
+                        <option>Sole Proprietorship</option>
+                        <option>Partnership</option>
+                        <option>LLP</option>
+                        <option>Private Limited</option>
+                        <option>Public Limited</option>
+                        <option>Trust</option>
+                        <option>Society</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="cb-modal-field">
+
+                    <label>Industry</label>
+
+                    <select id="newCompanyIndustry">
+
+                        <option value="">Select industry</option>
+                        <option>Professional Services</option>
+                        <option>Accounting & Finance</option>
+                        <option>Healthcare</option>
+                        <option>Travel & Tourism</option>
+                        <option>Retail</option>
+                        <option>Education</option>
+                        <option>IT & Software</option>
+                        <option>Manufacturing</option>
+                        <option>Construction</option>
+                        <option>Real Estate</option>
+                        <option>Hospitality</option>
+                        <option>Logistics</option>
+                        <option>Trading</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="cb-modal-field">
+
+                    <label>Status</label>
+
+                    <select id="newCompanyStatus">
+
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="cb-modal-field">
+
+                    <label>Established Date</label>
+
+                    <input
+                        type="date"
+                        id="newCompanyDate">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="cb-modal-footer">
+
+            <button
+                type="button"
+                class="cb-module-btn"
+                onclick="cbCloseCompanyAddNew()">
+
+                Cancel
+
+            </button>
+
+            <button
+                type="button"
+                class="cb-module-btn cb-primary"
+                onclick="cbSaveNewCompany()">
+
+                <span class="material-symbols-rounded">
+                    save
+                </span>
+
+                Save Company
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+/* ---------------------------------------------------------
+   CLOSE ALL PANELS
+   --------------------------------------------------------- */
+
+function cbCompanyClosePanels() {
+
+    document
+        .querySelectorAll('.company-module .cb-menu, .company-module .cb-popover')
+        .forEach(el => el.classList.remove('show'));
+
+}
+
+
+/* ---------------------------------------------------------
+   FILTER
+   --------------------------------------------------------- */
+
+function cbCompanyToggleFilter() {
+
+    cbCompanyClosePanels();
+
+    document
+        .getElementById('companyFilterPanel')
+        .classList.toggle('show');
+
+}
+
+
+/* ---------------------------------------------------------
+   SORT
+   --------------------------------------------------------- */
+
+function cbCompanyToggleSort() {
+
+    cbCompanyClosePanels();
+
+    document
+        .getElementById('companySortPanel')
+        .classList.toggle('show');
+
+}
+
+
+/* ---------------------------------------------------------
+   IMPORT
+   --------------------------------------------------------- */
+
+function cbCompanyToggleImport() {
+
+    cbCompanyClosePanels();
+
+    document
+        .getElementById('companyImportMenu')
+        .classList.toggle('show');
+
+}
+
+
+/* ---------------------------------------------------------
+   EXPORT
+   --------------------------------------------------------- */
+
+function cbCompanyToggleExport() {
+
+    cbCompanyClosePanels();
+
+    document
+        .getElementById('companyExportMenu')
+        .classList.toggle('show');
+
+}
+
+
+/* ---------------------------------------------------------
+   SEARCH
+   --------------------------------------------------------- */
+
+function cbCompanySearch(value) {
+
+    const query = value.toLowerCase().trim();
+
+    const clear =
+        document.getElementById('companySearchClear');
+
+    clear.hidden = !query;
+
+    document
+        .querySelectorAll('#companySavedBody tr')
+        .forEach(row => {
+
+            const text =
+                row.innerText.toLowerCase();
+
+            row.style.display =
+                !query || text.includes(query)
+                    ? ''
+                    : 'none';
+
+        });
+
+    cbCompanyUpdateCount();
+
+}
+
+
+/* ---------------------------------------------------------
+   CLEAR SEARCH
+   --------------------------------------------------------- */
+
+function cbCompanyClearSearch() {
+
+    const input =
+        document.getElementById('companySearch');
+
+    input.value = '';
+
+    document
+        .getElementById('companySearchClear')
+        .hidden = true;
+
+    cbCompanySearch('');
+
+    input.focus();
+
+}
+
+
+/* ---------------------------------------------------------
+   FILTER APPLY
+   --------------------------------------------------------- */
+
+function cbCompanyApplyFilter() {
+
+    const status =
+        document.getElementById('companyFilterStatus').value;
+
+    const type =
+        document.getElementById('companyFilterType').value;
+
+    document
+        .querySelectorAll('#companySavedBody tr')
+        .forEach(row => {
+
+            const rowStatus =
+                row.dataset.status || '';
+
+            const rowType =
+                row.dataset.type || '';
+
+            const statusOK =
+                !status || rowStatus === status;
+
+            const typeOK =
+                !type || rowType === type;
+
+            row.style.display =
+                statusOK && typeOK
+                    ? ''
+                    : 'none';
+
+        });
+
+    cbCompanyClosePanels();
+
+    cbCompanyUpdateCount();
+
+}
+
+
+/* ---------------------------------------------------------
+   FILTER RESET
+   --------------------------------------------------------- */
+
+function cbCompanyResetFilter() {
+
+    document.getElementById('companyFilterStatus').value = '';
+    document.getElementById('companyFilterType').value = '';
+
+    document
+        .querySelectorAll('#companySavedBody tr')
+        .forEach(row => row.style.display = '');
+
+    cbCompanyClosePanels();
+
+    cbCompanyUpdateCount();
+
+}
+
+
+/* ---------------------------------------------------------
+   SORT
+   --------------------------------------------------------- */
+
+function cbCompanyApplySort() {
+
+    const field =
+        document.getElementById('companySortField').value;
+
+    const order =
+        document.getElementById('companySortOrder').value;
+
+    cbCompanySortRows(field, order);
+
+    cbCompanyClosePanels();
+
+}
+
+
+/* ---------------------------------------------------------
+   HEADER SORT
+   --------------------------------------------------------- */
+
+function cbCompanyHeaderSort(field) {
+
+    const current =
+        window.cbCompanySortDirection || 'asc';
+
+    const direction =
+        current === 'asc'
+            ? 'desc'
+            : 'asc';
+
+    window.cbCompanySortDirection = direction;
+
+    cbCompanySortRows(field, direction);
+
+}
+
+
+/* ---------------------------------------------------------
+   SORT TABLE ROWS
+   --------------------------------------------------------- */
+
+function cbCompanySortRows(field, direction) {
+
+    const tbody =
+        document.getElementById('companySavedBody');
+
+    const rows =
+        Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort((a,b) => {
+
+        let A = a.dataset[field] || '';
+        let B = b.dataset[field] || '';
+
+        A = A.toLowerCase();
+        B = B.toLowerCase();
+
+        if (A < B) return direction === 'asc' ? -1 : 1;
+        if (A > B) return direction === 'asc' ? 1 : -1;
+
+        return 0;
+
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+
+    cbCompanyUpdateSortIcons(field, direction);
+
+}
+
+
+/* ---------------------------------------------------------
+   UPDATE SORT ICONS
+   --------------------------------------------------------- */
+
+function cbCompanyUpdateSortIcons(field, direction) {
+
+    document
+        .querySelectorAll('.cb-sort-head')
+        .forEach(button => {
+
+            button.classList.remove('active');
+
+            const icon =
+                button.querySelector('.material-symbols-rounded');
+
+            icon.textContent = 'unfold_more';
+
+        });
+
+    const heads =
+        document.querySelectorAll('.cb-sort-head');
+
+    heads.forEach(button => {
+
+        const text =
+            button.innerText.trim().toLowerCase();
+
+        if (
+            (field === 'id' && text.includes('company id')) ||
+            (field === 'company' && text.includes('company name')) ||
+            (field === 'type' && text.includes('business type')) ||
+            (field === 'industry' && text.includes('industry')) ||
+            (field === 'status' && text.includes('status')) ||
+            (field === 'date' && text.includes('created date'))
+        ) {
+
+            button.classList.add('active');
+
+            const icon =
+                button.querySelector('.material-symbols-rounded');
+
+            icon.textContent =
+                direction === 'asc'
+                    ? 'arrow_upward'
+                    : 'arrow_downward';
+
+        }
+
+    });
+
+}
+
+
+/* ---------------------------------------------------------
+   UPDATE RECORD COUNT
+   --------------------------------------------------------- */
+
+function cbCompanyUpdateCount() {
+
+    const rows =
+        Array.from(
+            document.querySelectorAll('#companySavedBody tr')
+        );
+
+    const visible =
+        rows.filter(
+            row => row.style.display !== 'none'
+        ).length;
+
+    document.getElementById('companyRecordCount').textContent =
+        visible + (visible === 1 ? ' Record' : ' Records');
+
+}
+
+
+/* ---------------------------------------------------------
+   ADD NEW POPUP
+   --------------------------------------------------------- */
+
+function cbOpenCompanyAddNew() {
+
+    document
+        .getElementById('companyAddModal')
+        .classList.add('show');
+
+    setTimeout(() => {
+
+        document
+            .getElementById('newCompanyName')
+            .focus();
+
+    }, 100);
+
+}
+
+
+/* ---------------------------------------------------------
+   CLOSE ADD NEW
+   --------------------------------------------------------- */
+
+function cbCloseCompanyAddNew() {
+
+    document
+        .getElementById('companyAddModal')
+        .classList.remove('show');
+
+}
+
+
+/* ---------------------------------------------------------
+   SAVE NEW COMPANY
+   --------------------------------------------------------- */
+
+function cbSaveNewCompany() {
+
+    const name =
+        document.getElementById('newCompanyName').value.trim();
+
+    if (!name) {
+
+        alert('Please enter the company name.');
+
+        return;
+
+    }
+
+    const type =
+        document.getElementById('newCompanyType').value || '—';
+
+    const industry =
+        document.getElementById('newCompanyIndustry').value || '—';
+
+    const status =
+        document.getElementById('newCompanyStatus').value;
+
+    const date =
+        document.getElementById('newCompanyDate').value ||
+        new Date().toISOString().slice(0,10);
+
+
+    /*
+       Generate temporary ID.
+       Replace this with your Firebase / Apps Script ID generation.
+    */
+
+    const nextNumber =
+        document.querySelectorAll('#companySavedBody tr').length + 1;
+
+    const id =
+        'COMIQ-' + String(nextNumber).padStart(3,'0');
+
+
+    const tr =
+        document.createElement('tr');
+
+    tr.dataset.company = name;
+    tr.dataset.id = id;
+    tr.dataset.type = type;
+    tr.dataset.industry = industry;
+    tr.dataset.status = status;
+    tr.dataset.date = date;
+
+
+    tr.innerHTML = `
+
+        <td>${id}</td>
+
+        <td>
+            <strong>${name}</strong>
+        </td>
+
+        <td>${type}</td>
+
+        <td>${industry}</td>
+
+        <td>
+            <span class="cb-status ${
+                status === 'Active'
+                    ? 'active'
+                    : 'inactive'
+            }">
+                ${status}
+            </span>
+        </td>
+
+        <td>${date}</td>
+
+        <td>
+
+            <button
+                type="button"
+                class="cb-row-action"
+                title="Edit"
+                onclick="cbEditCompany('${id}')">
+
+                <span class="material-symbols-rounded">
+                    edit
+                </span>
+
+            </button>
+
+        </td>
+    `;
+
+
+    document
+        .getElementById('companySavedBody')
+        .appendChild(tr);
+
+
+    cbCloseCompanyAddNew();
+
+    cbCompanyUpdateCount();
+
+    document.getElementById('newCompanyName').value = '';
+
+}
+
+
+/* ---------------------------------------------------------
+   EDIT
+   --------------------------------------------------------- */
+
+function cbEditCompany(id) {
+
+    /*
+       Replace this with your actual record-loading function.
+
+       Example:
+
+       loadCompanyFromFirestore(id);
+
+       or
+
+       loadCompanyFromSheet(id);
+    */
+
+    console.log('Edit Company:', id);
+
+}
+
+
+/* ---------------------------------------------------------
+   REFRESH
+   --------------------------------------------------------- */
+
+function cbCompanyRefresh() {
+
+    /*
+       Connect Firebase / Apps Script reload here.
+    */
+
+    cbCompanyUpdateCount();
+
+}
+
+
+/* ---------------------------------------------------------
+   SAMPLE CSV
+   --------------------------------------------------------- */
+
+function cbCompanySampleCSV() {
+
+    cbCompanyClosePanels();
+
+    const csv =
+`Company ID,Company Name,Business Type,Industry,Status,Created Date
+COMIQ-001,Example Company,Private Limited,Professional Services,Active,23-Sep-2026
+COMIQ-002,Demo Trading,Partnership,Retail,Active,23-Sep-2026`;
+
+    const blob =
+        new Blob([csv], {type:'text/csv;charset=utf-8;'});
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement('a');
+
+    a.href = url;
+    a.download = 'COREBIQ_Company_Sample.csv';
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* ---------------------------------------------------------
+   IMPORT DATA
+   --------------------------------------------------------- */
+
+function cbCompanyImportData() {
+
+    cbCompanyClosePanels();
+
+    const input =
+        document.getElementById('companyImportFile');
+
+    input.value = '';
+
+    input.click();
+
+    input.onchange = function() {
+
+        const file = this.files[0];
+
+        if (!file) return;
+
+        /*
+           Connect CSV / XLSX parser here.
+
+           Example:
+           handleCompanyImport(file);
+        */
+
+        console.log('Import:', file.name);
+
+    };
+
+}
+
+
+/* ---------------------------------------------------------
+   EXPORT CSV
+   --------------------------------------------------------- */
+
+function cbCompanyExportCSV() {
+
+    cbCompanyClosePanels();
+
+    const rows =
+        document.querySelectorAll('#companySavedTable tr');
+
+    const csv = [];
+
+    rows.forEach(row => {
+
+        if (row.style.display === 'none') return;
+
+        const cells =
+            Array.from(row.querySelectorAll('th,td'));
+
+        csv.push(
+            cells
+                .slice(0,-1)
+                .map(cell =>
+                    `"${cell.innerText
+                        .replace(/"/g,'""')
+                        .trim()}"`
+                )
+                .join(',')
+        );
+
+    });
+
+    const blob =
+        new Blob(
+            [csv.join('\n')],
+            {type:'text/csv;charset=utf-8;'}
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement('a');
+
+    a.href = url;
+    a.download = 'COREBIQ_Companies.csv';
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* ---------------------------------------------------------
+   EXPORT PDF
+   --------------------------------------------------------- */
+
+function cbCompanyExportPDF() {
+
+    cbCompanyClosePanels();
+
+    /*
+       Connect jsPDF / your PDF generator here.
+
+       Example:
+       generateCompanyPDF();
+    */
+
+    window.print();
+
+}
+
+
+/* ---------------------------------------------------------
+   ESCAPE KEY
+   --------------------------------------------------------- */
+
+document.addEventListener('keydown', function(e) {
+
+    if (e.key === 'Escape') {
+
+        cbCompanyClosePanels();
+        cbCloseCompanyAddNew();
+
+    }
+
+});
+
+
+/* ---------------------------------------------------------
+   INITIAL COUNT
+   --------------------------------------------------------- */
+
+cbCompanyUpdateCount();
+
+</script>
