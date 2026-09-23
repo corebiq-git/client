@@ -1,161 +1,325 @@
-<style>
-    /* =========================================================
-       COMPANY MODULE SPECIFIC STYLES (Google Material Style)
-       ========================================================= */
-    .company-module {
-        font-family: 'Inter', sans-serif;
-        color: #202124;
-        animation: fadeIn 0.3s ease-out;
-        padding-bottom: 40px;
-    }
-
-    /* Toolbar Settings */
-    .comp-toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 12px;
-        background: #ffffff;
-        padding: 16px 20px;
-        border-radius: 12px;
-        border: 1px solid #dadce0;
-        margin-bottom: 24px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-        position: sticky;
-        top: 72px; /* Below main header */
-        z-index: 10;
-    }
-    .comp-toolbar-left { display: flex; align-items: center; gap: 12px; flex: 1; }
-    .comp-toolbar-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    
-    .comp-icon-btn {
-        background: transparent; border: none; color: #5f6368; 
-        width: 40px; height: 40px; border-radius: 50%; 
-        display: grid; place-items: center; cursor: pointer; transition: 0.2s;
-    }
-    .comp-icon-btn:hover { background: #f1f3f4; color: #202124; }
-
-    .comp-search {
-        position: relative; display: flex; align-items: center;
-        background: #f1f3f4; border-radius: 8px; padding: 0 12px; max-width: 250px;
-    }
-    .comp-search .material-symbols-rounded { color: #5f6368; font-size: 20px; }
-    .comp-search input {
-        border: none; background: transparent; padding: 10px; width: 100%;
-        outline: none; font-size: 14px;
-    }
-
-    .comp-action-btn {
-        display: inline-flex; align-items: center; gap: 6px;
-        background: #ffffff; border: 1px solid #dadce0; color: #3c4043;
-        padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
-        cursor: pointer; transition: 0.2s;
-    }
-    .comp-action-btn:hover { background: #f8f9fa; }
-    .comp-action-btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .comp-action-btn.primary:hover { background: var(--primary-dark); }
-    .comp-action-btn .material-symbols-rounded { font-size: 18px; }
-
-    .date-range-group { display: flex; align-items: center; gap: 6px; background: #f1f3f4; padding: 4px 8px; border-radius: 8px; border: 1px solid #dadce0; }
-    .date-range-group input { border: none; background: transparent; font-size: 12px; outline: none; color: #3c4043; cursor: pointer; }
-
-    /* Form Layout & Cards */
-    .comp-header-banner {
-        text-align: center; margin-bottom: 24px; padding: 20px;
-    }
-    .comp-header-banner h1 { font-size: 22px; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
-    .comp-header-banner p { font-size: 14px; color: #5f6368; }
-    .comp-header-banner .comp-id { display: inline-block; background: #e8f0fe; color: #1967d2; padding: 4px 12px; border-radius: 16px; font-weight: 600; font-size: 13px; margin-top: 8px; }
-
-    .comp-form-section {
-        background: #ffffff;
-        border: 1px solid #dadce0;
-        border-radius: 12px;
-        padding: 28px 32px;
-        margin-bottom: 24px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-    .comp-form-section h2 {
-        font-size: 16px; font-weight: 600; color: var(--primary);
-        margin: 0 0 24px; display: flex; align-items: center; gap: 8px;
-        border-bottom: 1px solid #f1f3f4; padding-bottom: 12px;
-    }
-    
-    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .comp-grid.col-3 { grid-template-columns: 1fr 1fr 1fr; }
-    .comp-grid.col-1 { grid-template-columns: 1fr; }
-
-    /* Google Style Floating Labels */
-    .g-input-group { position: relative; margin-bottom: 6px; }
-    .g-input-group input, .g-input-group select, .g-input-group textarea {
-        width: 100%; padding: 14px 15px; font-size: 15px; color: #202124;
-        border: 1px solid #dadce0; border-radius: 6px; outline: none;
-        background: transparent; transition: border 0.2s ease; appearance: none;
-    }
-    .g-input-group textarea { resize: vertical; min-height: 100px; }
-    .g-input-group label {
-        position: absolute; left: 12px; top: 15px; background: #ffffff;
-        padding: 0 4px; color: #5f6368; font-size: 15px;
-        transition: 0.15s ease-out; pointer-events: none;
-    }
-    .g-input-group select { cursor: pointer; padding-right: 36px; }
-    .g-input-group .select-arrow {
-        position: absolute; right: 12px; top: 15px; color: #5f6368; pointer-events: none;
-    }
-    
-    /* Focus & Value States */
-    .g-input-group input:focus, .g-input-group select:focus, .g-input-group textarea:focus {
-        border: 2px solid var(--primary); padding: 13px 14px;
-    }
-    .g-input-group input:focus ~ label, .g-input-group input:not(:placeholder-shown) ~ label,
-    .g-input-group select:focus ~ label, .g-input-group select:valid ~ label,
-    .g-input-group textarea:focus ~ label, .g-input-group textarea:not(:placeholder-shown) ~ label {
-        top: -9px; font-size: 12px; font-weight: 500;
-    }
-    .g-input-group input:focus ~ label, .g-input-group select:focus ~ label, .g-input-group textarea:focus ~ label {
-        color: var(--primary);
-    }
-    
-    .g-input-group input[type="color"] { padding: 4px; height: 50px; cursor: pointer; }
-
-    /* Checkboxes & Radios */
-    .g-checkbox-group { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0; }
-    .g-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #3c4043; }
-    .g-checkbox input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
-
-    /* Upload Areas */
-    .upload-box {
-        border: 1px dashed #dadce0; border-radius: 8px; padding: 24px; text-align: center;
-        background: #f8f9fa; cursor: pointer; transition: 0.2s;
-    }
-    .upload-box:hover { background: #f1f3f4; border-color: var(--primary); }
-    .upload-box .material-symbols-rounded { font-size: 32px; color: var(--primary); margin-bottom: 8px; }
-    .upload-box p { font-size: 13px; color: #5f6368; margin: 4px 0; }
-    .upload-box strong { color: var(--primary); font-size: 14px; }
-
-    /* Sub-cards (Branch / Bank) */
-    .sub-card {
-        border: 1px solid #dadce0; border-radius: 8px; padding: 16px; margin-bottom: 16px; background: #fdfdfd; position: relative;
-    }
-    .sub-card-delete { position: absolute; right: 12px; top: 12px; color: #d93025; cursor: pointer; background: none; border: none; }
-
-    /* Actions Footer */
-    .comp-footer-actions {
-        display: flex; justify-content: flex-end; gap: 12px; padding: 20px 0;
-    }
-
-    @media(max-width: 768px) {
-        .comp-grid { grid-template-columns: 1fr; }
-        .comp-grid.col-3 { grid-template-columns: 1fr; }
-        .comp-toolbar { flex-direction: column; align-items: stretch; }
-        .comp-toolbar-left { flex-direction: column; align-items: flex-start; }
-        .comp-search { max-width: 100%; width: 100%; }
-        .comp-toolbar-right { justify-content: flex-start; }
-        .comp-form-section { padding: 20px; }
-    }
-</style>
-
+<!-- 
+  COMPANY SETTINGS MODULE
+  Injected dynamically into the dashboard via switchView()
+-->
 <div class="company-module">
+    <style>
+        /* Encapsulated CSS specific to this module to prevent conflicts */
+        .company-module {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            color: #202124;
+            animation: fadeIn 0.3s ease-out;
+            padding-bottom: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Toolbar Settings */
+        .company-module .comp-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #ffffff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #dadce0;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 10px;
+            z-index: 10;
+        }
+        
+        .company-module .comp-toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .company-module .comp-toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .company-module .comp-icon-btn {
+            background: transparent;
+            border: none;
+            color: #5f6368;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .company-module .comp-icon-btn:hover { background: #f1f3f4; color: #202124; }
+
+        .company-module .comp-search {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f1f3f4;
+            border-radius: 8px;
+            padding: 0 12px;
+            flex: 1;
+            max-width: 300px;
+            height: 36px;
+        }
+        .company-module .comp-search .material-symbols-rounded { color: #5f6368; font-size: 18px; }
+        .company-module .comp-search input {
+            border: none;
+            background: transparent;
+            padding: 8px;
+            width: 100%;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .company-module .comp-action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            color: #3c4043;
+            height: 36px;
+            padding: 0 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .company-module .comp-action-btn:hover { background: #f8f9fa; }
+        .company-module .comp-action-btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .company-module .comp-action-btn.primary:hover { background: var(--primary-dark); }
+        .company-module .comp-action-btn .material-symbols-rounded { font-size: 18px; }
+
+        .company-module .date-range-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f3f4;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 8px;
+            border: 1px solid #dadce0;
+            font-size: 12px;
+            color: #5f6368;
+        }
+        .company-module .date-range-group input {
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            outline: none;
+            color: #3c4043;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* Form Layout & Cards */
+        .company-module .comp-header-banner {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 20px;
+        }
+        .company-module .comp-header-banner h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .company-module .comp-header-banner p { font-size: 13px; color: #5f6368; margin-bottom: 8px; }
+        .company-module .comp-id {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1967d2;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .company-module .comp-form-section {
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .company-module .comp-form-section h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #f1f3f4;
+            padding-bottom: 12px;
+        }
+        .company-module .comp-form-section h2 .material-symbols-rounded { font-size: 22px; }
+        
+        .company-module .comp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .company-module .comp-grid.col-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        /* Google Style Floating Labels */
+        .company-module .g-input-group { position: relative; margin-top: 8px; }
+        
+        .company-module .g-input-group input, 
+        .company-module .g-input-group select, 
+        .company-module .g-input-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #202124;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            outline: none;
+            background: transparent;
+            transition: border 0.2s ease, padding 0.2s ease;
+            appearance: none;
+            font-family: inherit;
+        }
+        
+        .company-module .g-input-group textarea { resize: vertical; min-height: 100px; }
+        
+        .company-module .g-input-group label {
+            position: absolute;
+            left: 12px;
+            top: 15px;
+            background: #ffffff;
+            padding: 0 4px;
+            color: #5f6368;
+            font-size: 14px;
+            transition: 0.15s ease-out;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        
+        .company-module .g-input-group select { cursor: pointer; padding-right: 36px; }
+        .company-module .g-input-group .select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 15px;
+            color: #5f6368;
+            pointer-events: none;
+        }
+        
+        /* Focus & Value States - The Magic */
+        .company-module .g-input-group input:focus, 
+        .company-module .g-input-group select:focus, 
+        .company-module .g-input-group textarea:focus {
+            border: 2px solid var(--primary);
+            padding: 13px 15px; /* Adjust padding to prevent jump when border gets thicker */
+        }
+        
+        .company-module .g-input-group input:focus ~ label, 
+        .company-module .g-input-group input:not(:placeholder-shown) ~ label,
+        .company-module .g-input-group select:focus ~ label, 
+        .company-module .g-input-group select:valid ~ label,
+        .company-module .g-input-group textarea:focus ~ label, 
+        .company-module .g-input-group textarea:not(:placeholder-shown) ~ label {
+            top: -9px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #5f6368;
+        }
+        
+        .company-module .g-input-group input:focus ~ label, 
+        .company-module .g-input-group select:focus ~ label, 
+        .company-module .g-input-group textarea:focus ~ label {
+            color: var(--primary);
+        }
+        
+        .company-module .g-input-group input[type="color"] { padding: 4px; height: 50px; cursor: pointer; }
+
+        /* Checkboxes */
+        .company-module .g-checkbox-group { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0; }
+        .company-module .g-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #3c4043; }
+        .company-module .g-checkbox input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+
+        /* Upload Areas */
+        .company-module .upload-box {
+            border: 1px dashed #dadce0;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: 0.2s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .company-module .upload-box:hover { background: #f1f3f4; border-color: var(--primary); }
+        .company-module .upload-box .material-symbols-rounded { font-size: 28px; color: var(--primary); margin-bottom: 8px; }
+        .company-module .upload-box p { font-size: 12px; color: #5f6368; margin: 4px 0; line-height: 1.4; }
+        .company-module .upload-box strong { color: var(--primary); font-size: 13px; }
+
+        /* Sub-cards (Branch / Bank) */
+        .company-module .sub-card {
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            background: #fdfdfd;
+            position: relative;
+        }
+        .company-module .sub-card-delete {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            color: #d93025;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+            border-radius: 50%;
+        }
+        .company-module .sub-card-delete:hover { background: #fce8e6; }
+
+        /* Actions Footer */
+        .company-module .comp-footer-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 20px 0;
+            border-top: 1px solid #dadce0;
+            margin-top: 24px;
+        }
+
+        /* Mobile Adjustments */
+        @media(max-width: 768px) {
+            .company-module .comp-grid { grid-template-columns: 1fr; gap: 16px; }
+            .company-module .comp-grid.col-3 { grid-template-columns: 1fr; }
+            .company-module .comp-toolbar { flex-direction: column; align-items: stretch; padding: 12px; }
+            .company-module .comp-toolbar-left { flex-wrap: wrap; }
+            .company-module .comp-search { max-width: 100%; order: 3; width: 100%; margin-top: 4px; }
+            .company-module .comp-toolbar-right { justify-content: flex-start; overflow-x: auto; padding-bottom: 4px; flex-wrap: nowrap; }
+            .company-module .comp-form-section { padding: 16px; }
+            .company-module .date-range-group { white-space: nowrap; }
+            .company-module .comp-action-btn { flex-shrink: 0; }
+        }
+    </style>
 
     <!-- TOOLBAR -->
     <div class="comp-toolbar">
@@ -163,19 +327,19 @@
             <button class="comp-icon-btn" onclick="window.switchView('view-dashboard', null)" title="Back">
                 <span class="material-symbols-rounded">arrow_back</span>
             </button>
+            <button class="comp-action-btn"><span class="material-symbols-rounded">filter_list</span> Filter</button>
             <div class="comp-search">
                 <span class="material-symbols-rounded">search</span>
                 <input type="text" placeholder="Search settings...">
             </div>
-            <button class="comp-action-btn"><span class="material-symbols-rounded">filter_list</span> Filter</button>
         </div>
         <div class="comp-toolbar-right">
             <div class="date-range-group">
                 <input type="date" title="From Date"> - <input type="date" title="To Date">
             </div>
             <button class="comp-action-btn"><span class="material-symbols-rounded">analytics</span> Report</button>
-            <button class="comp-action-btn"><span class="material-symbols-rounded">download</span> Download Sample CSV</button>
-            <button class="comp-action-btn"><span class="material-symbols-rounded">publish</span> Import CSV</button>
+            <button class="comp-action-btn"><span class="material-symbols-rounded">download</span> CSV Sample</button>
+            <button class="comp-action-btn"><span class="material-symbols-rounded">publish</span> Import</button>
             <button class="comp-action-btn"><span class="material-symbols-rounded">file_download</span> Export</button>
             <button class="comp-action-btn primary"><span class="material-symbols-rounded">add</span> Add Option</button>
         </div>
@@ -205,14 +369,14 @@
                 <div class="g-input-group">
                     <select id="compBusinessType" required>
                         <option value="" disabled selected hidden></option>
-                        <option>Sole Proprietorship</option>
-                        <option>Partnership</option>
-                        <option>Limited Liability Partnership (LLP)</option>
-                        <option>Private Limited Company</option>
-                        <option>Public Limited Company</option>
-                        <option>Trust</option>
-                        <option>Society</option>
-                        <option>Other</option>
+                        <option value="sole">Sole Proprietorship</option>
+                        <option value="partnership">Partnership</option>
+                        <option value="llp">Limited Liability Partnership (LLP)</option>
+                        <option value="pvt">Private Limited Company</option>
+                        <option value="pub">Public Limited Company</option>
+                        <option value="trust">Trust</option>
+                        <option value="society">Society</option>
+                        <option value="other">Other</option>
                     </select>
                     <label>Business Type</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -220,19 +384,19 @@
                 <div class="g-input-group">
                     <select id="compIndustry" required>
                         <option value="" disabled selected hidden></option>
-                        <option>Accounting & Finance</option>
-                        <option>Healthcare</option>
-                        <option>Travel & Tourism</option>
-                        <option>Retail</option>
-                        <option>Education</option>
-                        <option>IT & Software</option>
-                        <option>Professional Services</option>
-                        <option>Manufacturing</option>
-                        <option>Construction</option>
-                        <option>Real Estate</option>
-                        <option>Hospitality</option>
-                        <option>Logistics</option>
-                        <option>Other</option>
+                        <option value="fin">Accounting & Finance</option>
+                        <option value="health">Healthcare</option>
+                        <option value="travel">Travel & Tourism</option>
+                        <option value="retail">Retail</option>
+                        <option value="edu">Education</option>
+                        <option value="it">IT & Software</option>
+                        <option value="prof">Professional Services</option>
+                        <option value="mfg">Manufacturing</option>
+                        <option value="const">Construction</option>
+                        <option value="real">Real Estate</option>
+                        <option value="hosp">Hospitality</option>
+                        <option value="log">Logistics</option>
+                        <option value="other">Other</option>
                     </select>
                     <label>Industry</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -319,13 +483,13 @@
                     <input type="url" id="compWebsite" placeholder=" ">
                     <label>Website (https://...)</label>
                 </div>
-                <div class="g-input-group">
+                <div class="g-input-group" style="grid-column: 1 / -1;">
                     <select id="compPrefContact" required>
                         <option value="" disabled selected hidden></option>
-                        <option>Email</option>
-                        <option>Phone</option>
-                        <option>WhatsApp</option>
-                        <option>SMS</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                        <option value="wa">WhatsApp</option>
+                        <option value="sms">SMS</option>
                     </select>
                     <label>Preferred Contact Method</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -340,9 +504,9 @@
                 <div class="g-input-group">
                     <select id="compCountry" required>
                         <option value="" disabled selected hidden></option>
-                        <option>India</option>
-                        <option>UAE</option>
-                        <option>Other</option>
+                        <option value="in">India</option>
+                        <option value="ae">UAE</option>
+                        <option value="other">Other</option>
                     </select>
                     <label>Country</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -397,13 +561,13 @@
                 <div class="g-input-group">
                     <select id="compGstType">
                         <option value="" disabled selected hidden></option>
-                        <option>Regular</option>
-                        <option>Composition</option>
-                        <option>Casual Taxable Person</option>
-                        <option>SEZ</option>
-                        <option>Input Service Distributor</option>
-                        <option>Non-Resident Taxable Person</option>
-                        <option>Unregistered</option>
+                        <option value="reg">Regular</option>
+                        <option value="comp">Composition</option>
+                        <option value="casual">Casual Taxable Person</option>
+                        <option value="sez">SEZ</option>
+                        <option value="isd">Input Service Distributor</option>
+                        <option value="nonres">Non-Resident Taxable Person</option>
+                        <option value="unreg">Unregistered</option>
                     </select>
                     <label>GST Registration Type</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -424,7 +588,7 @@
                     <input type="text" id="compIec" placeholder=" ">
                     <label>IEC</label>
                 </div>
-                <div class="g-input-group">
+                <div class="g-input-group" style="grid-column: 1 / -1;">
                     <input type="text" id="compFssai" placeholder=" ">
                     <label>FSSAI No.</label>
                 </div>
@@ -461,11 +625,11 @@
                 <div class="g-input-group">
                     <select id="compCurrency" required>
                         <option value="" disabled selected hidden></option>
-                        <option>INR – Indian Rupee</option>
-                        <option>AED – UAE Dirham</option>
-                        <option>USD – US Dollar</option>
-                        <option>EUR – Euro</option>
-                        <option>GBP – Pound Sterling</option>
+                        <option value="inr">INR – Indian Rupee</option>
+                        <option value="aed">AED – UAE Dirham</option>
+                        <option value="usd">USD – US Dollar</option>
+                        <option value="eur">EUR – Euro</option>
+                        <option value="gbp">GBP – Pound Sterling</option>
                     </select>
                     <label>Default Currency</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -473,9 +637,9 @@
                 <div class="g-input-group">
                     <select id="compFinYear" required>
                         <option value="" disabled selected hidden></option>
-                        <option>April – March</option>
-                        <option>January – December</option>
-                        <option>Other</option>
+                        <option value="apr-mar">April – March</option>
+                        <option value="jan-dec">January – December</option>
+                        <option value="other">Other</option>
                     </select>
                     <label>Financial Year</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -483,8 +647,8 @@
                 <div class="g-input-group">
                     <select id="compNumFormat">
                         <option value="" disabled selected hidden></option>
-                        <option>Indian (1,00,000.00)</option>
-                        <option>International (100,000.00)</option>
+                        <option value="in">Indian (1,00,000.00)</option>
+                        <option value="int">International (100,000.00)</option>
                     </select>
                     <label>Number Format</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -492,10 +656,10 @@
                 <div class="g-input-group">
                     <select id="compDecimal">
                         <option value="" disabled selected hidden></option>
-                        <option>0</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
+                        <option value="0">0</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
                     </select>
                     <label>Decimal Places</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -508,11 +672,11 @@
                     <input type="number" id="compTaxRate" placeholder=" " step="0.01">
                     <label>Default Tax Rate (%)</label>
                 </div>
-                <div class="g-input-group">
+                <div class="g-input-group" style="grid-column: 1 / -1;">
                     <select id="compTaxDisplay">
                         <option value="" disabled selected hidden></option>
-                        <option>Tax Exclusive</option>
-                        <option>Tax Inclusive</option>
+                        <option value="ex">Tax Exclusive</option>
+                        <option value="in">Tax Inclusive</option>
                     </select>
                     <label>Tax Display</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -526,38 +690,46 @@
             <div class="comp-grid">
                 <div class="g-input-group"><input type="text" placeholder=" " value="INV"><label>Invoice Prefix</label></div>
                 <div class="g-input-group"><input type="text" placeholder=" " value="000001"><label>Invoice Number Start</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="INV-000001" readonly style="background:#f8f9fa"><label>Invoice Number Format Preview</label></div>
+                <div class="g-input-group" style="grid-column: 1 / -1;"><input type="text" placeholder=" " value="INV-000001" readonly style="background:#f8f9fa; color:#5f6368;"><label>Invoice Number Format Preview</label></div>
+                
                 <div class="g-input-group"><input type="text" placeholder=" " value="PI"><label>Proforma Invoice Prefix</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="CN"><label>Credit Note Prefix</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="DN"><label>Debit Note Prefix</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="RC"><label>Receipt Prefix</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="PAY"><label>Payment Prefix</label></div>
                 <div class="g-input-group"><input type="text" placeholder=" " value="QT"><label>Quotation Prefix</label></div>
                 
-                <div class="g-input-group">
+                <div class="g-input-group"><input type="text" placeholder=" " value="CN"><label>Credit Note Prefix</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="DN"><label>Debit Note Prefix</label></div>
+                
+                <div class="g-input-group"><input type="text" placeholder=" " value="RC"><label>Receipt Prefix</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="PAY"><label>Payment Prefix</label></div>
+                
+                <div class="g-input-group" style="grid-column: 1 / -1;">
                     <select>
                         <option value="" disabled selected hidden></option>
-                        <option>Standard Professional</option>
-                        <option>Modern Clean</option>
-                        <option>Classic Corporate</option>
+                        <option value="t1">Standard Professional</option>
+                        <option value="t2">Modern Clean</option>
+                        <option value="t3">Classic Corporate</option>
                     </select>
                     <label>Invoice Template</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
                 </div>
+                
                 <div class="g-input-group">
                     <select>
                         <option value="" disabled selected hidden></option>
-                        <option>Due on Receipt</option>
-                        <option>7 Days</option><option>15 Days</option>
-                        <option>30 Days</option><option>45 Days</option>
-                        <option>60 Days</option><option>Custom</option>
+                        <option value="rec">Due on Receipt</option>
+                        <option value="7">7 Days</option>
+                        <option value="15">15 Days</option>
+                        <option value="30">30 Days</option>
+                        <option value="45">45 Days</option>
+                        <option value="60">60 Days</option>
+                        <option value="custom">Custom</option>
                     </select>
                     <label>Default Payment Terms</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
                 </div>
                 <div class="g-input-group"><input type="number" placeholder=" " value="0"><label>Default Due Days</label></div>
             </div>
-            <div class="g-checkbox-group" style="margin-top: 20px;">
+            
+            <div class="g-checkbox-group" style="margin-top: 20px; border-top: 1px solid #f1f3f4; padding-top: 16px;">
                 <label class="g-checkbox"><input type="checkbox" checked><span>Show company logo</span></label>
                 <label class="g-checkbox"><input type="checkbox" checked><span>Show company address</span></label>
                 <label class="g-checkbox"><input type="checkbox" checked><span>Show tax registration details</span></label>
@@ -574,23 +746,26 @@
             <div class="sub-card">
                 <button type="button" class="sub-card-delete" title="Remove Bank"><span class="material-symbols-rounded">delete</span></button>
                 <div class="comp-grid">
-                    <div class="g-input-group"><input type="text" placeholder=" " required><label>Account Name</label></div>
+                    <div class="g-input-group" style="grid-column: 1 / -1;"><input type="text" placeholder=" " required><label>Account Name</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" " required><label>Bank Name</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" "><label>Branch</label></div>
-                    <div class="g-input-group"><input type="text" placeholder=" " required><label>Account Number</label></div>
+                    <div class="g-input-group" style="grid-column: 1 / -1;"><input type="text" placeholder=" " required><label>Account Number</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" "><label>IFSC Code</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" "><label>SWIFT Code</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" "><label>IBAN</label></div>
                     <div class="g-input-group">
                         <select required>
                             <option value="" disabled selected hidden></option>
-                            <option>Current</option><option>Savings</option><option>Business</option><option>Other</option>
+                            <option value="current">Current</option>
+                            <option value="saving">Savings</option>
+                            <option value="biz">Business</option>
+                            <option value="other">Other</option>
                         </select>
                         <label>Account Type</label>
                         <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
                     </div>
                 </div>
-                <label class="g-checkbox" style="margin-top: 12px;"><input type="checkbox" checked><span>Set as Default Account</span></label>
+                <label class="g-checkbox" style="margin-top: 16px;"><input type="checkbox" checked><span>Set as Default Account</span></label>
             </div>
             
             <button type="button" class="comp-action-btn"><span class="material-symbols-rounded">add</span> Add Bank Account</button>
@@ -599,7 +774,7 @@
         <!-- 10. PAYMENT SETTINGS -->
         <div class="comp-form-section">
             <h2><span class="material-symbols-rounded">payments</span> 10. PAYMENT SETTINGS</h2>
-            <p style="font-size:14px; margin-bottom:12px; color:#5f6368;">Accepted Payment Methods</p>
+            <p style="font-size:14px; margin-bottom:12px; color:#5f6368; font-weight:500;">Accepted Payment Methods</p>
             <div class="g-checkbox-group">
                 <label class="g-checkbox"><input type="checkbox" checked><span>Cash</span></label>
                 <label class="g-checkbox"><input type="checkbox" checked><span>Bank Transfer</span></label>
@@ -614,16 +789,18 @@
             <div class="comp-grid">
                 <div class="g-input-group"><input type="text" placeholder=" "><label>UPI ID</label></div>
                 <div style="display:flex; gap:12px; align-items:center;">
-                    <div class="upload-box" style="padding:12px; flex:1;">
-                        <span class="material-symbols-rounded" style="font-size:24px;">qr_code</span>
-                        <p style="margin:0;">Upload QR</p>
+                    <div class="upload-box" style="padding:12px; flex:1; min-height: 50px;">
+                        <span class="material-symbols-rounded" style="font-size:24px; margin:0;">qr_code</span>
                     </div>
                     <button type="button" class="comp-action-btn">Generate QR</button>
                 </div>
                 <div class="g-input-group">
                     <select>
                         <option value="" disabled selected hidden></option>
-                        <option>Razorpay</option><option>Stripe</option><option>PayPal</option><option>CCAvenue</option>
+                        <option value="rp">Razorpay</option>
+                        <option value="st">Stripe</option>
+                        <option value="pp">PayPal</option>
+                        <option value="cc">CCAvenue</option>
                     </select>
                     <label>Payment Gateway</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -640,7 +817,10 @@
                 <div class="g-input-group">
                     <select required>
                         <option value="" disabled selected hidden></option>
-                        <option>English</option><option>Malayalam</option><option>Hindi</option><option>Arabic</option>
+                        <option value="en">English</option>
+                        <option value="ml">Malayalam</option>
+                        <option value="hi">Hindi</option>
+                        <option value="ar">Arabic</option>
                     </select>
                     <label>Default Language</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -648,7 +828,9 @@
                 <div class="g-input-group">
                     <select required>
                         <option value="" disabled selected hidden></option>
-                        <option>DD/MM/YYYY</option><option>MM/DD/YYYY</option><option>YYYY-MM-DD</option>
+                        <option value="dmy">DD/MM/YYYY</option>
+                        <option value="mdy">MM/DD/YYYY</option>
+                        <option value="ymd">YYYY-MM-DD</option>
                     </select>
                     <label>Date Format</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -656,7 +838,9 @@
                 <div class="g-input-group">
                     <select required>
                         <option value="" disabled selected hidden></option>
-                        <option>Asia/Kolkata (IST)</option><option>Asia/Dubai (GST)</option><option>UTC</option>
+                        <option value="ist">Asia/Kolkata (IST)</option>
+                        <option value="gst">Asia/Dubai (GST)</option>
+                        <option value="utc">UTC</option>
                     </select>
                     <label>Time Zone</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -666,7 +850,7 @@
 
         <!-- 12. NOTIFICATIONS -->
         <div class="comp-form-section">
-            <h2><span class="material-symbols-rounded">notifications</span> 12. NOTIFICATIONS</h2>
+            <h2><span class="material-symbols-rounded">notifications_active</span> 12. NOTIFICATIONS</h2>
             <div class="g-checkbox-group">
                 <label class="g-checkbox"><input type="checkbox" checked><span>Email Notifications</span></label>
                 <label class="g-checkbox"><input type="checkbox" checked><span>Payment Notifications</span></label>
@@ -682,17 +866,18 @@
             
             <div class="sub-card">
                 <div class="comp-grid">
-                    <div class="g-input-group"><input type="text" placeholder=" " value="BR-001" readonly style="background:#f8f9fa"><label>Branch ID</label></div>
+                    <div class="g-input-group"><input type="text" placeholder=" " value="BR-001" readonly style="background:#f8f9fa; color:#5f6368;"><label>Branch ID</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" " value="Head Office"><label>Branch Name</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" " value="HO"><label>Branch Code</label></div>
                     <div class="g-input-group"><input type="text" placeholder=" "><label>Branch Manager</label></div>
                     <div class="g-input-group"><input type="tel" placeholder=" "><label>Phone</label></div>
                     <div class="g-input-group"><input type="email" placeholder=" "><label>Email</label></div>
-                    <div class="g-input-group"><input type="text" placeholder=" "><label>Address</label></div>
+                    <div class="g-input-group" style="grid-column: 1 / -1;"><input type="text" placeholder=" "><label>Address</label></div>
                     <div class="g-input-group">
                         <select>
                             <option value="" disabled hidden></option>
-                            <option selected>Active</option><option>Inactive</option>
+                            <option value="active" selected>Active</option>
+                            <option value="inactive">Inactive</option>
                         </select>
                         <label>Status</label>
                         <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -702,7 +887,7 @@
 
             <button type="button" class="comp-action-btn"><span class="material-symbols-rounded">add</span> Add Branch</button>
 
-            <div style="margin-top: 24px; padding: 16px; background: #f8f9fa; border-radius: 8px; font-family: monospace; font-size: 13px; color: #5f6368;">
+            <div style="margin-top: 24px; padding: 16px; background: #f8f9fa; border-radius: 8px; font-family: monospace; font-size: 13px; color: #5f6368; line-height: 1.6;">
                 COMIQ-001<br>
                 ├── BR-001 — Head Office<br>
                 ├── BR-002 — Kochi<br>
@@ -714,16 +899,17 @@
         <div class="comp-form-section">
             <h2><span class="material-symbols-rounded">info</span> 14. SYSTEM INFORMATION</h2>
             <div class="comp-grid col-3">
-                <div class="g-input-group"><input type="text" placeholder=" " value="COMIQ-001" readonly style="background:#f8f9fa"><label>Company ID (Read-only)</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="Active" readonly style="background:#f8f9fa"><label>Company Status</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="23-Sep-2026" readonly style="background:#f8f9fa"><label>Created Date</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="System Admin" readonly style="background:#f8f9fa"><label>Created By</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="23-Sep-2026 08:00 PM" readonly style="background:#f8f9fa"><label>Last Updated</label></div>
-                <div class="g-input-group"><input type="text" placeholder=" " value="System Admin" readonly style="background:#f8f9fa"><label>Updated By</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="COMIQ-001" readonly style="background:#f8f9fa; color:#5f6368;"><label>Company ID (Read-only)</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="Active" readonly style="background:#f8f9fa; color:#5f6368;"><label>Company Status</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="23-Sep-2026" readonly style="background:#f8f9fa; color:#5f6368;"><label>Created Date</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="System Admin" readonly style="background:#f8f9fa; color:#5f6368;"><label>Created By</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="23-Sep-2026 08:00 PM" readonly style="background:#f8f9fa; color:#5f6368;"><label>Last Updated</label></div>
+                <div class="g-input-group"><input type="text" placeholder=" " value="System Admin" readonly style="background:#f8f9fa; color:#5f6368;"><label>Updated By</label></div>
                 <div class="g-input-group">
                     <select>
                         <option value="" disabled hidden></option>
-                        <option selected>Asia (Mumbai)</option><option>Middle East (UAE)</option>
+                        <option value="mumbai" selected>Asia (Mumbai)</option>
+                        <option value="uae">Middle East (UAE)</option>
                     </select>
                     <label>Data Region</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -731,7 +917,8 @@
                 <div class="g-input-group">
                     <select>
                         <option value="" disabled hidden></option>
-                        <option selected>Editable</option><option>Locked</option>
+                        <option value="edit" selected>Editable</option>
+                        <option value="lock">Locked</option>
                     </select>
                     <label>Record Lock</label>
                     <span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
@@ -747,5 +934,4 @@
         </div>
 
     </form>
-
 </div>
