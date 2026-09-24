@@ -392,6 +392,50 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 <div id="app-container" style="visibility: hidden;">
 
     <div id="sidebar-container">
+<style>
+/* =========================================================
+   COREBIQ INDEX SIDEBAR — MAIN MODULES + SUB MODULES
+   Navigation links intentionally point directly to exact .html files.
+   ========================================================= */
+.cb-sidebar-nav .cb-nav-group { margin: 2px 0 6px; }
+.cb-sidebar-nav .cb-nav-summary {
+  list-style: none; cursor: pointer; width: 100%; min-height: 46px;
+  border: none; border-radius: 12px; background: transparent;
+  color: var(--text-soft); display: flex; align-items: center; gap: 14px;
+  padding: 0 16px; font-size: 14px; font-weight: 600;
+  transition: all .2s ease;
+}
+.cb-sidebar-nav .cb-nav-summary::-webkit-details-marker { display:none; }
+.cb-sidebar-nav .cb-nav-summary::after {
+  content:'chevron_right'; font-family:'Material Symbols Rounded';
+  margin-left:auto; font-size:20px; transition:transform .2s ease;
+}
+.cb-sidebar-nav details[open] > .cb-nav-summary::after { transform:rotate(90deg); }
+.cb-sidebar-nav .cb-nav-summary:hover { background:var(--surface-soft); color:var(--text-strong); }
+.cb-sidebar-nav .cb-nav-summary .material-symbols-rounded { font-size:22px; color:var(--muted); }
+.cb-sidebar-nav .cb-nav-sub {
+  margin: 2px 0 6px 18px; padding: 2px 0 2px 14px;
+  border-left:1px solid var(--border);
+}
+.cb-sidebar-nav .cb-nav-sub a {
+  display:flex; align-items:center; min-height:38px; padding:0 12px;
+  border-radius:9px; color:var(--text-soft); text-decoration:none;
+  font-size:13px; font-weight:500; transition:all .2s ease;
+}
+.cb-sidebar-nav .cb-nav-sub a:hover { background:var(--surface-soft); color:var(--primary); }
+.cb-sidebar-nav .cb-nav-sub a::before {
+  content:'arrow_right'; font-family:'Material Symbols Rounded';
+  font-size:16px; margin-right:7px; color:var(--muted);
+}
+.cb-sidebar-nav .cb-nav-dashboard {
+  width:100%; min-height:46px; border:none; border-radius:12px;
+  background:var(--primary); color:#fff; display:flex; align-items:center;
+  gap:14px; padding:0 16px; margin-bottom:8px; font-size:14px; font-weight:600;
+  text-decoration:none; box-shadow:0 4px 12px rgba(15,76,129,.2);
+}
+.cb-sidebar-nav .cb-nav-dashboard .material-symbols-rounded { color:#fff; font-size:22px; }
+</style>
+
 <div class="cb-sidebar-shell">
   <div class="cb-sidebar-top">
     <div class="cb-sidebar-brand">
@@ -403,84 +447,120 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   </div>
 
   <nav class="cb-sidebar-nav">
-    <button class="cb-side-link active" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this)">
+    <a class="cb-nav-dashboard" href="#" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this);return false;">
       <span class="material-symbols-rounded">dashboard</span><span>Dashboard</span>
-    </button>
-    <button class="cb-side-link" data-target="view-patients" onclick="window.switchView('view-patients',this)">
-      <span class="material-symbols-rounded">groups</span><span>Clients Data</span>
-    </button>
-    <button class="cb-side-link" data-target="view-appointments" onclick="window.switchView('view-appointments',this)">
-      <span class="material-symbols-rounded">event_note</span><span>Appointments</span>
-    </button>
-    <button class="cb-side-link" data-target="view-calender" onclick="window.switchView('view-calender',this)">
-      <span class="material-symbols-rounded">calendar_month</span><span>Calendar</span>
-    </button>
+    </a>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">groups</span><span>CRM</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('clients.html',this);return false;">Customers</a>
+        <a href="#" onclick="window.openModuleInContainer('contacts.html',this);return false;">Contacts</a>
+        <a href="#" onclick="window.openModuleInContainer('leads.html',this);return false;">Leads</a>
+        <a href="#" onclick="window.openModuleInContainer('sales.html',this);return false;">Sales / Bookings</a>
+        <a href="#" onclick="window.openModuleInContainer('followups.html',this);return false;">Follow-ups</a>
+        <a href="#" onclick="window.openModuleInContainer('services.html',this);return false;">Services</a>
+        <a href="#" onclick="window.openModuleInContainer('quotations.html',this);return false;">Quotations</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-transaction" onclick="window.switchView('view-transaction',this)">
-      <span class="material-symbols-rounded">receipt_long</span><span>Transactions</span>
-    </button>
-    <button class="cb-side-link" data-target="view-qr" onclick="window.switchView('view-qr',this)">
-      <span class="material-symbols-rounded">qr_code_scanner</span><span>UPI Payment QR</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">account_balance_wallet</span><span>ACCOUNTS</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('ledgers.html',this);return false;">Ledgers</a>
+        <a href="#" onclick="window.openModuleInContainer('transactions.html',this);return false;">Transactions</a>
+        <a href="#" onclick="window.openModuleInContainer('vouchers.html',this);return false;">Vouchers</a>
+        <a href="#" onclick="window.openModuleInContainer('receipts.html',this);return false;">Receipts</a>
+        <a href="#" onclick="window.openModuleInContainer('payments.html',this);return false;">Payments</a>
+        <a href="#" onclick="window.openModuleInContainer('bank-cash-books.html',this);return false;">Bank &amp; Cash Books</a>
+        <a href="#" onclick="window.openModuleInContainer('cheque-status.html',this);return false;">Cheque Status</a>
+        <a href="#" onclick="window.openModuleInContainer('accounts-reports.html',this);return false;">Reports</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">badge</span><span>EMPLOYEES</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('staff.html',this);return false;">Employees</a>
+        <a href="#" onclick="window.openModuleInContainer('attendance.html',this);return false;">Attendance</a>
+        <a href="#" onclick="window.openModuleInContainer('payroll.html',this);return false;">Payroll</a>
+        <a href="#" onclick="window.openModuleInContainer('employee-reports.html',this);return false;">Reports</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-branches" onclick="window.switchView('view-branches',this)">
-      <span class="material-symbols-rounded">apartment</span><span>Branches</span>
-    </button>
-    <button class="cb-side-link" data-target="view-therapist" onclick="window.switchView('view-therapist',this)">
-      <span class="material-symbols-rounded">medical_services</span><span>Management / Partners</span>
-    </button>
-    <button class="cb-side-link" data-target="view-staff" onclick="window.switchView('view-staff',this)">
-      <span class="material-symbols-rounded">badge</span><span>Staff Directory</span>
-    </button>
-    <button class="cb-side-link" data-target="view-attendance" onclick="window.switchView('view-attendance',this)">
-      <span class="material-symbols-rounded">how_to_reg</span><span>Daily Attendance</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">description</span><span>TEMPLATES</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('letterhead.html',this);return false;">Letterhead</a>
+        <a href="#" onclick="window.openModuleInContainer('invoice.html',this);return false;">Invoice</a>
+        <a href="#" onclick="window.openModuleInContainer('quotation.html',this);return false;">Quotation</a>
+        <a href="#" onclick="window.openModuleInContainer('estimate.html',this);return false;">Estimate</a>
+        <a href="#" onclick="window.openModuleInContainer('receipt-voucher.html',this);return false;">Receipt Voucher</a>
+        <a href="#" onclick="window.openModuleInContainer('payment-voucher.html',this);return false;">Payment Voucher</a>
+        <a href="#" onclick="window.openModuleInContainer('seals.html',this);return false;">Digital Seals</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">build</span><span>TOOLS</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('calc.html',this);return false;">Calculator</a>
+        <a href="#" onclick="window.openModuleInContainer('tax-calculator.html',this);return false;">Tax Calculator</a>
+        <a href="#" onclick="window.openModuleInContainer('qr.html',this);return false;">UPI QR</a>
+        <a href="#" onclick="window.openModuleInContainer('document-tools.html',this);return false;">Document Tools</a>
+        <a href="#" onclick="window.openModuleInContainer('utilities.html',this);return false;">Utilities</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-users" onclick="window.switchView('view-users',this)">
-      <span class="material-symbols-rounded">manage_accounts</span><span>Users (Admin)</span>
-    </button>
-    <button class="cb-side-link" data-target="view-clinic-details" onclick="window.switchView('view-clinic-details',this)">
-      <span class="material-symbols-rounded">settings</span><span>Office Details</span>
-    </button>
-    <button class="cb-side-link" data-target="view-company" onclick="window.switchView('view-company',this)">
-      <span class="material-symbols-rounded">domain</span><span>Company Profile</span>
-    </button>
-    <button class="cb-side-link" data-target="view-letterhead" onclick="window.switchView('view-letterhead',this)">
-      <span class="material-symbols-rounded">description</span><span>Letterheads</span>
-    </button>
-    <button class="cb-side-link" data-target="view-seal" onclick="window.switchView('view-seal',this)">
-      <span class="material-symbols-rounded">verified</span><span>Digital Seals</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">domain</span><span>COMPANY</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('company.html',this);return false;">Company Profile</a>
+        <a href="#" onclick="window.openModuleInContainer('branches.html',this);return false;">Branches</a>
+        <a href="#" onclick="window.openModuleInContainer('bank-accounts.html',this);return false;">Bank Accounts</a>
+        <a href="#" onclick="window.openModuleInContainer('payment-gateway.html',this);return false;">Payment Gateway</a>
+        <a href="#" onclick="window.openModuleInContainer('payment-settings.html',this);return false;">Payment Settings</a>
+        <a href="#" onclick="window.openModuleInContainer('company-preferences.html',this);return false;">Company Preferences</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">database</span><span>DATA</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('data.html',this);return false;">Data Centre</a>
+        <a href="#" onclick="window.openModuleInContainer('import.html',this);return false;">Import Data</a>
+        <a href="#" onclick="window.openModuleInContainer('export.html',this);return false;">Export Data</a>
+        <a href="#" onclick="window.openModuleInContainer('backup.html',this);return false;">Backup</a>
+        <a href="#" onclick="window.openModuleInContainer('restore.html',this);return false;">Restore</a>
+      </div>
+    </details>
 
-    <button class="cb-side-link" data-target="view-calc" onclick="window.switchView('view-calc',this)">
-      <span class="material-symbols-rounded">calculate</span><span>Calculator Tool</span>
-    </button>
-    <button class="cb-side-link" data-target="view-backup" onclick="window.switchView('view-backup',this)">
-      <span class="material-symbols-rounded">cloud_download</span><span>Export &amp; Backup</span>
-    </button>
-    <button class="cb-side-link" data-target="view-updates" onclick="window.switchView('view-updates',this)">
-      <span class="material-symbols-rounded">campaign</span><span>App Updates</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">verified</span><span>COMPLIANCE</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('compliance.html',this);return false;">Compliance Dashboard</a>
+        <a href="#" onclick="window.openModuleInContainer('gst.html',this);return false;">GST</a>
+        <a href="#" onclick="window.openModuleInContainer('tds.html',this);return false;">TDS / TCS</a>
+        <a href="#" onclick="window.openModuleInContainer('income-tax.html',this);return false;">Income Tax</a>
+        <a href="#" onclick="window.openModuleInContainer('pf-esi.html',this);return false;">PF / ESI</a>
+        <a href="#" onclick="window.openModuleInContainer('fssai.html',this);return false;">FSSAI</a>
+        <a href="#" onclick="window.openModuleInContainer('iec.html',this);return false;">IEC</a>
+        <a href="#" onclick="window.openModuleInContainer('trademark.html',this);return false;">Trademark</a>
+      </div>
+    </details>
 
-    <div class="cb-side-divider"></div>
-
-    <button class="cb-side-link" data-target="view-licenceinfo" onclick="window.switchView('view-licenceinfo',this)">
-      <span class="material-symbols-rounded">workspace_premium</span><span>Licence Info</span>
-    </button>
-    <button class="cb-side-link" data-target="view-aboutapp" onclick="window.switchView('view-aboutapp',this)">
-      <span class="material-symbols-rounded">info</span><span>About App</span>
-    </button>
-    <button class="cb-side-link" data-target="view-privacy" onclick="window.switchView('view-privacy',this)">
-      <span class="material-symbols-rounded">privacy_tip</span><span>Privacy Policy</span>
-    </button>
+    <details class="cb-nav-group">
+      <summary class="cb-nav-summary"><span class="material-symbols-rounded">apps</span><span>MORE</span></summary>
+      <div class="cb-nav-sub">
+        <a href="#" onclick="window.openModuleInContainer('mytask.html',this);return false;">Tasks</a>
+        <a href="#" onclick="window.openModuleInContainer('reports.html',this);return false;">Reports</a>
+        <a href="#" onclick="window.openModuleInContainer('users.html',this);return false;">Users &amp; Access</a>
+        <a href="#" onclick="window.openModuleInContainer('updates.html',this);return false;">App Updates</a>
+        <a href="#" onclick="window.openModuleInContainer('licence-info.html',this);return false;">Licence Info</a>
+        <a href="#" onclick="window.openModuleInContainer('aboutapp.html',this);return false;">About App</a>
+        <a href="#" onclick="window.openModuleInContainer('privacy.html',this);return false;">Privacy Policy</a>
+      </div>
+    </details>
   </nav>
 
   <div class="cb-sidebar-footer">
@@ -489,7 +569,6 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
   </div>
 </div>
 </div>
-
     <div class="main-wrapper">
         <div id="header-container">
 <div class="cb-header-shell">
@@ -702,8 +781,8 @@ h2 { font-size: 28px; line-height: 1.25; font-weight: 600; letter-spacing: -0.5p
 
     <!-- Contacts -->
     <button class="cb-bottom-link"
-            data-target="view-patients"
-            onclick="window.switchView('view-patients',this)">
+            data-target="view-contacts"
+            onclick="window.openModuleInContainer('contacts.html',this)">
       <span class="material-symbols-rounded">contacts</span>
       <small>Contacts</small>
     </button>
@@ -806,10 +885,10 @@ window.selectedDateStr = window.getLocalDateString();
 window.cmAppFileMap = {
     "view-clients": "clients.html",
     "view-contacts": "contacts.html",
-    "view-sercices": "services.html",
+    "view-services": "services.html",
     "view-transactions": "transactions.html",
     "view-staff/management": "staff.html",
-    "view-attendance": "attendace.html",
+    "view-attendance": "attendance.html",
     "view-company": "company.html",
     "view-branches": "branches.html",
     "view-users": "users.html",
@@ -1002,6 +1081,94 @@ function dragElement(elmnt) {
         document.onmousemove = null;
     }
 }
+
+
+/* =========================================================
+   COREBIQ IN-CONTAINER SUBMODULE LOADER
+   IMPORTANT:
+   - Keeps THIS index.html as the only application shell.
+   - Does NOT replace the sidebar/header/bottom navigation.
+   - Submodule .html files are loaded into #main-content.
+   - No /modules folder is required.
+   ========================================================= */
+window.openModuleInContainer = async function(filename, navElement) {
+    document.querySelectorAll('.cb-side-link, .cb-bottom-link').forEach(el => el.classList.remove('active'));
+    if (navElement) navElement.classList.add('active');
+
+    const existing = document.getElementById('cb-dynamic-module');
+    const dashboard = document.getElementById('view-dashboard');
+
+    if (dashboard) dashboard.classList.remove('active');
+
+    let target = existing;
+    if (!target) {
+        target = document.createElement('div');
+        target.id = 'cb-dynamic-module';
+        target.className = 'view-section';
+        const main = document.getElementById('main-content');
+        if (!main) return;
+        main.appendChild(target);
+    }
+
+    document.querySelectorAll('.view-section').forEach(el => {
+        if (el.id !== 'cb-dynamic-module') el.classList.remove('active');
+    });
+
+    target.classList.add('active');
+    target.innerHTML = '<div style="text-align:center;padding:50px;color:var(--primary)">Loading module...</div>';
+
+    try {
+        const response = await window.fetchFresh(filename);
+        if (!response.ok) throw new Error(`File fetch failed: HTTP ${response.status}`);
+
+        const htmlText = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+
+        const moduleContent =
+            doc.querySelector('.module-container') ||
+            doc.querySelector('body') ||
+            doc.documentElement;
+
+        target.innerHTML = '';
+
+        Array.from(moduleContent.childNodes).forEach(node => {
+            target.appendChild(node.cloneNode(true));
+        });
+
+        /* Re-run scripts belonging to the injected module only. */
+        target.querySelectorAll('script').forEach(oldScript => {
+            const newScript = document.createElement('script');
+            Array.from(oldScript.attributes).forEach(attr => {
+                newScript.setAttribute(attr.name, attr.value);
+            });
+            newScript.textContent = oldScript.textContent;
+            oldScript.replaceWith(newScript);
+        });
+
+        target.dataset.loadedFile = filename;
+
+        if (window.innerWidth <= 768 &&
+            document.getElementById('sidebar-container')?.classList.contains('open')) {
+            window.toggleMenu();
+        }
+    } catch (error) {
+        console.error(`Error loading ${filename}:`, error);
+        target.innerHTML = `
+            <div style="text-align:center;padding:50px;color:var(--danger);
+                        background:#FEF2F2;border-radius:12px;border:1px solid #FEE2E2;">
+                <span class="material-symbols-rounded" style="font-size:32px">error</span>
+                <br><br><b>Module could not be loaded.</b>
+                <br><small>${filename}</small>
+                <br><br>
+                <button onclick="window.openModuleInContainer('${filename}',null)"
+                        style="border:1px solid var(--border);background:#fff;
+                               border-radius:8px;padding:9px 15px;cursor:pointer;">
+                    Retry
+                </button>
+            </div>`;
+    }
+};
 
 window.switchView = async function(targetId, navElement) {
     if (targetId === 'view-calc') {
@@ -1244,7 +1411,7 @@ window.fetchDashboardData=async function(){
 document.addEventListener('DOMContentLoaded',()=>{
     dragElement(document.getElementById("calc-popup-container"));
     window.loadComponent('header-container','header.html');
-    window.loadComponent('sidebar-container','sidebar.html');
+    // Sidebar is defined directly in index.html; do not overwrite it with sidebar.html.
     window.loadComponent('bottomnav-container','bottomnav.html');
     setInterval(window.updateGlobalClock,1000);
     setTimeout(window.applyRoleVisibility,300);
