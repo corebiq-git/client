@@ -1,0 +1,6 @@
+{
+  "name": "COREBIQ",
+  "description": "The Intelligent Workflow for Business. Reusable ERP, CRM, and Business Operations Platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
