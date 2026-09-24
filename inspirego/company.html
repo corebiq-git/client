@@ -1,172 +1,352 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>COREBIQ | Sales</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
-<link rel="stylesheet" href="style.corebiq.css">
+<div class="module-container company-module" id="company-module">
 <style>
-.sales-module{font-family:Inter,Poppins,Arial,sans-serif;color:#202124;padding-bottom:35px}
-.sales-module *{box-sizing:border-box}
-.sales-module button,.sales-module input,.sales-module select,.sales-module textarea{font:inherit}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 22px;background:#fff;border-bottom:1px solid #e5e7eb}
-.title h2{margin:0;color:#18344d;font-size:21px}.title p{margin:4px 0 0;color:#64748b;font-size:12px}
-.new-btn,.btn{border:1px solid #d6dde4;background:#fff;color:#334155;border-radius:8px;min-height:40px;padding:0 13px;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}.new-btn,.btn.primary{background:#174a73;color:#fff;border-color:#174a73}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:15px 22px}.kpi{background:#fff;border:1px solid #e2e7ec;border-radius:11px;padding:13px 15px}.kpi .label{font-size:11px;color:#64748b}.kpi .num{margin-top:5px;font-size:20px;font-weight:700;color:#173b5c}
-.panel{margin:0 22px;background:#fff;border:1px solid #e1e6eb;border-radius:13px;overflow:hidden}.panel-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #e7eaee}.panel-title{font-weight:700;color:#33495c}
-.toolbar{display:flex;gap:3px}.tool{position:relative}.icon-btn{width:37px;height:37px;border:0;background:transparent;border-radius:8px;color:#536273;display:grid;place-items:center;cursor:pointer}.icon-btn:hover,.tool.open>.icon-btn{background:#f1f4f7}.dropdown{display:none;position:absolute;right:0;top:41px;width:225px;background:#fff;border:1px solid #dfe4e9;border-radius:9px;box-shadow:0 10px 25px #0002;padding:6px;z-index:30}.tool.open .dropdown{display:block}.drop-title{padding:7px 9px;font-size:10px;color:#84909c;text-transform:uppercase}.drop-item{width:100%;padding:9px;border:0;background:#fff;border-radius:7px;text-align:left;display:flex;gap:7px;align-items:center;color:#334155;cursor:pointer;font-size:13px}.drop-item:hover,.drop-item.active{background:#f1f5f8;color:#174a73}
-.searchbar,.filters{display:none;padding:9px 14px;border-bottom:1px solid #e7eaee;background:#fafbfc}.searchbar.show,.filters.show{display:flex}.searchbox{display:flex;align-items:center;width:100%;border:1px solid #d7dee5;border-radius:8px;background:#fff;padding:0 8px}.searchbox input{border:0;outline:0;flex:1;padding:9px}.searchbox button{border:0;background:none;cursor:pointer}.filters{gap:7px;flex-wrap:wrap;align-items:center}.form-input{width:100%;min-height:39px;border:1px solid #d5dce3;border-radius:7px;padding:8px 10px;background:#fff;color:#273746;outline:none}.form-input:focus{border-color:#5790ba;box-shadow:0 0 0 2px #174a7312}.filters .form-input{width:auto;min-width:130px}
-.table-wrap{overflow:auto}.table{width:100%;min-width:900px;border-collapse:collapse}.table th{padding:10px 11px;text-align:left;font-size:10px;text-transform:uppercase;color:#64748b;background:#f7f9fb;border-bottom:1px solid #e4e8ec}.table td{padding:11px;border-bottom:1px solid #edf0f3;font-size:13px}.sub{font-size:11px;color:#7b8794;margin-top:3px}.empty{text-align:center;padding:35px!important;color:#7b8794}.badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700}.badge.paid{background:#e7f7ee;color:#147a46}.badge.partial{background:#eaf2fb;color:#225b8d}.badge.pending{background:#fff5dc;color:#946200}.badge.cancelled{background:#feecec;color:#b42318}.actions{display:flex;gap:5px}.act{width:31px;height:31px;border:1px solid #dfe4e9;background:#fff;border-radius:7px;display:grid;place-items:center;color:#526273;cursor:pointer}.cards{display:none;padding:10px;gap:10px}.sale-card{border:1px solid #e1e6eb;border-radius:10px;padding:12px}.card-top{display:flex;justify-content:space-between;gap:8px}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.card-actions{display:flex;justify-content:flex-end;margin-top:10px}.bulkbar{display:none;gap:8px;align-items:center;flex-wrap:wrap;padding:9px 14px;background:#f1f7fb;border-bottom:1px solid #dce7ef}.bulkbar.show{display:flex}.hidden{display:none!important}
-.modal{display:none;position:fixed;inset:0;background:#0007;z-index:1000;padding:15px;overflow:auto}.modal.show{display:flex;align-items:center;justify-content:center}.modal-box{width:min(1050px,100%);max-height:calc(100vh - 30px);overflow:auto;background:#fff;border-radius:13px}.modal-head{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:14px 17px;background:#fff;border-bottom:1px solid #e5e7eb}.modal-head h3{margin:0;color:#20384e;font-size:18px}.close{border:0;background:transparent;width:34px;height:34px;display:grid;place-items:center;border-radius:7px;cursor:pointer}.modal-body{padding:16px}.section{border:1px solid #e2e7eb;border-radius:10px;padding:14px;margin-bottom:12px}.section h4{margin:0 0 12px;color:#31495e;font-size:14px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.span2{grid-column:span 2}.items-wrap{overflow:auto}.items-table{width:100%;min-width:800px;border-collapse:collapse}.items-table th{background:#f6f8fa;color:#64748b;font-size:10px;text-align:left;padding:8px}.items-table td{padding:5px;border-bottom:1px solid #edf0f2}.items-table input,.items-table select{width:100%;min-height:36px;border:1px solid #d7dee5;border-radius:6px;padding:5px}.item-del{border:0;background:#fff;color:#b42318;cursor:pointer}.totals{width:min(410px,100%);margin:12px 0 0 auto}.total-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}.grand{border-top:1px solid #dfe4e9;padding-top:8px;margin-top:4px;font-size:17px;font-weight:700;color:#173b5c}.payment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:13px}.meta{background:#f6f8fa;border-radius:7px;padding:8px}.meta small{display:block;color:#84909c;font-size:9px}.meta strong{font-size:11px;word-break:break-word}.form-actions{display:flex;justify-content:flex-end;gap:8px;padding-top:4px}
-@media(max-width:800px){.kpis{grid-template-columns:1fr 1fr}.grid,.payment-grid{grid-template-columns:1fr 1fr}.meta-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.topbar{padding:13px 10px}.title h2{font-size:18px}.new-btn{width:40px;padding:0}.new-btn span:last-child{display:none}.kpis{padding:9px 8px;gap:7px}.panel{margin:0 7px}.toolbar{gap:0}.icon-btn{width:33px;height:33px}.table-wrap{display:none}.cards{display:grid}.grid,.payment-grid{grid-template-columns:1fr}.span2{grid-column:auto}.meta-grid{grid-template-columns:1fr 1fr}.modal{padding:0}.modal-box{max-height:100vh;border-radius:0}.modal-body{padding:10px}.section{padding:10px}.form-actions{position:sticky;bottom:0;background:#fff;border-top:1px solid #e5e7eb;margin:0 -10px -10px;padding:10px;z-index:4}.dropdown{right:-3px}}
-@media print{.sales-module .no-print,.sales-module .toolbar,.sales-module .kpis,.sales-module .new-btn{display:none!important}.sales-module .panel{margin:0;border:0}.sales-module .table-wrap{display:block}}
+.company-module{font-family:Inter,Poppins,Arial,sans-serif;color:#202124;box-sizing:border-box;padding:0 0 32px}
+.company-module *{box-sizing:border-box}
+.company-module .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;margin-bottom:18px}
+.company-module .title h2{margin:0;font-size:22px;font-weight:700;color:#263746}
+.company-module .title p{margin:5px 0 0;color:#7b8794;font-size:13px}
+.company-module .actions{display:flex;gap:8px;flex-wrap:wrap}
+.company-module button,.company-module input,.company-module select,.company-module textarea{font:inherit}
+.company-module .btn{border:1px solid #d8dee5;background:#fff;color:#34495e;border-radius:9px;padding:10px 15px;min-height:42px;cursor:pointer}
+.company-module .btn:hover{background:#f6f8fa}
+.company-module .btn.primary{background:#173f63;color:#fff;border-color:#173f63}
+.company-module .btn.primary:hover{background:#123451}
+.company-module .btn.danger{color:#b42318;border-color:#f1b5ae}
+.company-module .section{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;margin-bottom:16px}
+.company-module .section h3{font-size:15px;margin:0 0 16px;color:#34495e}
+.company-module .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 16px}
+.company-module .field{min-width:0}
+.company-module .field.span2{grid-column:span 2}
+.company-module .field.span3{grid-column:1/-1}
+.company-module label{display:block;font-size:12px;font-weight:600;color:#566573;margin:0 0 6px}
+.company-module .req{color:#c62828}
+.company-module .form-input{width:100%;border:1px solid #d4dbe2;background:#fff;border-radius:9px;padding:11px 12px;min-height:42px;outline:none;color:#202124}
+.company-module textarea.form-input{min-height:92px;resize:vertical}
+.company-module .form-input:focus{border-color:#4b8fd1;box-shadow:0 0 0 3px rgba(75,143,209,.12)}
+.company-module .meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:4px}
+.company-module .meta-card{background:#f7f9fb;border:1px solid #edf0f3;border-radius:9px;padding:10px 12px}
+.company-module .meta-label{font-size:11px;color:#7a8793;margin-bottom:4px}
+.company-module .meta-value{font-size:13px;font-weight:600;color:#34495e;word-break:break-word}
+.company-module .status{display:none;padding:10px 12px;border-radius:9px;margin-bottom:14px;font-size:13px}
+.company-module .status.show{display:block}
+.company-module .status.ok{background:#ecfdf3;color:#067647;border:1px solid #abefc6}
+.company-module .status.err{background:#fef3f2;color:#b42318;border:1px solid #fecdca}
+.company-module .footer-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:16px}
+.company-module .toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.company-module .toolbar-title{font-size:14px;font-weight:700;color:#34495e}
+.company-module .file-input{display:none}
+.company-module .readonly{background:#f7f9fb}
+@media(max-width:800px){
+ .company-module .topbar{align-items:flex-start;flex-direction:column;padding:16px}
+ .company-module .actions{width:100%}
+ .company-module .actions .btn{flex:1}
+ .company-module .grid{grid-template-columns:1fr 1fr}
+ .company-module .field.span2{grid-column:span 2}
+ .company-module .meta{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+ .company-module{padding-bottom:90px}
+ .company-module .topbar{border-radius:10px}
+ .company-module .title h2{font-size:19px}
+ .company-module .grid{grid-template-columns:1fr}
+ .company-module .field.span2,.company-module .field.span3{grid-column:auto}
+ .company-module .section{padding:14px;border-radius:11px}
+ .company-module .meta{grid-template-columns:1fr}
+ .company-module .actions .btn{flex:none}
+ .company-module .footer-actions{display:grid;grid-template-columns:1fr 1fr}
+}
 </style>
-</head>
-<body>
-<div class="sales-module" id="sales-module">
-<div class="topbar"><div class="title"><h2>Sales & Invoices</h2><p id="todayLabel"></p></div><button class="new-btn" onclick="window.openSalesForm()"><span class="material-symbols-rounded">add</span><span>New Sale / Invoice</span></button></div>
 
-<div class="kpis">
-<div class="kpi"><div class="label">Today's Sales</div><div class="num" id="kpiToday">₹0.00</div></div>
-<div class="kpi"><div class="label">Invoice Count</div><div class="num" id="kpiCount">0</div></div>
-<div class="kpi"><div class="label">Paid</div><div class="num" id="kpiPaid">₹0.00</div></div>
-<div class="kpi"><div class="label">Balance</div><div class="num" id="kpiBalance">₹0.00</div></div>
+<div class="topbar">
+  <div class="title">
+    <h2>Company Settings</h2>
+    <p>Maintain the master company profile used across COREBIQ.</p>
+  </div>
+  <div class="actions">
+    <button class="btn" type="button" onclick="window.companyRefresh()"><span class="material-symbols-rounded">refresh</span> Refresh</button>
+    <button class="btn" type="button" onclick="window.companyExport()"><span class="material-symbols-rounded">download</span> Export</button>
+    <button class="btn" type="button" onclick="document.getElementById('companyImportFile').click()"><span class="material-symbols-rounded">upload_file</span> Import</button>
+    <button class="btn primary" type="button" onclick="window.companySave()"><span class="material-symbols-rounded">save</span> Save Company</button>
+  </div>
 </div>
 
-<div class="panel">
-<div class="panel-head"><div class="panel-title">Sales Directory</div><div class="toolbar no-print">
-<div class="tool" id="searchTool"><button class="icon-btn" onclick="window.toggleTool('searchTool')"><span class="material-symbols-rounded">search</span></button></div>
-<div class="tool" id="viewTool"><button class="icon-btn" onclick="window.toggleTool('viewTool')"><span class="material-symbols-rounded">view_agenda</span></button><div class="dropdown"><div class="drop-title">View</div><button class="drop-item active" id="viewListBtn" onclick="window.setView('list')">List View</button><button class="drop-item" id="viewCardBtn" onclick="window.setView('card')">Card View</button><button class="drop-item" onclick="window.openSalesForm()">Add Sale / Invoice</button></div></div>
-<div class="tool" id="sortTool"><button class="icon-btn" onclick="window.toggleTool('sortTool')"><span class="material-symbols-rounded">sort</span></button><div class="dropdown"><div class="drop-title">Sort</div><button class="drop-item" onclick="window.setSort('dateDesc')">Date: Newest first</button><button class="drop-item" onclick="window.setSort('dateAsc')">Date: Oldest first</button><button class="drop-item" onclick="window.setSort('customerAsc')">Customer: A–Z</button><button class="drop-item" onclick="window.setSort('customerDesc')">Customer: Z–A</button><button class="drop-item" onclick="window.setSort('invoiceAsc')">Invoice: A–Z</button><button class="drop-item" onclick="window.setSort('invoiceDesc')">Invoice: Z–A</button><button class="drop-item" onclick="window.setSort('amountDesc')">Amount: High–Low</button><button class="drop-item" onclick="window.setSort('amountAsc')">Amount: Low–High</button></div></div>
-<div class="tool" id="filterTool"><button class="icon-btn" onclick="window.toggleTool('filterTool')"><span class="material-symbols-rounded">filter_list</span></button><div class="dropdown"><div class="drop-title">Filter</div><button class="drop-item" onclick="window.showFilters()">Date / Status / Payment</button><button class="drop-item" onclick="window.setFilterToday()">Today</button><button class="drop-item" onclick="window.clearFilters()">Clear Filters</button></div></div>
-<div class="tool" id="importTool"><button class="icon-btn" onclick="window.toggleTool('importTool')"><span class="material-symbols-rounded">upload_file</span></button><div class="dropdown"><div class="drop-title">Data</div><button class="drop-item" onclick="document.getElementById('salesCsvInput').click()">Import CSV</button><button class="drop-item" onclick="window.downloadSalesSampleCSV()">Sample CSV</button></div></div>
-<button class="icon-btn" title="Export CSV" onclick="window.exportSalesCSV()"><span class="material-symbols-rounded">file_download</span></button>
-<div class="tool" id="moreTool"><button class="icon-btn" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button><div class="dropdown"><div class="drop-title">Actions</div><button class="drop-item" onclick="window.printSelectedInvoice()">Invoice / Print</button><button class="drop-item" onclick="window.executeBulkDelete()">Bulk Delete</button><button class="drop-item" onclick="window.exportSalesPDF()">Print / PDF</button></div></div>
-</div></div>
+<div id="companyStatus" class="status"></div>
 
-<div class="searchbar no-print" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="salesSearchInput" placeholder="Search customer, mobile, invoice, GSTIN..." oninput="window.filterTable()"><button onclick="document.getElementById('salesSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded">close</span></button></div></div>
-<div class="filters no-print" id="filtersBar"><input type="date" id="filterDateFrom" class="form-input" onchange="window.filterTable()"><span>to</span><input type="date" id="filterDateTo" class="form-input" onchange="window.filterTable()"><button class="btn" onclick="window.setFilterToday()">Today</button><select id="filterStatus" class="form-input" onchange="window.filterTable()"><option value="">All Statuses</option><option>Draft</option><option>Issued</option><option>Partially Paid</option><option>Paid</option><option>Cancelled</option></select><select id="filterPayment" class="form-input" onchange="window.filterTable()"><option value="">All Payments</option><option value="pending">Balance Pending</option><option value="paid">Fully Paid</option></select><button class="icon-btn" onclick="window.clearFilters()"><span class="material-symbols-rounded">close</span></button></div>
-<div class="bulkbar no-print" id="bulkBar"><b><span id="selectedCount">0</span> selected</b><button class="btn primary" onclick="window.printSelectedInvoice()">Invoice / Print</button><button class="btn" onclick="window.executeBulkDelete()">Delete</button><button class="btn" onclick="window.clearSelection()">Clear</button></div>
-<input id="salesCsvInput" class="hidden" type="file" accept=".csv,text/csv" onchange="window.importSalesCSV(this.files[0])">
-<div class="table-wrap" id="listView"><table class="table"><thead><tr><th class="no-print"><input type="checkbox" id="selectAll" onclick="window.toggleAllCheckboxes(this)"></th><th>Date</th><th>Invoice</th><th>Customer</th><th>Items</th><th>Amount</th><th>Status</th><th class="no-print">Actions</th></tr></thead><tbody id="salesTableBody"></tbody></table></div>
-<div class="cards" id="cardView"></div>
-</div></div>
+<form id="companyForm" onsubmit="event.preventDefault();window.companySave()">
+  <input type="hidden" id="companyDocId">
 
-<div class="modal" id="salesModal"><div class="modal-box">
-<div class="modal-head"><h3 id="formTitle">New Sale / Invoice</h3><button class="close" onclick="window.closeSalesForm()"><span class="material-symbols-rounded">close</span></button></div>
-<div class="modal-body"><form id="salesForm" onsubmit="event.preventDefault();window.saveSale()">
-<input type="hidden" id="saleDocId"><input type="hidden" id="saleFormId"><input type="hidden" id="saleInvoiceNo">
-<div class="section"><h4>1. Invoice & Customer Details</h4><div class="grid">
-<div><label>Invoice No.</label><input id="invoiceDisplay" class="form-input" readonly></div>
-<div><label>Sale Date *</label><input id="saleDate" type="date" class="form-input" required></div>
-<div><label>Due Date</label><input id="dueDate" type="date" class="form-input"></div>
-<div><label>Customer Name *</label><input id="customerName" class="form-input" required></div>
-<div><label>Mobile</label><input id="customerMobile" class="form-input" maxlength="10"></div>
-<div><label>Email</label><input id="customerEmail" type="email" class="form-input"></div>
-<div><label>GSTIN</label><input id="customerGstin" class="form-input" maxlength="15"></div>
-<div class="span2"><label>Billing Address</label><textarea id="customerAddress" class="form-input" rows="2"></textarea></div>
-<div><label>Place of Supply</label><input id="placeOfSupply" class="form-input"></div>
-</div></div>
+  <div class="section">
+    <h3>Basic Information</h3>
+    <div class="grid">
+      <div class="field">
+        <label>Legal Company Name <span class="req">*</span></label>
+        <input id="legalName" class="form-input" required>
+      </div>
+      <div class="field">
+        <label>Trade / Display Name</label>
+        <input id="tradeName" class="form-input">
+      </div>
+      <div class="field">
+        <label>Business Type</label>
+        <select id="businessType" class="form-input">
+          <option value="">Select</option>
+          <option>Proprietorship</option>
+          <option>Partnership</option>
+          <option>LLP</option>
+          <option>Private Limited Company</option>
+          <option>Public Limited Company</option>
+          <option>One Person Company</option>
+          <option>Trust</option>
+          <option>Society</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>PAN</label><input id="pan" class="form-input" maxlength="10" style="text-transform:uppercase"></div>
+      <div class="field"><label>GSTIN</label><input id="gstin" class="form-input" maxlength="15" style="text-transform:uppercase"></div>
+      <div class="field"><label>CIN / LLPIN / Registration No.</label><input id="registrationNo" class="form-input"></div>
+    </div>
+  </div>
 
-<div class="section"><h4>2. Invoice Items</h4><div class="items-wrap"><table class="items-table"><thead><tr><th>Item / Service *</th><th>HSN/SAC</th><th>Qty</th><th>Rate</th><th>Discount</th><th>GST %</th><th>Amount</th><th></th></tr></thead><tbody id="itemsBody"></tbody></table></div><button type="button" class="btn" onclick="window.addSaleItem()" style="margin-top:8px"><span class="material-symbols-rounded">add</span>Add Item</button>
-<div class="totals"><div class="total-row"><span>Subtotal</span><b id="subtotalText">₹0.00</b></div><div class="total-row"><span>Discount</span><b id="discountText">₹0.00</b></div><div class="total-row"><span>Taxable Value</span><b id="taxableText">₹0.00</b></div><div class="total-row"><span>GST</span><b id="gstText">₹0.00</b></div><div class="total-row grand"><span>Grand Total</span><b id="grandTotalText">₹0.00</b></div></div></div>
+  <div class="section">
+    <h3>Contact Information</h3>
+    <div class="grid">
+      <div class="field"><label>Primary Phone</label><input id="phone" class="form-input" type="tel"></div>
+      <div class="field"><label>WhatsApp</label><input id="whatsapp" class="form-input" type="tel"></div>
+      <div class="field"><label>Email</label><input id="email" class="form-input" type="email"></div>
+      <div class="field"><label>Website</label><input id="website" class="form-input" type="url" placeholder="https://"></div>
+    </div>
+  </div>
 
-<div class="section"><h4>3. Payment & Status</h4><div class="payment-grid">
-<div><label>Status *</label><select id="saleStatus" class="form-input" required><option>Issued</option><option>Draft</option><option>Partially Paid</option><option>Paid</option><option>Cancelled</option></select></div>
-<div><label>Payment Mode</label><select id="paymentMode" class="form-input"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option><option>Cheque</option><option>Mixed</option><option>Credit</option></select></div>
-<div><label>Payment Reference / UTR</label><input id="paymentReference" class="form-input"></div>
-<div><label>Amount Paid</label><input id="amountPaid" type="number" min="0" step=".01" value="0" class="form-input" oninput="window.calcSaleTotals()"></div>
-<div><label>Balance</label><input id="amountBalance" class="form-input" readonly></div>
-<div><label>Payment Remarks</label><input id="paymentRemarks" class="form-input"></div>
-</div></div>
+  <div class="section">
+    <h3>Registered Address</h3>
+    <div class="grid">
+      <div class="field span3"><label>Address</label><textarea id="address" class="form-input"></textarea></div>
+      <div class="field"><label>City</label><input id="city" class="form-input"></div>
+      <div class="field"><label>State</label><input id="state" class="form-input"></div>
+      <div class="field"><label>PIN Code</label><input id="pinCode" class="form-input" inputmode="numeric"></div>
+      <div class="field"><label>Country</label><input id="country" class="form-input" value="India"></div>
+    </div>
+  </div>
 
-<div class="section"><h4>4. Notes & Record Information</h4><textarea id="saleNotes" class="form-input" rows="3" placeholder="Invoice notes / terms / remarks"></textarea>
-<div class="meta-grid"><div class="meta"><small>Form ID</small><strong id="metaFormId">SAL-00001</strong></div><div class="meta"><small>Created At</small><strong id="metaCreatedAt">—</strong></div><div class="meta"><small>Updated At</small><strong id="metaUpdatedAt">—</strong></div><div class="meta"><small>Created By</small><strong id="metaCreatedBy">—</strong></div></div></div>
-<div class="form-actions"><button type="button" class="btn" onclick="window.resetSaleForm()">Clear</button><button type="button" class="btn" onclick="window.previewCurrentInvoice()">Preview Invoice</button><button type="submit" class="btn primary" id="saveSaleBtn">Save Sale</button></div>
-</form></div></div></div>
+  <div class="section">
+    <h3>Business Defaults</h3>
+    <div class="grid">
+      <div class="field">
+        <label>Currency</label>
+        <select id="currency" class="form-input">
+          <option value="INR">INR – Indian Rupee</option>
+          <option value="AED">AED – UAE Dirham</option>
+          <option value="USD">USD – US Dollar</option>
+          <option value="EUR">EUR – Euro</option>
+          <option value="GBP">GBP – Pound Sterling</option>
+        </select>
+      </div>
+      <div class="field"><label>Invoice Prefix</label><input id="invoicePrefix" class="form-input" value="INV"></div>
+      <div class="field"><label>Financial Year Start</label><input id="fyStart" class="form-input" value="01-04" placeholder="DD-MM"></div>
+      <div class="field span3"><label>Notes</label><textarea id="notes" class="form-input"></textarea></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Record Information</h3>
+    <div class="meta">
+      <div class="meta-card"><div class="meta-label">Form ID</div><div class="meta-value" id="metaFormId">COM-00001</div></div>
+      <div class="meta-card"><div class="meta-label">Created At</div><div class="meta-value" id="metaCreatedAt">—</div></div>
+      <div class="meta-card"><div class="meta-label">Updated At</div><div class="meta-value" id="metaUpdatedAt">—</div></div>
+      <div class="meta-card"><div class="meta-label">Created By</div><div class="meta-value" id="metaCreatedBy">—</div></div>
+    </div>
+    <div class="footer-actions">
+      <button class="btn" type="button" onclick="window.companyReset()">Reset</button>
+      <button class="btn primary" type="submit" id="companySaveBtn">Save Company</button>
+    </div>
+  </div>
+</form>
+
+<input id="companyImportFile" class="file-input" type="file" accept=".json,application/json">
 
 <script type="module">
-import {auth,db} from './firebase-config.js';
-import {onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import {collection,addDoc,getDocs,getDoc,updateDoc,deleteDoc,doc,runTransaction,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { auth, db } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-let currentUser=null,allSales=[],sortMode='dateDesc',viewMode='list';
-const $=id=>document.getElementById(id), money=v=>(Number(v)||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-const today=()=>{let d=new Date();return d.toISOString().slice(0,10)}, ind=s=>{if(!s)return'';let p=s.split('-');return p.length===3?p[2]+'-'+p[1]+'-'+p[0]:s};
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-const ts=v=>{if(!v)return'—';try{let d=v.toDate?v.toDate():new Date(v);return d.toLocaleString('en-IN')}catch{return'—'}};
+(function(){
+  const root=document.getElementById('company-module');
+  if(!root || root.dataset.initialized==='1') return;
+  root.dataset.initialized='1';
 
-function closeTools(){document.querySelectorAll('#sales-module .tool.open').forEach(x=>x.classList.remove('open'))}
-window.toggleTool=id=>{let e=$(id);if(!e)return;let o=e.classList.contains('open');closeTools();if(!o)e.classList.add('open');if(id==='searchTool')$('searchBar').classList.toggle('show',!o)};
-document.addEventListener('click',e=>{if(!e.target.closest('#sales-module .tool'))closeTools()});
+  const fields=[
+    'legalName','tradeName','businessType','pan','gstin','registrationNo',
+    'phone','whatsapp','email','website','address','city','state','pinCode',
+    'country','currency','invoicePrefix','fyStart','notes'
+  ];
 
-async function nextNo(counter,prefix){
- const r=doc(db,'counters',counter);
- return runTransaction(db,async tx=>{let s=await tx.get(r),n=(s.exists()?Number(s.data().value)||0:0)+1;tx.set(r,{value:n,updatedAt:serverTimestamp()},{merge:true});return prefix+'-'+String(n).padStart(5,'0')});
-}
-function totals(){
- let subtotal=0,discount=0,taxable=0,gst=0;
- document.querySelectorAll('#itemsBody tr').forEach(tr=>{
-  let q=+tr.querySelector('.qty').value||0,r=+tr.querySelector('.rate').value||0,d=Math.min(+tr.querySelector('.discount').value||0,q*r),g=+tr.querySelector('.gst').value||0,b=Math.max(0,q*r-d),t=b*g/100;
-  subtotal+=q*r;discount+=d;taxable+=b;gst+=t;tr.querySelector('.amount').textContent='₹'+money(b+t);
- });
- let total=taxable+gst,paid=Math.max(0,+$('amountPaid').value||0);
- $('subtotalText').textContent='₹'+money(subtotal);$('discountText').textContent='₹'+money(discount);$('taxableText').textContent='₹'+money(taxable);$('gstText').textContent='₹'+money(gst);$('grandTotalText').textContent='₹'+money(total);$('amountBalance').value=money(Math.max(0,total-paid));
- return {subtotal,discount,taxable,gst,total,amountPaid:paid,balance:Math.max(0,total-paid)};
-}
-window.addSaleItem=(x={})=>{
- let tr=document.createElement('tr');tr.innerHTML=`<td><input class="name" required value="${esc(x.name||'')}" placeholder="Product / Service"></td><td><input class="hsn" value="${esc(x.hsn||'')}"></td><td><input class="qty" type="number" min=".001" step=".001" value="${x.qty??1}" oninput="window.calcSaleTotals()"></td><td><input class="rate" type="number" min="0" step=".01" value="${x.rate??0}" oninput="window.calcSaleTotals()"></td><td><input class="discount" type="number" min="0" step=".01" value="${x.discount??0}" oninput="window.calcSaleTotals()"></td><td><select class="gst" onchange="window.calcSaleTotals()"><option>0</option><option>5</option><option>12</option><option>18</option><option>28</option></select></td><td class="amount">₹0.00</td><td><button type="button" class="item-del" onclick="this.closest('tr').remove();window.calcSaleTotals()"><span class="material-symbols-rounded">delete</span></button></td>`;
- $('itemsBody').appendChild(tr);tr.querySelector('.gst').value=String(x.gst??0);totals();
-};
-window.calcSaleTotals=totals;
+  let currentUser=null;
+  let originalData=null;
 
-window.resetSaleForm=async()=>{
- $('salesForm').reset();$('saleDocId').value='';$('itemsBody').innerHTML='';$('saleDate').value=today();$('saleStatus').value='Issued';$('paymentMode').value='Cash';$('amountPaid').value='0';
- let form=await nextNo('sales','SAL'),inv=await nextNo('invoices','INV');$('saleFormId').value=form;$('saleInvoiceNo').value=inv;$('invoiceDisplay').value=inv;
- $('metaFormId').textContent=form;$('metaCreatedAt').textContent='—';$('metaUpdatedAt').textContent='—';$('metaCreatedBy').textContent=currentUser?.displayName||currentUser?.email||'—';$('formTitle').textContent='New Sale / Invoice';$('saveSaleBtn').textContent='Save Sale';window.addSaleItem();
-};
-window.openSalesForm=async()=>{$('salesModal').classList.add('show');await window.resetSaleForm()};
-window.closeSalesForm=()=>{$('salesModal').classList.remove('show')};
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  const fmtDate=v=>{
+    if(!v)return '—';
+    let d;
+    if(v?.toDate)d=v.toDate();
+    else if(v instanceof Date)d=v;
+    else {d=new Date(v);if(Number.isNaN(d.getTime()))return String(v)}
+    const dd=String(d.getDate()).padStart(2,'0');
+    const mm=String(d.getMonth()+1).padStart(2,'0');
+    const yy=d.getFullYear();
+    const hh=String(d.getHours()).padStart(2,'0');
+    const mi=String(d.getMinutes()).padStart(2,'0');
+    return `${dd}-${mm}-${yy} ${hh}:${mi}`;
+  };
 
-window.saveSale=async()=>{
- let id=$('saleDocId').value,items=[...document.querySelectorAll('#itemsBody tr')].map(tr=>({name:tr.querySelector('.name').value.trim(),hsn:tr.querySelector('.hsn').value.trim(),qty:+tr.querySelector('.qty').value||0,rate:+tr.querySelector('.rate').value||0,discount:+tr.querySelector('.discount').value||0,gst:+tr.querySelector('.gst').value||0}));
- if(!$('customerName').value.trim()||!$('saleDate').value)return alert('Customer Name and Sale Date are required.');
- if(!items.length||items.some(x=>!x.name||x.qty<=0))return alert('Add at least one valid item.');
- let b=$('saveSaleBtn');b.disabled=true;b.textContent='Saving...';
- try{
-  let t=totals(),form=$('saleFormId').value,inv=$('saleInvoiceNo').value;
-  if(!id){form=await nextNo('sales','SAL');inv=await nextNo('invoices','INV')}
-  let p={formId:form,invoiceNo:inv,saleDate:$('saleDate').value,dueDate:$('dueDate').value,customerName:$('customerName').value.trim(),customerMobile:$('customerMobile').value.trim(),customerEmail:$('customerEmail').value.trim(),customerGstin:$('customerGstin').value.trim().toUpperCase(),customerAddress:$('customerAddress').value.trim(),placeOfSupply:$('placeOfSupply').value.trim(),items,...t,status:$('saleStatus').value,paymentMode:$('paymentMode').value,paymentReference:$('paymentReference').value.trim(),paymentRemarks:$('paymentRemarks').value.trim(),notes:$('saleNotes').value.trim(),updatedAt:serverTimestamp(),updatedBy:currentUser.uid,updatedByName:currentUser.displayName||currentUser.email||currentUser.uid};
-  if(!id){p.createdAt=serverTimestamp();p.createdBy=currentUser.uid;p.createdByName=currentUser.displayName||currentUser.email||currentUser.uid;await addDoc(collection(db,'sales'),p)}else await updateDoc(doc(db,'sales',id),p);
-  alert((id?'Sale updated: ':'Sale saved: ')+form+' | '+inv);window.closeSalesForm();await window.loadSales();window.setFilterToday();
- }catch(e){console.error(e);alert('Firebase save failed: '+e.message)}finally{b.disabled=false;b.textContent=id?'Update Sale':'Save Sale'}
-};
+  function showStatus(msg,type='ok'){
+    const e=$('companyStatus');
+    e.textContent=msg;
+    e.className='status show '+type;
+    clearTimeout(showStatus.timer);
+    showStatus.timer=setTimeout(()=>e.classList.remove('show'),5000);
+  }
 
-window.loadSales=async()=>{
- $('salesTableBody').innerHTML='<tr><td colspan="8" class="empty">Loading sales...</td></tr>';
- try{let s=await getDocs(collection(db,'sales'));allSales=[];s.forEach(d=>allSales.push({id:d.id,data:d.data()}));updateKpi();render()}catch(e){console.error(e);$('salesTableBody').innerHTML='<tr><td colspan="8" class="empty">Unable to load sales. Check Firestore rules.</td></tr>'}
-};
-function updateKpi(){let a=allSales.filter(x=>x.data.saleDate===today());$('kpiToday').textContent='₹'+money(a.reduce((s,x)=>s+(+x.data.total||0),0));$('kpiCount').textContent=a.length;$('kpiPaid').textContent='₹'+money(a.reduce((s,x)=>s+(+x.data.amountPaid||0),0));$('kpiBalance').textContent='₹'+money(a.reduce((s,x)=>s+(+x.data.balance||0),0))}
-function filtered(){let f=$('filterDateFrom').value,t=$('filterDateTo').value,st=$('filterStatus').value,p=$('filterPayment').value,q=$('salesSearchInput').value.toLowerCase().trim();let a=allSales.filter(x=>{let d=x.data,b=+d.balance||0,text=`${d.customerName||''} ${d.customerMobile||''} ${d.invoiceNo||''} ${d.formId||''} ${d.customerGstin||''}`.toLowerCase();return(!f||d.saleDate>=f)&&(!t||d.saleDate<=t)&&(!st||d.status===st)&&(!p||(p==='pending'&&b>0)||(p==='paid'&&b<=0))&&(!q||text.includes(q))});a.sort((x,y)=>{let A=x.data,B=y.data;switch(sortMode){case'dateAsc':return(A.saleDate||'').localeCompare(B.saleDate||'');case'customerAsc':return(A.customerName||'').localeCompare(B.customerName||'');case'customerDesc':return(B.customerName||'').localeCompare(A.customerName||'');case'invoiceAsc':return(A.invoiceNo||'').localeCompare(B.invoiceNo||'');case'invoiceDesc':return(B.invoiceNo||'').localeCompare(A.invoiceNo||'');case'amountAsc':return(+A.total||0)-(+B.total||0);case'amountDesc':return(+B.total||0)-(+A.total||0);default:return(B.saleDate||'').localeCompare(A.saleDate||'')}});return a}
-function sc(s){s=String(s||'').toLowerCase();return s==='paid'?'paid':s==='partially paid'||s==='issued'?'partial':s==='cancelled'?'cancelled':'pending'}
-function actions(id){return`<div class="actions"><button class="act" onclick="window.printInvoice('${id}')" title="Invoice"><span class="material-symbols-rounded">description</span></button><button class="act" onclick="window.editSale('${id}')" title="Edit"><span class="material-symbols-rounded">edit</span></button></div>`}
-function render(){let a=filtered(),tb=$('salesTableBody'),cards=$('cardView');tb.innerHTML='';cards.innerHTML='';if(!a.length){tb.innerHTML='<tr><td colspan="8" class="empty">No sales match the current filters.</td></tr>';cards.innerHTML='<div class="empty">No sales match the current filters.</div>';return}
-a.forEach(x=>{let d=x.data,id=x.id;let tr=document.createElement('tr');tr.innerHTML=`<td class="no-print"><input type="checkbox" class="sale-check" value="${id}" onchange="window.updateSelectionBar()"></td><td><b>${ind(d.saleDate)}</b><div class="sub">Due: ${ind(d.dueDate)||'—'}</div></td><td><b>${esc(d.invoiceNo)}</b><div class="sub">${esc(d.formId)}</div></td><td><b>${esc(d.customerName)}</b><div class="sub">${esc(d.customerMobile||'')} ${esc(d.customerGstin||'')}</div></td><td><b>${(d.items||[]).length} item(s)</b><div class="sub">${esc((d.items||[]).map(i=>i.name).slice(0,2).join(', '))}</div></td><td><b>₹${money(d.total)}</b><div class="sub">Paid ₹${money(d.amountPaid)} • Due ₹${money(d.balance)}</div></td><td><span class="badge ${sc(d.status)}">${esc(d.status||'Issued')}</span></td><td class="no-print">${actions(id)}</td>`;tb.appendChild(tr);
-let c=document.createElement('div');c.className='sale-card';c.innerHTML=`<div class="card-top"><div><b>${esc(d.customerName)}</b><div class="sub">${esc(d.invoiceNo)} • ${ind(d.saleDate)}</div></div><span class="badge ${sc(d.status)}">${esc(d.status)}</span></div><div class="card-grid"><div><div class="sub">Total</div><b>₹${money(d.total)}</b></div><div><div class="sub">Balance</div><b>₹${money(d.balance)}</b></div><div><div class="sub">Mobile</div><b>${esc(d.customerMobile||'—')}</b></div><div><div class="sub">Form ID</div><b>${esc(d.formId)}</b></div></div><div class="card-actions">${actions(id)}</div><label><input type="checkbox" class="sale-check" value="${id}" onchange="window.updateSelectionBar()"> Select</label>`;cards.appendChild(c)})}
-window.filterTable=render;window.setFilterToday=()=>{$('filterDateFrom').value=today();$('filterDateTo').value=today();render()};window.clearFilters=()=>{$('filterDateFrom').value='';$('filterDateTo').value='';$('filterStatus').value='';$('filterPayment').value='';$('salesSearchInput').value='';window.setFilterToday()};window.showFilters=()=>{$('filtersBar').classList.add('show');closeTools()};window.setSort=x=>{sortMode=x;render();closeTools()};window.setView=x=>{viewMode=x;$('listView').style.display=x==='list'?'block':'none';$('cardView').style.display=x==='card'?'grid':'none';$('viewListBtn').classList.toggle('active',x==='list');$('viewCardBtn').classList.toggle('active',x==='card');closeTools()};
-function selected(){return[...new Set([...document.querySelectorAll('.sale-check:checked')].map(x=>x.value))]}
-window.updateSelectionBar=()=>{$('selectedCount').textContent=selected().length;$('bulkBar').classList.toggle('show',selected().length>0)};window.clearSelection=()=>{document.querySelectorAll('.sale-check').forEach(x=>x.checked=false);$('selectAll').checked=false;window.updateSelectionBar()};window.toggleAllCheckboxes=x=>{document.querySelectorAll('.sale-check').forEach(c=>c.checked=x.checked);window.updateSelectionBar()};
-window.executeBulkDelete=async()=>{let ids=selected();if(!ids.length)return alert('Select sales first.');if(!confirm('Delete '+ids.length+' selected sale(s)?'))return;try{for(let id of ids)await deleteDoc(doc(db,'sales',id));window.clearSelection();await window.loadSales();window.setFilterToday()}catch(e){alert('Delete failed: '+e.message)}};
-window.editSale=async id=>{let d=allSales.find(x=>x.id===id)?.data;if(!d)return;$('saleDocId').value=id;$('saleFormId').value=d.formId;$('saleInvoiceNo').value=d.invoiceNo;$('invoiceDisplay').value=d.invoiceNo;['saleDate','dueDate','customerName','customerMobile','customerEmail','customerGstin','customerAddress','placeOfSupply','saleStatus','paymentMode','paymentReference','amountPaid','paymentRemarks','saleNotes'].forEach(k=>$(k).value=d[{saleDate:'saleDate',dueDate:'dueDate',customerName:'customerName',customerMobile:'customerMobile',customerEmail:'customerEmail',customerGstin:'customerGstin',customerAddress:'customerAddress',placeOfSupply:'placeOfSupply',saleStatus:'status',paymentMode:'paymentMode',paymentReference:'paymentReference',amountPaid:'amountPaid',paymentRemarks:'paymentRemarks',saleNotes:'notes'}[k]]??'');$('itemsBody').innerHTML='';(d.items||[]).forEach(window.addSaleItem);$('metaFormId').textContent=d.formId;$('metaCreatedAt').textContent=ts(d.createdAt);$('metaUpdatedAt').textContent=ts(d.updatedAt);$('metaCreatedBy').textContent=d.createdByName||d.createdBy||'—';$('formTitle').textContent='Edit Sale / Invoice';$('saveSaleBtn').textContent='Update Sale';$('salesModal').classList.add('show');totals()};
-async function invoiceWindow(d){let c={};try{let s=await getDoc(doc(db,'settings','company'));if(s.exists())c=s.data()}catch{}let rows=(d.items||[]).map((i,n)=>`<tr><td>${n+1}</td><td>${esc(i.name)}<small>${esc(i.hsn||'')}</small></td><td>${i.qty}</td><td>₹${money(i.rate)}</td><td>₹${money(i.discount)}</td><td>${i.gst}%</td><td>₹${money((i.qty*i.rate-i.discount)*(1+i.gst/100))}</td></tr>`).join('');let w=window.open('','_blank');if(!w)return alert('Allow pop-ups for invoice.');w.document.write(`<html><head><title>${esc(d.invoiceNo)}</title><style>body{font-family:Arial;padding:30px;color:#202124}h1{color:#174a73}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #ddd;padding:8px}th{background:#f4f6f8}.right{text-align:right}.box{border:1px solid #ddd;padding:12px;margin-top:15px}.total{margin:15px 0 0 auto;width:300px}.total div{display:flex;justify-content:space-between;padding:4px}.grand{border-top:1px solid #bbb;font-size:18px;font-weight:bold;padding-top:8px}small{display:block;color:#777}</style></head><body><div style="display:flex;justify-content:space-between"><div><h1>${esc(c.legalName||c.companyName||'Company')}</h1>${esc(c.address||'')}<br>${esc(c.gstin||'')}</div><div><h2>INVOICE</h2><b>${esc(d.invoiceNo)}</b><br>Date: ${ind(d.saleDate)}</div></div><div class="box"><b>Bill To</b><br>${esc(d.customerName)}<br>${esc(d.customerAddress||'')}<br>${esc(d.customerMobile||'')} ${esc(d.customerGstin||'')}</div><table><thead><tr><th>#</th><th>Item</th><th>Qty</th><th>Rate</th><th>Discount</th><th>GST</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table><div class="total"><div><span>Subtotal</span><b>₹${money(d.subtotal)}</b></div><div><span>Discount</span><b>₹${money(d.discount)}</b></div><div><span>Taxable</span><b>₹${money(d.taxable)}</b></div><div><span>GST</span><b>₹${money(d.gst)}</b></div><div class="grand"><span>Total</span><b>₹${money(d.total)}</b></div><div><span>Paid</span><b>₹${money(d.amountPaid)}</b></div><div><span>Balance</span><b>₹${money(d.balance)}</b></div></div><div class="box">${esc(d.notes||'')}</div><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()}
-window.printInvoice=async id=>{let d=allSales.find(x=>x.id===id)?.data;if(d)invoiceWindow(d)};window.printSelectedInvoice=()=>{let x=selected();if(x.length!==1)return alert('Select exactly one sale.');window.printInvoice(x[0])};window.previewCurrentInvoice=()=>{let t=totals(),d={invoiceNo:$('invoiceDisplay').value||'INV-PREVIEW',saleDate:$('saleDate').value,customerName:$('customerName').value,customerAddress:$('customerAddress').value,customerMobile:$('customerMobile').value,customerGstin:$('customerGstin').value,items:[...document.querySelectorAll('#itemsBody tr')].map(tr=>({name:tr.querySelector('.name').value,hsn:tr.querySelector('.hsn').value,qty:+tr.querySelector('.qty').value,rate:+tr.querySelector('.rate').value,discount:+tr.querySelector('.discount').value,gst:+tr.querySelector('.gst').value})),...t,notes:$('saleNotes').value};invoiceWindow(d)};window.exportSalesPDF=()=>window.print();
-const heads=['invoiceNo','saleDate','customerName','customerMobile','customerGstin','itemName','qty','rate','gst','amountPaid','status'];
-const cell=v=>{let s=String(v??'');return/[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s};window.exportSalesCSV=()=>{let rows=[heads,...filtered().map(x=>{let d=x.data,i=(d.items||[])[0]||{};return[d.invoiceNo,d.saleDate,d.customerName,d.customerMobile,d.customerGstin,i.name,i.qty,i.rate,i.gst,d.amountPaid,d.status]})];let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(cell).join(',')).join('\n')],{type:'text/csv'}));a.download='sales-'+today()+'.csv';a.click()};
-window.downloadSalesSampleCSV=()=>{let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([heads.join(',')+'\nINV-00001,'+today()+',Sample Customer,9744902555,,Service,1,1000,18,500,Issued'],{type:'text/csv'}));a.download='sales-sample.csv';a.click()};
-window.importSalesCSV=async file=>{if(!file)return;let text=await file.text(),lines=text.trim().split(/\r?\n/);if(lines.length<2)return alert('CSV is empty.');let h=lines[0].split(',').map(x=>x.trim().toLowerCase());let ok=0;for(let n=1;n<lines.length;n++){let v=lines[n].split(',');let get=k=>v[h.indexOf(k)]?.trim()||'';try{let q=+get('qty')||1,r=+get('rate')||0,g=+get('gst')||0,base=q*r,tot=base*(1+g/100),paid=+get('amountPaid')||0;await addDoc(collection(db,'sales'),{formId:await nextNo('sales','SAL'),invoiceNo:await nextNo('invoices','INV'),saleDate:get('saleDate')||today(),customerName:get('customerName'),customerMobile:get('customerMobile'),customerGstin:get('customerGstin'),items:[{name:get('itemName'),qty:q,rate:r,discount:0,gst:g}],subtotal:base,discount:0,taxable:base,gst:base*g/100,total:tot,amountPaid:paid,balance:Math.max(0,tot-paid),status:get('status')||'Issued',createdAt:serverTimestamp(),updatedAt:serverTimestamp(),createdBy:currentUser.uid,createdByName:currentUser.displayName||currentUser.email||currentUser.uid});ok++}catch(e){console.error(e)}}alert('Imported: '+ok);await window.loadSales();window.setFilterToday();$('salesCsvInput').value=''};
-onAuthStateChanged(auth,async u=>{currentUser=u;if(!u){$('sales-module').innerHTML='<div style="padding:25px">Access denied. Please log in.</div>';return}$('todayLabel').textContent='Today: '+ind(today());await window.loadSales();window.setFilterToday()});
+  function userName(){
+    return currentUser?.displayName || currentUser?.email || currentUser?.uid || 'Unknown';
+  }
+
+  function readForm(){
+    const data={};
+    fields.forEach(id=>data[id]=$(id)?.value?.trim?.() ?? '');
+    data.legalName=data.legalName.trim();
+    data.pan=data.pan.toUpperCase();
+    data.gstin=data.gstin.toUpperCase();
+    data.invoicePrefix=(data.invoicePrefix||'INV').toUpperCase();
+    return data;
+  }
+
+  function writeForm(data={}){
+    fields.forEach(id=>{
+      const e=$(id);
+      if(e)e.value=data[id]??'';
+    });
+    if(!$('country').value)$('country').value='India';
+    if(!$('currency').value)$('currency').value='INR';
+    if(!$('invoicePrefix').value)$('invoicePrefix').value='INV';
+    if(!$('fyStart').value)$('fyStart').value='01-04';
+
+    $('metaFormId').textContent=data.formId||'COM-00001';
+    $('metaCreatedAt').textContent=fmtDate(data.createdAt);
+    $('metaUpdatedAt').textContent=fmtDate(data.updatedAt);
+    $('metaCreatedBy').textContent=data.createdByName || data.createdBy || '—';
+  }
+
+  window.companyReset=()=>{
+    if(originalData) writeForm(originalData);
+    else writeForm({formId:'COM-00001',country:'India',currency:'INR',invoicePrefix:'INV',fyStart:'01-04'});
+    showStatus('Form reset.');
+  };
+
+  window.companyRefresh=async()=>{
+    await loadCompany(true);
+  };
+
+  window.companySave=async()=>{
+    if(!currentUser)return showStatus('Please log in before saving the company profile.','err');
+    const data=readForm();
+    if(!data.legalName)return showStatus('Legal Company Name is required.','err');
+
+    const btn=$('companySaveBtn');
+    btn.disabled=true;
+    btn.textContent='Saving...';
+
+    try{
+      const ref=doc(db,'settings','company');
+      const snap=await getDoc(ref);
+      const existing=snap.exists()?snap.data():{};
+      const formId=existing.formId||'COM-00001';
+
+      const payload={
+        ...data,
+        formId,
+        createdAt:existing.createdAt || serverTimestamp(),
+        createdBy:existing.createdBy || currentUser.uid,
+        createdByName:existing.createdByName || userName(),
+        updatedAt:serverTimestamp(),
+        updatedBy:currentUser.uid,
+        updatedByName:userName()
+      };
+
+      await setDoc(ref,payload,{merge:true});
+      const fresh=await getDoc(ref);
+      originalData=fresh.exists()?fresh.data():payload;
+      writeForm(originalData);
+      showStatus('Company details saved successfully.');
+    }catch(err){
+      console.error(err);
+      showStatus('Failed to save company details: '+(err.message||'Firestore error'),'err');
+    }finally{
+      btn.disabled=false;
+      btn.textContent='Save Company';
+    }
+  };
+
+  window.companyExport=async()=>{
+    try{
+      const snap=await getDoc(doc(db,'settings','company'));
+      if(!snap.exists())return showStatus('No company data available to export.','err');
+      const data=snap.data();
+      const blob=new Blob([JSON.stringify(data,(k,v)=>{
+        if(v?.seconds!==undefined && v?.nanoseconds!==undefined)return new Date(v.seconds*1000).toISOString();
+        return v;
+      },2)],{type:'application/json'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download=`company-${data.formId||'COM-00001'}.json`;
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    }catch(err){
+      console.error(err);
+      showStatus('Export failed.','err');
+    }
+  };
+
+  $('companyImportFile').addEventListener('change',async e=>{
+    const file=e.target.files?.[0];
+    if(!file)return;
+    try{
+      const parsed=JSON.parse(await file.text());
+      writeForm({...parsed,formId:parsed.formId||'COM-00001'});
+      showStatus('Company data loaded into the form. Click Save Company to store it in Firebase.');
+    }catch(err){
+      showStatus('Invalid JSON company file.','err');
+    }finally{
+      e.target.value='';
+    }
+  });
+
+  async function loadCompany(showMessage=false){
+    try{
+      const snap=await getDoc(doc(db,'settings','company'));
+      if(snap.exists()){
+        originalData=snap.data();
+        writeForm(originalData);
+        if(showMessage)showStatus('Company details refreshed.');
+      }else{
+        originalData={formId:'COM-00001',country:'India',currency:'INR',invoicePrefix:'INV',fyStart:'01-04'};
+        writeForm(originalData);
+        if(showMessage)showStatus('No company profile found. Create one and save it.');
+      }
+    }catch(err){
+      console.error(err);
+      showStatus('Unable to load company profile: '+(err.message||'Firestore error'),'err');
+    }
+  }
+
+  onAuthStateChanged(auth,async user=>{
+    currentUser=user;
+    if(!user){
+      root.innerHTML='<div style="padding:24px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;color:#b42318">Access denied. Please log in.</div>';
+      return;
+    }
+    await loadCompany(false);
+  });
+})();
 </script>
-</body>
-</html>
+</div>
