@@ -1,0 +1,397 @@
+<div class="module-container" id="sales-module">
+
+<div class="topbar">
+  <div class="title"><h2>Sales & Invoicing</h2><p id="todayLabel"></p></div>
+  <button class="new-btn" onclick="window.openSaleForm()"><span class="material-symbols-rounded">add</span><span>New Sale</span></button>
+</div>
+
+<div class="kpis">
+  <div class="kpi today"><div class="label">Today's Sales</div><div class="num" id="kpiToday">0</div></div>
+  <div class="kpi done"><div class="label">Completed</div><div class="num" id="kpiCompleted">0</div></div>
+  <div class="kpi pending"><div class="label">Pending / Draft</div><div class="num" id="kpiPending">0</div></div>
+</div>
+
+<div class="panel">
+  <div class="panel-head">
+    <div class="panel-title">Sales Directory</div>
+    <div class="toolbar no-print">
+      <div class="tool" id="searchTool">
+        <button class="icon-btn" title="Search" onclick="window.toggleTool('searchTool')"><span class="material-symbols-rounded">search</span></button>
+      </div>
+      <div class="tool" id="viewTool">
+        <button class="icon-btn" title="View Type" onclick="window.toggleTool('viewTool')"><span class="material-symbols-rounded">view_agenda</span></button>
+        <div class="dropdown"><div class="drop-title">View Type</div>
+          <button class="drop-item active" id="viewListBtn" onclick="window.setView('list')"><span class="material-symbols-rounded">view_list</span>List View</button>
+          <button class="drop-item" id="viewCardBtn" onclick="window.setView('card')"><span class="material-symbols-rounded">grid_view</span>Card View</button>
+          <button class="drop-item" onclick="window.openSaleForm()"><span class="material-symbols-rounded">edit_note</span>Form / New Sale</button>
+        </div>
+      </div>
+      <div class="tool" id="sortTool">
+        <button class="icon-btn" title="Sort" onclick="window.toggleTool('sortTool')"><span class="material-symbols-rounded">sort</span></button>
+        <div class="dropdown"><div class="drop-title">Sort</div>
+          <button class="drop-item" onclick="window.setSort('dateDesc')">Date: Newest first</button>
+          <button class="drop-item" onclick="window.setSort('dateAsc')">Date: Oldest first</button>
+          <button class="drop-item" onclick="window.setSort('nameAsc')">Client: A–Z</button>
+          <button class="drop-item" onclick="window.setSort('repAsc')">Sales Rep: A–Z</button>
+          <button class="drop-item" onclick="window.setSort('balanceDesc')">Balance: High–Low</button>
+          <button class="drop-item" onclick="window.setSort('balanceAsc')">Balance: Low–High</button>
+        </div>
+      </div>
+      <div class="tool" id="filterTool">
+        <button class="icon-btn" title="Filter" onclick="window.toggleTool('filterTool')"><span class="material-symbols-rounded">filter_list</span></button>
+        <div class="dropdown"><div class="drop-title">Filter</div>
+          <button class="drop-item" onclick="window.showFilters()"><span class="material-symbols-rounded">tune</span>Date / Status / Branch</button>
+          <button class="drop-item" onclick="window.setFilterToday()"><span class="material-symbols-rounded">today</span>Today</button>
+          <button class="drop-item" onclick="window.clearFilters()"><span class="material-symbols-rounded">filter_alt_off</span>Clear Filters</button>
+        </div>
+      </div>
+      <div class="tool" id="importTool">
+        <button class="icon-btn" title="Import Sales Data" onclick="window.toggleTool('importTool')"><span class="material-symbols-rounded">upload_file</span></button>
+        <div class="dropdown"><div class="drop-title">Sales Data</div>
+          <button class="drop-item" onclick="document.getElementById('saleCsvInput').click()"><span class="material-symbols-rounded">upload</span>Import CSV</button>
+          <button class="drop-item" onclick="window.downloadSaleSampleCSV()"><span class="material-symbols-rounded">download</span>Sample Format CSV</button>
+        </div>
+      </div>
+      <div class="tool">
+        <button class="icon-btn" title="Export CSV" onclick="window.exportSalesCSV()"><span class="material-symbols-rounded">file_download</span></button>
+      </div>
+      <div class="tool">
+        <button class="icon-btn" title="More Actions" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button>
+        <div class="dropdown" id="moreTool"><div class="drop-title">Actions</div>
+          <button class="drop-item" onclick="window.openSelectedNew()"><span class="material-symbols-rounded">content_copy</span>Duplicate Selected</button>
+          <button class="drop-item" onclick="window.executeBulkReschedule()"><span class="material-symbols-rounded">event_repeat</span>Move Selected to Date</button>
+          <button class="drop-item" onclick="window.executeBulkDelete()"><span class="material-symbols-rounded">delete</span>Bulk Delete</button>
+          <button class="drop-item" onclick="window.exportSalePDF()"><span class="material-symbols-rounded">picture_as_pdf</span>Print / PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="searchbar no-print" id="searchBar">
+    <div class="searchbox">
+      <span class="material-symbols-rounded">search</span>
+      <input id="saleSearchInput" placeholder="Search client, mobile, sales rep, branch..." oninput="window.filterTable()">
+      <button class="close" onclick="document.getElementById('saleSearchInput').value='';window.filterTable()">
+        <span class="material-symbols-rounded">close</span>
+      </button>
+    </div>
+  </div>
+  
+  <div class="filters no-print" id="filtersBar">
+    <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.filterTable()">
+    <span>to</span>
+    <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.filterTable()">
+    <button class="btn small" onclick="window.setFilterToday()">Today</button>
+    <select id="filterStatus" class="form-input filter-input" onchange="window.filterTable()">
+      <option value="">All Statuses</option>
+      <option>Draft</option>
+      <option>Invoiced</option>
+      <option>Completed</option>
+      <option>Cancelled</option>
+    </select>
+    <select id="filterCategory" class="form-input filter-input" onchange="window.filterTable()">
+      <option value="">All Categories</option>
+      <option>Retail</option>
+      <option>B2B</option>
+      <option>Wholesale</option>
+    </select>
+    <select id="filterPayment" class="form-input filter-input" onchange="window.filterTable()">
+      <option value="">All Payments</option>
+      <option value="pending">Balance Pending</option>
+      <option value="paid">Fully Paid</option>
+    </select>
+    <select id="filterBranch" class="form-input filter-input" onchange="window.filterTable()">
+      <option value="">All Branches</option>
+    </select>
+    <button class="icon-btn" title="Clear" onclick="window.clearFilters()"><span class="material-symbols-rounded">close</span></button>
+  </div>
+  
+  <div class="bulkbar no-print" id="bulkBar">
+    <strong><span id="selectedCount">0</span> selected</strong>
+    <button class="btn small primary" onclick="window.openSelectedNew()">Duplicate</button>
+    <button class="btn small blue" onclick="window.showBulkDate()">Move to Date</button>
+    <button class="btn small danger" onclick="window.executeBulkDelete()">Delete</button>
+    <button class="btn small" onclick="window.clearSelection()">Clear</button>
+    <span id="bulkDateArea" style="display:none; align-items:center; gap:8px;">
+      <input type="date" id="bulkDateInput" class="form-input" style="padding:4px 8px; min-height:30px;">
+      <button class="btn small primary" onclick="window.confirmBulkReschedule()">Confirm</button>
+    </span>
+  </div>
+  
+  <input id="saleCsvInput" type="file" accept=".csv,text/csv" onchange="window.importSalesCSV(this.files[0])" style="display:none;">
+  
+  <div class="table-wrap" id="listView">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="no-print"><input type="checkbox" id="selectAll" onclick="window.toggleAllCheckboxes(this)"></th>
+          <th>Date & Time</th>
+          <th>Client Details</th>
+          <th>Branch / Exec</th>
+          <th>Items & Financials</th>
+          <th>Status</th>
+          <th class="no-print">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="saleTableBody"></tbody>
+    </table>
+  </div>
+  <div class="cards" id="cardView"></div>
+</div>
+
+<!-- SALES FORM MODAL -->
+<div class="modal" id="saleModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="formTitle">New Sale</h3><button class="close" onclick="window.closeSaleForm()"><span class="material-symbols-rounded">close</span></button></div>
+    <div class="modal-body">
+      <form id="add-sale-form" onsubmit="event.preventDefault();window.saveSale()">
+      <input type="hidden" id="saleDocId">
+      
+      <div class="section"><h4>1. Client Details</h4>
+        <div class="grid">
+          <div class="field span2"><label>Search Client</label><input list="clients-datalist" id="saleClientSearch" class="form-input" placeholder="Search by name or mobile" onchange="window.handleClientSelect()" autocomplete="off"><datalist id="clients-datalist"></datalist></div>
+          <div class="field"><label>Client Mobile *</label><input type="tel" id="saleMobile" class="form-input" maxlength="10" placeholder="10-digit number" required></div>
+          <div class="field"><label>Client / Company Name *</label><input id="saleName" class="form-input" placeholder="Full Name" required></div>
+          <div class="field"><label>Email Address</label><input type="email" id="saleEmail" class="form-input" placeholder="Email"></div>
+          <div class="field"><label>Tax ID / GSTIN</label><input id="saleTaxId" class="form-input" placeholder="Optional"></div>
+          <div class="field"><label>Client Category *</label><select id="saleCategory" class="form-input" required><option>Retail</option><option>B2B</option><option>Wholesale</option></select></div>
+          <div class="field"><label>Address / Location</label><div class="location-row"><button type="button" class="btn" onclick="window.getCurrentLocation(this)"><span class="material-symbols-rounded">my_location</span></button><input id="saleLocation" class="form-input" placeholder="Full Address or Maps URL"><button type="button" class="btn" onclick="window.openLocationMap()"><span class="material-symbols-rounded">map</span></button></div></div>
+          <div class="field span2"><label>Internal Client Notes</label><textarea id="saleClientNotes" class="form-input" rows="2" placeholder="Delivery instructions, preferences, background..."></textarea></div>
+        </div>
+      </div>
+      
+      <div class="section"><h4>2. Sale & Product Details</h4>
+        <div class="grid three">
+          <div class="field"><label>Branch *</label><select id="saleBranch" class="form-input" required><option value="">Loading...</option></select></div>
+          <div class="field"><label>Sale Date *</label><input type="date" id="saleDate" class="form-input" required></div>
+          <div class="field"><label>Sale Time *</label><input type="time" id="saleTime" class="form-input" required></div>
+          
+          <div class="field span3"><label>Product / Service Description</label><input id="saleItemDesc" class="form-input" placeholder="Describe items, quantities, or services rendered"></div>
+          
+          <div class="field"><label>Sales Rep / Assigned To *</label><input list="staff-datalist" id="saleRep" class="form-input" placeholder="Search / Select Staff" required autocomplete="off"><datalist id="staff-datalist"></datalist></div>
+          
+          <div class="field"><label>Status *</label><select id="saleStatus" class="form-input" required><option>Draft</option><option>Invoiced</option><option>Completed</option><option>Cancelled</option></select></div>
+          
+          <div class="field span3"><label>Sale Remarks / Invoice Notes</label><textarea id="saleNotes" class="form-input" rows="3" placeholder="Terms, warranties, general remarks..."></textarea></div>
+        </div>
+      </div>
+      
+      <div class="section"><h4>3. Payment Details</h4>
+        <div class="grid three">
+          <div class="field"><label>Payment Mode</label><select id="salePaymentMode" class="form-input"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option><option>Mixed</option><option>Credit</option></select></div>
+          <div class="field"><label>Payment Reference / UTR</label><input id="salePaymentReference" class="form-input"></div>
+          <div class="field"><label>Payment Remarks</label><input id="salePaymentRemarks" class="form-input"></div>
+        </div>
+        <div class="grid three" style="margin-top: 16px;">
+          <div class="money-box field"><label>Total Amount (₹)</label><input type="number" id="saleTotal" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="money-box field"><label>Prev. Dues (₹)</label><input type="number" id="salePrevDues" class="form-input readonly" readonly></div>
+          <div class="money-box field"><label>Amount Paid (₹)</label><input type="number" id="salePaid" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="money-box field"><label>Net Balance</label><input type="text" id="saleBalance" class="form-input readonly" readonly><div id="saleBalanceState" style="font-size: 12px; margin-top: 4px; font-weight: 600;"></div></div>
+        </div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn" onclick="window.resetSaleForm()">Clear Form</button><button type="submit" class="btn primary" id="saveSaleBtn">Save Sale</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="notesModal"><div class="modal-box"><div class="modal-head"><h3>Sale Notes</h3><button class="close" onclick="window.closeModal('notesModal')"><span class="material-symbols-rounded">close</span></button></div><div class="modal-body" id="printNotesArea"><h3 id="modalClientName" style="margin:0 0 4px;"></h3><div id="modalClientMeta" class="sub" style="margin-bottom:16px;"></div><div id="modalClientNotesText" class="notes-content" style="white-space: pre-wrap; font-size:14px; line-height:1.6;"></div><div class="form-actions no-print" style="margin-top:24px;"><button class="btn primary" onclick="window.printModalNotes()"><span class="material-symbols-rounded">print</span>Print Notes</button></div></div></div></div>
+
+<div class="modal" id="confirmModal"><div class="modal-box confirm-box"><div class="modal-head"><h3 id="confirmTitle">Confirm</h3><button class="close" onclick="window.closeModal('confirmModal')"><span class="material-symbols-rounded">close</span></button></div><div class="confirm-message" id="confirmMessage" style="padding:20px 0;"></div><div class="form-actions"><button class="btn" onclick="window.closeModal('confirmModal')">Cancel</button><button class="btn primary" id="confirmOk">Confirm</button></div></div></div>
+
+<script type="module">
+import { auth, db } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { collection, addDoc, query, where, getDocs, updateDoc, doc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+window.salesDataCache={}; window.allClientsCache={}; window.allBranchesString='';
+let allSales=[]; let viewMode='list'; let sortMode='dateDesc'; let confirmHandler=null;
+
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const money=v=>(parseFloat(v)||0).toFixed(2);
+function balanceDisplay(v){
+  const n=Number(v)||0;
+  if(Math.abs(n)<0.005) return {text:'No Due',cls:'no-due'};
+  if(n<0) return {text:`Excess ₹${money(Math.abs(n))}`,cls:'excess'};
+  return {text:`Due ₹${money(n)}`,cls:'due'};
+}
+const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+window.formatIndianDate=dateStr=>{if(!dateStr)return'';const p=String(dateStr).split('-');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:dateStr};
+function isPastDateTime(ds,ts){if(!ds)return false;const [y,m,d]=ds.split('-').map(Number),[h=0,mi=0]=String(ts||'00:00').split(':').map(Number);return new Date(y,m-1,d,h,mi)<new Date()}
+function setMinBookingDate(){const s=todayISO();['saleDate','bulkDateInput'].forEach(id=>{const e=document.getElementById(id);if(e)e.min=s})}
+function closeTools(){document.querySelectorAll('.tool.open').forEach(x=>x.classList.remove('open'))}
+window.toggleTool=id=>{const e=document.getElementById(id);if(!e)return;const was=e.classList.contains('open');closeTools();if(!was)e.classList.add('open')};
+document.addEventListener('click',e=>{if(!e.target.closest('.tool'))closeTools()});
+window.closeModal=id=>document.getElementById(id)?.classList.remove('show');
+
+onAuthStateChanged(auth,user=>{
+  if(!user){document.getElementById('sales-module').innerHTML='<div style="padding:40px; text-align:center;">Access denied. Please log in.</div>';return}
+  window.loadClientsForSale(); window.loadBranchesForSale(); window.loadStaffForSale();
+  setMinBookingDate();
+  document.getElementById('todayLabel').textContent='Today: '+window.formatIndianDate(todayISO());
+  window.resetSaleForm();
+  window.loadSales().then(window.setFilterToday);
+});
+
+window.loadClientsForSale=async()=>{
+  const dl=document.getElementById('clients-datalist'); if(!dl)return;
+  try{let q=query(collection(db,'clients'));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'clients'),where('branch','==',window.currentUser.branch));
+    const s=await getDocs(q);let h='';window.allClientsCache={};
+    s.forEach(d=>{const p=d.data();if(p.name&&p.mobile){window.allClientsCache[p.mobile]=p;h+=`<option value="${esc(p.mobile)}" label="${esc(p.name)} (${esc(p.mobile)})"></option><option value="${esc(p.name)} (${esc(p.mobile)})"></option>`}});
+    dl.innerHTML=h;
+  }catch(e){console.error(e)}
+};
+window.loadBranchesForSale=async()=>{
+  const a=document.getElementById('saleBranch'),f=document.getElementById('filterBranch');
+  if(window.currentUser&&window.currentUser.role!=='admin'){const b=window.currentUser.branch;a.innerHTML=`<option value="${esc(b)}">${esc(b)}</option>`;f.innerHTML=`<option value="${esc(b)}">${esc(b)}</option>`;a.disabled=true;window.allBranchesString=b;return}
+  try{const s=await getDocs(collection(db,'branches'));let l=[];s.forEach(d=>{if(d.data().name)l.push(d.data().name)});l.sort();window.allBranchesString=l.join(' | ');a.innerHTML='<option value="">Select Branch</option>'+l.map(x=>`<option>${esc(x)}</option>`).join('');f.innerHTML='<option value="">All Branches</option>'+l.map(x=>`<option>${esc(x)}</option>`).join('')}catch(e){console.error(e)}
+};
+window.loadStaffForSale=async()=>{
+  const dl=document.getElementById('staff-datalist');if(!dl)return;
+  try{let q=query(collection(db,'staff'));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'staff'),where('branch','==',window.currentUser.branch));const s=await getDocs(q);let l=[];s.forEach(d=>{if(d.data().name)l.push(d.data().name)});dl.innerHTML=l.sort().map(x=>`<option value="${esc(x)}"></option>`).join('')}catch(e){console.error(e)}
+};
+window.handleClientSelect=async()=>{
+  let raw=document.getElementById('saleClientSearch').value.trim(),mobile=raw;if(!window.allClientsCache[mobile]){const m=raw.match(/(\d{10})/);if(m)mobile=m[1]}const p=window.allClientsCache[mobile];if(!p)return;
+  document.getElementById('saleClientSearch').value=p.name||'';
+  const ids=['saleName','saleMobile','saleEmail','saleTaxId','saleLocation','saleClientNotes'],keys=['name','mobile','email','taxId','location','notes'];ids.forEach((id,i)=>document.getElementById(id).value=p[keys[i]]||'');
+  document.getElementById('saleCategory').value=p.category||'Retail';if(p.branch&&!document.getElementById('saleBranch').disabled)document.getElementById('saleBranch').value=p.branch;
+  let due=0,current=document.getElementById('saleDocId').value;try{let q=query(collection(db,'sales'),where('mobile','==',p.mobile));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'sales'),where('mobile','==',p.mobile),where('branch','==',window.currentUser.branch));(await getDocs(q)).forEach(d=>{if(d.id!==current)due+=parseFloat(d.data().balance)||0});document.getElementById('salePrevDues').value=due.toFixed(2);window.calcBalance()}catch(e){console.error(e)}
+};
+window.calcBalance=()=>{
+  const f=parseFloat(document.getElementById('saleTotal').value)||0;
+  const a=parseFloat(document.getElementById('salePaid').value)||0;
+  const p=parseFloat(document.getElementById('salePrevDues').value)||0;
+  const n=f+p-a;
+  const state=balanceDisplay(n);
+  const input=document.getElementById('saleBalance');
+  const label=document.getElementById('saleBalanceState');
+  input.value=Math.abs(n)<0.005?'0.00':money(n);
+  input.style.color=n<0?'#059669':n>0?'#DC2626':'#64748B';
+  label.textContent=state.text;
+  label.className=state.cls;
+};
+
+window.openLocationMap=()=>{const l=document.getElementById('saleLocation').value;if(!l)return alert('Please enter an address or map link first.');window.open(l.startsWith('http')?l:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(l),'_blank')};
+window.getCurrentLocation=btn=>{if(!navigator.geolocation)return alert('Geolocation is not supported.');const old=btn.innerHTML;btn.innerHTML='<span class="material-symbols-rounded">sync</span>';navigator.geolocation.getCurrentPosition(p=>{document.getElementById('saleLocation').value=`https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;btn.innerHTML=old},()=>{alert('Unable to get location.');btn.innerHTML=old})};
+
+window.resetSaleForm=()=>{
+  document.getElementById('add-sale-form').reset();document.getElementById('saleDocId').value='';document.getElementById('saleClientSearch').value='';
+  document.getElementById('saleCategory').value='Retail';document.getElementById('saleStatus').value='Draft';document.getElementById('salePaymentMode').value='Cash';
+  document.getElementById('salePrevDues').value='0.00';document.getElementById('saleBalance').value='0.00';document.getElementById('saleBalanceState').textContent='No Due';document.getElementById('saleBalanceState').className='no-due';document.getElementById('saveSaleBtn').textContent='Save Sale';document.getElementById('formTitle').textContent='New Sale';
+  document.getElementById('saleDate').value=todayISO();setMinBookingDate();
+  if(window.currentUser&&window.currentUser.role!=='admin')document.getElementById('saleBranch').value=window.currentUser.branch;
+};
+window.openSaleForm=()=>{closeTools();window.resetSaleForm();document.getElementById('saleModal').classList.add('show');setTimeout(()=>document.getElementById('saleMobile').focus(),80)};
+window.closeSaleForm=()=>document.getElementById('saleModal').classList.remove('show');
+
+window.loadSales=async()=>{
+  const tb=document.getElementById('saleTableBody');tb.innerHTML='<tr><td colspan="7" class="empty">Loading sales...</td></tr>';
+  try{let q=window.currentUser&&window.currentUser.role!=='admin'?query(collection(db,'sales'),where('branch','==',window.currentUser.branch)):query(collection(db,'sales'));
+    const snap=await getDocs(q);allSales=[];window.salesDataCache={};snap.forEach(d=>{const x={id:d.id,data:d.data()};allSales.push(x);window.salesDataCache[d.id]=d.data()});
+    updateKPIs();renderSales();return allSales;
+  }catch(e){console.error(e);tb.innerHTML='<tr><td colspan="7" class="empty">Error loading sales. Check Firestore rules.</td></tr>'}
+};
+function updateKPIs(){
+  const t=todayISO(),tod=allSales.filter(x=>x.data.date===t),done=tod.filter(x=>String(x.data.status||'').toLowerCase()==='completed').length,pending=tod.filter(x=>String(x.data.status||'').toLowerCase()==='draft').length;
+  document.getElementById('kpiToday').textContent=tod.length;document.getElementById('kpiCompleted').textContent=done;document.getElementById('kpiPending').textContent=pending;
+}
+function filteredSales(){
+  const fr=document.getElementById('filterDateFrom').value,to=document.getElementById('filterDateTo').value,st=document.getElementById('filterStatus').value.toLowerCase(),cat=document.getElementById('filterCategory').value.toLowerCase(),pay=document.getElementById('filterPayment').value,br=document.getElementById('filterBranch').value.toLowerCase(),term=document.getElementById('saleSearchInput').value.toLowerCase().trim();
+  let a=allSales.filter(x=>{const d=x.data,b=(d.branch||'').toLowerCase(),s=(d.status||'Draft').toLowerCase(),c=(d.category||'Retail').toLowerCase(),bal=parseFloat(d.balance)||0,text=`${d.name||''} ${d.mobile||''} ${d.rep||''} ${d.branch||''} ${d.date||''}`.toLowerCase();return(!fr||d.date>=fr)&&(!to||d.date<=to)&&(!st||s===st)&&(!cat||c===cat)&&(!br||b===br)&&(!term||text.includes(term))&&(!pay||(pay==='pending'&&bal>0)||(pay==='paid'&&bal<=0))});
+  a.sort((x,y)=>{const A=x.data,B=y.data;switch(sortMode){case'nameAsc':return String(A.name||'').localeCompare(String(B.name||''));case'repAsc':return String(A.rep||'').localeCompare(String(B.rep||''));case'balanceDesc':return (parseFloat(B.balance)||0)-(parseFloat(A.balance)||0);case'balanceAsc':return (parseFloat(A.balance)||0)-(parseFloat(B.balance)||0);case'dateAsc':return String(A.date||'').localeCompare(String(B.date||''))||String(A.time||'').localeCompare(String(B.time||''));default:return String(B.date||'').localeCompare(String(A.date||''))||String(B.time||'').localeCompare(String(A.time||''))}});
+  return a;
+}
+function actionHTML(id){
+  return `<div class="actions"><button class="act note" title="View Notes" onclick="window.viewNotes('${id}')"><span class="material-symbols-rounded">sticky_note_2</span></button><button class="act inv" title="Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">description</span></button><button class="act edit" title="Edit" onclick="window.editSale('${id}')"><span class="material-symbols-rounded">edit</span></button></div>`;
+}
+function renderSales(){
+  const list=filteredSales(),tb=document.getElementById('saleTableBody'),cards=document.getElementById('cardView');tb.innerHTML='';cards.innerHTML='';
+  if(!list.length){tb.innerHTML='<tr><td colspan="7" class="empty" style="text-align:center; padding:30px;">No sales match the current filters.</td></tr>';cards.innerHTML='<div class="empty" style="text-align:center; padding:30px; width:100%;">No sales match the current filters.</div>';updateSelectionBar();return}
+  const map={Completed:'completed',Invoiced:'reported',Cancelled:'cancelled',Draft:'pending'};
+  list.forEach(x=>{
+    const d=x.data,id=x.id,st=d.status||'Draft',ind=window.formatIndianDate(d.date),wa=encodeURIComponent(`Hello ${d.name||''}, here is an update regarding your order on ${ind}.`),loc=d.location?`<a class="act" target="_blank" href="${esc(d.location.startsWith('http')?d.location:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(d.location))}"><span class="material-symbols-rounded">map</span></a>`:'';
+    const tr=document.createElement('tr');tr.className='apt-row';tr.dataset.id=id;tr.innerHTML=`<td class="no-print"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></td><td><strong>${ind}</strong><div class="sub">${esc(d.time||'')}</div></td><td><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')} ${d.email?`• ${esc(d.email)}`:''}</div><span class="badge cat" style="background:#f1f5f9; color:#475569;">${esc(d.category||'Retail')}</span><div class="no-print" style="margin-top:6px; display:flex; gap:6px;"><a class="act" href="tel:${esc(d.mobile)}"><span class="material-symbols-rounded">call</span></a><a class="act" target="_blank" href="https://wa.me/91${esc(d.mobile)}?text=${wa}"><span class="material-symbols-rounded" style="color:#10b981;">chat</span></a>${loc}</div></td><td><strong>${esc(d.branch||'')}</strong><div class="sub">${esc(d.rep||'')}</div></td><td><strong>${esc(d.itemDesc||'--')}</strong><div class="sub" style="margin-top:6px;">Total ₹${money(d.total)} • Paid ₹${money(d.paid)}</div><div class="sub ${balanceDisplay(d.balance).cls}">${balanceDisplay(d.balance).text}</div></td><td><span class="badge ${map[st]||'pending'}">${esc(st)}</span>${d.notes?`<div class="sub" style="margin-top:4px; max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${esc(d.notes)}">${esc(d.notes)}</div>`:''}</td><td class="no-print">${actionHTML(id)}</td>`;
+    tb.appendChild(tr);
+    const card=document.createElement('div');card.className='apt-card';card.dataset.id=id;card.innerHTML=`<div class="card-top"><div class="card-patient"><div class="card-check"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></div><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')}</div></div></div><span class="badge ${map[st]||'pending'}">${esc(st)}</span></div><div class="card-line"><b>${ind}</b> • ${esc(d.time||'')}</div><div class="card-grid"><div><div class="sub">Branch</div><b>${esc(d.branch||'')}</b></div><div><div class="sub">Sales Rep</div><b>${esc(d.rep||'--')}</b></div><div><div class="sub">Total</div><b>₹${money(d.total)}</b></div><div><div class="sub">Balance</div><b class="${balanceDisplay(d.balance).cls}">${balanceDisplay(d.balance).text}</b></div></div><div class="card-actions">${actionHTML(id)}</div>`;
+    cards.appendChild(card);
+  });
+  updateSelectionBar();
+}
+window.filterTable=renderSales;
+window.setFilterToday=()=>{const s=todayISO();document.getElementById('filterDateFrom').value=s;document.getElementById('filterDateTo').value=s;renderSales()};
+window.clearFilters=()=>{document.getElementById('filterDateFrom').value='';document.getElementById('filterDateTo').value='';document.getElementById('filterStatus').value='';document.getElementById('filterCategory').value='';document.getElementById('filterPayment').value='';if(!window.currentUser||window.currentUser.role==='admin')document.getElementById('filterBranch').value='';document.getElementById('saleSearchInput').value='';window.setFilterToday()};
+window.showFilters=()=>{closeTools();document.getElementById('filtersBar').classList.add('show')};
+window.setView=m=>{viewMode=m;document.getElementById('listView').style.display=m==='list'?'block':'none';document.getElementById('cardView').classList.toggle('show',m==='card');document.getElementById('viewListBtn').classList.toggle('active',m==='list');document.getElementById('viewCardBtn').classList.toggle('active',m==='card');closeTools()};
+window.setSort=m=>{sortMode=m;renderSales();closeTools()};
+window.updateSelectionBar=()=>{
+  const ids=[...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value);document.getElementById('selectedCount').textContent=new Set(ids).size;document.getElementById('bulkBar').classList.toggle('show',ids.length>0);
+};
+window.clearSelection=()=>{document.querySelectorAll('.apt-checkbox').forEach(x=>x.checked=false);document.getElementById('selectAll').checked=false;window.updateSelectionBar()};
+window.toggleAllCheckboxes=m=>{document.querySelectorAll('.apt-row .apt-checkbox,.apt-card .apt-checkbox').forEach(x=>x.checked=m.checked);window.updateSelectionBar()};
+function selectedIds(){return [...new Set([...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value))]}
+window.openSelectedNew=()=>{
+  const ids=selectedIds();if(!ids.length)return alert('Please select at least one sale first.');
+  const d=window.salesDataCache[ids[0]];if(!d)return;
+  showConfirm('Duplicate Sale','Create a new sale using the first selected record as a template?','Continue',()=>{window.editSaleData(d,null,true)});
+};
+window.editSaleData=async(d,id=null,isNew=false)=>{
+  const fields={saleDocId:id||'',saleMobile:d.mobile||'',saleName:d.name||'',saleEmail:d.email||'',saleTaxId:d.taxId||'',saleCategory:d.category||'Retail',saleLocation:d.location||'',saleClientNotes:d.clientNotes||'',saleBranch:d.branch||'',saleDate:isNew?todayISO():(d.date||''),saleTime:isNew?'':(d.time||''),saleItemDesc:d.itemDesc||'',saleRep:d.rep||'',saleStatus:isNew?'Draft':(d.status||'Draft'),saleTotal:d.total??'',salePaid:isNew?'':(d.paid??''),saleNotes:d.notes||'',salePaymentMode:d.paymentMode||'Cash',salePaymentReference:isNew?'':(d.paymentReference||''),salePaymentRemarks:isNew?'':(d.paymentRemarks||'')};
+  Object.entries(fields).forEach(([k,v])=>document.getElementById(k).value=v);
+  document.getElementById('saleClientSearch').value=d.name||'';document.getElementById('saveSaleBtn').textContent=isNew?'Save Sale':'Update Sale';document.getElementById('formTitle').textContent=isNew?'Duplicate Sale':'Edit Sale';
+  let due=0;try{let q=query(collection(db,'sales'),where('mobile','==',d.mobile));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'sales'),where('mobile','==',d.mobile),where('branch','==',window.currentUser.branch));(await getDocs(q)).forEach(x=>{if(x.id!==id)due+=parseFloat(x.data().balance)||0});document.getElementById('salePrevDues').value=due.toFixed(2)}catch(e){document.getElementById('salePrevDues').value='0.00'}window.calcBalance();setMinBookingDate();document.getElementById('saleModal').classList.add('show');
+};
+window.editSale=id=>{const d=window.salesDataCache[id];if(d)window.editSaleData(d,id,false)};
+window.saveSale=async()=>{
+  const btn=document.getElementById('saveSaleBtn'),id=document.getElementById('saleDocId').value,get=x=>document.getElementById(x).value.trim(),total=parseFloat(get('saleTotal'))||0,paid=parseFloat(get('salePaid'))||0,prev=parseFloat(get('salePrevDues'))||0;
+  let status=get('saleStatus'),date=get('saleDate'),notes=get('saleNotes');const req=['saleMobile','saleName','saleBranch','saleDate','saleTime','saleRep','saleCategory'];if(req.some(x=>!get(x)))return alert('Please fill all required (*) fields.');
+  
+  const payload={mobile:get('saleMobile'),name:get('saleName'),email:get('saleEmail'),taxId:get('saleTaxId'),category:get('saleCategory'),location:get('saleLocation'),clientNotes:get('saleClientNotes'),branch:get('saleBranch'),date,time:get('saleTime'),itemDesc:get('saleItemDesc'),rep:get('saleRep'),status,total,paid,balance:total+prev-paid,prevDues:prev,notes,paymentMode:get('salePaymentMode'),paymentReference:get('salePaymentReference'),paymentRemarks:get('salePaymentRemarks'),updatedAt:new Date()};
+  btn.disabled=true;btn.textContent='Saving...';
+  try{
+    let pq=query(collection(db,'clients'),where('mobile','==',payload.mobile));if(window.currentUser&&window.currentUser.role!=='admin')pq=query(collection(db,'clients'),where('mobile','==',payload.mobile),where('branch','==',window.currentUser.branch));
+    const ps=await getDocs(pq),pdata={mobile:payload.mobile,name:payload.name,email:payload.email,taxId:payload.taxId,category:payload.category,location:payload.location,notes:payload.clientNotes,branch:payload.branch};
+    if(ps.empty)await addDoc(collection(db,'clients'),{clientId:'C'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()});else await updateDoc(doc(db,'clients',ps.docs[0].id),pdata);
+    if(id){await updateDoc(doc(db,'sales',id),payload);await window.syncTransactions(id,payload);alert('Sale updated successfully!')}else{payload.createdAt=new Date();const n=await addDoc(collection(db,'sales'),payload);await window.syncTransactions(n.id,payload);alert('New sale saved successfully!')}
+    window.closeSaleForm();window.resetSaleForm();await window.loadSales();window.setFilterToday();
+  }catch(e){console.error(e);alert('Failed to save sale. Check your database permissions.')}finally{btn.disabled=false;btn.textContent=id?'Update Sale':'Save Sale'}
+};
+window.syncTransactions=async(saleId,payload)=>{
+  let q=query(collection(db,'transactions'),where('linkedSaleId','==',saleId));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'transactions'),where('linkedSaleId','==',saleId),where('branch','==',window.currentUser.branch));const s=await getDocs(q);let sale=null,receipt=null;s.forEach(d=>{if(d.data().type==='Sales')sale=d.id;if(d.data().type==='Receipt')receipt=d.id});const mode=payload.paymentMode||'Cash';
+  if(parseFloat(payload.total)>0){const x={date:payload.date,type:'Sales',mobile:payload.mobile,name:payload.name,mode,ref:'Auto-Bill',cashIn:0,cashOut:parseFloat(payload.total),notes:'Sales / Invoice Billed',linkedSaleId:saleId,updatedAt:new Date(),branch:payload.branch};sale?await updateDoc(doc(db,'transactions',sale),x):await addDoc(collection(db,'transactions'),{...x,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()})}
+  if(parseFloat(payload.paid)>0){const x={date:payload.date,type:'Receipt',mobile:payload.mobile,name:payload.name,mode,ref:payload.paymentReference||'Auto-Paid',cashIn:parseFloat(payload.paid),cashOut:0,notes:payload.paymentRemarks||'Payment Received',linkedSaleId:saleId,updatedAt:new Date(),branch:payload.branch};receipt?await updateDoc(doc(db,'transactions',receipt),x):await addDoc(collection(db,'transactions'),{...x,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()})}
+};
+window.viewNotes=id=>{const d=window.salesDataCache[id];if(!d)return;document.getElementById('modalClientName').textContent=d.name||'';document.getElementById('modalClientMeta').textContent=`Mobile: +91 ${d.mobile||''} | Date: ${window.formatIndianDate(d.date)} ${d.time||''} | Exec: ${d.rep||'--'}`;let n='';if(d.clientNotes)n+=`[Client Notes]\n${d.clientNotes}\n\n`;if(d.notes)n+=`[Sale Remarks]\n${d.notes}`;document.getElementById('modalClientNotesText').textContent=n||'No notes recorded for this sale.';document.getElementById('notesModal').classList.add('show')};
+window.printModalNotes=()=>{const c=document.getElementById('printNotesArea').innerHTML,w=window.open('','_blank');if(!w)return;w.document.write(`<html><head><title>Notes</title></head><body><h2>Notes</h2>${c}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()};
+window.printInvoice=async id=>{
+  const d=window.salesDataCache[id];if(!d)return alert('Sale data not found.');const w=window.open('about:blank','_blank');if(!w)return alert('Please allow pop-ups to open the invoice.');
+  try{const snap=await getDoc(doc(db,'settings','company'));const company=snap.exists()?snap.data():{};sessionStorage.setItem('bizodit.invoicePayload',JSON.stringify({sale:{...d,id,saleId:id,billDate:new Date().toISOString()},company}));w.location.href='temp-invoice.html'}catch(e){console.error(e);try{w.close()}catch(_){ }alert('Unable to open invoice. Check company profile / permissions.')}
+};
+window.executeBulkDelete=async()=>{
+  const ids=selectedIds();if(!ids.length)return alert('Please select sales to delete.');for(const id of ids){const d=window.salesDataCache[id];if(d&&d.status!=='Draft'&&d.status!=='Cancelled')return alert('You can only bulk delete Draft or Cancelled records.')}
+  showConfirm('Delete Sales',`Permanently delete ${ids.length} selected record${ids.length>1?'s':''}?`,'Delete',async()=>{try{for(const id of ids)await deleteDoc(doc(db,'sales',id));alert('Selected records deleted.');await window.loadSales();window.setFilterToday()}catch(e){console.error(e);alert('Error deleting records.')}})
+};
+window.showBulkDate=()=>{if(!selectedIds().length)return alert('Please select records first.');document.getElementById('bulkDateArea').style.display='inline-flex';document.getElementById('bulkDateInput').min=todayISO()};
+window.confirmBulkReschedule=async()=>{
+  const nd=document.getElementById('bulkDateInput').value,ids=selectedIds();if(!nd)return alert('Please select a date.');
+  showConfirm('Move Selected',`Update ${ids.length} selected record${ids.length>1?'s':''} to ${window.formatIndianDate(nd)}?`,'Confirm',async()=>{try{for(const id of ids){const d=window.salesDataCache[id];if(!d)continue;await updateDoc(doc(db,'sales',id),{date:nd,updatedAt:new Date()})}alert('Selected records moved to '+window.formatIndianDate(nd)+'.');document.getElementById('bulkDateArea').style.display='none';document.getElementById('bulkDateInput').value='';window.clearSelection();await window.loadSales();window.setFilterToday()}catch(e){console.error(e);alert('Failed to move selected records.')}})
+};
+window.executeBulkReschedule=()=>window.showBulkDate();
+function showConfirm(title,message,ok,fn){document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmMessage').textContent=message;document.getElementById('confirmOk').textContent=ok;confirmHandler=fn;document.getElementById('confirmModal').classList.add('show');document.getElementById('confirmOk').onclick=async()=>{const f=confirmHandler;window.closeModal('confirmModal');confirmHandler=null;if(f)await f()}}
+
+const CSV_HEADERS=['mobile','name','email','taxId','category','location','clientNotes','branch','date','time','itemDesc','rep','status','total','paid','prevDues','notes','paymentMode','paymentReference','paymentRemarks'];
+function csvCell(v){const s=String(v??'');return /[",\n\r]/.test(s)?`"${s.replace(/"/g,'""')}"`:s}
+window.downloadSaleSampleCSV=()=>{const row=['9744902555','Sample Client','client@example.com','GST123','Retail','Address','Client note','Branch Name',todayISO(),'10:30','10x Premium Items','Exec Name','Draft','1000','500','0','Sale notes','UPI','REF123',''];const blob=new Blob([[CSV_HEADERS,row].map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sales-sample.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+function parseCSV(text){const rows=[];let row=[],cell='',q=false;text=String(text||'').replace(/^\uFEFF/,'');for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){cell+='"';i++}else q=false}else cell+=c}else{if(c==='"')q=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=''}else if(c!=='\r')cell+=c}}if(cell!==''||row.length){row.push(cell);rows.push(row)}return rows.filter(r=>r.some(v=>String(v).trim()!==''))}
+const norm=v=>String(v||'').trim().toLowerCase().replace(/[\s_\-\/]+/g,'');
+window.importSalesCSV=async file=>{
+  if(!file)return;try{const rows=parseCSV(await file.text());if(rows.length<2)throw Error('CSV contains no valid rows.');const hm={};rows[0].forEach((h,i)=>hm[norm(h)]=i);const req=['mobile','name','branch','date','time','rep'];const miss=req.filter(k=>hm[norm(k)]===undefined);if(miss.length)throw Error('Missing required columns: '+miss.join(', '));
+    let ok=0,fail=[];for(let ri=1;ri<rows.length;ri++){try{const r={};CSV_HEADERS.forEach(k=>r[k]=hm[norm(k)]===undefined?'':String(rows[ri][hm[norm(k)]]??'').trim());const mobile=r.mobile.replace(/\D/g,'');if(!/^\d{10}$/.test(mobile))throw Error('Mobile must be 10 digits');if(!r.name||!r.branch||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)\vert{}\vert{}!/^\d{2}:\d{2}$/.test(r.time)||!r.rep)throw Error('Required value missing or invalid date/time');if(!window.currentUser||window.currentUser.role!=='admin'){if(r.branch!==window.currentUser.branch)throw Error('Branch mismatch')}const total=parseFloat(r.total)||0,paid=parseFloat(r.paid)||0,prev=parseFloat(r.prevDues)||0,payload={mobile,name:r.name,email:r.email,taxId:r.taxId,category:r.category||'Retail',location:r.location,clientNotes:r.clientNotes,branch:r.branch,date:r.date,time:r.time,itemDesc:r.itemDesc,rep:r.rep,status:r.status||'Draft',total,paid,balance:total+prev-paid,prevDues:prev,notes:r.notes,paymentMode:r.paymentMode||'Cash',paymentReference:r.paymentReference,paymentRemarks:r.paymentRemarks,createdAt:new Date(),updatedAt:new Date()};let pq=query(collection(db,'clients'),where('mobile','==',mobile));if(window.currentUser&&window.currentUser.role!=='admin')pq=query(collection(db,'clients'),where('mobile','==',mobile),where('branch','==',window.currentUser.branch));const ps=await getDocs(pq),pdata={mobile,name:r.name,email:r.email,taxId:r.taxId,category:payload.category,location:r.location,notes:r.clientNotes,branch:r.branch};if(ps.empty)await addDoc(collection(db,'clients'),{clientId:'C'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()});else await updateDoc(doc(db,'clients',ps.docs[0].id),pdata);const n=await addDoc(collection(db,'sales'),payload);try{await window.syncTransactions(n.id,payload)}catch(tx){console.error(tx)}ok++}catch(e){fail.push(`Row ${ri+1}: ${e.message}`)}}alert(`CSV import complete.\n\nImported: ${ok}\nFailed: ${fail.length}${fail.length?'\n\n'+fail.slice(0,15).join('\n'):''}`);if(ok)await window.loadSales();window.setFilterToday()}catch(e){console.error(e);alert('CSV import failed: '+e.message)}finally{document.getElementById('saleCsvInput').value=''}};
+window.exportSalesCSV=()=>{const list=filteredSales();const rows=[CSV_HEADERS,...list.map(x=>{const d=x.data;return CSV_HEADERS.map(k=>d[k]??'')})];const csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`sales-${todayISO()}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+window.exportSalePDF=()=>window.print();
+window.openBulkReschedule=window.executeBulkReschedule;
+
+document.getElementById('saleModal').addEventListener('click',e=>{if(e.target.id==='saleModal')window.closeSaleForm()});
+document.getElementById('notesModal').addEventListener('click',e=>{if(e.target.id==='notesModal')window.closeModal('notesModal')});
+document.getElementById('confirmModal').addEventListener('click',e=>{if(e.target.id==='confirmModal')window.closeModal('confirmModal')});
+</script>
+</div>
