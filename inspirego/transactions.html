@@ -1,0 +1,316 @@
+<div class="module-container transactions-module" id="transactions-module">
+<style>
+.transactions-module{font-family:Inter,Poppins,Arial,sans-serif;color:#202124;padding:0 0 32px;box-sizing:border-box}
+.transactions-module *{box-sizing:border-box}
+.transactions-module .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border:1px solid #e5e7eb;border-radius:14px;background:#fff;margin-bottom:18px}
+.transactions-module .title h2{margin:0;font-size:22px;font-weight:700;color:#263746}.transactions-module .title p{margin:5px 0 0;color:#7b8794;font-size:13px}
+.transactions-module .actions,.transactions-module .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.transactions-module .btn,.transactions-module .icon-btn{border:1px solid #d8dee5;background:#fff;color:#34495e;border-radius:9px;min-height:40px;cursor:pointer;padding:9px 13px}
+.transactions-module .btn.primary{background:#173f63;color:#fff;border-color:#173f63}.transactions-module .btn.danger{color:#b42318}
+.transactions-module .icon-btn{width:40px;padding:7px;display:grid;place-items:center}
+.transactions-module .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.transactions-module .kpi{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px 16px}
+.transactions-module .kpi .label{font-size:12px;color:#7b8794}.transactions-module .kpi .num{font-size:21px;font-weight:700;color:#263746;margin-top:5px}
+.transactions-module .panel{background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
+.transactions-module .panel-head{padding:14px 16px;border-bottom:1px solid #edf0f3}
+.transactions-module .toolbar-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.transactions-module .panel-title{font-size:15px;font-weight:700;color:#34495e}
+.transactions-module .tool{position:relative}.transactions-module .tool .dropdown{display:none;position:absolute;right:0;top:46px;z-index:30;min-width:210px;background:#fff;border:1px solid #e1e6eb;border-radius:10px;box-shadow:0 12px 30px rgba(20,40,60,.12);padding:7px}
+.transactions-module .tool.open .dropdown{display:block}
+.transactions-module .drop-title{font-size:11px;font-weight:700;color:#7b8794;padding:7px 9px}.transactions-module .drop-item{width:100%;border:0;background:#fff;text-align:left;padding:9px;border-radius:7px;cursor:pointer;color:#34495e;display:flex;gap:8px;align-items:center}.transactions-module .drop-item:hover,.transactions-module .drop-item.active{background:#f2f6fa}
+.transactions-module .searchbar{padding:12px 16px;border-bottom:1px solid #edf0f3;display:none}.transactions-module .searchbar.show{display:block}
+.transactions-module .searchbox{display:flex;align-items:center;gap:7px;border:1px solid #d8dee5;border-radius:9px;padding:0 10px}.transactions-module .searchbox input{border:0;outline:0;width:100%;min-height:40px}
+.transactions-module .filters{display:none;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid #edf0f3}.transactions-module .filters.show{display:flex}
+.transactions-module .form-input{width:100%;min-height:40px;border:1px solid #d4dbe2;background:#fff;border-radius:8px;padding:9px 10px;outline:none;color:#202124}.transactions-module .filter-input{width:auto;min-width:140px}
+.transactions-module .bulkbar{display:none;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:#f7f9fb;border-bottom:1px solid #edf0f3}.transactions-module .bulkbar.show{display:flex}
+.transactions-module .table-wrap{width:100%;overflow:auto}.transactions-module table{width:100%;border-collapse:collapse;min-width:900px}.transactions-module th{background:#f7f9fb;color:#65727e;font-size:11px;text-transform:uppercase;letter-spacing:.03em;text-align:left;padding:11px 12px;border-bottom:1px solid #e5e7eb;white-space:nowrap}.transactions-module td{padding:12px;border-bottom:1px solid #edf0f3;font-size:13px;vertical-align:middle}.transactions-module tbody tr:hover{background:#fafcfd}
+.transactions-module .sub{font-size:11px;color:#7b8794;margin-top:3px}.transactions-module .amount{font-weight:700}.transactions-module .in{color:#067647}.transactions-module .out{color:#b42318}.transactions-module .balance{color:#34495e}
+.transactions-module .badge{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700;background:#eef2f6;color:#52606d}.transactions-module .badge.sales{background:#eaf2ff;color:#245ea9}.transactions-module .badge.receipt{background:#ecfdf3;color:#067647}.transactions-module .badge.payment{background:#fff1f0;color:#b42318}.transactions-module .badge.expense{background:#fff7e6;color:#9a6700}
+.transactions-module .actions-cell{display:flex;gap:5px}.transactions-module .act{width:32px;height:32px;border:1px solid #e1e6eb;background:#fff;border-radius:7px;display:grid;place-items:center;cursor:pointer;color:#52606d}
+.transactions-module .empty{text-align:center;padding:38px;color:#7b8794}.transactions-module .cards{display:none;padding:12px}.transactions-module .txn-card{border:1px solid #e5e7eb;border-radius:11px;padding:13px;margin-bottom:9px;background:#fff}.transactions-module .card-top{display:flex;justify-content:space-between;gap:10px}.transactions-module .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.transactions-module .card-actions{display:flex;gap:6px;margin-top:12px}
+.transactions-module .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:1000;align-items:center;justify-content:center;padding:16px}.transactions-module .modal.show{display:flex}.transactions-module .modal-box{width:min(850px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.2)}.transactions-module .modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid #edf0f3;position:sticky;top:0;background:#fff;z-index:2}.transactions-module .modal-head h3{margin:0;font-size:17px}.transactions-module .close{border:0;background:transparent;cursor:pointer;width:34px;height:34px}.transactions-module .modal-body{padding:18px}.transactions-module .section{border:1px solid #e5e7eb;border-radius:11px;padding:14px;margin-bottom:13px}.transactions-module .section h4{margin:0 0 13px;font-size:13px;color:#34495e}.transactions-module .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.transactions-module .field label{display:block;font-size:11px;font-weight:600;color:#566573;margin-bottom:5px}.transactions-module .field.span2{grid-column:span 2}.transactions-module .field.span3{grid-column:1/-1}.transactions-module textarea.form-input{min-height:75px;resize:vertical}.transactions-module .form-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}.transactions-module .file-input{display:none}
+@media(max-width:800px){.transactions-module .topbar{flex-direction:column;align-items:flex-start}.transactions-module .actions{width:100%}.transactions-module .kpis{grid-template-columns:1fr 1fr}.transactions-module .grid{grid-template-columns:1fr 1fr}.transactions-module .field.span3{grid-column:1/-1}}
+@media(max-width:600px){.transactions-module{padding-bottom:85px}.transactions-module .title h2{font-size:19px}.transactions-module .kpis{grid-template-columns:1fr 1fr}.transactions-module .table-wrap{display:none}.transactions-module .cards{display:block}.transactions-module .grid{grid-template-columns:1fr}.transactions-module .field.span2,.transactions-module .field.span3{grid-column:auto}.transactions-module .modal{padding:7px}.transactions-module .modal-box{max-height:96vh;border-radius:11px}.transactions-module .modal-body{padding:12px}.transactions-module .filter-input{min-width:0;width:100%}}
+</style>
+
+<div class="topbar">
+  <div class="title"><h2>Transactions</h2><p id="txnTodayLabel"></p></div>
+  <div class="actions">
+    <button class="btn primary" type="button" onclick="window.openTransactionForm()"><span class="material-symbols-rounded">add</span> New Transaction</button>
+  </div>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="label">Today's Inflow</div><div class="num in" id="kpiIn">₹0.00</div></div>
+  <div class="kpi"><div class="label">Today's Outflow</div><div class="num out" id="kpiOut">₹0.00</div></div>
+  <div class="kpi"><div class="label">Today's Net</div><div class="num" id="kpiNet">₹0.00</div></div>
+  <div class="kpi"><div class="label">Transactions</div><div class="num" id="kpiCount">0</div></div>
+</div>
+
+<div class="panel">
+  <div class="panel-head">
+    <div class="toolbar-row">
+      <div class="panel-title">Transaction Register</div>
+      <div class="toolbar">
+        <div class="tool" id="txnSearchTool"><button class="icon-btn" title="Search" onclick="window.toggleTxnTool('txnSearchTool')"><span class="material-symbols-rounded">search</span></button></div>
+        <div class="tool" id="txnSortTool"><button class="icon-btn" title="Sort" onclick="window.toggleTxnTool('txnSortTool')"><span class="material-symbols-rounded">sort</span></button>
+          <div class="dropdown"><div class="drop-title">Sort</div>
+            <button class="drop-item" onclick="window.setTxnSort('dateDesc')">Date: Newest first</button>
+            <button class="drop-item" onclick="window.setTxnSort('dateAsc')">Date: Oldest first</button>
+            <button class="drop-item" onclick="window.setTxnSort('nameAsc')">Name: A–Z</button>
+            <button class="drop-item" onclick="window.setTxnSort('nameDesc')">Name: Z–A</button>
+            <button class="drop-item" onclick="window.setTxnSort('amountDesc')">Amount: High–Low</button>
+            <button class="drop-item" onclick="window.setTxnSort('amountAsc')">Amount: Low–High</button>
+          </div>
+        </div>
+        <div class="tool" id="txnFilterTool"><button class="icon-btn" title="Filter" onclick="window.toggleTxnTool('txnFilterTool')"><span class="material-symbols-rounded">filter_list</span></button>
+          <div class="dropdown"><div class="drop-title">Filter</div>
+            <button class="drop-item" onclick="window.showTxnFilters()">Date / Type / Mode</button>
+            <button class="drop-item" onclick="window.setTxnToday()">Today</button>
+            <button class="drop-item" onclick="window.clearTxnFilters()">Clear Filters</button>
+          </div>
+        </div>
+        <div class="tool" id="txnImportTool"><button class="icon-btn" title="Import" onclick="window.toggleTxnTool('txnImportTool')"><span class="material-symbols-rounded">upload_file</span></button>
+          <div class="dropdown"><div class="drop-title">Transaction Data</div>
+            <button class="drop-item" onclick="document.getElementById('txnCsvInput').click()">Import CSV</button>
+            <button class="drop-item" onclick="window.downloadTxnSample()">Sample Format CSV</button>
+          </div>
+        </div>
+        <button class="icon-btn" title="Export CSV" onclick="window.exportTransactionsCSV()"><span class="material-symbols-rounded">file_download</span></button>
+        <div class="tool" id="txnMoreTool"><button class="icon-btn" title="More" onclick="window.toggleTxnTool('txnMoreTool')"><span class="material-symbols-rounded">more_vert</span></button>
+          <div class="dropdown"><div class="drop-title">Actions</div>
+            <button class="drop-item" onclick="window.openSelectedTxnNew()">New from Selected</button>
+            <button class="drop-item" onclick="window.executeTxnBulkDelete()">Bulk Delete</button>
+            <button class="drop-item" onclick="window.printTransactions()">Print / PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="searchbar" id="txnSearchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="txnSearch" placeholder="Search transaction, name, mobile, reference, notes..." oninput="window.renderTransactions()"></div></div>
+
+  <div class="filters" id="txnFilters">
+    <input type="date" id="txnFrom" class="form-input filter-input" onchange="window.renderTransactions()">
+    <input type="date" id="txnTo" class="form-input filter-input" onchange="window.renderTransactions()">
+    <select id="txnType" class="form-input filter-input" onchange="window.renderTransactions()">
+      <option value="">All Types</option><option>Sales</option><option>Receipt</option><option>Payment</option><option>Expense</option><option>Transfer</option><option>Adjustment</option>
+    </select>
+    <select id="txnMode" class="form-input filter-input" onchange="window.renderTransactions()">
+      <option value="">All Modes</option><option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option><option>Cheque</option><option>Credit</option><option>Mixed</option>
+    </select>
+    <button class="btn" onclick="window.setTxnToday()">Today</button><button class="btn" onclick="window.clearTxnFilters()">Clear</button>
+  </div>
+
+  <div class="bulkbar" id="txnBulkBar"><strong><span id="txnSelectedCount">0</span> selected</strong><button class="btn danger" onclick="window.executeTxnBulkDelete()">Delete</button><button class="btn" onclick="window.clearTxnSelection()">Clear</button></div>
+
+  <input id="txnCsvInput" class="file-input" type="file" accept=".csv,text/csv" onchange="window.importTransactionsCSV(this.files[0])">
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th><input type="checkbox" id="txnSelectAll" onclick="window.toggleAllTxn(this)"></th><th>Date</th><th>Transaction</th><th>Party</th><th>Mode / Reference</th><th>Inflow</th><th>Outflow</th><th>Notes</th><th>Actions</th></tr></thead>
+      <tbody id="txnBody"></tbody>
+    </table>
+  </div>
+  <div class="cards" id="txnCards"></div>
+</div>
+
+<div class="modal" id="txnModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="txnFormTitle">New Transaction</h3><button class="close" onclick="window.closeTransactionForm()"><span class="material-symbols-rounded">close</span></button></div>
+    <div class="modal-body">
+      <form id="transactionForm" onsubmit="event.preventDefault();window.saveTransaction()">
+        <input type="hidden" id="txnDocId">
+        <div class="section">
+          <h4>Transaction Details</h4>
+          <div class="grid">
+            <div class="field"><label>Transaction ID</label><input id="txnId" class="form-input" readonly placeholder="Auto generated"></div>
+            <div class="field"><label>Date <b>*</b></label><input id="txnDate" type="date" class="form-input" required></div>
+            <div class="field"><label>Type <b>*</b></label><select id="txnFormType" class="form-input" required><option>Sales</option><option>Receipt</option><option>Payment</option><option>Expense</option><option>Transfer</option><option>Adjustment</option></select></div>
+            <div class="field"><label>Party / Account Name</label><input id="txnName" class="form-input"></div>
+            <div class="field"><label>Mobile</label><input id="txnMobile" class="form-input" type="tel"></div>
+            <div class="field"><label>Mode</label><select id="txnFormMode" class="form-input"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option><option>Cheque</option><option>Credit</option><option>Mixed</option></select></div>
+            <div class="field"><label>Reference / UTR / Cheque No.</label><input id="txnRef" class="form-input"></div>
+            <div class="field"><label>Invoice / Linked ID</label><input id="txnLinkedId" class="form-input"></div>
+            <div class="field"><label>Branch</label><input id="txnBranch" class="form-input"></div>
+          </div>
+        </div>
+        <div class="section">
+          <h4>Amount</h4>
+          <div class="grid">
+            <div class="field"><label>Inflow / Cash In (₹)</label><input id="txnCashIn" type="number" min="0" step="0.01" class="form-input"></div>
+            <div class="field"><label>Outflow / Cash Out (₹)</label><input id="txnCashOut" type="number" min="0" step="0.01" class="form-input"></div>
+            <div class="field"><label>Tax / GST (₹)</label><input id="txnTax" type="number" min="0" step="0.01" class="form-input"></div>
+            <div class="field span3"><label>Notes</label><textarea id="txnNotes" class="form-input"></textarea></div>
+          </div>
+        </div>
+        <div class="section">
+          <h4>Record Information</h4>
+          <div class="grid">
+            <div class="field"><label>Created At</label><input id="txnCreatedAt" class="form-input" readonly></div>
+            <div class="field"><label>Updated At</label><input id="txnUpdatedAt" class="form-input" readonly></div>
+            <div class="field"><label>Created By</label><input id="txnCreatedBy" class="form-input" readonly></div>
+          </div>
+        </div>
+        <div class="form-actions"><button type="button" class="btn" onclick="window.resetTransactionForm()">Clear</button><button type="submit" class="btn primary" id="txnSaveBtn">Save Transaction</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { auth, db } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { collection, addDoc, getDocs, getDoc, updateDoc, deleteDoc, doc, query, where, serverTimestamp, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+(()=> {
+ const root=document.getElementById('transactions-module'); if(!root||root.dataset.initialized==='1')return; root.dataset.initialized='1';
+ let currentUser=null, allTxns=[], sortMode='dateDesc';
+
+ const $=id=>document.getElementById(id);
+ const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+ const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+ const money=v=>(Number(v)||0).toFixed(2);
+ const dateFmt=v=>{if(!v)return'';const p=String(v).split('-');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:v};
+ const fmtStamp=v=>{if(!v)return'—';let d=v?.toDate?v.toDate():new Date(v);return isNaN(d)?'—':`${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
+ const userName=()=>currentUser?.displayName||currentUser?.email||currentUser?.uid||'Unknown';
+
+ function closeTools(){root.querySelectorAll('.tool.open').forEach(x=>x.classList.remove('open'))}
+ window.toggleTxnTool=id=>{const e=$(id),was=e?.classList.contains('open');closeTools();if(e&&!was)e.classList.add('open')};
+ root.addEventListener('click',e=>{if(!e.target.closest('.tool'))closeTools()});
+
+ onAuthStateChanged(auth,async u=>{
+   currentUser=u;
+   if(!u){root.innerHTML='<div style="padding:24px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;color:#b42318">Access denied. Please log in.</div>';return}
+   $('txnTodayLabel').textContent='Today: '+dateFmt(today());
+   resetTransactionForm();
+   await loadTransactions();
+   setTxnToday();
+ });
+
+ async function nextId(prefix='TRN'){
+   const ref=doc(db,'settings','counters');
+   return await runTransaction(db,async t=>{
+     const s=await t.get(ref); const d=s.exists()?s.data():{};
+     const key=prefix.toLowerCase()+'Sequence'; const n=Number(d[key]||0)+1;
+     t.set(ref,{[key]:n},{merge:true});
+     return `${prefix}-${String(n).padStart(5,'0')}`;
+   });
+ }
+
+ async function loadTransactions(){
+   $('txnBody').innerHTML='<tr><td colspan="9" class="empty">Loading transactions...</td></tr>';
+   try{
+     let q=query(collection(db,'transactions'));
+     if(currentUser?.role && currentUser.role!=='admin' && currentUser.branch)q=query(collection(db,'transactions'),where('branch','==',currentUser.branch));
+     const snap=await getDocs(q); allTxns=[];
+     snap.forEach(d=>allTxns.push({id:d.id,data:d.data()}));
+     updateKpis(); renderTransactions();
+   }catch(e){console.error(e);$('txnBody').innerHTML='<tr><td colspan="9" class="empty">Unable to load transactions. Check Firestore rules.</td></tr>'}
+ }
+
+ function filtered(){
+   const fr=$('txnFrom').value,to=$('txnTo').value,type=$('txnType').value.toLowerCase(),mode=$('txnMode').value.toLowerCase(),term=$('txnSearch').value.toLowerCase().trim();
+   const list=allTxns.filter(x=>{const d=x.data,t=String(d.type||'').toLowerCase(),m=String(d.mode||'').toLowerCase(),text=`${d.txnId||''} ${d.name||''} ${d.mobile||''} ${d.ref||''} ${d.notes||''} ${d.linkedId||d.linkedAptId||''}`.toLowerCase();return(!fr||d.date>=fr)&&(!to||d.date<=to)&&(!type||t===type)&&(!mode||m===mode)&&(!term||text.includes(term))});
+   list.sort((a,b)=>{const A=a.data,B=b.data,aa=(Number(A.cashIn)||0)+(Number(A.cashOut)||0),bb=(Number(B.cashIn)||0)+(Number(B.cashOut)||0);switch(sortMode){case'dateAsc':return String(A.date||'').localeCompare(String(B.date||''));case'nameAsc':return String(A.name||'').localeCompare(String(B.name||''));case'nameDesc':return String(B.name||'').localeCompare(String(A.name||''));case'amountDesc':return bb-aa;case'amountAsc':return aa-bb;default:return String(B.date||'').localeCompare(String(A.date||''))}});
+   return list;
+ }
+
+ function updateKpis(){
+   const t=today(),list=allTxns.filter(x=>x.data.date===t),inflow=list.reduce((s,x)=>s+(Number(x.data.cashIn)||0),0),out=list.reduce((s,x)=>s+(Number(x.data.cashOut)||0),0);
+   $('kpiIn').textContent='₹'+money(inflow);$('kpiOut').textContent='₹'+money(out);$('kpiNet').textContent='₹'+money(inflow-out);$('kpiCount').textContent=list.length;
+ }
+
+ function badge(type){const x=String(type||'').toLowerCase();return `<span class="badge ${x}">${esc(type||'Transaction')}</span>`}
+ function actionHtml(id){return `<div class="actions-cell"><button class="act" title="Edit" onclick="window.editTransaction('${id}')"><span class="material-symbols-rounded">edit</span></button><button class="act" title="Delete" onclick="window.deleteTransaction('${id}')"><span class="material-symbols-rounded">delete</span></button></div>`}
+
+ window.renderTransactions=()=>{
+   const list=filtered(),tb=$('txnBody'),cards=$('txnCards');tb.innerHTML='';cards.innerHTML='';
+   if(!list.length){tb.innerHTML='<tr><td colspan="9" class="empty">No transactions match the current filters.</td></tr>';cards.innerHTML='<div class="empty">No transactions match the current filters.</div>';return}
+   list.forEach(x=>{
+     const d=x.data,id=x.id;
+     const tr=document.createElement('tr');
+     tr.innerHTML=`<td><input type="checkbox" class="txn-check" value="${id}" onchange="window.updateTxnSelection()"></td><td><strong>${dateFmt(d.date)}</strong><div class="sub">${esc(d.txnId||'')}</div></td><td>${badge(d.type)}<div class="sub">${esc(d.linkedId||d.linkedAptId||'')}</div></td><td><strong>${esc(d.name||'—')}</strong><div class="sub">${esc(d.mobile||'')}</div></td><td>${esc(d.mode||'—')}<div class="sub">${esc(d.ref||'')}</div></td><td class="amount in">${Number(d.cashIn)>0?'₹'+money(d.cashIn):'—'}</td><td class="amount out">${Number(d.cashOut)>0?'₹'+money(d.cashOut):'—'}</td><td>${esc(d.notes||'')}<div class="sub">GST ₹${money(d.tax)}</div></td><td>${actionHtml(id)}</td>`;
+     tb.appendChild(tr);
+     const card=document.createElement('div');card.className='txn-card';
+     card.innerHTML=`<div class="card-top"><div><strong>${esc(d.name||'—')}</strong><div class="sub">${dateFmt(d.date)} • ${esc(d.txnId||'')}</div></div>${badge(d.type)}</div><div class="card-grid"><div><div class="sub">Mode</div><b>${esc(d.mode||'—')}</b></div><div><div class="sub">Reference</div><b>${esc(d.ref||'—')}</b></div><div><div class="sub">Inflow</div><b class="in">₹${money(d.cashIn)}</b></div><div><div class="sub">Outflow</div><b class="out">₹${money(d.cashOut)}</b></div></div><div class="sub" style="margin-top:10px">${esc(d.notes||'')}</div><div class="card-actions"><input type="checkbox" class="txn-check" value="${id}" onchange="window.updateTxnSelection()">${actionHtml(id)}</div>`;
+     cards.appendChild(card);
+   });
+   window.updateTxnSelection();
+ };
+
+ window.setTxnSort=m=>{sortMode=m;renderTransactions();closeTools()};
+ window.showTxnFilters=()=>{closeTools();$('txnFilters').classList.add('show')};
+ window.setTxnToday=()=>{const t=today();$('txnFrom').value=t;$('txnTo').value=t;renderTransactions()};
+ window.clearTxnFilters=()=>{$('txnFrom').value='';$('txnTo').value='';$('txnType').value='';$('txnMode').value='';$('txnSearch').value='';setTxnToday()};
+ window.openTransactionForm=()=>{resetTransactionForm();$('txnModal').classList.add('show')};
+ window.closeTransactionForm=()=>{$('txnModal').classList.remove('show')};
+
+ function resetTransactionForm(){
+   $('transactionForm')?.reset();$('txnDocId').value='';$('txnDate').value=today();$('txnFormType').value='Sales';$('txnFormMode').value='Cash';
+   $('txnBranch').value=currentUser?.branch||'';$('txnCreatedAt').value='—';$('txnUpdatedAt').value='—';$('txnCreatedBy').value=userName();
+   $('txnId').value='';$('txnFormTitle').textContent='New Transaction';$('txnSaveBtn').textContent='Save Transaction';
+ }
+ window.resetTransactionForm=resetTransactionForm;
+
+ window.saveTransaction=async()=>{
+   if(!currentUser)return alert('Please log in.');
+   const id=$('txnDocId').value;
+   const get=x=>$(x).value.trim();
+   const cashIn=Number(get('txnCashIn'))||0,cashOut=Number(get('txnCashOut'))||0;
+   if(!get('txnDate')||!get('txnFormType'))return alert('Date and Type are required.');
+   if(cashIn<=0&&cashOut<=0)return alert('Enter an inflow or outflow amount.');
+   const btn=$('txnSaveBtn');btn.disabled=true;btn.textContent='Saving...';
+   try{
+     const now=new Date();
+     let txnId=get('txnId');
+     if(!id)txnId=await nextId('TRN');
+     const payload={
+       txnId,date:get('txnDate'),type:get('txnFormType'),name:get('txnName'),mobile:get('txnMobile'),
+       mode:get('txnFormMode'),ref:get('txnRef'),linkedId:get('txnLinkedId'),branch:get('txnBranch'),
+       cashIn,cashOut,tax:Number(get('txnTax'))||0,notes:get('txnNotes'),
+       updatedAt:serverTimestamp(),updatedBy:currentUser.uid,updatedByName:userName()
+     };
+     if(id){
+       await updateDoc(doc(db,'transactions',id),payload);
+       alert('Transaction updated successfully.');
+     }else{
+       await addDoc(collection(db,'transactions'),{...payload,txnId,createdAt:serverTimestamp(),createdBy:currentUser.uid,createdByName:userName()});
+       alert('Transaction saved successfully.');
+     }
+     closeTransactionForm();await loadTransactions();setTxnToday();
+   }catch(e){console.error(e);alert('Failed to save transaction: '+(e.message||'Firestore error'))}
+   finally{btn.disabled=false;btn.textContent=id?'Update Transaction':'Save Transaction'}
+ };
+
+ window.editTransaction=async id=>{
+   const x=allTxns.find(v=>v.id===id);if(!x)return;const d=x.data;
+   $('txnDocId').value=id;$('txnId').value=d.txnId||'';$('txnDate').value=d.date||today();$('txnFormType').value=d.type||'Sales';$('txnName').value=d.name||'';$('txnMobile').value=d.mobile||'';$('txnFormMode').value=d.mode||'Cash';$('txnRef').value=d.ref||'';$('txnLinkedId').value=d.linkedId||d.linkedAptId||'';$('txnBranch').value=d.branch||'';$('txnCashIn').value=d.cashIn??'';$('txnCashOut').value=d.cashOut??'';$('txnTax').value=d.tax??'';$('txnNotes').value=d.notes||'';$('txnCreatedAt').value=fmtStamp(d.createdAt);$('txnUpdatedAt').value=fmtStamp(d.updatedAt);$('txnCreatedBy').value=d.createdByName||d.createdBy||'—';$('txnFormTitle').textContent='Edit Transaction';$('txnSaveBtn').textContent='Update Transaction';$('txnModal').classList.add('show');
+ };
+
+ window.deleteTransaction=async id=>{
+   const x=allTxns.find(v=>v.id===id);if(!x)return;
+   if(!confirm(`Delete transaction ${x.data.txnId||''}?`))return;
+   try{await deleteDoc(doc(db,'transactions',id));await loadTransactions();setTxnToday()}catch(e){alert('Delete failed: '+e.message)}
+ };
+
+ window.updateTxnSelection=()=>{
+   const ids=[...root.querySelectorAll('.txn-check:checked')].map(x=>x.value);$('txnSelectedCount').textContent=new Set(ids).size;$('txnBulkBar').classList.toggle('show',ids.length>0);
+ };
+ window.clearTxnSelection=()=>{root.querySelectorAll('.txn-check').forEach(x=>x.checked=false);$('txnSelectAll').checked=false;window.updateTxnSelection()};
+ window.toggleAllTxn=e=>{root.querySelectorAll('.txn-check').forEach(x=>x.checked=e.checked);window.updateTxnSelection()};
+ function selected(){return [...new Set([...root.querySelectorAll('.txn-check:checked')].map(x=>x.value))]}
+ window.executeTxnBulkDelete=async()=>{const ids=selected();if(!ids.length)return alert('Select transactions first.');if(!confirm(`Delete ${ids.length} selected transaction(s)?`))return;try{for(const id of ids)await deleteDoc(doc(db,'transactions',id));clearTxnSelection();await loadTransactions();setTxnToday()}catch(e){alert('Bulk delete failed: '+e.message)}};
+ window.openSelectedTxnNew=()=>{const ids=selected();if(!ids.length)return alert('Select a transaction first.');const x=allTxns.find(v=>v.id===ids[0]);if(!x)return;openTransactionForm();$('txnName').value=x.data.name||'';$('txnMobile').value=x.data.mobile||'';$('txnFormMode').value=x.data.mode||'Cash';$('txnBranch').value=x.data.branch||'';$('txnNotes').value=x.data.notes||''};
+
+ const HEADERS=['txnId','date','type','name','mobile','mode','ref','linkedId','branch','cashIn','cashOut','tax','notes'];
+ const csvCell=v=>{const s=String(v??'');return /[",\n\r]/.test(s)?`"${s.replace(/"/g,'""')}"`:s};
+ window.downloadTxnSample=()=>{const row=['TRN-00001',today(),'Receipt','Sample Customer','9744902555','UPI','UTR123','','Main Branch','1000','0','0','Sample receipt'];const blob=new Blob([[HEADERS,row].map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='transactions-sample.csv';a.click()};
+ function parseCSV(text){const rows=[];let row=[],cell='',q=false;for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'&&text[i+1]==='"'){cell+='"';i++}else if(c==='"')q=false;else cell+=c}else if(c==='"')q=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=''}else if(c!=='\r')cell+=c}if(cell||row.length){row.push(cell);rows.push(row)}return rows}
+ window.importTransactionsCSV=async file=>{if(!file)return;try{const rows=parseCSV(await file.text());if(rows.length<2)throw Error('No rows found');const map={};rows[0].forEach((h,i)=>map[String(h).trim().toLowerCase()]=i);let ok=0;for(let i=1;i<rows.length;i++){const r={};HEADERS.forEach(k=>r[k]=rows[i][map[k]]??'');if(!r.date||!r.type)continue;const txnId=r.txnId||await nextId('TRN');await addDoc(collection(db,'transactions'),{...r,txnId,cashIn:Number(r.cashIn)||0,cashOut:Number(r.cashOut)||0,tax:Number(r.tax)||0,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),createdBy:currentUser.uid,createdByName:userName()});ok++}alert(`Imported ${ok} transaction(s).`);await loadTransactions();setTxnToday()}catch(e){alert('CSV import failed: '+e.message)}finally{$('txnCsvInput').value=''}};
+ window.exportTransactionsCSV=()=>{const list=filtered(),rows=[HEADERS,...list.map(x=>HEADERS.map(k=>x.data[k]??''))],csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),blob=new Blob([csv],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`transactions-${today()}.csv`;a.click()};
+ window.printTransactions=()=>window.print();
+ $('txnModal').addEventListener('click',e=>{if(e.target.id==='txnModal')closeTransactionForm()});
+})();
+</script>
+</div>
