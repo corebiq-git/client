@@ -1,0 +1,21 @@
+{
+  "name": "COREBIQ",
+  "short_name": "COREBIQ",
+  "description": "The Intelligent Workflow for Business",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#334c44",
+  "icons": [
+    {
+      "src": "assets/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
