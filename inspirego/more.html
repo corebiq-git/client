@@ -1,0 +1,120 @@
+<div class="module-container">
+<style>
+.module-container{font-family:Inter,Poppins,Arial,sans-serif;color:var(--text,#334155);animation:fadeIn .25s ease}
+.module-container *{box-sizing:border-box}
+.module-shell{background:var(--surface,#fff);border:1px solid var(--border,#E2E8F0);border-radius:16px;box-shadow:var(--shadow,0 10px 30px rgba(15,23,42,.06));overflow:hidden}
+.module-head{padding:20px 24px;border-bottom:1px solid var(--border,#E2E8F0);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.module-head h2{margin:0;font-size:22px}
+.module-head p{margin:5px 0 0;color:var(--text-soft,#64748B);font-size:13px}
+.module-tools{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px;background:var(--surface-soft,#FAFBFC);border-bottom:1px solid var(--border,#E2E8F0)}
+.module-tools input,.module-tools select,.module-tools button,.module-form input,.module-form select,.module-form textarea{min-height:42px;border:1px solid var(--border-strong,#CBD5E1);border-radius:10px;background:#fff;color:var(--text,#334155);padding:9px 11px;font:inherit}
+.module-tools .search{flex:1;min-width:200px}
+.module-btn{border:1px solid var(--border,#E2E8F0);background:#fff;color:var(--primary,#0F4C81);font-weight:600;cursor:pointer;padding:0 14px;border-radius:10px}
+.module-btn.primary{background:var(--primary,#0F4C81);border-color:var(--primary,#0F4C81);color:#fff}
+.module-body{padding:18px}
+.module-form{display:none;padding:18px;border:1px solid var(--border,#E2E8F0);border-radius:14px;background:#fff;margin-bottom:18px}
+.module-form.open{display:block}
+.module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.module-field{display:flex;flex-direction:column;gap:6px}
+.module-field.full{grid-column:1/-1}
+.module-field label{font-size:12px;font-weight:600;color:var(--text-soft,#64748B)}
+.module-field textarea{min-height:90px;resize:vertical}
+.module-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border,#E2E8F0)}
+.module-meta div{background:var(--surface-soft,#FAFBFC);padding:10px;border-radius:10px}
+.module-meta small{display:block;color:var(--text-soft,#64748B);font-size:10px}
+.module-meta strong{font-size:12px}
+.module-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
+.module-table-wrap{overflow:auto}
+.module-table{width:100%;min-width:900px;border-collapse:collapse}
+.module-table th{padding:13px 15px;background:var(--surface-soft,#FAFBFC);color:var(--text-soft,#64748B);font-size:11px;text-transform:uppercase;letter-spacing:.4px;text-align:left;cursor:pointer;white-space:nowrap}
+.module-table td{padding:13px 15px;border-top:1px solid var(--border,#E2E8F0);font-size:13px}
+.module-table tr:hover td{background:var(--primary-pale,#F5F9FF)}
+.module-empty{text-align:center;padding:45px;color:var(--muted,#94A3B8)}
+.module-sort{font-size:10px;margin-left:4px}
+.module-status{display:inline-flex;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:600;background:var(--surface-soft,#FAFBFC)}
+.module-status.active,.module-status.completed{background:#D1FAE5;color:#047857}
+.module-status.pending{background:#FEF3C7;color:#B45309}
+@media(max-width:768px){
+ .module-head{padding:17px 15px;align-items:flex-start}.module-head h2{font-size:19px}
+ .module-body{padding:12px}.module-tools{padding:10px}.module-tools .search{flex-basis:100%}
+ .module-grid{grid-template-columns:1fr}.module-field.full{grid-column:auto}
+ .module-meta{grid-template-columns:1fr 1fr}.module-form{padding:13px}
+ .module-table{min-width:760px}
+ .module-btn,.module-tools input,.module-tools select{min-height:44px}
+}
+</style>
+<div class="module-shell">
+ <div class="module-head"><div><h2>More</h2><p>Manage more inside the COREBIQ workspace.</p></div>
+ <button class="module-btn primary" id="add">＋ Add More</button></div>
+ <div class="module-tools">
+  <input class="search" id="search" placeholder="Search more…">
+  <input id="filterDate" type="date" title="Date">
+  <button class="module-btn" id="today">Today</button>
+  <button class="module-btn" id="all">All</button>
+  <span id="count" style="margin-left:auto;color:var(--text-soft);font-size:12px">0 records</span>
+ </div>
+ <div class="module-body">
+  <form class="module-form">
+   <div class="module-grid">
+    <div class="module-field"><label>Form ID</label><input id="fid" readonly></div>
+    <div class="module-field"><label>Date</label><input id="date" placeholder="DD-MM-YYYY" required></div>
+    <div class="module-field"><label>Name</label><input id="name" required></div>
+    <div class="module-field"><label>Reference</label><input id="reference"></div>
+    <div class="module-field"><label>Status</label><select id="status"><option>Pending</option><option>Active</option><option>Completed</option></select></div>
+    <div class="module-field full"><label>Notes</label><textarea id="notes"></textarea></div>
+   </div>
+   <div class="module-meta">
+    <div><small>Created At</small><strong>Auto</strong></div>
+    <div><small>Updated At</small><strong>Auto</strong></div>
+    <div><small>Created By</small><strong>Current User</strong></div>
+    <div><small>Updated By</small><strong>Current User</strong></div>
+   </div>
+   <div class="module-actions"><button type="button" class="module-btn" id="cancel">Cancel</button><button class="module-btn primary" id="save">Save</button></div>
+  </form>
+  <div class="module-table-wrap"><table class="module-table">
+   <thead><tr>
+    <th>Form ID</th><th>Date</th>
+    <th data-sort="name">Name <span class="module-sort"></span></th>
+    <th data-sort="reference">Reference <span class="module-sort"></span></th>
+    <th data-sort="status">Status <span class="module-sort"></span></th>
+    <th data-sort="createdBy">Created By <span class="module-sort"></span></th><th>Action</th>
+   </tr></thead>
+   <tbody id="tbody"><tr><td colspan="7" class="module-empty">Loading…</td></tr></tbody>
+  </table></div>
+ </div>
+</div>
+<script>
+
+(function(){
+const root=document.currentScript?.closest(".module-container")||document.querySelector(".module-container");
+if(!root)return;
+const PREFIX="MOR"; const MODULE="more";
+let rows=[],sortKey="name",sortDir="asc",editId=null;
+const q=s=>root.querySelector(s);
+const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const nowDate=()=>{const d=new Date();return String(d.getDate()).padStart(2,"0")+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+d.getFullYear()};
+const key=()=>`corebiq_${MODULE}_seq`;
+const idNext=()=>{let n=Number(localStorage.getItem(key())||0)+1;localStorage.setItem(key(),n);return PREFIX+"-"+String(n).padStart(5,"0")};
+function openForm(){q(".module-form").classList.add("open");q("#fid").value=editId?"":idNext();if(!editId)q("#date").value=nowDate()}
+function closeForm(){editId=null;q(".module-form").classList.remove("open");q("form").reset();q("#fid").value="";q("#date").value=nowDate()}
+function sort(k){sortDir=sortKey===k?(sortDir==="asc"?"desc":"asc"):"asc";sortKey=k;render()}
+function render(){
+ let term=(q("#search")?.value||"").toLowerCase(),date=q("#filterDate")?.value||"";
+ let a=rows.filter(x=>(!term||JSON.stringify(x).toLowerCase().includes(term))&&(!date||x.date===date));
+ a.sort((x,y)=>String(x[sortKey]||"").localeCompare(String(y[sortKey]||""),undefined,{numeric:true})*(sortDir==="asc"?1:-1));
+ q("#tbody").innerHTML=a.length?a.map(x=>`<tr><td>${esc(x.formId)}</td><td>${esc(x.date)}</td><td>${esc(x.name)}</td><td>${esc(x.reference)}</td><td><span class="module-status ${String(x.status||"").toLowerCase()}">${esc(x.status||"Pending")}</span></td><td>${esc(x.createdBy||"—")}</td><td><button class="module-btn" onclick="window.__cbEdit('${x.id}')">Edit</button></td></tr>`).join(""):`<tr><td colspan="7" class="module-empty">No records for the selected date.</td></tr>`;
+ q("#count").textContent=a.length+" record"+(a.length===1?"":"s");
+ root.querySelectorAll("th[data-sort]").forEach(th=>th.querySelector(".module-sort").textContent=sortKey===th.dataset.sort?(sortDir==="asc"?"A-Z":"Z-A"):"");
+}
+window.__cbEdit=function(id){let x=rows.find(r=>r.id===id);if(!x)return;editId=id;q(".module-form").classList.add("open");q("#fid").value=x.formId;q("#date").value=x.date;q("#name").value=x.name;q("#reference").value=x.reference;q("#status").value=x.status;q("#notes").value=x.notes;q("#save").textContent="Update"};
+root.querySelector("#add").onclick=openForm;root.querySelector("#cancel").onclick=closeForm;
+root.querySelector("#search").oninput=render;root.querySelector("#filterDate").onchange=render;
+root.querySelector("#all").onclick=()=>{q("#filterDate").value="";render()};
+root.querySelector("#today").onclick=()=>{let d=new Date();q("#filterDate").value=d.toISOString().slice(0,10);render()};
+root.querySelectorAll("th[data-sort]").forEach(th=>th.onclick=()=>sort(th.dataset.sort));
+root.querySelector("form").onsubmit=e=>{e.preventDefault();let item={formId:q("#fid").value||idNext(),date:q("#date").value,name:q("#name").value,reference:q("#reference").value,status:q("#status").value,notes:q("#notes").value,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),createdBy:window.currentUser?.email||"current-user",updatedBy:window.currentUser?.email||"current-user"};if(editId){let i=rows.findIndex(x=>x.id===editId);item.createdAt=rows[i].createdAt;item.createdBy=rows[i].createdBy;item.id=editId;rows[i]=item}else{item.id=crypto.randomUUID();rows.unshift(item)};closeForm();render()};
+let d=new Date();q("#filterDate").value=d.toISOString().slice(0,10);q("#date").value=nowDate();render();
+})();
+
+</script>
+</div>
