@@ -1,2471 +1,2405 @@
 <!-- =========================================================
-     COMPANY PROFILE MODULE
-     File: company.html
-     
-     IMPORTANT:
-     Main style.css must already be loaded by index.html.
-     This module intentionally contains NO internal CSS.
+     COREBIQ — COMPANY PROFILE MODULE
+     Single Company Profile per authenticated app/account
      ========================================================= -->
 
-<div id="company-module" class="company-module">
+<div class="company-module">
 
-    <!-- =====================================================
-         TOOLBAR
-         ===================================================== -->
-    <div class="comp-toolbar">
+<style>
+/* =========================================================
+   COMPANY PROFILE MODULE
+   ========================================================= */
 
-        <div class="comp-toolbar-left">
+.company-module {
+    font-family: 'Inter', 'Poppins', sans-serif;
+    color: #202124;
+    animation: fadeIn .25s ease-out;
+    padding-bottom: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-            <!-- BACK -->
-            <button
-                type="button"
-                class="comp-icon-btn"
-                onclick="window.switchView('view-dashboard', null)"
+/* ================= TOOLBAR ================= */
+
+.company-module .comp-toolbar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    background:#fff;
+    border:1px solid #dadce0;
+    border-radius:12px;
+    padding:10px 12px;
+    margin-bottom:20px;
+    box-shadow:0 1px 3px rgba(0,0,0,.05);
+    position:sticky;
+    top:10px;
+    z-index:20;
+}
+
+.company-module .comp-toolbar-left,
+.company-module .comp-toolbar-right {
+    display:flex;
+    align-items:center;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.company-module .comp-icon-btn {
+    width:36px;
+    height:36px;
+    border:none;
+    background:transparent;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    color:#5f6368;
+    cursor:pointer;
+}
+
+.company-module .comp-icon-btn:hover {
+    background:#f1f3f4;
+    color:#202124;
+}
+
+.company-module .comp-icon-btn .material-symbols-rounded {
+    font-size:21px;
+}
+
+.company-module .comp-action-btn {
+    height:36px;
+    padding:0 12px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    border:1px solid #dadce0;
+    border-radius:8px;
+    background:#fff;
+    color:#3c4043;
+    font-family:inherit;
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.company-module .comp-action-btn:hover {
+    background:#f8f9fa;
+}
+
+.company-module .comp-action-btn.primary {
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+}
+
+.company-module .comp-action-btn.primary:hover {
+    background:var(--primary-dark);
+}
+
+.company-module .comp-action-btn .material-symbols-rounded {
+    font-size:18px;
+}
+
+.company-module .comp-search {
+    height:36px;
+    min-width:220px;
+    max-width:300px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:0 10px;
+    background:#f1f3f4;
+    border-radius:8px;
+}
+
+.company-module .comp-search .material-symbols-rounded {
+    font-size:19px;
+    color:#5f6368;
+}
+
+.company-module .comp-search input {
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-family:inherit;
+    font-size:13px;
+}
+
+/* ================= HEADER ================= */
+
+.company-module .comp-header-banner {
+    padding:10px 10px 22px;
+}
+
+.company-module .comp-header-banner h1 {
+    margin:0 0 5px;
+    font-size:23px;
+    font-weight:700;
+    letter-spacing:-.4px;
+    color:var(--primary-dark);
+}
+
+.company-module .comp-header-banner p {
+    margin:0;
+    color:#5f6368;
+    font-size:13px;
+}
+
+/* ================= FORM SECTION ================= */
+
+.company-module .comp-form-section {
+    background:#fff;
+    border:1px solid #dadce0;
+    border-radius:12px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+
+.company-module .comp-form-section h2 {
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0 0 20px;
+    padding-bottom:11px;
+    border-bottom:1px solid #f1f3f4;
+    color:var(--primary);
+    font-size:15px;
+    font-weight:600;
+}
+
+.company-module .comp-form-section h2 .material-symbols-rounded {
+    font-size:21px;
+}
+
+.company-module .comp-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.company-module .comp-grid.col-3 {
+    grid-template-columns:repeat(3,1fr);
+}
+
+.company-module .full {
+    grid-column:1/-1;
+}
+
+/* ================= FLOATING INPUT ================= */
+
+.company-module .g-input-group {
+    position:relative;
+    margin-top:4px;
+}
+
+.company-module .g-input-group input,
+.company-module .g-input-group select,
+.company-module .g-input-group textarea {
+    width:100%;
+    min-height:48px;
+    box-sizing:border-box;
+    padding:13px 14px;
+    border:1px solid #dadce0;
+    border-radius:7px;
+    outline:none;
+    background:#fff;
+    color:#202124;
+    font-family:inherit;
+    font-size:14px;
+    transition:.18s;
+}
+
+.company-module .g-input-group textarea {
+    min-height:95px;
+    resize:vertical;
+}
+
+.company-module .g-input-group input:focus,
+.company-module .g-input-group select:focus,
+.company-module .g-input-group textarea:focus {
+    border:2px solid var(--primary);
+    padding:12px 13px;
+}
+
+.company-module .g-input-group label {
+    position:absolute;
+    left:11px;
+    top:14px;
+    padding:0 4px;
+    background:#fff;
+    color:#5f6368;
+    font-size:13px;
+    pointer-events:none;
+    transition:.15s ease;
+}
+
+.company-module .g-input-group input:focus ~ label,
+.company-module .g-input-group input:not(:placeholder-shown) ~ label,
+.company-module .g-input-group select:focus ~ label,
+.company-module .g-input-group select:valid ~ label,
+.company-module .g-input-group textarea:focus ~ label,
+.company-module .g-input-group textarea:not(:placeholder-shown) ~ label {
+    top:-8px;
+    font-size:11px;
+    font-weight:500;
+    color:var(--primary);
+}
+
+.company-module .g-input-group select {
+    appearance:none;
+    cursor:pointer;
+    padding-right:38px;
+}
+
+.company-module .select-arrow {
+    position:absolute;
+    right:12px;
+    top:14px;
+    color:#5f6368;
+    pointer-events:none;
+}
+
+.company-module .required-mark {
+    color:#d93025;
+    margin-left:2px;
+}
+
+/* ================= HELP TEXT ================= */
+
+.company-module .field-help {
+    display:block;
+    margin:5px 2px 0;
+    font-size:11px;
+    line-height:1.4;
+    color:#80868b;
+}
+
+.company-module .section-note {
+    margin:-10px 0 18px;
+    color:#5f6368;
+    font-size:12px;
+}
+
+/* ================= LOGO UPLOAD ================= */
+
+.company-module .logo-upload {
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:16px;
+    border:1px dashed #dadce0;
+    border-radius:10px;
+    background:#f8f9fa;
+}
+
+.company-module .logo-preview {
+    width:76px;
+    height:76px;
+    border-radius:10px;
+    border:1px solid #dadce0;
+    background:#fff;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.company-module .logo-preview img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.company-module .logo-preview .material-symbols-rounded {
+    font-size:32px;
+    color:#9aa0a6;
+}
+
+.company-module .logo-upload-content strong {
+    display:block;
+    font-size:13px;
+    color:#3c4043;
+    margin-bottom:5px;
+}
+
+.company-module .logo-upload-content span {
+    display:block;
+    font-size:11px;
+    color:#80868b;
+    line-height:1.5;
+}
+
+/* ================= CHECKBOX ================= */
+
+.company-module .checkbox-row {
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:13px;
+    color:#3c4043;
+}
+
+.company-module .checkbox-row input {
+    width:18px;
+    height:18px;
+    accent-color:var(--primary);
+}
+
+/* ================= FORM FOOTER ================= */
+
+.company-module .comp-footer-actions {
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    padding:18px 0;
+}
+
+/* ================= SAVED VIEW ================= */
+
+.company-module .saved-view {
+    display:none;
+    background:#fff;
+    border:1px solid #dadce0;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+
+.company-module .saved-view-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px;
+    border-bottom:1px solid #dadce0;
+}
+
+.company-module .saved-view-header h3 {
+    margin:0;
+    font-size:15px;
+}
+
+.company-module .saved-table-wrap {
+    overflow-x:auto;
+}
+
+.company-module .saved-table {
+    width:100%;
+    border-collapse:collapse;
+    min-width:850px;
+}
+
+.company-module .saved-table th {
+    background:#f8f9fa;
+    color:#5f6368;
+    font-size:11px;
+    font-weight:600;
+    text-transform:uppercase;
+    white-space:nowrap;
+    padding:12px;
+    border-bottom:1px solid #dadce0;
+    text-align:left;
+    cursor:pointer;
+}
+
+.company-module .saved-table th:hover {
+    background:#f1f3f4;
+}
+
+.company-module .saved-table th .material-symbols-rounded {
+    font-size:15px;
+    vertical-align:middle;
+}
+
+.company-module .saved-table td {
+    padding:12px;
+    border-bottom:1px solid #f1f3f4;
+    font-size:13px;
+    color:#3c4043;
+}
+
+.company-module .saved-table tbody tr:hover {
+    background:#f8f9fa;
+}
+
+.company-module .status-badge {
+    display:inline-flex;
+    align-items:center;
+    padding:4px 8px;
+    border-radius:20px;
+    background:#e6f4ea;
+    color:#137333;
+    font-size:11px;
+    font-weight:600;
+}
+
+/* ================= MODAL ================= */
+
+.company-module .comp-modal {
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(32,33,36,.45);
+    z-index:9999;
+    padding:15px;
+}
+
+.company-module .comp-modal.active {
+    display:flex;
+}
+
+.company-module .comp-modal-card {
+    width:min(900px,100%);
+    max-height:92vh;
+    overflow:auto;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 12px 40px rgba(0,0,0,.2);
+}
+
+.company-module .comp-modal-header {
+    position:sticky;
+    top:0;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px 18px;
+    background:#fff;
+    border-bottom:1px solid #dadce0;
+}
+
+.company-module .comp-modal-header h3 {
+    margin:0;
+    font-size:16px;
+}
+
+.company-module .comp-modal-body {
+    padding:20px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px) {
+
+    .company-module {
+        padding:0 2px 30px;
+    }
+
+    .company-module .comp-toolbar {
+        position:relative;
+        top:0;
+        align-items:stretch;
+    }
+
+    .company-module .comp-toolbar-left,
+    .company-module .comp-toolbar-right {
+        width:100%;
+        overflow-x:auto;
+        flex-wrap:nowrap;
+    }
+
+    .company-module .comp-search {
+        min-width:180px;
+        flex:1;
+    }
+
+    .company-module .comp-action-btn {
+        flex-shrink:0;
+    }
+
+    .company-module .comp-grid,
+    .company-module .comp-grid.col-3 {
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .company-module .full {
+        grid-column:auto;
+    }
+
+    .company-module .comp-form-section {
+        padding:16px;
+        border-radius:10px;
+    }
+
+    .company-module .comp-header-banner h1 {
+        font-size:20px;
+    }
+
+    .company-module .logo-upload {
+        align-items:flex-start;
+    }
+
+    .company-module .comp-footer-actions {
+        flex-direction:column-reverse;
+    }
+
+    .company-module .comp-footer-actions .comp-action-btn {
+        width:100%;
+    }
+}
+</style>
+
+
+<!-- =========================================================
+     TOOLBAR
+     ========================================================= -->
+
+<div class="comp-toolbar">
+
+    <div class="comp-toolbar-left">
+
+        <button class="comp-icon-btn"
+                onclick="window.switchView('view-dashboard',null)"
                 title="Back">
-                <span class="material-symbols-rounded">arrow_back</span>
-            </button>
+            <span class="material-symbols-rounded">arrow_back</span>
+        </button>
 
-            <!-- SEARCH -->
-            <div class="comp-search">
-                <span class="material-symbols-rounded">search</span>
-                <input
-                    type="search"
-                    id="companySearch"
-                    placeholder="Search company..."
-                    autocomplete="off">
-            </div>
-
+        <div class="comp-search">
+            <span class="material-symbols-rounded">search</span>
+            <input type="search"
+                   id="companySearch"
+                   placeholder="Search company...">
         </div>
 
-        <div class="comp-toolbar-right">
-
-            <!-- FILTER -->
-            <button
-                type="button"
+        <button type="button"
                 class="comp-action-btn"
-                id="companyFilterBtn"
-                title="Filter">
-                <span class="material-symbols-rounded">filter_list</span>
-                <span>Filter</span>
-            </button>
+                onclick="companyFilter()">
+            <span class="material-symbols-rounded">filter_list</span>
+            Filter
+        </button>
 
-            <!-- SORT -->
-            <button
-                type="button"
+        <button type="button"
                 class="comp-action-btn"
-                id="companySortBtn"
-                title="Sort">
-                <span class="material-symbols-rounded">sort</span>
-                <span>Sort</span>
-            </button>
-
-            <!-- IMPORT -->
-            <button
-                type="button"
-                class="comp-action-btn"
-                id="companyImportBtn"
-                title="Import Company">
-                <span class="material-symbols-rounded">upload_file</span>
-                <span>Import</span>
-            </button>
-
-            <!-- EXPORT -->
-            <button
-                type="button"
-                class="comp-action-btn"
-                id="companyExportBtn"
-                title="Export Company">
-                <span class="material-symbols-rounded">download</span>
-                <span>Export</span>
-            </button>
-
-            <!-- ADD / EDIT -->
-            <button
-                type="button"
-                class="comp-action-btn primary"
-                id="companyAddBtn">
-                <span class="material-symbols-rounded">add</span>
-                <span id="companyAddBtnText">Add Company</span>
-            </button>
-
-        </div>
-    </div>
-
-
-    <!-- =====================================================
-         PAGE HEADER
-         ===================================================== -->
-    <div class="comp-header-banner">
-
-        <h1>COMPANY PROFILE</h1>
-
-        <p id="companyPageDescription">
-            Create your company profile for this application
-        </p>
-
-        <div class="comp-id" id="companyRecordStatus">
-            New Company
-        </div>
+                onclick="companySort()">
+            <span class="material-symbols-rounded">sort</span>
+            Sort
+        </button>
 
     </div>
 
+    <div class="comp-toolbar-right">
 
-    <!-- =====================================================
-         COMPANY FORM
-         ===================================================== -->
-    <form id="companyForm" novalidate>
-
-        <!-- =================================================
-             1. COMPANY INFORMATION
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-                <span class="material-symbols-rounded">domain</span>
-                1. COMPANY INFORMATION
-            </h2>
-
-            <div class="comp-grid">
-
-                <!-- COMPANY NAME -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="companyName"
-                        name="companyName"
-                        placeholder=" "
-                        autocomplete="organization"
-                        required>
-
-                    <label for="companyName">
-                        Company Name *
-                    </label>
-
-                </div>
-
-
-                <!-- LEGAL NAME -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="legalName"
-                        name="legalName"
-                        placeholder=" "
-                        autocomplete="organization"
-                        required>
-
-                    <label for="legalName">
-                        Legal Name *
-                    </label>
-
-                </div>
-
-
-                <!-- BUSINESS TYPE -->
-                <div class="g-input-group">
-
-                    <select
-                        id="businessType"
-                        name="businessType"
-                        required>
-
-                        <option value="" disabled selected hidden></option>
-
-                        <option value="Sole Proprietorship">
-                            Sole Proprietorship
-                        </option>
-
-                        <option value="Partnership">
-                            Partnership
-                        </option>
-
-                        <option value="Limited Liability Partnership">
-                            Limited Liability Partnership (LLP)
-                        </option>
-
-                        <option value="Private Limited Company">
-                            Private Limited Company
-                        </option>
-
-                        <option value="Public Limited Company">
-                            Public Limited Company
-                        </option>
-
-                        <option value="One Person Company">
-                            One Person Company (OPC)
-                        </option>
-
-                        <option value="Trust">
-                            Trust
-                        </option>
-
-                        <option value="Society">
-                            Society
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
-
-                    <label for="businessType">
-                        Business Type *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-
-                <!-- INDUSTRY -->
-                <div class="g-input-group">
-
-                    <select
-                        id="industry"
-                        name="industry"
-                        required>
-
-                        <option value="" disabled selected hidden></option>
-
-                        <option value="Accounting & Finance">
-                            Accounting & Finance
-                        </option>
-
-                        <option value="Healthcare">
-                            Healthcare
-                        </option>
-
-                        <option value="Travel & Tourism">
-                            Travel & Tourism
-                        </option>
-
-                        <option value="Retail">
-                            Retail
-                        </option>
-
-                        <option value="Education">
-                            Education
-                        </option>
-
-                        <option value="IT & Software">
-                            IT & Software
-                        </option>
-
-                        <option value="Professional Services">
-                            Professional Services
-                        </option>
-
-                        <option value="Manufacturing">
-                            Manufacturing
-                        </option>
-
-                        <option value="Construction">
-                            Construction
-                        </option>
-
-                        <option value="Real Estate">
-                            Real Estate
-                        </option>
-
-                        <option value="Hospitality">
-                            Hospitality
-                        </option>
-
-                        <option value="Logistics">
-                            Logistics
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
-
-                    <label for="industry">
-                        Industry *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-
-                <!-- STATUS -->
-                <div class="g-input-group">
-
-                    <select
-                        id="companyStatus"
-                        name="companyStatus"
-                        required>
-
-                        <option value="Active" selected>
-                            Active
-                        </option>
-
-                        <option value="Inactive">
-                            Inactive
-                        </option>
-
-                    </select>
-
-                    <label for="companyStatus">
-                        Company Status *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-
-                <!-- ESTABLISHED DATE -->
-                <div class="g-input-group">
-
-                    <input
-                        type="date"
-                        id="establishedDate"
-                        name="establishedDate"
-                        placeholder=" ">
-
-                    <label for="establishedDate">
-                        Established Date
-                    </label>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             2. COMPANY LOGO
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-                <span class="material-symbols-rounded">image</span>
-                2. COMPANY LOGO
-            </h2>
-
-            <div class="comp-grid">
-
-                <div>
-
-                    <div
-                        class="upload-box"
-                        id="companyLogoUploadBox">
-
-                        <span class="material-symbols-rounded">
-                            cloud_upload
-                        </span>
-
-                        <strong>
-                            Upload Company Logo
-                        </strong>
-
-                        <p>
-                            PNG / JPG / WEBP
-                        </p>
-
-                        <p>
-                            Used for invoices and QR documents
-                        </p>
-
-                        <input
-                            type="file"
-                            id="companyLogo"
-                            name="companyLogo"
-                            accept="image/png,image/jpeg,image/webp"
-                            hidden>
-
-                    </div>
-
-                </div>
-
-
-                <!-- LOGO PREVIEW -->
-                <div>
-
-                    <div
-                        class="upload-box"
-                        id="companyLogoPreviewBox">
-
-                        <span
-                            class="material-symbols-rounded"
-                            id="companyLogoPreviewIcon">
-                            image
-                        </span>
-
-                        <img
-                            id="companyLogoPreview"
-                            src=""
-                            alt="Company Logo"
-                            style="
-                                display:none;
-                                max-width:180px;
-                                max-height:120px;
-                                object-fit:contain;
-                                border-radius:8px;
-                            ">
-
-                        <p id="companyLogoPreviewText">
-                            Logo preview
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             3. CONTACT INFORMATION
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-                <span class="material-symbols-rounded">
-                    contact_phone
-                </span>
-                3. CONTACT INFORMATION
-            </h2>
-
-            <div class="comp-grid">
-
-                <div class="g-input-group">
-
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder=" "
-                        autocomplete="email">
-
-                    <label for="email">
-                        Official Email
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="email"
-                        id="supportEmail"
-                        name="supportEmail"
-                        placeholder=" "
-                        autocomplete="email">
-
-                    <label for="supportEmail">
-                        Support Email
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        placeholder=" "
-                        autocomplete="tel">
-
-                    <label for="phone">
-                        Phone Number
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="tel"
-                        id="whatsapp"
-                        name="whatsapp"
-                        placeholder=" "
-                        autocomplete="tel">
-
-                    <label for="whatsapp">
-                        WhatsApp Number
-                    </label>
-
-                </div>
-
-
-                <div
-                    class="g-input-group"
-                    style="grid-column:1 / -1;">
-
-                    <input
-                        type="url"
-                        id="website"
-                        name="website"
-                        placeholder=" "
-                        autocomplete="url">
-
-                    <label for="website">
-                        Website
-                    </label>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             4. REGISTERED ADDRESS
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-
-                <span class="material-symbols-rounded">
-                    location_on
-                </span>
-
-                4. REGISTERED ADDRESS
-
-            </h2>
-
-
-            <div class="comp-grid">
-
-                <!-- COUNTRY -->
-                <div class="g-input-group">
-
-                    <select
-                        id="country"
-                        name="country"
-                        required>
-
-                        <option value="" disabled selected hidden></option>
-
-                        <option value="India">
-                            India
-                        </option>
-
-                        <option value="United Arab Emirates">
-                            United Arab Emirates
-                        </option>
-
-                        <option value="Other">
-                            Other
-                        </option>
-
-                    </select>
-
-                    <label for="country">
-                        Country *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-
-                <!-- PIN -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="pin"
-                        name="pin"
-                        placeholder=" "
-                        autocomplete="postal-code">
-
-                    <label for="pin">
-                        PIN / ZIP Code
-                    </label>
-
-                </div>
-
-
-                <!-- ADDRESS -->
-                <div
-                    class="g-input-group"
-                    style="grid-column:1 / -1;">
-
-                    <textarea
-                        id="address"
-                        name="address"
-                        placeholder=" "
-                        rows="3"></textarea>
-
-                    <label for="address">
-                        Registered Address
-                    </label>
-
-                </div>
-
-
-                <!-- CITY -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="city"
-                        name="city"
-                        placeholder=" ">
-
-                    <label for="city">
-                        City
-                    </label>
-
-                </div>
-
-
-                <!-- STATE -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        placeholder=" ">
-
-                    <label for="state">
-                        State / Province
-                    </label>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             5. TAX & REGISTRATION
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-
-                <span class="material-symbols-rounded">
-                    receipt_long
-                </span>
-
-                5. TAX & REGISTRATION
-
-            </h2>
-
-
-            <div class="comp-grid">
-
-                <!-- GSTIN -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="gstin"
-                        name="gstin"
-                        placeholder=" "
-                        maxlength="15"
-                        style="text-transform:uppercase;">
-
-                    <label for="gstin">
-                        GSTIN
-                    </label>
-
-                </div>
-
-
-                <!-- PAN -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="pan"
-                        name="pan"
-                        placeholder=" "
-                        maxlength="10"
-                        style="text-transform:uppercase;">
-
-                    <label for="pan">
-                        PAN
-                    </label>
-
-                </div>
-
-
-                <!-- TAN -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="tan"
-                        name="tan"
-                        placeholder=" "
-                        maxlength="10"
-                        style="text-transform:uppercase;">
-
-                    <label for="tan">
-                        TAN
-                    </label>
-
-                </div>
-
-
-                <!-- GST TYPE -->
-                <div class="g-input-group">
-
-                    <select
-                        id="gstType"
-                        name="gstType">
-
-                        <option value="" selected>
-                            Not Applicable
-                        </option>
-
-                        <option value="Regular">
-                            Regular
-                        </option>
-
-                        <option value="Composition">
-                            Composition
-                        </option>
-
-                        <option value="Casual Taxable Person">
-                            Casual Taxable Person
-                        </option>
-
-                        <option value="SEZ">
-                            SEZ
-                        </option>
-
-                        <option value="Non-Resident Taxable Person">
-                            Non-Resident Taxable Person
-                        </option>
-
-                    </select>
-
-                    <label for="gstType">
-                        GST Registration Type
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-
-                <!-- GST STATE -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="gstState"
-                        name="gstState"
-                        placeholder=" ">
-
-                    <label for="gstState">
-                        GST State
-                    </label>
-
-                </div>
-
-
-                <!-- CIN -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="cin"
-                        name="cin"
-                        placeholder=" "
-                        style="text-transform:uppercase;">
-
-                    <label for="cin">
-                        CIN
-                    </label>
-
-                </div>
-
-
-                <!-- UDYAM -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="udyam"
-                        name="udyam"
-                        placeholder=" "
-                        style="text-transform:uppercase;">
-
-                    <label for="udyam">
-                        UDYAM Registration No.
-                    </label>
-
-                </div>
-
-
-                <!-- IEC -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="iec"
-                        name="iec"
-                        placeholder=" "
-                        style="text-transform:uppercase;">
-
-                    <label for="iec">
-                        IEC
-                    </label>
-
-                </div>
-
-
-                <!-- FSSAI -->
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="fssai"
-                        name="fssai"
-                        placeholder=" ">
-
-                    <label for="fssai">
-                        FSSAI No.
-                    </label>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             6. UAE TAX DETAILS
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-
-                <span class="material-symbols-rounded">
-                    public
-                </span>
-
-                6. UAE TAX & REGISTRATION
-
-            </h2>
-
-
-            <div class="comp-grid">
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="trn"
-                        name="trn"
-                        placeholder=" ">
-
-                    <label for="trn">
-                        TRN
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="tradeLicense"
-                        name="tradeLicense"
-                        placeholder=" ">
-
-                    <label for="tradeLicense">
-                        Trade License No.
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="licenseAuthority"
-                        name="licenseAuthority"
-                        placeholder=" ">
-
-                    <label for="licenseAuthority">
-                        License Authority
-                    </label>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <input
-                        type="text"
-                        id="establishmentCard"
-                        name="establishmentCard"
-                        placeholder=" ">
-
-                    <label for="establishmentCard">
-                        Establishment Card No.
-                    </label>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             7. FINANCIAL SETTINGS
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-
-                <span class="material-symbols-rounded">
-                    account_balance_wallet
-                </span>
-
-                7. FINANCIAL SETTINGS
-
-            </h2>
-
-
-            <div class="comp-grid">
-
-                <div class="g-input-group">
-
-                    <select
-                        id="currency"
-                        name="currency"
-                        required>
-
-                        <option value="" disabled selected hidden></option>
-
-                        <option value="INR">
-                            INR – Indian Rupee
-                        </option>
-
-                        <option value="AED">
-                            AED – UAE Dirham
-                        </option>
-
-                        <option value="USD">
-                            USD – US Dollar
-                        </option>
-
-                        <option value="EUR">
-                            EUR – Euro
-                        </option>
-
-                        <option value="GBP">
-                            GBP – Pound Sterling
-                        </option>
-
-                    </select>
-
-                    <label for="currency">
-                        Default Currency *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-
-                <div class="g-input-group">
-
-                    <select
-                        id="financialYear"
-                        name="financialYear"
-                        required>
-
-                        <option value="" disabled selected hidden></option>
-
-                        <option value="April - March">
-                            April – March
-                        </option>
-
-                        <option value="January - December">
-                            January – December
-                        </option>
-
-                    </select>
-
-                    <label for="financialYear">
-                        Financial Year *
-                    </label>
-
-                    <span class="material-symbols-rounded select-arrow">
-                        arrow_drop_down
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             8. COMPANY NOTES
-             ================================================= -->
-        <div class="comp-form-section">
-
-            <h2>
-
-                <span class="material-symbols-rounded">
-                    notes
-                </span>
-
-                8. NOTES
-
-            </h2>
-
-
-            <div class="g-input-group">
-
-                <textarea
-                    id="notes"
-                    name="notes"
-                    placeholder=" "
-                    rows="4"></textarea>
-
-                <label for="notes">
-                    Company Notes
-                </label>
-
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             ACTIONS
-             ================================================= -->
-        <div class="comp-footer-actions">
-
-            <button
-                type="button"
+        <button type="button"
                 class="comp-action-btn"
-                onclick="window.switchView('view-dashboard', null)">
+                onclick="downloadCompanySample()">
+            <span class="material-symbols-rounded">download</span>
+            Sample CSV
+        </button>
 
-                Cancel
+        <button type="button"
+                class="comp-action-btn"
+                onclick="document.getElementById('companyImportFile').click()">
+            <span class="material-symbols-rounded">upload_file</span>
+            Import
+        </button>
 
-            </button>
+        <input type="file"
+               id="companyImportFile"
+               accept=".csv"
+               hidden
+               onchange="importCompanyCSV(this)">
 
+        <button type="button"
+                class="comp-action-btn"
+                onclick="exportCompanyCSV()">
+            <span class="material-symbols-rounded">file_download</span>
+            CSV
+        </button>
 
-            <button
-                type="submit"
+        <button type="button"
+                class="comp-action-btn"
+                onclick="exportCompanyPDF()">
+            <span class="material-symbols-rounded">picture_as_pdf</span>
+            PDF
+        </button>
+
+        <button type="button"
                 class="comp-action-btn primary"
-                id="companySaveBtn">
+                onclick="openCompanyForm()">
+            <span class="material-symbols-rounded">add</span>
+            Add New
+        </button>
 
-                <span class="material-symbols-rounded">
-                    save
-                </span>
-
-                <span id="companySaveText">
-                    Save Company
-                </span>
-
-            </button>
-
-        </div>
-
-    </form>
-
-
-    <!-- =====================================================
-         HIDDEN IMPORT FILE
-         ===================================================== -->
-    <input
-        type="file"
-        id="companyImportFile"
-        accept=".csv,.json"
-        hidden>
+    </div>
 
 </div>
 
 
 <!-- =========================================================
-     COMPANY MODULE JAVASCRIPT
-     
-     This script does NOT contain Firebase credentials.
-     It uses window.db if Firebase is already initialized
-     by index.html.
+     PAGE HEADER
+     ========================================================= -->
+
+<div class="comp-header-banner">
+    <h1>Company Profile</h1>
+    <p>Maintain the company information used across COREBIQ documents, invoices, payments and reports.</p>
+</div>
+
+
+<!-- =========================================================
+     SAVED COMPANY VIEW
+     ========================================================= -->
+
+<div class="saved-view" id="companySavedView">
+
+    <div class="saved-view-header">
+
+        <div>
+            <h3>Saved Company Profile</h3>
+        </div>
+
+        <button type="button"
+                class="comp-action-btn"
+                onclick="openCompanyForm()">
+            <span class="material-symbols-rounded">edit</span>
+            Edit
+        </button>
+
+    </div>
+
+    <div class="saved-table-wrap">
+
+        <table class="saved-table">
+
+            <thead>
+                <tr>
+
+                    <th onclick="sortCompanyTable(0)">
+                        Company Name
+                        <span class="material-symbols-rounded">unfold_more</span>
+                    </th>
+
+                    <th onclick="sortCompanyTable(1)">
+                        Legal Name
+                        <span class="material-symbols-rounded">unfold_more</span>
+                    </th>
+
+                    <th onclick="sortCompanyTable(2)">
+                        GSTIN
+                        <span class="material-symbols-rounded">unfold_more</span>
+                    </th>
+
+                    <th onclick="sortCompanyTable(3)">
+                        Email
+                        <span class="material-symbols-rounded">unfold_more</span>
+                    </th>
+
+                    <th onclick="sortCompanyTable(4)">
+                        Phone
+                        <span class="material-symbols-rounded">unfold_more</span>
+                    </th>
+
+                    <th onclick="sortCompanyTable(5)">
+                        Country
+                        <span class="material-symbols-rounded">unfold_more</span>
+                    </th>
+
+                    <th>Status</th>
+
+                </tr>
+            </thead>
+
+            <tbody id="companyTableBody">
+
+                <tr>
+                    <td colspan="7"
+                        style="text-align:center;padding:35px;color:#80868b;">
+                        No company profile saved yet.
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     COMPANY FORM MODAL
+     ========================================================= -->
+
+<div class="comp-modal" id="companyModal">
+
+<div class="comp-modal-card">
+
+    <div class="comp-modal-header">
+
+        <h3 id="companyModalTitle">
+            Add Company Profile
+        </h3>
+
+        <button type="button"
+                class="comp-icon-btn"
+                onclick="closeCompanyForm()">
+            <span class="material-symbols-rounded">close</span>
+        </button>
+
+    </div>
+
+
+    <div class="comp-modal-body">
+
+
+<form id="companyProfileForm">
+
+
+<!-- =====================================================
+     1. BASIC INFORMATION
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">business</span>
+        1. Basic Information
+    </h2>
+
+    <p class="section-note">
+        Company Name is mandatory. Legal and registration details can be added when applicable.
+    </p>
+
+    <div class="comp-grid">
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="companyName"
+                   name="companyName"
+                   placeholder=" "
+                   required>
+
+            <label for="companyName">
+                Company Name <span class="required-mark">*</span>
+            </label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="legalName"
+                   name="legalName"
+                   placeholder=" ">
+
+            <label for="legalName">
+                Legal / Registered Name
+            </label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="businessType"
+                    name="businessType"
+                    required>
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="sole">
+                    Sole Proprietorship
+                </option>
+
+                <option value="partnership">
+                    Partnership
+                </option>
+
+                <option value="llp">
+                    Limited Liability Partnership (LLP)
+                </option>
+
+                <option value="private_limited">
+                    Private Limited Company
+                </option>
+
+                <option value="public_limited">
+                    Public Limited Company
+                </option>
+
+                <option value="opc">
+                    One Person Company (OPC)
+                </option>
+
+                <option value="trust">
+                    Trust
+                </option>
+
+                <option value="society">
+                    Society
+                </option>
+
+                <option value="ngo">
+                    NGO
+                </option>
+
+                <option value="individual">
+                    Individual / Freelancer
+                </option>
+
+                <option value="other">
+                    Other
+                </option>
+
+            </select>
+
+            <label>
+                Business Type <span class="required-mark">*</span>
+            </label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="industry"
+                    name="industry">
+
+                <option value="" selected disabled hidden></option>
+
+                <option>Accounting & Finance</option>
+                <option>Healthcare</option>
+                <option>Travel & Tourism</option>
+                <option>Retail</option>
+                <option>Education</option>
+                <option>IT & Software</option>
+                <option>Professional Services</option>
+                <option>Manufacturing</option>
+                <option>Construction</option>
+                <option>Real Estate</option>
+                <option>Hospitality</option>
+                <option>Logistics</option>
+                <option>Food & Beverage</option>
+                <option>Other</option>
+
+            </select>
+
+            <label>Industry</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     2. COMPANY LOGO
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">image</span>
+        2. Company Logo
+    </h2>
+
+    <div class="logo-upload">
+
+        <div class="logo-preview"
+             id="companyLogoPreview">
+
+            <span class="material-symbols-rounded">
+                business
+            </span>
+
+        </div>
+
+        <div class="logo-upload-content">
+
+            <strong>Company Logo</strong>
+
+            <span>
+                Used on invoices, quotations, receipts,
+                payment documents and QR-related documents.
+            </span>
+
+            <span>
+                Recommended: PNG / JPG / WEBP • Transparent PNG preferred.
+            </span>
+
+            <br>
+
+            <button type="button"
+                    class="comp-action-btn"
+                    onclick="document.getElementById('companyLogoInput').click()">
+
+                <span class="material-symbols-rounded">
+                    upload
+                </span>
+
+                Upload Logo
+
+            </button>
+
+            <input type="file"
+                   id="companyLogoInput"
+                   accept="image/png,image/jpeg,image/webp"
+                   hidden
+                   onchange="previewCompanyLogo(this)">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     3. TAX & REGISTRATION
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">receipt_long</span>
+        3. Tax & Registration
+    </h2>
+
+    <div class="comp-grid">
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="gstin"
+                   name="gstin"
+                   placeholder=" "
+                   maxlength="15"
+                   style="text-transform:uppercase">
+
+            <label>GSTIN</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="pan"
+                   name="pan"
+                   placeholder=" "
+                   maxlength="10"
+                   style="text-transform:uppercase">
+
+            <label>PAN</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="tan"
+                   name="tan"
+                   placeholder=" "
+                   maxlength="10"
+                   style="text-transform:uppercase">
+
+            <label>TAN</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="cin"
+                   name="cin"
+                   placeholder=" "
+                   style="text-transform:uppercase">
+
+            <label>CIN / Registration No.</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="udyam"
+                   name="udyam"
+                   placeholder=" ">
+
+            <label>UDYAM Registration No.</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="iec"
+                   name="iec"
+                   placeholder=" "
+                   maxlength="10"
+                   style="text-transform:uppercase">
+
+            <label>IEC</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="fssai"
+                   name="fssai"
+                   placeholder=" ">
+
+            <label>FSSAI No.</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="gstType"
+                    name="gstType">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="regular">
+                    Regular
+                </option>
+
+                <option value="composition">
+                    Composition
+                </option>
+
+                <option value="casual">
+                    Casual Taxable Person
+                </option>
+
+                <option value="sez">
+                    SEZ
+                </option>
+
+                <option value="unregistered">
+                    Unregistered
+                </option>
+
+                <option value="other">
+                    Other
+                </option>
+
+            </select>
+
+            <label>GST Registration Type</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     4. CONTACT INFORMATION
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">contact_phone</span>
+        4. Contact Information
+    </h2>
+
+    <div class="comp-grid">
+
+        <div class="g-input-group">
+
+            <input type="email"
+                   id="email"
+                   name="email"
+                   placeholder=" "
+                   required>
+
+            <label>
+                Official Email <span class="required-mark">*</span>
+            </label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="tel"
+                   id="phone"
+                   name="phone"
+                   placeholder=" ">
+
+            <label>Phone Number</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="tel"
+                   id="whatsapp"
+                   name="whatsapp"
+                   placeholder=" ">
+
+            <label>WhatsApp Number</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="url"
+                   id="website"
+                   name="website"
+                   placeholder=" ">
+
+            <label>Website</label>
+
+        </div>
+
+
+        <div class="g-input-group full">
+
+            <select id="preferredContact"
+                    name="preferredContact">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="email">Email</option>
+                <option value="phone">Phone</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="sms">SMS</option>
+
+            </select>
+
+            <label>Preferred Contact Method</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     5. ADDRESS
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">location_on</span>
+        5. Business Address
+    </h2>
+
+    <div class="comp-grid">
+
+        <div class="g-input-group">
+
+            <select id="country"
+                    name="country"
+                    required>
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="India">
+                    India
+                </option>
+
+                <option value="United Arab Emirates">
+                    United Arab Emirates
+                </option>
+
+                <option value="United States">
+                    United States
+                </option>
+
+                <option value="United Kingdom">
+                    United Kingdom
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+            <label>
+                Country <span class="required-mark">*</span>
+            </label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="pincode"
+                   name="pincode"
+                   placeholder=" ">
+
+            <label>PIN / ZIP Code</label>
+
+        </div>
+
+
+        <div class="g-input-group full">
+
+            <input type="text"
+                   id="address1"
+                   name="address1"
+                   placeholder=" ">
+
+            <label>Address Line 1</label>
+
+        </div>
+
+
+        <div class="g-input-group full">
+
+            <input type="text"
+                   id="address2"
+                   name="address2"
+                   placeholder=" ">
+
+            <label>Address Line 2</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="city"
+                   name="city"
+                   placeholder=" ">
+
+            <label>City</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="district"
+                   name="district"
+                   placeholder=" ">
+
+            <label>District</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="state"
+                   name="state"
+                   placeholder=" ">
+
+            <label>State / Province</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="locality"
+                   name="locality"
+                   placeholder=" ">
+
+            <label>Locality / Area</label>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     6. FINANCIAL SETTINGS
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">account_balance_wallet</span>
+        6. Financial Settings
+    </h2>
+
+    <div class="comp-grid">
+
+        <div class="g-input-group">
+
+            <select id="currency"
+                    name="currency"
+                    required>
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="INR">
+                    INR – Indian Rupee
+                </option>
+
+                <option value="AED">
+                    AED – UAE Dirham
+                </option>
+
+                <option value="USD">
+                    USD – US Dollar
+                </option>
+
+                <option value="EUR">
+                    EUR – Euro
+                </option>
+
+                <option value="GBP">
+                    GBP – Pound Sterling
+                </option>
+
+            </select>
+
+            <label>
+                Default Currency <span class="required-mark">*</span>
+            </label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="financialYear"
+                    name="financialYear">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="apr-mar">
+                    April – March
+                </option>
+
+                <option value="jan-dec">
+                    January – December
+                </option>
+
+                <option value="other">
+                    Other
+                </option>
+
+            </select>
+
+            <label>Financial Year</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="numberFormat"
+                    name="numberFormat">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="indian">
+                    Indian – 1,00,000.00
+                </option>
+
+                <option value="international">
+                    International – 100,000.00
+                </option>
+
+            </select>
+
+            <label>Number Format</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="decimalPlaces"
+                    name="decimalPlaces">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="0">0</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+
+            </select>
+
+            <label>Decimal Places</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     7. INVOICE SETTINGS
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">description</span>
+        7. Invoice & Document Settings
+    </h2>
+
+    <div class="comp-grid">
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="invoicePrefix"
+                   name="invoicePrefix"
+                   placeholder=" "
+                   value="INV">
+
+            <label>Invoice Prefix</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="number"
+                   id="invoiceStart"
+                   name="invoiceStart"
+                   placeholder=" "
+                   value="1"
+                   min="1">
+
+            <label>Invoice Starting Number</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="invoiceTemplate"
+                    name="invoiceTemplate">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="professional">
+                    Standard Professional
+                </option>
+
+                <option value="modern">
+                    Modern Clean
+                </option>
+
+                <option value="corporate">
+                    Classic Corporate
+                </option>
+
+            </select>
+
+            <label>Invoice Template</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="paymentTerms"
+                    name="paymentTerms">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="receipt">
+                    Due on Receipt
+                </option>
+
+                <option value="7">
+                    7 Days
+                </option>
+
+                <option value="15">
+                    15 Days
+                </option>
+
+                <option value="30">
+                    30 Days
+                </option>
+
+                <option value="45">
+                    45 Days
+                </option>
+
+                <option value="60">
+                    60 Days
+                </option>
+
+                <option value="custom">
+                    Custom
+                </option>
+
+            </select>
+
+            <label>Default Payment Terms</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="quotationPrefix"
+                   name="quotationPrefix"
+                   placeholder=" "
+                   value="QT">
+
+            <label>Quotation Prefix</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="receiptPrefix"
+                   name="receiptPrefix"
+                   placeholder=" "
+                   value="RC">
+
+            <label>Receipt Prefix</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="creditNotePrefix"
+                   name="creditNotePrefix"
+                   placeholder=" "
+                   value="CN">
+
+            <label>Credit Note Prefix</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="paymentPrefix"
+                   name="paymentPrefix"
+                   placeholder=" "
+                   value="PAY">
+
+            <label>Payment Prefix</label>
+
+        </div>
+
+    </div>
+
+    <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:16px;">
+
+        <label class="checkbox-row">
+            <input type="checkbox" checked>
+            Show company logo
+        </label>
+
+        <label class="checkbox-row">
+            <input type="checkbox" checked>
+            Show company address
+        </label>
+
+        <label class="checkbox-row">
+            <input type="checkbox" checked>
+            Show tax details
+        </label>
+
+        <label class="checkbox-row">
+            <input type="checkbox">
+            Show bank details
+        </label>
+
+        <label class="checkbox-row">
+            <input type="checkbox">
+            Show QR code
+        </label>
+
+        <label class="checkbox-row">
+            <input type="checkbox" checked>
+            Show terms & conditions
+        </label>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     8. BANK DETAILS
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">account_balance</span>
+        8. Bank & Payment Details
+    </h2>
+
+    <div class="comp-grid">
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="accountName"
+                   name="accountName"
+                   placeholder=" ">
+
+            <label>Account Name</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="bankName"
+                   name="bankName"
+                   placeholder=" ">
+
+            <label>Bank Name</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="accountNumber"
+                   name="accountNumber"
+                   placeholder=" ">
+
+            <label>Account Number</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="branchName"
+                   name="branchName"
+                   placeholder=" ">
+
+            <label>Branch</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="ifsc"
+                   name="ifsc"
+                   placeholder=" "
+                   style="text-transform:uppercase">
+
+            <label>IFSC Code</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="swift"
+                   name="swift"
+                   placeholder=" "
+                   style="text-transform:uppercase">
+
+            <label>SWIFT Code</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <input type="text"
+                   id="iban"
+                   name="iban"
+                   placeholder=" ">
+
+            <label>IBAN</label>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="accountType"
+                    name="accountType">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="current">
+                    Current
+                </option>
+
+                <option value="savings">
+                    Savings
+                </option>
+
+                <option value="business">
+                    Business
+                </option>
+
+                <option value="other">
+                    Other
+                </option>
+
+            </select>
+
+            <label>Account Type</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group full">
+
+            <input type="text"
+                   id="upiId"
+                   name="upiId"
+                   placeholder=" ">
+
+            <label>UPI ID</label>
+
+            <span class="field-help">
+                Used for payment / QR generation where applicable.
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     9. COMPANY PREFERENCES
+     ===================================================== -->
+
+<div class="comp-form-section">
+
+    <h2>
+        <span class="material-symbols-rounded">settings</span>
+        9. Preferences
+    </h2>
+
+    <div class="comp-grid col-3">
+
+        <div class="g-input-group">
+
+            <select id="language"
+                    name="language">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="en">English</option>
+                <option value="ml">Malayalam</option>
+                <option value="hi">Hindi</option>
+                <option value="ar">Arabic</option>
+
+            </select>
+
+            <label>Default Language</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="dateFormat"
+                    name="dateFormat">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="DD/MM/YYYY">
+                    DD/MM/YYYY
+                </option>
+
+                <option value="MM/DD/YYYY">
+                    MM/DD/YYYY
+                </option>
+
+                <option value="YYYY-MM-DD">
+                    YYYY-MM-DD
+                </option>
+
+            </select>
+
+            <label>Date Format</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+
+        <div class="g-input-group">
+
+            <select id="timezone"
+                    name="timezone">
+
+                <option value="" selected disabled hidden></option>
+
+                <option value="Asia/Kolkata">
+                    Asia/Kolkata (IST)
+                </option>
+
+                <option value="Asia/Dubai">
+                    Asia/Dubai (GST)
+                </option>
+
+                <option value="UTC">
+                    UTC
+                </option>
+
+            </select>
+
+            <label>Time Zone</label>
+
+            <span class="material-symbols-rounded select-arrow">
+                arrow_drop_down
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ACTIONS
+     ===================================================== -->
+
+<div class="comp-footer-actions">
+
+    <button type="button"
+            class="comp-action-btn"
+            onclick="closeCompanyForm()">
+
+        Cancel
+
+    </button>
+
+    <button type="reset"
+            class="comp-action-btn">
+
+        Reset
+
+    </button>
+
+    <button type="submit"
+            class="comp-action-btn primary">
+
+        <span class="material-symbols-rounded">
+            save
+        </span>
+
+        Save Company
+
+    </button>
+
+</div>
+
+
+</form>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT — UI / LOCAL DEMO
+     Firebase can be connected to this same save function.
      ========================================================= -->
 
 <script>
 
-(function () {
+(function(){
 
-    "use strict";
+    const modal = document.getElementById('companyModal');
+    const form = document.getElementById('companyProfileForm');
 
+    window.openCompanyForm = function(){
 
-    /* =====================================================
-       STATE
-       ===================================================== */
+        modal.classList.add('active');
 
-    let companyRecord = null;
-    let isEditMode = false;
-    let selectedLogoFile = null;
+    };
 
 
-    /* =====================================================
-       CAPITALIZE FIRST LETTER OF EACH WORD
-       Example:
-       "cm admin" → "Cm Admin"
-       "corebiq private limited" → "Corebiq Private Limited"
-       ===================================================== */
+    window.closeCompanyForm = function(){
 
-    function capitalizeWords(value) {
+        modal.classList.remove('active');
 
-        if (!value) return "";
-
-        return value
-            .toLowerCase()
-            .replace(/\b\w/g, function (char) {
-                return char.toUpperCase();
-            });
-
-    }
+    };
 
 
-    /* =====================================================
-       FIELD CAPITALIZATION
-       ===================================================== */
+    window.previewCompanyLogo = function(input){
 
-    function setupCapitalization() {
+        const preview =
+            document.getElementById('companyLogoPreview');
 
-        const ids = [
-            "companyName",
-            "legalName",
-            "city",
-            "state",
-            "gstState",
-            "address",
-            "notes",
-            "licenseAuthority"
-        ];
+        if(!input.files || !input.files[0]) return;
 
-        ids.forEach(function (id) {
+        const file = input.files[0];
 
-            const field = document.getElementById(id);
-
-            if (!field) return;
-
-            field.addEventListener("blur", function () {
-
-                if (
-                    field.tagName === "TEXTAREA" ||
-                    field.type === "text"
-                ) {
-
-                    field.value = capitalizeWords(field.value);
-
-                }
-
-            });
-
-        });
-
-
-        /* GST / PAN / TAN etc. */
-
-        const uppercaseIds = [
-            "gstin",
-            "pan",
-            "tan",
-            "cin",
-            "udyam",
-            "iec"
-        ];
-
-        uppercaseIds.forEach(function (id) {
-
-            const field = document.getElementById(id);
-
-            if (!field) return;
-
-            field.addEventListener("input", function () {
-
-                field.value = field.value
-                    .toUpperCase();
-
-            });
-
-        });
-
-    }
-
-
-    /* =====================================================
-       FIREBASE DATABASE
-       ===================================================== */
-
-    function getDatabase() {
-
-        if (window.db) {
-            return window.db;
+        if(!file.type.startsWith('image/')){
+            alert('Please select an image file.');
+            return;
         }
 
-        if (window.firebaseDB) {
-            return window.firebaseDB;
-        }
+        const reader = new FileReader();
 
-        return null;
+        reader.onload = function(e){
 
-    }
+            preview.innerHTML =
+                '<img src="' +
+                e.target.result +
+                '" alt="Company Logo">';
 
+        };
 
-    /* =====================================================
-       GET CURRENT USER
-       ===================================================== */
+        reader.readAsDataURL(file);
 
-    function getCurrentUser() {
-
-        try {
-
-            if (
-                window.auth &&
-                window.auth.currentUser
-            ) {
-
-                return window.auth.currentUser;
-
-            }
-
-        } catch (error) {
-
-            console.warn(
-                "Firebase Auth not available",
-                error
-            );
-
-        }
-
-        return null;
-
-    }
+    };
 
 
-    /* =====================================================
-       LOAD COMPANY
-       
-       One company profile per application/user.
-       Firestore path:
+    form.addEventListener('submit', function(e){
 
-       companies/{uid}
+        e.preventDefault();
 
-       If you want application-specific data later,
-       the same document can contain appId.
-       ===================================================== */
+        if(!form.checkValidity()){
 
-    async function loadCompany() {
-
-        const db = getDatabase();
-        const user = getCurrentUser();
-
-        if (!db || !user) {
-
-            setNewCompanyMode();
-
+            form.reportValidity();
             return;
 
         }
 
+        /*
+         * Firebase save will be connected here.
+         *
+         * Example:
+         *
+         * saveCompanyProfile(formData)
+         *
+         */
 
-        try {
+        const companyName =
+            document.getElementById('companyName').value.trim();
 
-            /*
-             * Firebase v9 modular API expected:
-             *
-             * window.getDoc
-             * window.doc
-             *
-             * These can be exposed from your main Firebase
-             * initialization file.
-             */
+        alert(
+            'Company profile ready to save: ' +
+            companyName
+        );
 
-            if (
-                typeof window.doc !== "function" ||
-                typeof window.getDoc !== "function"
-            ) {
+        closeCompanyForm();
 
-                console.warn(
-                    "Firestore helpers are not exposed by index.html."
-                );
+        document.getElementById('companySavedView').style.display =
+            'block';
 
-                setNewCompanyMode();
+        updateCompanySavedView();
 
+    });
+
+
+    function updateCompanySavedView(){
+
+        const name =
+            document.getElementById('companyName').value || '—';
+
+        const legal =
+            document.getElementById('legalName').value || '—';
+
+        const gst =
+            document.getElementById('gstin').value || '—';
+
+        const email =
+            document.getElementById('email').value || '—';
+
+        const phone =
+            document.getElementById('phone').value || '—';
+
+        const country =
+            document.getElementById('country').value || '—';
+
+        document.getElementById('companyTableBody').innerHTML = `
+
+            <tr>
+
+                <td><strong>${escapeHtml(name)}</strong></td>
+
+                <td>${escapeHtml(legal)}</td>
+
+                <td>${escapeHtml(gst)}</td>
+
+                <td>${escapeHtml(email)}</td>
+
+                <td>${escapeHtml(phone)}</td>
+
+                <td>${escapeHtml(country)}</td>
+
+                <td>
+                    <span class="status-badge">
+                        Saved
+                    </span>
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+
+    function escapeHtml(value){
+
+        return String(value)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;')
+            .replace(/'/g,'&#039;');
+
+    }
+
+
+    window.companyFilter = function(){
+
+        alert('Company filter panel can be connected to Firebase data.');
+
+    };
+
+
+    window.companySort = function(){
+
+        alert('Use the column headers in Saved Form View to sort.');
+
+    };
+
+
+    window.sortCompanyTable = function(column){
+
+        const table =
+            document.querySelector('.saved-table');
+
+        const tbody =
+            table.querySelector('tbody');
+
+        const rows =
+            Array.from(tbody.querySelectorAll('tr'));
+
+        rows.sort(function(a,b){
+
+            const aText =
+                a.children[column]?.innerText.toLowerCase() || '';
+
+            const bText =
+                b.children[column]?.innerText.toLowerCase() || '';
+
+            return aText.localeCompare(bText);
+
+        });
+
+        rows.forEach(row => tbody.appendChild(row));
+
+    };
+
+
+    window.downloadCompanySample = function(){
+
+        const headers = [
+            'Company Name',
+            'Legal Name',
+            'Business Type',
+            'Industry',
+            'GSTIN',
+            'PAN',
+            'TAN',
+            'CIN',
+            'Email',
+            'Phone',
+            'WhatsApp',
+            'Website',
+            'Country',
+            'Address Line 1',
+            'Address Line 2',
+            'City',
+            'District',
+            'State',
+            'PIN',
+            'Currency',
+            'Invoice Prefix',
+            'Invoice Starting Number',
+            'Bank Name',
+            'Account Name',
+            'Account Number',
+            'IFSC',
+            'SWIFT',
+            'IBAN',
+            'UPI ID'
+        ];
+
+        downloadCSV(
+            [headers],
+            'COREBIQ_Company_Sample.csv'
+        );
+
+    };
+
+
+    window.exportCompanyCSV = function(){
+
+        const headers = [
+            'Company Name',
+            'Legal Name',
+            'GSTIN',
+            'Email',
+            'Phone',
+            'Country'
+        ];
+
+        const values = [
+            document.getElementById('companyName').value,
+            document.getElementById('legalName').value,
+            document.getElementById('gstin').value,
+            document.getElementById('email').value,
+            document.getElementById('phone').value,
+            document.getElementById('country').value
+        ];
+
+        downloadCSV(
+            [headers, values],
+            'COREBIQ_Company.csv'
+        );
+
+    };
+
+
+    function downloadCSV(rows, filename){
+
+        const csv =
+            rows.map(row =>
+                row.map(value =>
+                    '"' +
+                    String(value ?? '')
+                        .replace(/"/g,'""') +
+                    '"'
+                ).join(',')
+            ).join('\n');
+
+        const blob =
+            new Blob([csv], {type:'text/csv;charset=utf-8;'});
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const a =
+            document.createElement('a');
+
+        a.href = url;
+        a.download = filename;
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        URL.revokeObjectURL(url);
+
+    }
+
+
+    window.importCompanyCSV = function(input){
+
+        if(!input.files || !input.files[0]) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            const text = e.target.result;
+
+            const lines =
+                text.split(/\r?\n/).filter(Boolean);
+
+            if(lines.length < 2){
+
+                alert('CSV does not contain company data.');
                 return;
 
             }
 
+            const headers =
+                lines[0].split(',').map(x =>
+                    x.replace(/^"|"$/g,'').trim()
+                );
 
-            const companyRef = window.doc(
-                db,
-                "companies",
-                user.uid
-            );
+            const values =
+                lines[1].split(',').map(x =>
+                    x.replace(/^"|"$/g,'').trim()
+                );
 
+            const data = {};
 
-            const snapshot =
-                await window.getDoc(companyRef);
+            headers.forEach((header,index)=>{
+                data[header] = values[index] || '';
+            });
 
-
-            if (snapshot.exists()) {
-
-                companyRecord = {
-                    id: snapshot.id,
-                    ...snapshot.data()
-                };
-
-                isEditMode = true;
-
-                populateCompanyForm(companyRecord);
-
-                updateModeUI();
-
-            } else {
-
-                setNewCompanyMode();
-
+            if(data['Company Name']){
+                document.getElementById('companyName').value =
+                    data['Company Name'];
             }
 
-        } catch (error) {
-
-            console.error(
-                "Company load error:",
-                error
-            );
-
-            setNewCompanyMode();
-
-        }
-
-    }
-
-
-    /* =====================================================
-       NEW COMPANY MODE
-       ===================================================== */
-
-    function setNewCompanyMode() {
-
-        companyRecord = null;
-        isEditMode = false;
-
-        updateModeUI();
-
-    }
-
-
-    /* =====================================================
-       MODE UI
-       ===================================================== */
-
-    function updateModeUI() {
-
-        const addBtnText =
-            document.getElementById(
-                "companyAddBtnText"
-            );
-
-        const saveText =
-            document.getElementById(
-                "companySaveText"
-            );
-
-        const status =
-            document.getElementById(
-                "companyRecordStatus"
-            );
-
-        const description =
-            document.getElementById(
-                "companyPageDescription"
-            );
-
-        if (isEditMode) {
-
-            if (addBtnText)
-                addBtnText.textContent = "Edit Company";
-
-            if (saveText)
-                saveText.textContent = "Update Company";
-
-            if (status)
-                status.textContent =
-                    companyRecord.companyName ||
-                    "Company Profile";
-
-            if (description)
-                description.textContent =
-                    "Edit the company profile used by this application";
-
-        } else {
-
-            if (addBtnText)
-                addBtnText.textContent = "Add Company";
-
-            if (saveText)
-                saveText.textContent = "Save Company";
-
-            if (status)
-                status.textContent = "New Company";
-
-            if (description)
-                description.textContent =
-                    "Create your company profile for this application";
-
-        }
-
-    }
-
-
-    /* =====================================================
-       POPULATE FORM
-       ===================================================== */
-
-    function populateCompanyForm(data) {
-
-        const fields = [
-            "companyName",
-            "legalName",
-            "businessType",
-            "industry",
-            "companyStatus",
-            "establishedDate",
-            "email",
-            "supportEmail",
-            "phone",
-            "whatsapp",
-            "website",
-            "country",
-            "pin",
-            "address",
-            "city",
-            "state",
-            "gstin",
-            "pan",
-            "tan",
-            "gstType",
-            "gstState",
-            "cin",
-            "udyam",
-            "iec",
-            "fssai",
-            "trn",
-            "tradeLicense",
-            "licenseAuthority",
-            "establishmentCard",
-            "currency",
-            "financialYear",
-            "notes"
-        ];
-
-
-        fields.forEach(function (fieldName) {
-
-            const field =
-                document.getElementById(fieldName);
-
-            if (!field) return;
-
-            if (
-                data[fieldName] !== undefined &&
-                data[fieldName] !== null
-            ) {
-
-                field.value = data[fieldName];
-
+            if(data['Legal Name']){
+                document.getElementById('legalName').value =
+                    data['Legal Name'];
             }
+
+            if(data['GSTIN']){
+                document.getElementById('gstin').value =
+                    data['GSTIN'];
+            }
+
+            if(data['Email']){
+                document.getElementById('email').value =
+                    data['Email'];
+            }
+
+            if(data['Phone']){
+                document.getElementById('phone').value =
+                    data['Phone'];
+            }
+
+            openCompanyForm();
+
+            alert('Company CSV imported.');
+
+        };
+
+        reader.readAsText(input.files[0]);
+
+        input.value = '';
+
+    };
+
+
+    window.exportCompanyPDF = function(){
+
+        /*
+         * PDF export can be connected to the existing
+         * COREBIQ PDF/export engine.
+         */
+
+        window.print();
+
+    };
+
+
+    document
+        .getElementById('companySearch')
+        .addEventListener('input', function(){
+
+            const query =
+                this.value.toLowerCase();
+
+            const rows =
+                document.querySelectorAll(
+                    '#companyTableBody tr'
+                );
+
+            rows.forEach(row => {
+
+                row.style.display =
+                    row.innerText.toLowerCase().includes(query)
+                    ? ''
+                    : 'none';
+
+            });
 
         });
 
 
-        /* Logo */
-
-        if (data.logoUrl) {
-
-            showLogoPreview(data.logoUrl);
-
-        }
-
-    }
-
-
-    /* =====================================================
-       COLLECT FORM DATA
-       ===================================================== */
-
-    function collectFormData() {
-
-        return {
-
-            companyName:
-                capitalizeWords(
-                    document.getElementById(
-                        "companyName"
-                    ).value.trim()
-                ),
-
-            legalName:
-                capitalizeWords(
-                    document.getElementById(
-                        "legalName"
-                    ).value.trim()
-                ),
-
-            businessType:
-                document.getElementById(
-                    "businessType"
-                ).value,
-
-            industry:
-                document.getElementById(
-                    "industry"
-                ).value,
-
-            companyStatus:
-                document.getElementById(
-                    "companyStatus"
-                ).value,
-
-            establishedDate:
-                document.getElementById(
-                    "establishedDate"
-                ).value,
-
-            email:
-                document.getElementById(
-                    "email"
-                ).value.trim(),
-
-            supportEmail:
-                document.getElementById(
-                    "supportEmail"
-                ).value.trim(),
-
-            phone:
-                document.getElementById(
-                    "phone"
-                ).value.trim(),
-
-            whatsapp:
-                document.getElementById(
-                    "whatsapp"
-                ).value.trim(),
-
-            website:
-                document.getElementById(
-                    "website"
-                ).value.trim(),
-
-            country:
-                document.getElementById(
-                    "country"
-                ).value,
-
-            pin:
-                document.getElementById(
-                    "pin"
-                ).value.trim(),
-
-            address:
-                capitalizeWords(
-                    document.getElementById(
-                        "address"
-                    ).value.trim()
-                ),
-
-            city:
-                capitalizeWords(
-                    document.getElementById(
-                        "city"
-                    ).value.trim()
-                ),
-
-            state:
-                capitalizeWords(
-                    document.getElementById(
-                        "state"
-                    ).value.trim()
-                ),
-
-            gstin:
-                document.getElementById(
-                    "gstin"
-                ).value.trim().toUpperCase(),
-
-            pan:
-                document.getElementById(
-                    "pan"
-                ).value.trim().toUpperCase(),
-
-            tan:
-                document.getElementById(
-                    "tan"
-                ).value.trim().toUpperCase(),
-
-            gstType:
-                document.getElementById(
-                    "gstType"
-                ).value,
-
-            gstState:
-                capitalizeWords(
-                    document.getElementById(
-                        "gstState"
-                    ).value.trim()
-                ),
-
-            cin:
-                document.getElementById(
-                    "cin"
-                ).value.trim().toUpperCase(),
-
-            udyam:
-                document.getElementById(
-                    "udyam"
-                ).value.trim().toUpperCase(),
-
-            iec:
-                document.getElementById(
-                    "iec"
-                ).value.trim().toUpperCase(),
-
-            fssai:
-                document.getElementById(
-                    "fssai"
-                ).value.trim(),
-
-            trn:
-                document.getElementById(
-                    "trn"
-                ).value.trim(),
-
-            tradeLicense:
-                document.getElementById(
-                    "tradeLicense"
-                ).value.trim(),
-
-            licenseAuthority:
-                capitalizeWords(
-                    document.getElementById(
-                        "licenseAuthority"
-                    ).value.trim()
-                ),
-
-            establishmentCard:
-                document.getElementById(
-                    "establishmentCard"
-                ).value.trim(),
-
-            currency:
-                document.getElementById(
-                    "currency"
-                ).value,
-
-            financialYear:
-                document.getElementById(
-                    "financialYear"
-                ).value,
-
-            notes:
-                capitalizeWords(
-                    document.getElementById(
-                        "notes"
-                    ).value.trim()
-                ),
-
-            updatedAt:
-                new Date().toISOString()
-
-        };
-
-    }
-
-
-    /* =====================================================
-       SAVE COMPANY
-       ===================================================== */
-
-    async function saveCompany(event) {
-
-        event.preventDefault();
-
-
-        const form =
-            document.getElementById(
-                "companyForm"
-            );
-
-
-        if (!form.checkValidity()) {
-
-            form.reportValidity();
-
-            return;
-
-        }
-
-
-        const db = getDatabase();
-        const user = getCurrentUser();
-
-
-        /*
-         * Require Firebase login.
-         */
-
-        if (!db || !user) {
-
-            alert(
-                "Please sign in before saving the company profile."
-            );
-
-            return;
-
-        }
-
-
-        const data = collectFormData();
-
-
-        if (!data.companyName) {
-
-            alert(
-                "Company Name is required."
-            );
-
-            document
-                .getElementById("companyName")
-                .focus();
-
-            return;
-
-        }
-
-
-        if (!data.legalName) {
-
-            alert(
-                "Legal Name is required."
-            );
-
-            document
-                .getElementById("legalName")
-                .focus();
-
-            return;
-
-        }
-
-
-        try {
-
-            const saveBtn =
-                document.getElementById(
-                    "companySaveBtn"
-                );
-
-            saveBtn.disabled = true;
-
-
-            /*
-             * Upload logo if Firebase Storage helpers
-             * are available.
-             */
-
-            if (selectedLogoFile) {
-
-                const logoUrl =
-                    await uploadCompanyLogo(
-                        selectedLogoFile,
-                        user.uid
-                    );
-
-                if (logoUrl) {
-
-                    data.logoUrl = logoUrl;
-
-                }
-
-            }
-
-
-            /*
-             * Firestore document:
-             *
-             * companies/{uid}
-             *
-             * This guarantees one company profile per
-             * authenticated application user.
-             */
-
-            if (
-                typeof window.doc !== "function" ||
-                typeof window.setDoc !== "function"
-            ) {
-
-                throw new Error(
-                    "Firestore functions are not available."
-                );
-
-            }
-
-
-            const companyRef =
-                window.doc(
-                    db,
-                    "companies",
-                    user.uid
-                );
-
-
-            data.uid = user.uid;
-
-            data.createdAt =
-                companyRecord &&
-                companyRecord.createdAt
-                    ? companyRecord.createdAt
-                    : new Date().toISOString();
-
-
-            await window.setDoc(
-                companyRef,
-                data,
-                {
-                    merge: true
-                }
-            );
-
-
-            companyRecord = {
-                id: user.uid,
-                ...data
-            };
-
-
-            isEditMode = true;
-
-            updateModeUI();
-
-
-            alert(
-                "Company profile saved successfully."
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Company save error:",
-                error
-            );
-
-            alert(
-                "Unable to save company profile.\n\n" +
-                error.message
-            );
-
-        } finally {
-
-            const saveBtn =
-                document.getElementById(
-                    "companySaveBtn"
-                );
-
-            if (saveBtn)
-                saveBtn.disabled = false;
-
-        }
-
-    }
-
-
-    /* =====================================================
-       LOGO UPLOAD
-       ===================================================== */
-
-    function setupLogoUpload() {
-
-        const box =
-            document.getElementById(
-                "companyLogoUploadBox"
-            );
-
-        const input =
-            document.getElementById(
-                "companyLogo"
-            );
-
-
-        if (!box || !input) return;
-
-
-        box.addEventListener(
-            "click",
-            function () {
-
-                input.click();
-
-            }
-        );
-
-
-        input.addEventListener(
-            "change",
-            function () {
-
-                const file =
-                    input.files &&
-                    input.files[0];
-
-                if (!file) return;
-
-                selectedLogoFile = file;
-
-                const reader =
-                    new FileReader();
-
-                reader.onload =
-                    function (event) {
-
-                        showLogoPreview(
-                            event.target.result
-                        );
-
-                    };
-
-                reader.readAsDataURL(file);
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       LOGO PREVIEW
-       ===================================================== */
-
-    function showLogoPreview(src) {
-
-        const img =
-            document.getElementById(
-                "companyLogoPreview"
-            );
-
-        const icon =
-            document.getElementById(
-                "companyLogoPreviewIcon"
-            );
-
-        const text =
-            document.getElementById(
-                "companyLogoPreviewText"
-            );
-
-
-        if (!img) return;
-
-
-        img.src = src;
-
-        img.style.display =
-            "block";
-
-
-        if (icon)
-            icon.style.display =
-                "none";
-
-
-        if (text)
-            text.textContent =
-                "Company logo";
-
-    }
-
-
-    /* =====================================================
-       FIREBASE STORAGE LOGO
-       
-       Requires these helpers from index.html:
-       
-       window.storage
-       window.ref
-       window.uploadBytes
-       window.getDownloadURL
-       ===================================================== */
-
-    async function uploadCompanyLogo(
-        file,
-        uid
-    ) {
-
-        try {
-
-            if (
-                !window.storage ||
-                typeof window.ref !== "function" ||
-                typeof window.uploadBytes !== "function" ||
-                typeof window.getDownloadURL !== "function"
-            ) {
-
-                console.warn(
-                    "Firebase Storage is not configured."
-                );
-
-                return null;
-
-            }
-
-
-            const extension =
-                file.name
-                    .split(".")
-                    .pop()
-                    .toLowerCase();
-
-
-            const logoRef =
-                window.ref(
-                    window.storage,
-                    "companies/" +
-                    uid +
-                    "/logo." +
-                    extension
-                );
-
-
-            await window.uploadBytes(
-                logoRef,
-                file
-            );
-
-
-            return await window.getDownloadURL(
-                logoRef
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Logo upload error:",
-                error
-            );
-
-            throw error;
-
-        }
-
-    }
-
-
-    /* =====================================================
-       SEARCH
-       ===================================================== */
-
-    function setupSearch() {
-
-        const search =
-            document.getElementById(
-                "companySearch"
-            );
-
-        if (!search) return;
-
-
-        search.addEventListener(
-            "input",
-            function () {
-
-                const query =
-                    search.value
-                        .trim()
-                        .toLowerCase();
-
-
-                if (!companyRecord) return;
-
-
-                const name =
-                    String(
-                        companyRecord.companyName || ""
-                    ).toLowerCase();
-
-
-                const legal =
-                    String(
-                        companyRecord.legalName || ""
-                    ).toLowerCase();
-
-
-                if (
-                    query &&
-                    !name.includes(query) &&
-                    !legal.includes(query)
-                ) {
-
-                    document
-                        .getElementById(
-                            "companyForm"
-                        )
-                        .style.opacity = "0.45";
-
-                } else {
-
-                    document
-                        .getElementById(
-                            "companyForm"
-                        )
-                        .style.opacity = "1";
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       ADD COMPANY BUTTON
-       
-       If an existing company is present:
-       Add button becomes Edit Company.
-       ===================================================== */
-
-    function setupAddButton() {
-
-        const btn =
-            document.getElementById(
-                "companyAddBtn"
-            );
-
-        if (!btn) return;
-
-
-        btn.addEventListener(
-            "click",
-            function () {
-
-                if (isEditMode) {
-
-                    /*
-                     * Existing profile → edit mode.
-                     */
-
-                    document
-                        .getElementById(
-                            "companyName"
-                        )
-                        .focus();
-
-                    return;
-
-                }
-
-
-                document
-                    .getElementById(
-                        "companyName"
-                    )
-                    .focus();
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       IMPORT
-       ===================================================== */
-
-    function setupImport() {
-
-        const button =
-            document.getElementById(
-                "companyImportBtn"
-            );
-
-        const input =
-            document.getElementById(
-                "companyImportFile"
-            );
-
-
-        if (!button || !input) return;
-
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                input.click();
-
-            }
-        );
-
-
-        input.addEventListener(
-            "change",
-            function () {
-
-                const file =
-                    input.files &&
-                    input.files[0];
-
-                if (!file) return;
-
-
-                alert(
-                    "Import selected: " +
-                    file.name +
-                    "\n\nCSV/JSON import processing can be connected to your application data schema."
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       EXPORT
-       ===================================================== */
-
-    function setupExport() {
-
-        const button =
-            document.getElementById(
-                "companyExportBtn"
-            );
-
-        if (!button) return;
-
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                if (!companyRecord) {
-
-                    alert(
-                        "No company profile available to export."
-                    );
-
-                    return;
-
-                }
-
-
-                const data =
-                    JSON.stringify(
-                        companyRecord,
-                        null,
-                        2
-                    );
-
-
-                const blob =
-                    new Blob(
-                        [data],
-                        {
-                            type:
-                                "application/json"
-                        }
-                    );
-
-
-                const url =
-                    URL.createObjectURL(
-                        blob
-                    );
-
-
-                const a =
-                    document.createElement(
-                        "a"
-                    );
-
-
-                a.href = url;
-
-                a.download =
-                    "company-profile.json";
-
-
-                a.click();
-
-
-                URL.revokeObjectURL(
-                    url
-                );
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       FILTER / SORT
-       ===================================================== */
-
-    function setupFilterSort() {
-
-        const filter =
-            document.getElementById(
-                "companyFilterBtn"
-            );
-
-        const sort =
-            document.getElementById(
-                "companySortBtn"
-            );
-
-
-        if (filter) {
-
-            filter.addEventListener(
-                "click",
-                function () {
-
-                    alert(
-                        "Company filter options can be connected here."
-                    );
-
-                }
-            );
-
-        }
-
-
-        if (sort) {
-
-            sort.addEventListener(
-                "click",
-                function () {
-
-                    alert(
-                        "Company sort options can be connected here."
-                    );
-
-                }
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       INITIALIZE
-       ===================================================== */
-
-    async function initCompanyModule() {
-
-        setupCapitalization();
-
-        setupLogoUpload();
-
-        setupSearch();
-
-        setupAddButton();
-
-        setupImport();
-
-        setupExport();
-
-        setupFilterSort();
-
-
-        const form =
-            document.getElementById(
-                "companyForm"
-            );
-
-
-        if (form) {
-
-            form.addEventListener(
-                "submit",
-                saveCompany
-            );
-
-        }
-
-
-        await loadCompany();
-
-    }
-
-
-    /* =====================================================
-       GLOBAL INITIALIZER
-       
-       Important for dynamically loaded modules.
-       index.html can call:
-
-       window.initCompanyModule();
-       ===================================================== */
-
-    window.initCompanyModule =
-        initCompanyModule;
-
-
-    /*
-     * If this file is loaded directly as a complete page,
-     * initialize automatically.
-     */
-
-    if (
-        document.readyState === "loading"
-    ) {
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            initCompanyModule
-        );
-
-    } else {
-
-        initCompanyModule();
-
-    }
-
 })();
 
 </script>
+
+</div>
