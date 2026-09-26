@@ -1,237 +1,660 @@
-<div class="module-container w-full h-full pb-20 md:pb-8 flex flex-col max-w-7xl mx-auto">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ QR | UPI Generator</title>
     
-    <!-- Header Section -->
-    <div class="flex items-center justify-between gap-4 mb-6 md:mb-8">
-        <div>
-            <div class="flex items-center gap-2 mb-1 text-[var(--primary)] text-[10px] font-semibold tracking-[1.2px] uppercase">
-                <span class="w-2 h-2 rounded-full bg-gradient-to-br from-[#4285F4] to-[#d96570]"></span>
-                Payments & Utilities
-            </div>
-            <h1 class="text-2xl md:text-3xl font-medium text-[var(--text-main)] tracking-tight">UPI QR Generator</h1>
-            <p class="text-xs md:text-sm text-[var(--text-muted)] mt-1">Create secure, universally scannable UPI QR codes instantly.</p>
-        </div>
-        <div class="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary-light)] text-[var(--primary-dark)] text-xs font-medium">
-            <span class="material-symbols-rounded text-[18px]">qr_code_2</span>
-            Ready to generate
-        </div>
-    </div>
+    <!-- Tailwind CSS for layout utilities -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts & Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
 
-    <!-- Main Content Grid -->
-    <div class="flex flex-col lg:flex-row gap-6 items-start w-full">
+    <!-- QRCode.js Library for generating the QR code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           COREBIQ DEVELOPERS - Brand Stylesheet (Embedded)
+           Design System: Material Design 3 + Google Gemini Era
+        ========================================================================== */
+        :root {
+            /* Primary Tones */
+            --md3-primary: #0B57D0;
+            --md3-on-primary: #FFFFFF;
+            --md3-primary-container: #D3E3FD;
+            --md3-on-primary-container: #041E49;
+
+            /* Secondary Tones */
+            --md3-secondary: #00639B;
+            --md3-on-secondary: #FFFFFF;
+            --md3-secondary-container: #C2E7FF;
+            --md3-on-secondary-container: #001D35;
+
+            /* Error Tones */
+            --md3-error: #B3261E;
+            --md3-on-error: #FFFFFF;
+            --md3-error-container: #F9DEDC;
+            --md3-on-error-container: #410E0B;
+
+            /* Surfaces & Backgrounds */
+            --md3-surface: #F8F9FA;
+            --md3-on-surface: #1F1F1F;
+            --md3-on-surface-variant: #444746;
+            
+            --md3-surface-container-lowest: #FFFFFF;
+            --md3-surface-container-low: #F3F4F6;
+            --md3-surface-container: #EDEDED;
+            --md3-surface-container-high: #E8EAED;
+            --md3-surface-container-highest: #E3E3E3;
+
+            /* Outlines */
+            --md3-outline: #747775;
+            --md3-outline-variant: #C4C7C5;
+
+            /* Gemini Signature Colors */
+            --gemini-blue: #4285F4;
+            --gemini-purple: #9b72cb;
+            --gemini-red: #d96570;
+            --gemini-gradient: linear-gradient(90deg, var(--gemini-blue) 0%, var(--gemini-purple) 50%, var(--gemini-red) 100%);
+            --gemini-gradient-soft: linear-gradient(90deg, rgba(66, 133, 244, 0.1) 0%, rgba(155, 114, 203, 0.1) 50%, rgba(217, 101, 112, 0.1) 100%);
+
+            /* Typography */
+            --font-brand: 'Outfit', sans-serif;
+            --font-body: 'Roboto', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+
+            /* Elevation (Shadows) */
+            --md3-shadow-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+            --md3-shadow-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+            --md3-shadow-3: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+
+            /* Shapes (Radii) */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            background-color: var(--md3-surface);
+            color: var(--md3-on-surface);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-brand { font-family: var(--font-brand); }
         
-        <!-- FORM SECTION -->
-        <div class="w-full lg:w-3/5 xl:w-[55%] flex-shrink-0 bg-[var(--surface)] border border-[var(--border)] rounded-[var(--radius-xl)] p-5 md:p-6 lg:p-8 shadow-sm transition-shadow hover:shadow-md">
-            <h3 class="font-medium text-[16px] text-[var(--text-main)] flex items-center gap-2 mb-6">
-                <span class="material-symbols-rounded text-[var(--primary)]">edit_document</span>
-                Payment Details
-            </h3>
-            
-            <form id="qr-module-form" class="flex flex-col gap-5">
-                
-                <!-- UPI ID -->
-                <div class="flex flex-col gap-1.5">
-                    <label for="qr-upi-id" class="text-xs font-medium text-[var(--text-muted)] ml-1">UPI ID / VPA <span class="text-[var(--danger)]">*</span></label>
-                    <div class="relative flex items-center">
-                        <span class="material-symbols-rounded absolute left-4 text-[var(--text-muted)] pointer-events-none">alternate_email</span>
-                        <input type="text" id="qr-upi-id" class="w-full h-12 md:h-14 pl-12 pr-4 rounded-[var(--radius-md)] border-2 border-[var(--border)] bg-[var(--surface-soft)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--surface)] transition-colors placeholder:text-[var(--text-muted)] placeholder:opacity-60" placeholder="e.g. merchant@upi" required>
-                    </div>
-                </div>
+        .text-gradient-gemini {
+            background: var(--gemini-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
 
-                <!-- Payee Name -->
-                <div class="flex flex-col gap-1.5">
-                    <label for="qr-payee-name" class="text-xs font-medium text-[var(--text-muted)] ml-1">Payee Name <span class="text-[var(--danger)]">*</span></label>
-                    <div class="relative flex items-center">
-                        <span class="material-symbols-rounded absolute left-4 text-[var(--text-muted)] pointer-events-none">person</span>
-                        <input type="text" id="qr-payee-name" class="w-full h-12 md:h-14 pl-12 pr-4 rounded-[var(--radius-md)] border-2 border-[var(--border)] bg-[var(--surface-soft)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--surface)] transition-colors placeholder:text-[var(--text-muted)] placeholder:opacity-60" placeholder="e.g. COREBIQ Technologies" required>
-                    </div>
-                </div>
+        /* Buttons */
+        .md3-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 48px; /* Taller for touch targets */
+            padding: 0 24px;
+            border-radius: var(--radius-full);
+            border: none;
+            font-family: var(--font-brand);
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+            width: 100%; /* Default full width for mobile */
+        }
+        @media (min-width: 640px) {
+            .md3-btn { width: auto; }
+        }
 
-                <!-- Two Column Grid for mobile/desktop -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <!-- Party Number (WhatsApp) -->
-                    <div class="flex flex-col gap-1.5">
-                        <label for="qr-party-number" class="text-xs font-medium text-[var(--text-muted)] ml-1">Client WhatsApp</label>
-                        <div class="relative flex items-center">
-                            <span class="material-symbols-rounded absolute left-4 text-[var(--text-muted)] pointer-events-none">phone</span>
-                            <input type="tel" id="qr-party-number" class="w-full h-12 md:h-14 pl-12 pr-4 rounded-[var(--radius-md)] border-2 border-[var(--border)] bg-[var(--surface-soft)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--surface)] transition-colors placeholder:text-[var(--text-muted)] placeholder:opacity-60" placeholder="e.g. 919876543210">
-                        </div>
-                    </div>
+        .md3-btn .material-symbols-rounded { font-size: 20px; }
 
-                    <!-- Amount -->
-                    <div class="flex flex-col gap-1.5">
-                        <label for="qr-amount" class="text-xs font-medium text-[var(--text-muted)] ml-1">Amount (INR)</label>
-                        <div class="relative flex items-center">
-                            <span class="material-symbols-rounded absolute left-4 text-[var(--text-muted)] pointer-events-none">currency_rupee</span>
-                            <input type="number" id="qr-amount" class="w-full h-12 md:h-14 pl-12 pr-4 rounded-[var(--radius-md)] border-2 border-[var(--border)] bg-[var(--surface-soft)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--surface)] transition-colors placeholder:text-[var(--text-muted)] placeholder:opacity-60" placeholder="0.00" min="0" step="0.01">
-                        </div>
-                    </div>
-                </div>
+        .md3-btn-filled {
+            background-color: var(--md3-primary);
+            color: var(--md3-on-primary);
+        }
+        .md3-btn-filled:hover {
+            box-shadow: var(--md3-shadow-1);
+            background-color: #094bb3;
+        }
 
-                <!-- Note -->
-                <div class="flex flex-col gap-1.5">
-                    <label for="qr-note" class="text-xs font-medium text-[var(--text-muted)] ml-1">Transaction Note</label>
-                    <div class="relative flex items-center">
-                        <span class="material-symbols-rounded absolute left-4 text-[var(--text-muted)] pointer-events-none">description</span>
-                        <input type="text" id="qr-note" class="w-full h-12 md:h-14 pl-12 pr-4 rounded-[var(--radius-md)] border-2 border-[var(--border)] bg-[var(--surface-soft)] text-[var(--text-main)] text-sm focus:outline-none focus:border-[var(--primary)] focus:bg-[var(--surface)] transition-colors placeholder:text-[var(--text-muted)] placeholder:opacity-60" placeholder="e.g. Invoice #1234">
-                    </div>
-                </div>
+        .md3-btn-tonal {
+            background-color: var(--md3-primary-container);
+            color: var(--md3-on-primary-container);
+        }
+        .md3-btn-tonal:hover { background-color: #c2d8fc; }
 
-                <!-- Actions -->
-                <div class="pt-4 mt-2 border-t border-[var(--border)] flex flex-col sm:flex-row gap-3">
-                    <button type="button" id="qr-btn-clear" class="h-12 md:h-14 px-6 rounded-full border border-[var(--danger)] text-[var(--danger)] font-medium text-sm flex-1 flex items-center justify-center gap-2 hover:bg-[var(--danger-soft)] transition-colors order-2 sm:order-1">
-                        <span class="material-symbols-rounded text-[20px]">clear_all</span>
-                        Clear Form
-                    </button>
-                    <button type="submit" class="h-12 md:h-14 px-6 rounded-full bg-gradient-to-r from-[#4285F4] via-[#9b72cb] to-[#d96570] text-white font-medium text-sm flex-[2] flex items-center justify-center gap-2 hover:shadow-[var(--shadow-hover)] transition-shadow order-1 sm:order-2">
-                        <span class="material-symbols-rounded text-[20px]">auto_awesome</span>
-                        Generate QR Code
-                    </button>
+        .md3-btn-outlined {
+            background-color: transparent;
+            border: 1px solid var(--md3-outline);
+            color: var(--md3-primary);
+        }
+        .md3-btn-outlined:hover { background-color: rgba(11, 87, 208, 0.05); }
+
+        .md3-btn-ai {
+            background: var(--gemini-gradient);
+            color: white;
+            border: none;
+        }
+        .md3-btn-ai:hover { box-shadow: var(--md3-shadow-2); opacity: 0.95; }
+        .md3-btn-ai:disabled { background: var(--md3-surface-container-highest); color: var(--md3-outline); cursor: not-allowed; box-shadow: none; }
+
+        /* Cards */
+        .md3-card {
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .md3-card-elevated {
+            background-color: var(--md3-surface-container-lowest);
+            box-shadow: var(--md3-shadow-1);
+            border: 1px solid rgba(196, 199, 197, 0.5);
+        }
+        .gemini-spark-card {
+            background-color: var(--md3-surface-container-lowest);
+            border: 1px solid rgba(155, 114, 203, 0.2);
+            box-shadow: var(--md3-shadow-2);
+            position: relative;
+            overflow: hidden;
+        }
+        .gemini-spark-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: var(--gemini-gradient);
+            border-radius: 50%;
+            opacity: 0.15;
+            filter: blur(30px);
+            pointer-events: none;
+        }
+
+        /* Inputs */
+        .md3-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+        .md3-input-label {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--md3-on-surface-variant);
+            margin-left: 12px;
+        }
+        .md3-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .md3-input-wrapper .material-symbols-rounded {
+            position: absolute;
+            left: 16px;
+            color: var(--md3-on-surface-variant);
+            pointer-events: none;
+        }
+        .md3-input-outlined {
+            width: 100%;
+            height: 56px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--md3-outline-variant);
+            background-color: var(--md3-surface-container-lowest);
+            color: var(--md3-on-surface);
+            font-family: var(--font-body);
+            font-size: 16px;
+            padding: 0 16px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+        }
+        .md3-input-wrapper .material-symbols-rounded + .md3-input-outlined {
+            padding-left: 48px;
+        }
+        .md3-input-outlined:focus {
+            border: 2px solid var(--md3-primary);
+            padding-left: 47px; /* adjust for border width change to prevent jump */
+        }
+        .md3-input-outlined:focus:not(.has-icon) {
+            padding-left: 15px;
+        }
+        .md3-input-outlined:disabled, .md3-input-outlined[readonly] {
+             background-color: var(--md3-surface-container);
+             color: var(--md3-on-surface-variant);
+             cursor: not-allowed;
+             border-color: var(--md3-outline-variant);
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+        .ripple::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+        .ripple-light::after { background-image: radial-gradient(circle, #fff 10%, transparent 10.01%); }
+        .ripple:active::after { transform: scale(0, 0); opacity: .2; transition: 0s; }
+
+        /* QR Specific styles */
+        #qr-code-container {
+            background-color: white;
+            padding: 16px;
+            border-radius: 12px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--md3-shadow-1);
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        #qr-code-container img, #qr-code-container canvas {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            height: auto !important;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--md3-on-surface);
+            color: var(--md3-surface);
+            padding: 12px 24px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-body);
+            font-size: 14px;
+            box-shadow: var(--md3-shadow-3);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-white border-b border-[#C4C7C5] sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-[var(--md3-primary-container)] flex items-center justify-center">
+                    <span class="material-symbols-rounded text-[var(--md3-primary)] text-[20px]">qr_code_2</span>
                 </div>
-            </form>
+                <h1 class="text-xl font-brand font-bold tracking-tight text-[var(--md3-on-surface)]">
+                    COREBIQ <span class="text-gradient-gemini">QR</span>
+                </h1>
+            </div>
+            <nav>
+                <button class="w-10 h-10 rounded-full text-[var(--md3-on-surface-variant)] hover:bg-gray-100 transition-colors flex items-center justify-center ripple" aria-label="Help">
+                    <span class="material-symbols-rounded">help</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <div class="mb-8 text-center lg:text-left">
+            <h2 class="text-3xl font-brand font-bold text-[var(--md3-on-surface)] mb-2">Create UPI QR Code</h2>
+            <p class="text-[var(--md3-on-surface-variant)] text-sm max-w-2xl">Fill in the details below to generate a secure, universally scannable UPI QR code for payments. Fully responsive and instant.</p>
         </div>
 
-        <!-- OUTPUT SECTION -->
-        <div class="w-full lg:w-2/5 xl:w-[45%] flex-shrink-0 bg-gradient-to-br from-[var(--surface-soft)] to-[var(--surface)] border border-[var(--border)] rounded-[var(--radius-xl)] p-5 md:p-6 lg:p-8 shadow-sm lg:sticky lg:top-6 relative overflow-hidden">
-            <!-- Decorative blur -->
-            <div class="absolute -top-16 -right-16 w-48 h-48 bg-gradient-to-br from-[var(--primary)] to-[var(--accent)] rounded-full opacity-[0.08] blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start w-full">
             
-            <h3 class="font-medium text-[16px] text-[var(--text-main)] flex items-center gap-2 mb-6 relative z-10">
-                <span class="material-symbols-rounded text-[var(--accent)]">qr_code_scanner</span>
-                Live Preview
-            </h3>
-
-            <div class="flex flex-col items-center justify-center min-h-[320px] relative z-10">
+            <!-- FORM SECTION (Left on Desktop, Top on Mobile) -->
+            <div class="w-full lg:w-3/5 xl:w-[58%] md3-card md3-card-elevated flex-shrink-0">
+                <h3 class="font-brand font-semibold text-lg flex items-center gap-2 mb-2">
+                    <span class="material-symbols-rounded text-[var(--md3-primary)]">edit_document</span>
+                    Payment Details
+                </h3>
                 
-                <!-- Placeholder -->
-                <div id="qr-module-placeholder" class="flex flex-col items-center justify-center p-8 text-[var(--text-muted)] transition-opacity duration-300">
-                    <div class="w-24 h-24 rounded-full bg-[var(--surface)] border-2 border-dashed border-[var(--border-strong)] flex items-center justify-center mb-4">
-                        <span class="material-symbols-rounded text-[48px] opacity-40">qr_code</span>
+                <form id="qr-form" class="flex flex-col gap-5">
+                    <!-- Auto ID -->
+                    <div class="md3-input-group">
+                        <label for="auto-id" class="md3-input-label">Reference ID</label>
+                        <div class="md3-input-wrapper">
+                            <span class="material-symbols-rounded">tag</span>
+                            <input type="text" id="auto-id" class="md3-input-outlined has-icon" readonly>
+                        </div>
                     </div>
-                    <p class="text-sm font-medium">No QR Code Generated</p>
-                    <p class="text-xs opacity-70 mt-1 text-center max-w-[200px]">Fill details and click generate to see the preview here.</p>
-                </div>
 
-                <!-- Result Container -->
-                <div id="qr-module-result" class="hidden flex-col items-center w-full animation-fadeIn">
-                    <div id="qr-module-canvas-wrapper" class="bg-white p-4 rounded-2xl shadow-[var(--shadow-hover)] mb-6 border border-[var(--border)]">
-                        <!-- QRCode.js injects here -->
+                    <!-- UPI ID -->
+                    <div class="md3-input-group">
+                        <label for="upi-id" class="md3-input-label">UPI ID / VPA (Required)</label>
+                        <div class="md3-input-wrapper">
+                            <span class="material-symbols-rounded">alternate_email</span>
+                            <input type="text" id="upi-id" class="md3-input-outlined has-icon" placeholder="e.g. merchant@upi" required>
+                        </div>
                     </div>
+
+                    <!-- Payee Name -->
+                    <div class="md3-input-group">
+                        <label for="payee-name" class="md3-input-label">Payee Name (Required)</label>
+                        <div class="md3-input-wrapper">
+                            <span class="material-symbols-rounded">person</span>
+                            <input type="text" id="payee-name" class="md3-input-outlined has-icon" placeholder="e.g. John Doe" required>
+                        </div>
+                    </div>
+
+                    <!-- Party Name -->
+                    <div class="md3-input-group">
+                        <label for="party-name" class="md3-input-label">Party Name (Optional)</label>
+                        <div class="md3-input-wrapper">
+                            <span class="material-symbols-rounded">groups</span>
+                            <input type="text" id="party-name" class="md3-input-outlined has-icon" placeholder="e.g. Acme Corp">
+                        </div>
+                    </div>
+
+                    <!-- Party Number (for WhatsApp) -->
+                    <div class="md3-input-group">
+                        <label for="party-number" class="md3-input-label">Party Number (For WhatsApp)</label>
+                        <div class="md3-input-wrapper">
+                            <span class="material-symbols-rounded">phone</span>
+                            <input type="tel" id="party-number" class="md3-input-outlined has-icon" placeholder="e.g. 919876543210">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <!-- Amount -->
+                        <div class="md3-input-group">
+                            <label for="amount" class="md3-input-label">Amount (Optional)</label>
+                            <div class="md3-input-wrapper">
+                                <span class="material-symbols-rounded">currency_rupee</span>
+                                <input type="number" id="amount" class="md3-input-outlined has-icon" placeholder="0.00" min="0" step="0.01">
+                            </div>
+                        </div>
+                        
+                        <!-- Currency (Readonly for India/UPI context) -->
+                        <div class="md3-input-group">
+                            <label for="currency" class="md3-input-label">Currency</label>
+                            <div class="md3-input-wrapper">
+                                <span class="material-symbols-rounded">payments</span>
+                                <input type="text" id="currency" class="md3-input-outlined has-icon" value="INR" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="md3-input-group">
+                        <label for="transaction-date" class="md3-input-label">Date</label>
+                        <div class="md3-input-wrapper">
+                            <span class="material-symbols-rounded">calendar_today</span>
+                            <input type="text" id="transaction-date" class="md3-input-outlined has-icon" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Note -->
+                    <div class="md3-input-group">
+                        <label for="note" class="md3-input-label">Transaction Note (Optional)</label>
+                        <div class="md3-input-wrapper">
+                            <span class="material-symbols-rounded">description</span>
+                            <input type="text" id="note" class="md3-input-outlined has-icon" placeholder="e.g. Invoice #1234">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-[var(--md3-outline-variant)] mt-2 flex flex-col gap-3">
+                        <button type="submit" class="md3-btn md3-btn-ai ripple ripple-light w-full">
+                            <span class="material-symbols-rounded">auto_awesome</span>
+                            Generate QR Code
+                        </button>
+                        <button type="button" id="btn-clear" class="md3-btn md3-btn-outlined ripple w-full text-[var(--md3-error)] border-[var(--md3-error)] hover:bg-[var(--md3-error-container)] hover:text-[var(--md3-on-error-container)]">
+                            <span class="material-symbols-rounded">clear_all</span>
+                            Clear Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- OUTPUT SECTION (Right on Desktop, Bottom on Mobile) -->
+            <div class="w-full lg:w-2/5 xl:w-[42%] md3-card gemini-spark-card lg:sticky lg:top-24 flex-shrink-0">
+                <div class="text-center flex flex-col items-center justify-center min-h-[300px]">
                     
-                    <div class="flex flex-col sm:flex-row w-full gap-3 justify-center max-w-[320px]">
-                        <button id="qr-btn-download" class="h-12 px-6 rounded-full bg-[var(--primary)] text-white font-medium text-sm flex-1 flex items-center justify-center gap-2 hover:bg-[var(--primary-dark)] transition-colors shadow-sm">
-                            <span class="material-symbols-rounded text-[18px]">download</span>
-                            Download
-                        </button>
-                        <button id="qr-btn-send" class="h-12 px-6 rounded-full bg-[var(--primary-light)] text-[var(--primary-dark)] font-medium text-sm flex-1 flex items-center justify-center gap-2 hover:bg-[#c2d8fc] transition-colors">
-                            <span class="material-symbols-rounded text-[18px]">send</span>
-                            Send
-                        </button>
+                    <h3 class="font-brand font-semibold text-lg mb-6 w-full text-left pl-2 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-gemini-purple">qr_code_scanner</span>
+                        Preview
+                    </h3>
+
+                    <!-- Placeholder before generation -->
+                    <div id="qr-placeholder" class="flex flex-col items-center justify-center p-8 text-[var(--md3-outline)]">
+                        <span class="material-symbols-rounded text-[64px] mb-2 opacity-50">qr_code</span>
+                        <p class="text-sm">Fill details and tap generate</p>
                     </div>
+
+                    <!-- QR Code Target -->
+                    <div id="qr-result-wrapper" class="hidden flex-col items-center gap-6 w-full">
+                        <div id="qr-code-container">
+                            <!-- QRCode.js will inject canvas/img here -->
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-3 w-full justify-center">
+                            <button id="btn-download" class="md3-btn md3-btn-filled ripple ripple-light flex-1">
+                                <span class="material-symbols-rounded">download</span>
+                                Download
+                            </button>
+                            <button id="btn-send" class="md3-btn md3-btn-tonal ripple flex-1">
+                                <span class="material-symbols-rounded">send</span>
+                                Send
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-
             </div>
+
         </div>
+    </main>
 
+    <!-- Toast Notification -->
+    <div id="toast">
+        <span class="material-symbols-rounded" id="toast-icon">info</span>
+        <span id="toast-message">Message</span>
     </div>
-</div>
 
-<!-- QRCode JS Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script type="module">
+        // =====================================================================
+        // FIREBASE INTEGRATION 
+        // =====================================================================
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-<script>
-    /**
-     * Module initialization wrapped in an IIFE.
-     * The dashboard dynamically injects this script.
-     * We poll briefly to ensure qrcode.js has finished loading across the network.
-     */
-    (function initQRModule() {
-        let retries = 0;
+        // To use your local config instead, comment out the sandbox init and uncomment this:
+        // import { auth, db } from './firebase-config.js';
         
-        // Wait for QRCode to be available (handles dynamic script injection delays)
-        const checkLibrary = setInterval(() => {
-            if (typeof QRCode !== 'undefined') {
-                clearInterval(checkLibrary);
-                setupQREvents();
-            } else {
-                retries++;
-                if (retries > 50) { // 2.5 seconds timeout
-                    clearInterval(checkLibrary);
-                    console.error("QRCode.js failed to load within the module.");
-                    // Fallback visual error can be added here if needed
-                }
-            }
-        }, 50);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'corebiq-qr-dev';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const app = Object.keys(firebaseConfig).length > 0 ? initializeApp(firebaseConfig) : null;
+        let auth = app ? getAuth(app) : null;
+        let db = app ? getFirestore(app) : null;
 
-        function setupQREvents() {
-            const form = document.getElementById('qr-module-form');
-            const placeholder = document.getElementById('qr-module-placeholder');
-            const resultWrapper = document.getElementById('qr-module-result');
-            const canvasWrapper = document.getElementById('qr-module-canvas-wrapper');
-            
-            const btnClear = document.getElementById('qr-btn-clear');
-            const btnDownload = document.getElementById('qr-btn-download');
-            const btnSend = document.getElementById('qr-btn-send');
-            
-            let qrcodeInstance = null;
-
-            // Optional: Re-use Dashboard's toast functionality if it exists, otherwise define a local fallback
-            const showToastMsg = (msg) => {
-                if(window.showToast) {
-                    window.showToast(msg); // Assuming dashboard has a global toast
+        let fbUser = null;
+        async function initAuth() {
+            if (!auth) return;
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const userCredential = await signInWithCustomToken(auth, __initial_auth_token);
+                    fbUser = userCredential.user;
                 } else {
-                    alert(msg); // Fallback if no toast
+                    const userCredential = await signInAnonymously(auth);
+                    fbUser = userCredential.user;
                 }
-            };
+            } catch (error) {
+                console.error("Firebase Auth Error:", error);
+            }
+        }
+        initAuth();
 
-            // Clear Form
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('qr-form');
+            const placeholder = document.getElementById('qr-placeholder');
+            const resultWrapper = document.getElementById('qr-result-wrapper');
+            const qrContainer = document.getElementById('qr-code-container');
+            
+            const btnClear = document.getElementById('btn-clear');
+            const btnDownload = document.getElementById('btn-download');
+            const btnSend = document.getElementById('btn-send');
+            
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+            let toastTimeout;
+
+            // Initialize QRCode object (will be reused)
+            let qrcode = null;
+
+            // Toast Function
+            function showToast(message, iconName = 'check_circle') {
+                toastMessage.textContent = message;
+                toastIcon.textContent = iconName;
+                toast.classList.add('show');
+                
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Format date to "DD MMM YYYY" (e.g., 24 Sep 2026)
+            function formatDate(date) {
+                const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                return `${day} ${month} ${year}`;
+            }
+
+            // Set current date on load
+            const dateInput = document.getElementById('transaction-date');
+            if (dateInput) {
+                dateInput.value = formatDate(new Date());
+            }
+
+            function generateAutoID() {
+                const date = new Date();
+                const yy = String(date.getFullYear()).slice(-2);
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const dd = String(date.getDate()).padStart(2, '0');
+                
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let randomStr = '';
+                for (let i = 0; i < 6; i++) {
+                    randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                
+                return `QR-BI${yy}${mm}${dd}${randomStr}`;
+            }
+
+            const autoIdInput = document.getElementById('auto-id');
+            if (autoIdInput) {
+                autoIdInput.value = generateAutoID();
+            }
+
+            // Clear Form Functionality
             btnClear.addEventListener('click', () => {
                 form.reset();
-                canvasWrapper.innerHTML = '';
-                placeholder.style.display = 'flex';
+                dateInput.value = formatDate(new Date()); // Reset date to today
+                autoIdInput.value = generateAutoID(); // Generate new ID on clear
+                qrContainer.innerHTML = '';
+                placeholder.classList.remove('hidden');
                 resultWrapper.classList.add('hidden');
                 resultWrapper.classList.remove('flex');
-                if(qrcodeInstance) {
-                    qrcodeInstance.clear();
+                if(qrcode) {
+                    qrcode.clear();
                 }
+                showToast('Form Cleared', 'delete_sweep');
             });
 
-            // Build UPI URI
+            // Generate UPI String
             function buildUPIString() {
-                const upiId = document.getElementById('qr-upi-id').value.trim();
-                const payeeName = document.getElementById('qr-payee-name').value.trim();
-                const amount = document.getElementById('qr-amount').value.trim();
-                const note = document.getElementById('qr-note').value.trim();
+                const upiId = document.getElementById('upi-id').value.trim();
+                const payeeName = document.getElementById('payee-name').value.trim();
+                const amount = document.getElementById('amount').value.trim();
+                const note = document.getElementById('note').value.trim();
+                const autoId = document.getElementById('auto-id').value.trim();
                 
+                // Base URI - Ensure standard UPI format
                 let uri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}`;
-                if (amount) uri += `&am=${encodeURIComponent(amount)}`;
-                uri += `&cu=INR`;
-                if (note) uri += `&tn=${encodeURIComponent(note)}`;
+                
+                // Optional Parameters
+                if (amount) {
+                    uri += `&am=${encodeURIComponent(amount)}`;
+                }
+                uri += `&cu=INR`; // Currency fixed to INR for UPI
+                
+                if (note) {
+                    uri += `&tn=${encodeURIComponent(note)}`;
+                }
+                
+                if (autoId) {
+                    uri += `&tr=${encodeURIComponent(autoId)}`;
+                }
                 
                 return uri;
             }
 
-            // Generate
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
+            // Handle Form Submission
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault(); // Prevent page reload
+                
                 const upiString = buildUPIString();
                 
-                // Reset wrapper
-                canvasWrapper.innerHTML = '';
+                // Clear previous QR
+                qrContainer.innerHTML = '';
                 
-                // Create QR (200x200)
-                qrcodeInstance = new QRCode(canvasWrapper, {
+                // Generate new QR Code
+                // Using 220x220 size, which works well on mobile and desktop
+                qrcode = new QRCode(qrContainer, {
                     text: upiString,
-                    width: 200,
-                    height: 200,
+                    width: 220,
+                    height: 220,
                     colorDark : "#000000",
                     colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
+                    correctLevel : QRCode.CorrectLevel.H // High error correction
                 });
 
                 // Tweak internal images/canvas generated by QRCode.js for responsive flexbox
                 setTimeout(() => {
-                    const canvasEl = canvasWrapper.querySelector('canvas');
-                    const imgEl = canvasWrapper.querySelector('img');
+                    const canvasEl = qrContainer.querySelector('canvas');
+                    const imgEl = qrContainer.querySelector('img');
                     if(canvasEl) canvasEl.style.margin = '0 auto';
                     if(imgEl) {
                         imgEl.style.margin = '0 auto';
@@ -239,110 +662,153 @@
                     }
                 }, 50);
 
-                // UI Swap
-                placeholder.style.display = 'none';
+                // Update UI visibility
+                placeholder.classList.add('hidden');
                 resultWrapper.classList.remove('hidden');
                 resultWrapper.classList.add('flex');
                 
-                // Scroll into view on mobile
+                // --- FIREBASE SAVE LOGIC ---
+                if (fbUser && db) {
+                    try {
+                        const autoId = document.getElementById('auto-id').value.trim();
+                        const record = {
+                            referenceId: autoId,
+                            upiId: document.getElementById('upi-id').value.trim(),
+                            payeeName: document.getElementById('payee-name').value.trim(),
+                            partyName: document.getElementById('party-name').value.trim(),
+                            partyNumber: document.getElementById('party-number').value.trim(),
+                            amount: document.getElementById('amount').value.trim() || "0",
+                            currency: "INR",
+                            date: document.getElementById('transaction-date').value,
+                            note: document.getElementById('note').value.trim(),
+                            timestamp: new Date().toISOString()
+                        };
+
+                        const docRef = doc(db, 'artifacts', appId, 'users', fbUser.uid, 'qr_codes', autoId);
+                        await setDoc(docRef, record);
+                        
+                        showToast('QR Generated & Saved to DB', 'cloud_done');
+                    } catch (error) {
+                        console.error("Error saving to Firebase:", error);
+                        showToast('QR Generated (Cloud Save Failed)', 'cloud_off');
+                    }
+                } else {
+                    showToast('QR Code Generated Successfully', 'auto_awesome');
+                }
+                
+                // Scroll to QR on mobile
                 if (window.innerWidth < 1024) {
                     setTimeout(() => {
                         resultWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 150);
+                    }, 100);
                 }
             });
 
-            // Download as JPEG with Watermark
+            // Handle Download (JPEG with Watermark)
             btnDownload.addEventListener('click', () => {
-                const qrImg = canvasWrapper.querySelector('img');
-                const qrCanvas = canvasWrapper.querySelector('canvas');
+                const qrImg = qrContainer.querySelector('img');
+                const qrCanvas = qrContainer.querySelector('canvas');
                 
-                let sourceElement = null;
                 if (qrImg && qrImg.src && qrImg.src.startsWith('data:')) {
+                    // Create a temporary image to draw onto canvas to avoid cross-origin issues with data URLs if any
                     const tempImg = new Image();
-                    tempImg.onload = () => exportWatermarked(tempImg);
+                    tempImg.onload = () => {
+                        createWatermarkedImage(tempImg);
+                    };
                     tempImg.src = qrImg.src;
                 } else if (qrCanvas) {
-                    exportWatermarked(qrCanvas);
+                    createWatermarkedImage(qrCanvas);
                 } else {
-                    showToastMsg('Error finding QR image to download.');
+                    showToast('Error generating image. Try again.', 'error');
                 }
             });
-
-            function exportWatermarked(sourceElem) {
+            
+            function createWatermarkedImage(sourceElement) {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
-                const qrSize = 200;
-                const padding = 24;
+                // Define dimensions (adding padding for watermark)
+                const qrSize = 220; // Matches QRCode.js config
+                const padding = 20;
                 const footerHeight = 40;
                 
                 canvas.width = qrSize + (padding * 2);
                 canvas.height = qrSize + (padding * 2) + footerHeight;
                 
-                // White bg
+                // Draw white background
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
-                // Draw QR
-                ctx.drawImage(sourceElem, padding, padding, qrSize, qrSize);
+                // Draw QR Code
+                ctx.drawImage(sourceElement, padding, padding, qrSize, qrSize);
                 
                 // Draw Watermark
-                ctx.fillStyle = '#444746'; // var(--text-muted)
-                ctx.font = '12px "Google Sans", "Outfit", "Roboto", sans-serif';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.4)'; // Muted opacity
+                ctx.font = '500 12px "Outfit", sans-serif';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 
-                ctx.fillText('Generated securely by COREBIQ', canvas.width / 2, canvas.height - (footerHeight / 2));
+                const watermarkX = canvas.width / 2;
+                const watermarkY = canvas.height - (footerHeight / 2);
                 
-                // Export
+                ctx.fillText('Powered by COREBIQ', watermarkX, watermarkY);
+                
+                // Export as JPEG (to support standard image formats universally)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+                
                 const link = document.createElement('a');
-                link.href = canvas.toDataURL('image/jpeg', 0.95);
-                const payee = document.getElementById('qr-payee-name').value.trim().replace(/\s+/g, '_') || 'payee';
-                link.download = `COREBIQ_UPI_${payee}.jpg`;
+                link.href = dataUrl;
+                
+                const payee = document.getElementById('payee-name').value.trim().replace(/\s+/g, '_') || 'payee';
+                link.download = `UPI_QR_${payee}.jpg`;
                 
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+                
+                showToast('QR Code Downloaded (JPEG)', 'download_done');
             }
 
-            // Send via WhatsApp
+            // Handle Send (WhatsApp prefill)
             btnSend.addEventListener('click', () => {
                 const upiString = buildUPIString();
-                const partyNumber = document.getElementById('qr-party-number').value.trim();
-                const cleanNumber = partyNumber.replace(/\D/g, '');
+                const partyNumber = document.getElementById('party-number').value.trim();
                 
-                let message = `Here is the UPI payment link generated via COREBIQ: \n\n${upiString}`;
+                // Clean the number (remove non-digits, keep '+' if present for international)
+                let cleanNumber = partyNumber.replace(/[^\d+]/g, '');
+                
+                // If number is provided but doesn't have country code, assume India (+91)
+                if (cleanNumber && !cleanNumber.startsWith('+') && cleanNumber.length === 10) {
+                    cleanNumber = '91' + cleanNumber; // WhatsApp API prefers without '+' but requires country code
+                } else if (cleanNumber.startsWith('+')) {
+                    cleanNumber = cleanNumber.substring(1); // Remove '+'
+                }
+
+                // Construct Message
+                const amount = document.getElementById('amount').value.trim();
+                const payee = document.getElementById('payee-name').value.trim();
+                
+                let messageText = `Here is the UPI payment link for ${payee}`;
+                if (amount) {
+                    messageText += ` (Amount: ₹${amount})`;
+                }
+                messageText += `:\n\n${upiString}`;
                 
                 if (cleanNumber) {
-                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodeURIComponent(message)}`;
+                    // Open WhatsApp with prefilled number and message
+                    // Using wa.me for better mobile compatibility
+                    const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(messageText)}`;
                     window.open(whatsappUrl, '_blank');
+                    showToast('Opening WhatsApp', 'send');
                 } else {
-                    // Fallback to clipboard if no number is provided
-                    const tempTextarea = document.createElement('textarea');
-                    tempTextarea.value = message;
-                    document.body.appendChild(tempTextarea);
-                    tempTextarea.select();
-                    try {
-                        document.execCommand('copy');
-                        showToastMsg('Payment link copied to clipboard!');
-                    } catch (err) {
-                        showToastMsg('Please enter a Client WhatsApp number.');
-                    }
-                    document.body.removeChild(tempTextarea);
+                    // Fallback if no number is provided, try general share or prompt
+                    showToast('Please enter a Party Number to send via WhatsApp.', 'error');
+                    // Optionally, just open generic WhatsApp share:
+                    // const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(messageText)}`;
+                    // window.open(whatsappUrl, '_blank');
                 }
             });
-        }
-    })();
-</script>
-
-<style>
-    /* Scoped animations for the module */
-    .animation-fadeIn {
-        animation: modFadeIn 0.3s ease-out forwards;
-    }
-    @keyframes modFadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
+        });
+    </script>
+</body>
+</html>
