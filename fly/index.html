@@ -25,7 +25,7 @@
    Revised responsive / PWA-ready version
 ========================================================= */
 
-<comment-tag id="1">:root{
+:root{
     --primary:#0062FF;
     --primary-dark:#0F4C81;
     --primary-light:#EAF2FF;
@@ -33,15 +33,7 @@
 
     --bg:#F4F6F8;
     --surface:#FFFFFF;
-    --surface-soft:#FAFAFA;</comment-tag id="1" text=":root{
-    --primary:#4F46E5;
-    --primary-dark:#312E81;
-    --primary-light:#EEF2FF;
-    --accent:#10B981;
-
-    --bg:#F8FAFC;
-    --surface:#FFFFFF;
-    --surface-soft:#F1F5F9;" type="suggestion">
+    --surface-soft:#FAFAFA;
 
     --text-main:#0F172A;
     --text-muted:#64748B;
@@ -359,7 +351,7 @@ button{
    WELCOME HERO
 ========================================================= */
 
-<comment-tag id="2">.welcome-card{
+<comment-tag id="1">.welcome-card{
     position:relative;
     min-height:220px;
     margin-bottom:26px;
@@ -377,18 +369,19 @@ button{
     align-items:center;
     padding:34px 40px;
     color:#fff;
-}</comment-tag id="2" text=".welcome-card{
+}</comment-tag id="1" text=".welcome-card{
     position:relative;
     min-height:220px;
     margin-bottom:26px;
     overflow:hidden;
     border-radius:var(--radius-xl);
     border:1px solid rgba(255,255,255,.05);
-    background:
+    background-color: #312E81;
+    background-image:
         linear-gradient(
             135deg,
             #0F172A 0%,
-            var(--primary-dark) 100%
+            #312E81 100%
         );
     box-shadow:var(--shadow-lg);
     display:flex;
@@ -551,7 +544,7 @@ button{
     margin-bottom:24px;
 }
 
-<comment-tag id="3">.dash-card{
+.dash-card{
     min-width:0;
     min-height:100%;
     display:flex;
@@ -561,17 +554,7 @@ button{
     border-radius:var(--radius-lg);
     background:var(--surface);
     box-shadow:var(--shadow);
-}</comment-tag id="3" text=".dash-card{
-    min-width:0;
-    min-height:100%;
-    display:flex;
-    flex-direction:column;
-    padding:24px;
-    border:1px solid rgba(226, 232, 240, 0.6);
-    border-radius:var(--radius-lg);
-    background:var(--surface);
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
-}" type="suggestion">
+}
 
 .card-title{
     min-height:20px;
@@ -894,7 +877,7 @@ button{
     text-align:left;
 }
 
-<comment-tag id="4">.saas-table th{
+.saas-table th{
     padding:12px 18px;
     border-bottom:1px solid var(--border);
     background:var(--surface-soft);
@@ -904,17 +887,7 @@ button{
     letter-spacing:.5px;
     text-transform:uppercase;
     white-space:nowrap;
-}</comment-tag id="4" text=".saas-table th{
-    padding:16px 18px;
-    border-bottom:2px solid var(--border-strong);
-    background:transparent;
-    color:var(--secondary);
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    white-space:nowrap;
-}" type="suggestion">
+}
 
 .saas-table td{
     padding:14px 18px;
@@ -1383,12 +1356,12 @@ button{
                 </div>
 
                 <div class="dashboard-intro">
-                    <comment-tag id="5"><h2 class="dashboard-title">
+                    <comment-tag id="2"><h2 class="dashboard-title">
                         <span class="intro-primary">Welcome back to, </span>
                         <span class="intro-accent">
                             Intelligent Business Workspace
                         </span>
-                    </h2></comment-tag id="5" text="" type="suggestion">
+                    </h2></comment-tag id="2" text="" type="suggestion">
 
                     <h3 class="dashboard-branch">
                         <span class="material-symbols-rounded">
