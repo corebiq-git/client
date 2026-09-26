@@ -1,14 +1,14 @@
 <style>
 /* =========================================================
-   COREBIQ HEADER
-   Shared component for dashboard.html
+   COREBIQ HEADER - PREMIUM
    ========================================================= */
-
 #cb-header {
     width: 100%;
     min-height: 72px;
-    background: #FFFFFF;
-    border-bottom: 1px solid #E2E8F0;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #111827 0%, #1e293b 55%, #0f172a 100%);
+    border-bottom: 1px solid rgba(148, 163, 184, .22);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .18);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,825 +19,177 @@
     font-family: 'Inter', sans-serif;
 }
 
-/* =========================================================
-   LEFT
-   ========================================================= */
-
-.cb-header-left {
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.mobile-menu-btn {
-    display: none;
+.cb-header-left { min-width: 0; display: flex; align-items: center; gap: 12px; }
+.cb-header-title { display: none; }
+.mobile-menu-btn,
+.mobile-search-btn,
+.header-icon-btn {
     width: 38px;
     height: 38px;
-    border: 1px solid #E2E8F0;
-    background: #FAFAFA;
-    border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, .28);
+    background: rgba(255, 255, 255, .06);
+    border-radius: 9px;
     align-items: center;
     justify-content: center;
-    color: #0F172A;
+    color: #e2e8f0;
     cursor: pointer;
+    transition: .2s ease;
 }
-
-.mobile-menu-btn .material-symbols-rounded {
-    font-size: 21px;
+.mobile-menu-btn { display: none; }
+.mobile-menu-btn:hover,
+.mobile-search-btn:hover,
+.header-icon-btn:hover {
+    background: rgba(255, 255, 255, .13);
+    border-color: #38bdf8;
+    box-shadow: 0 0 16px rgba(56, 189, 248, .18);
 }
+.material-symbols-rounded { font-size: 21px; }
 
-.cb-header-title {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.cb-header-title-main {
-    color: #0F172A;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.cb-header-title-sub {
-    color: #64748B;
-    font-size: 11px;
-    font-weight: 500;
-    margin-top: 3px;
-}
-
-/* =========================================================
-   RIGHT
-   ========================================================= */
-
-.cb-header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* =========================================================
-   DESKTOP SEARCH
-   ========================================================= */
-
+.cb-header-right { display: flex; align-items: center; gap: 10px; }
 .search-container {
     width: 192px;
     height: 38px;
-    background: #FAFAFA;
-    border: 1px solid #E8E5E1;
-    border-radius: 8px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 0 11px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(148, 163, 184, .28);
+    border-radius: 9px;
+    transition: .2s ease;
 }
-
-.search-container .material-symbols-rounded {
-    font-size: 19px;
-    color: #64748B;
-    flex-shrink: 0;
-}
-
-.search-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: #0F172A;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.search-input::placeholder {
-    color: #94A3B8;
-}
-
-/* =========================================================
-   MOBILE SEARCH
-   ========================================================= */
-
-.mobile-search-btn {
-    display: none;
-    width: 38px;
-    height: 38px;
-    border: 1px solid #E8E5E1;
-    background: #FAFAFA;
-    border-radius: 8px;
-    align-items: center;
-    justify-content: center;
-    color: #0F172A;
-    cursor: pointer;
-}
-
-.mobile-search-btn .material-symbols-rounded {
-    font-size: 21px;
-}
-
-.mobile-search-panel {
-    display: none;
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    top: calc(100% + 6px);
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 10px;
-    padding: 8px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.10);
-    z-index: 9999;
-}
-
-.mobile-search-panel.open {
-    display: flex;
-}
-
-.mobile-search-inner {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #F8FAFC;
-    border: 1px solid #E2E8F0;
-    border-radius: 8px;
-    padding: 9px 11px;
-}
-
-.mobile-search-inner .material-symbols-rounded {
-    font-size: 20px;
-    color: #64748B;
-}
-
+.search-container:focus-within { border-color: #38bdf8; box-shadow: 0 0 16px rgba(56, 189, 248, .18); }
+.search-container .material-symbols-rounded,
+.mobile-search-btn .material-symbols-rounded,
+.header-icon-btn { color: #38bdf8; }
+.search-input,
 .mobile-search-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: #0F172A;
-    font-size: 13px;
-    font-weight: 500;
+    width: 100%; border: 0; outline: 0; background: transparent;
+    color: #f8fafc; font-size: 12px; font-weight: 500;
 }
+.search-input::placeholder, .mobile-search-input::placeholder { color: #94a3b8; }
 
-.mobile-search-input::placeholder {
-    color: #94A3B8;
+.mobile-search-btn { display: none; }
+.mobile-search-panel {
+    display: none; position: absolute; left: 12px; right: 12px; top: calc(100% + 8px);
+    padding: 8px; background: #1e293b; border: 1px solid rgba(148, 163, 184, .28);
+    border-radius: 11px; box-shadow: 0 14px 30px rgba(0,0,0,.3); z-index: 9999;
 }
-
-/* =========================================================
-   HEADER ICON BUTTON
-   ========================================================= */
-
-.header-icon-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    border: 1px solid #E2E8F0;
-    background: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #0062FF;
-    position: relative;
+.mobile-search-panel.open { display: flex; }
+.mobile-search-inner {
+    width: 100%; display: flex; align-items: center; gap: 8px; padding: 9px 11px;
+    box-sizing: border-box; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(148,163,184,.24); border-radius: 8px;
 }
+.mobile-search-inner .material-symbols-rounded { color: #38bdf8; }
 
-.header-icon-btn:hover {
-    background: #F8FAFC;
-    border-color: #CBD5E1;
-}
-
-.header-icon-btn .material-symbols-rounded {
-    font-size: 21px;
-}
-
+.header-icon-btn { display: flex; position: relative; }
+.header-icon-btn .material-symbols-rounded { font-size: 21px; }
 .notification-dot {
-    position: absolute;
-    top: 7px;
-    right: 7px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #EF4444;
-    border: 1px solid #FFFFFF;
+    position: absolute; top: 6px; right: 6px; width: 6px; height: 6px;
+    border-radius: 50%; background: #fbbf24; border: 1px solid #1e293b;
+    box-shadow: 0 0 8px rgba(251,191,36,.75);
 }
-
-/* =========================================================
-   NOTIFICATION ANIMATION
-   ========================================================= */
-
 @keyframes cbRing {
-    0% { transform: rotate(0); }
-    10% { transform: rotate(15deg); }
-    20% { transform: rotate(-10deg); }
-    30% { transform: rotate(5deg); }
-    40% { transform: rotate(-5deg); }
-    50% { transform: rotate(0); }
-    100% { transform: rotate(0); }
+    0%, 50%, 100% { transform: rotate(0); }
+    10% { transform: rotate(15deg); } 20% { transform: rotate(-10deg); }
+    30% { transform: rotate(5deg); } 40% { transform: rotate(-5deg); }
 }
+.bell-anim { animation: cbRing 2s infinite; transform-origin: top center; color: #38bdf8 !important; }
 
-.bell-anim {
-    animation: cbRing 2s infinite;
-    transform-origin: top center;
-    color: #0062FF !important;
-}
-
-/* =========================================================
-   PROGRESS CLOCK
-   ========================================================= */
-
-.cb-clock-group {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.metric-round {
-    position: relative;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.clock-svg {
-    transform: rotate(-90deg);
-    position: absolute;
-    width: 50px;
-    height: 50px;
-}
-
-.clock-svg circle {
-    fill: none;
-    stroke-width: 4;
-    stroke-linecap: round;
-}
-
-.bg-track {
-    stroke: #F0F0F0;
-}
-
-.progress-arc {
-    transition:
-        stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.center-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    text-align: center;
-    line-height: 1;
-}
-
-.main-val {
-    font-size: 13px;
-    font-weight: 700;
-    color: #0A0A0A;
-    margin-bottom: 2px;
-}
-
-.sub-label {
-    font-size: 7px;
-    font-weight: 700;
-    color: #777777;
-    text-transform: uppercase;
-}
-
-.blue-pair .progress-arc {
-    stroke: #2563EB;
-}
-
-.yellow-pair .progress-arc {
-    stroke: #FFC72C;
-}
-
-/* =========================================================
-   LOGOUT
-   ========================================================= */
+.cb-clock-group { display: flex; align-items: center; gap: 2px; }
+.metric-round { position: relative; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; }
+.clock-svg { transform: rotate(-90deg); position: absolute; width: 50px; height: 50px; }
+.clock-svg circle { fill: none; stroke-width: 4; stroke-linecap: round; }
+.bg-track { stroke: rgba(255,255,255,.12); }
+.progress-arc { transition: stroke-dashoffset .5s cubic-bezier(.4,0,.2,1); }
+.center-text { display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1; text-align: center; line-height: 1; }
+.main-val { font-size: 13px; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+.sub-label { font-size: 7px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+.blue-pair .progress-arc { stroke: #38bdf8; }
+.yellow-pair .progress-arc { stroke: #fbbf24; }
 
 .logout-btn {
-    margin-left: 2px;
-    height: 36px;
-    padding: 0 12px;
-    background: #FEF2F2;
-    color: #EF4444;
-    border: 1px solid #FCA5A5;
-    border-radius: 7px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
+    margin-left: 2px; height: 36px; padding: 0 13px; border-radius: 8px;
+    background: linear-gradient(135deg, #38bdf8, #2563eb); color: #fff;
+    border: 0; font-size: 12px; font-weight: 700; cursor: pointer; transition: .2s ease;
+    box-shadow: 0 4px 12px rgba(37,99,235,.28);
 }
-
-.logout-btn:hover {
-    background: #EF4444;
-    color: #FFFFFF;
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
+.logout-btn:hover { transform: translateY(-1px); box-shadow: 0 7px 18px rgba(37,99,235,.4); }
 
 @media (max-width: 900px) {
-
-    #cb-header {
-        min-height: 64px;
-        padding: 0 14px;
-    }
-
-    .mobile-menu-btn {
-        display: flex;
-    }
-
-    .cb-header-title-main {
-        font-size: 14px;
-    }
-
-    .cb-header-title-sub {
-        display: none;
-    }
-
-    .search-container {
-        display: none;
-    }
-
-    .mobile-search-btn {
-        display: flex;
-    }
-
-    .cb-clock-group {
-        display: none;
-    }
-
-    .logout-btn {
-        display: none;
-    }
-
-    .header-icon-btn {
-        width: 38px;
-        height: 38px;
-    }
-
-    .cb-header-right {
-        gap: 7px;
-    }
+    #cb-header { min-height: 64px; padding: 0 14px; }
+    .mobile-menu-btn { display: flex; }
+    .search-container, .cb-clock-group, .logout-btn { display: none; }
+    .mobile-search-btn { display: flex; }
+    .cb-header-right { gap: 7px; }
 }
-
 @media (max-width: 480px) {
-
-    #cb-header {
-        padding: 0 10px;
-    }
-
-    .cb-header-left {
-        gap: 8px;
-    }
-
-    .cb-header-title-main {
-        max-width: 145px;
-        font-size: 13px;
-    }
-
-    .mobile-menu-btn,
-    .mobile-search-btn,
-    .header-icon-btn {
-        width: 36px;
-        height: 36px;
-    }
+    #cb-header { padding: 0 10px; }
+    .cb-header-left { gap: 8px; }
+    .mobile-menu-btn, .mobile-search-btn, .header-icon-btn { width: 36px; height: 36px; }
 }
 </style>
 
-
-<!-- =========================================================
-     HEADER MARKUP
-     ========================================================= -->
-
 <header id="cb-header">
-
-    <!-- LEFT -->
     <div class="cb-header-left">
-
-        <button
-            type="button"
-            class="mobile-menu-btn"
-            onclick="window.toggleMenu()"
-            aria-label="Open menu">
-
-            <span class="material-symbols-rounded">
-                menu
-            </span>
-
+        <button type="button" class="mobile-menu-btn" onclick="window.toggleMenu()" aria-label="Open menu">
+            <span class="material-symbols-rounded">menu</span>
         </button>
-
-        <div class="cb-header-title">
-
-            <div
-                class="cb-header-title-main"
-                id="header-page-title">
-                Dashboard
-            </div>
-
-            <div class="cb-header-title-sub">
-                Intelligent Business Workspace
-            </div>
-
-        </div>
-
     </div>
 
-
-    <!-- RIGHT -->
     <div class="cb-header-right">
-
-        <!-- DESKTOP SEARCH -->
         <div class="search-container">
-
-            <span class="material-symbols-rounded">
-                search
-            </span>
-
-            <input
-                type="search"
-                class="search-input"
-                id="desktop-header-search"
-                placeholder="Search..."
-                autocomplete="off">
-
+            <span class="material-symbols-rounded">search</span>
+            <input type="search" class="search-input" id="desktop-header-search" placeholder="Search..." autocomplete="off">
         </div>
 
-
-        <!-- MOBILE SEARCH -->
-        <button
-            type="button"
-            class="mobile-search-btn"
-            onclick="window.toggleMobileSearch()"
-            aria-label="Search">
-
-            <span class="material-symbols-rounded">
-                search
-            </span>
-
+        <button type="button" class="mobile-search-btn" onclick="window.toggleMobileSearch()" aria-label="Search">
+            <span class="material-symbols-rounded">search</span>
         </button>
 
-
-        <!-- PROGRESS CLOCK -->
         <div class="cb-clock-group">
-
-            <!-- DAY -->
-            <div class="metric-round blue-pair">
-
-                <svg
-                    class="clock-svg"
-                    viewBox="0 0 50 50">
-
-                    <circle
-                        class="bg-track"
-                        cx="25"
-                        cy="25"
-                        r="21">
-                    </circle>
-
-                    <circle
-                        id="dd-arc"
-                        class="progress-arc"
-                        cx="25"
-                        cy="25"
-                        r="21"
-                        stroke-dasharray="131.95"
-                        stroke-dashoffset="131.95">
-                    </circle>
-
-                </svg>
-
-                <div class="center-text">
-
-                    <span
-                        class="main-val"
-                        id="dd-val">
-                        01
-                    </span>
-
-                    <span
-                        class="sub-label"
-                        id="dd-context">
-                        MON
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- MONTH -->
-            <div class="metric-round blue-pair">
-
-                <svg
-                    class="clock-svg"
-                    viewBox="0 0 50 50">
-
-                    <circle
-                        class="bg-track"
-                        cx="25"
-                        cy="25"
-                        r="21">
-                    </circle>
-
-                    <circle
-                        id="mm-arc"
-                        class="progress-arc"
-                        cx="25"
-                        cy="25"
-                        r="21"
-                        stroke-dasharray="131.95"
-                        stroke-dashoffset="131.95">
-                    </circle>
-
-                </svg>
-
-                <div class="center-text">
-
-                    <span
-                        class="main-val"
-                        id="mm-val">
-                        JAN
-                    </span>
-
-                    <span
-                        class="sub-label"
-                        id="mm-context">
-                        2026
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- HOUR -->
-            <div class="metric-round yellow-pair">
-
-                <svg
-                    class="clock-svg"
-                    viewBox="0 0 50 50">
-
-                    <circle
-                        class="bg-track"
-                        cx="25"
-                        cy="25"
-                        r="21">
-                    </circle>
-
-                    <circle
-                        id="hh-arc"
-                        class="progress-arc"
-                        cx="25"
-                        cy="25"
-                        r="21"
-                        stroke-dasharray="131.95"
-                        stroke-dashoffset="131.95">
-                    </circle>
-
-                </svg>
-
-                <div class="center-text">
-
-                    <span
-                        class="main-val"
-                        id="hh-val">
-                        12
-                    </span>
-
-                    <span
-                        class="sub-label"
-                        id="hh-context">
-                        AM
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- MINUTE -->
-            <div class="metric-round yellow-pair">
-
-                <svg
-                    class="clock-svg"
-                    viewBox="0 0 50 50">
-
-                    <circle
-                        class="bg-track"
-                        cx="25"
-                        cy="25"
-                        r="21">
-                    </circle>
-
-                    <circle
-                        id="min-arc"
-                        class="progress-arc"
-                        cx="25"
-                        cy="25"
-                        r="21"
-                        stroke-dasharray="131.95"
-                        stroke-dashoffset="131.95">
-                    </circle>
-
-                </svg>
-
-                <div class="center-text">
-
-                    <span
-                        class="main-val"
-                        id="min-val">
-                        00
-                    </span>
-
-                    <span class="sub-label">
-                        MIN
-                    </span>
-
-                </div>
-
-            </div>
-
+            <div class="metric-round blue-pair"><svg class="clock-svg" viewBox="0 0 50 50"><circle class="bg-track" cx="25" cy="25" r="21"></circle><circle id="dd-arc" class="progress-arc" cx="25" cy="25" r="21" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle></svg><div class="center-text"><span class="main-val" id="dd-val">01</span><span class="sub-label" id="dd-context">MON</span></div></div>
+            <div class="metric-round blue-pair"><svg class="clock-svg" viewBox="0 0 50 50"><circle class="bg-track" cx="25" cy="25" r="21"></circle><circle id="mm-arc" class="progress-arc" cx="25" cy="25" r="21" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle></svg><div class="center-text"><span class="main-val" id="mm-val">JAN</span><span class="sub-label" id="mm-context">2026</span></div></div>
+            <div class="metric-round yellow-pair"><svg class="clock-svg" viewBox="0 0 50 50"><circle class="bg-track" cx="25" cy="25" r="21"></circle><circle id="hh-arc" class="progress-arc" cx="25" cy="25" r="21" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle></svg><div class="center-text"><span class="main-val" id="hh-val">12</span><span class="sub-label" id="hh-context">AM</span></div></div>
+            <div class="metric-round yellow-pair"><svg class="clock-svg" viewBox="0 0 50 50"><circle class="bg-track" cx="25" cy="25" r="21"></circle><circle id="min-arc" class="progress-arc" cx="25" cy="25" r="21" stroke-dasharray="131.95" stroke-dashoffset="131.95"></circle></svg><div class="center-text"><span class="main-val" id="min-val">00</span><span class="sub-label">MIN</span></div></div>
         </div>
 
-
-        <!-- NOTIFICATION -->
-        <button
-            type="button"
-            class="header-icon-btn"
-            title="Notifications"
-            onclick="window.handleHeaderNotification?.()">
-
-            <span class="material-symbols-rounded bell-anim">
-                notifications
-            </span>
-
-            <span class="notification-dot"></span>
-
+        <button type="button" class="header-icon-btn" title="Notifications" onclick="window.handleHeaderNotification?.()">
+            <span class="material-symbols-rounded bell-anim">notifications</span><span class="notification-dot"></span>
         </button>
-
-
-        <!-- LOGOUT -->
-        <button
-            type="button"
-            class="logout-btn"
-            onclick="window.handleLogout()">
-
-            Logout
-
-        </button>
-
+        <button type="button" class="logout-btn" onclick="window.handleLogout()">Logout</button>
     </div>
 
-
-    <!-- MOBILE SEARCH PANEL -->
-    <div
-        class="mobile-search-panel"
-        id="mobile-search-panel">
-
-        <div class="mobile-search-inner">
-
-            <span class="material-symbols-rounded">
-                search
-            </span>
-
-            <input
-                type="search"
-                class="mobile-search-input"
-                id="mobile-header-search"
-                placeholder="Search..."
-                autocomplete="off">
-
-        </div>
-
+    <div class="mobile-search-panel" id="mobile-search-panel">
+        <div class="mobile-search-inner"><span class="material-symbols-rounded">search</span><input type="search" class="mobile-search-input" id="mobile-header-search" placeholder="Search..." autocomplete="off"></div>
     </div>
-
 </header>
 
-
 <script>
-/* =========================================================
-   HEADER COMPONENT FUNCTIONS
-   ========================================================= */
-
 (function () {
-
-    /* -----------------------------------------------------
-       MOBILE SEARCH
-    ----------------------------------------------------- */
-
     window.toggleMobileSearch = function () {
-
-        const panel =
-            document.getElementById('mobile-search-panel');
-
+        const panel = document.getElementById('mobile-search-panel');
         if (!panel) return;
-
         panel.classList.toggle('open');
-
-        if (panel.classList.contains('open')) {
-
-            const input =
-                document.getElementById('mobile-header-search');
-
-            setTimeout(function () {
-
-                if (input) {
-                    input.focus();
-                }
-
-            }, 100);
-
-        }
-
+        if (panel.classList.contains('open')) setTimeout(() => document.getElementById('mobile-header-search')?.focus(), 100);
     };
-
-
-    /* -----------------------------------------------------
-       CLOSE MOBILE SEARCH WHEN CLICKING OUTSIDE
-    ----------------------------------------------------- */
 
     document.addEventListener('click', function (event) {
-
-        const panel =
-            document.getElementById('mobile-search-panel');
-
-        const button =
-            document.querySelector('.mobile-search-btn');
-
-        if (!panel || !panel.classList.contains('open')) {
-            return;
-        }
-
-        if (
-            !panel.contains(event.target) &&
-            !button?.contains(event.target)
-        ) {
-
-            panel.classList.remove('open');
-
-        }
-
+        const panel = document.getElementById('mobile-search-panel');
+        const button = document.querySelector('.mobile-search-btn');
+        if (panel?.classList.contains('open') && !panel.contains(event.target) && !button?.contains(event.target)) panel.classList.remove('open');
     });
 
-
-    /* -----------------------------------------------------
-       PAGE TITLE HELPER
-    ----------------------------------------------------- */
-
     window.setHeaderTitle = function (title, subtitle) {
-
-        const titleElement =
-            document.getElementById('header-page-title');
-
-        const subtitleElement =
-            document.querySelector('.cb-header-title-sub');
-
-        if (titleElement && title) {
-            titleElement.innerText = title;
-        }
-
-        if (subtitleElement && subtitle) {
-            subtitleElement.innerText = subtitle;
-        }
-
+        const titleElement = document.getElementById('header-page-title');
+        const subtitleElement = document.querySelector('.cb-header-title-sub');
+        if (titleElement && title) titleElement.innerText = title;
+        if (subtitleElement && subtitle) subtitleElement.innerText = subtitle;
     };
 
-
-    /* -----------------------------------------------------
-       NOTIFICATION PLACEHOLDER
-    ----------------------------------------------------- */
-
-    window.handleHeaderNotification = function () {
-
-        /*
-         * Connect this later to your notification module.
-         * Kept intentionally empty so the header does not
-         * throw an error when the notification button is used.
-         */
-
-        console.log('COREBIQ notifications clicked');
-
-    };
-
-
-    /* -----------------------------------------------------
-       INITIAL CLOCK
-       dashboard.html already updates this every second.
-       This initial call prevents a blank clock before the
-       dashboard interval starts.
-    ----------------------------------------------------- */
-
-    if (typeof window.updateGlobalClock === 'function') {
-        window.updateGlobalClock();
-    }
-
+    window.handleHeaderNotification = function () { console.log('COREBIQ notifications clicked'); };
+    if (typeof window.updateGlobalClock === 'function') window.updateGlobalClock();
 })();
 </script>
