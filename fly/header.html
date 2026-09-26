@@ -26,9 +26,9 @@
 .cb-datetime-section {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     min-width: max-content;
-    padding: 8px 16px;
+    padding: 10px 16px;
     background: #ffffff;
     border: 1px solid rgba(203, 213, 225, .4);
     border-radius: 10px;
@@ -40,25 +40,47 @@
     color: #64748b;
 }
 
-.cb-datetime-text {
+.cb-datetime-content {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
 }
 
-.cb-date-display {
-    font-size: 11px;
-    font-weight: 600;
-    color: #8b97a8;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.cb-datetime-main {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.cb-time-display {
-    font-size: 13px;
+.cb-date-part {
+    font-size: 14px;
     font-weight: 700;
     color: #1e293b;
     letter-spacing: 0.3px;
+}
+
+.cb-date-separator {
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.cb-date-highlight {
+    background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    min-width: 32px;
+    text-align: center;
+}
+
+.cb-time-display {
+    font-size: 10px;
+    font-weight: 500;
+    color: #94a3b8;
+    letter-spacing: 0.2px;
 }
 
 /* =========================================================
@@ -363,15 +385,16 @@
     }
 
     .cb-datetime-section {
-        padding: 6px 12px;
+        padding: 8px 12px;
     }
 
-    .cb-date-display {
-        font-size: 10px;
+    .cb-date-part,
+    .cb-date-highlight {
+        font-size: 13px;
     }
 
     .cb-time-display {
-        font-size: 12px;
+        font-size: 9px;
     }
 }
 
@@ -439,9 +462,13 @@
     <!-- DATETIME SECTION -->
     <div class="cb-datetime-section">
         <span class="material-symbols-rounded cb-datetime-icon">schedule</span>
-        <div class="cb-datetime-text">
-            <div class="cb-date-display" id="cb-date-display">Sep 26, 2026</div>
-            <div class="cb-time-display" id="cb-time-display">12:00:00 AM</div>
+        <div class="cb-datetime-content">
+            <div class="cb-datetime-main">
+                <span class="cb-date-highlight" id="cb-date-dd">26</span>
+                <span class="cb-date-separator">|</span>
+                <span class="cb-date-highlight" id="cb-date-mm">09</span>
+            </div>
+            <div class="cb-time-display" id="cb-time-display">12:00:00</div>
         </div>
     </div>
 
@@ -520,25 +547,28 @@
    HEADER COMPONENT FUNCTIONS
    ========================================================= */
 (function () {
-    /* UPDATE DATETIME */
+    /* UPDATE DATETIME - INDIAN TIME */
     window.updateHeaderDateTime = function () {
-        const dateDisplay = document.getElementById('cb-date-display');
+        const dateDD = document.getElementById('cb-date-dd');
+        const dateMM = document.getElementById('cb-date-mm');
         const timeDisplay = document.getElementById('cb-time-display');
 
-        if (!dateDisplay || !timeDisplay) return;
+        if (!dateDD || !dateMM || !timeDisplay) return;
 
         const now = new Date();
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        const dateStr = now.toLocaleDateString('en-US', options);
-        const timeStr = now.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-        });
+        
+        // Indian Standard Time (IST = UTC+5:30)
+        const istTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+        
+        const day = String(istTime.getDate()).padStart(2, '0');
+        const month = String(istTime.getMonth() + 1).padStart(2, '0');
+        const hours = String(istTime.getHours()).padStart(2, '0');
+        const minutes = String(istTime.getMinutes()).padStart(2, '0');
+        const seconds = String(istTime.getSeconds()).padStart(2, '0');
 
-        dateDisplay.textContent = dateStr;
-        timeDisplay.textContent = timeStr;
+        dateDD.textContent = day;
+        dateMM.textContent = month;
+        timeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
     };
 
     /* INITIALIZE DATETIME AND UPDATE EVERY SECOND */
