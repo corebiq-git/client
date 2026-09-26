@@ -1,97 +1,35 @@
-/* =========================================================
-   BOTTOM NAVIGATION — SIMPLE COMPACT STYLE
-   ========================================================= */
+<div class="bottom-nav">
 
-.bottom-nav {
-  flex-shrink: 0;
-  width: 100%;
-  height: calc(64px + env(safe-area-inset-bottom, 0px));
-  padding: 8px 0 env(safe-area-inset-bottom, 0px);
+    <div class="bottom-nav-item active"
+         onclick="window.switchView('view-dashboard', this)">
+        <span class="material-symbols-rounded bottom-nav-icon">
+            dashboard
+        </span>
+        Home
+    </div>
 
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
+    <div class="bottom-nav-item"
+         onclick="window.switchView('view-patients', this)">
+        <span class="material-symbols-rounded bottom-nav-icon">
+            group
+        </span>
+        Patients
+    </div>
 
-  background: var(--m3-surface);
-  border-top: 1px solid var(--m3-surface-container);
+    <div class="bottom-nav-item"
+         onclick="window.switchView('view-appointments', this)">
+        <span class="material-symbols-rounded bottom-nav-icon">
+            calendar_month
+        </span>
+        Schedule
+    </div>
 
-  z-index: 50;
-}
+    <div class="bottom-nav-item"
+         onclick="window.toggleSidebar()">
+        <span class="material-symbols-rounded bottom-nav-icon">
+            menu
+        </span>
+        Menu
+    </div>
 
-.nav-item {
-  flex: 1;
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  gap: 3px;
-
-  background: transparent;
-  border: none;
-
-  color: var(--m3-text-muted);
-  font-family: inherit;
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1.2;
-
-  cursor: pointer;
-  padding: 2px 0;
-
-  transition:
-    color 0.2s ease,
-    transform 0.15s ease;
-}
-
-.nav-item:hover {
-  color: var(--m3-text-main);
-}
-
-.nav-item:active {
-  transform: scale(0.94);
-}
-
-/* Icon */
-.nav-icon-container {
-  width: auto;
-  height: auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 0;
-
-  background: transparent !important;
-
-  color: inherit;
-
-  transition: color 0.2s ease;
-}
-
-.nav-icon-container svg {
-  width: 24px;
-  height: 24px;
-  stroke-width: 2;
-}
-
-/* Active item */
-.nav-item.active {
-  color: var(--m3-primary);
-  font-weight: 600;
-}
-
-.nav-item.active .nav-icon-container {
-  background: transparent !important;
-  color: var(--m3-primary);
-}
-
-/* Label */
-.nav-label {
-  font-size: 10px;
-  line-height: 13px;
-  font-weight: 600;
-}
+</div>
