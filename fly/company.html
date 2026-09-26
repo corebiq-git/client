@@ -125,117 +125,214 @@
     </div>
 
     <script type="module">
-        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const firebaseConfig = {
-  apiKey: "AIzaSyDShAm9FNnIj7sodlfzQFZ727pc9WhU-fc",
-  authDomain: "corebic--inspirego.firebaseapp.com",
-  projectId: "corebic--inspirego",
-  storageBucket: "corebic--inspirego.firebasestorage.app",
-  messagingSenderId: "1091888608027",
-  appId: "1:1091888608027:web:6d4b56472871e3c48299be",
-  measurementId: "G-FTT83137BO"
-};
+    import { db } from "./firebase-config.js";
 
-        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-        const db = getFirestore(app);
-        
-        // Target Document: A single document holding the global company configuration
-        const companyDocRef = doc(db, "settings", "company_profile");
+    import {
+        doc,
+        getDoc,
+        setDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        // --- 1. LOAD DATA ON MOUNT ---
-        window.loadCompanyData = async function() {
-            try {
-                const docSnap = await getDoc(companyDocRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if(data.name) document.getElementById('compName').value = data.name;
-                    if(data.tagline) document.getElementById('compTagline').value = data.tagline;
-                    if(data.address) document.getElementById('compAddress').value = data.address;
-                    if(data.branches) document.getElementById('compBranches').value = data.branches;
-                    
-                    if(data.phone1) document.getElementById('compPhone1').value = data.phone1;
-                    if(data.phone2) document.getElementById('compPhone2').value = data.phone2;
-                    if(data.email) document.getElementById('compEmail').value = data.email;
-                    if(data.website) document.getElementById('compWebsite').value = data.website;
+    const companyDocRef = doc(
+        db,
+        "settings",
+        "company_profile"
+    );
 
-                    if(data.accName) document.getElementById('compAccName').value = data.accName;
-                    if(data.accNo) document.getElementById('compAccNo').value = data.accNo;
-                    if(data.ifsc) document.getElementById('compIfsc').value = data.ifsc;
-                    if(data.upi) document.getElementById('compUpi').value = data.upi;
-                }
-            } catch (error) {
-                console.error("Error fetching company details:", error);
+    // --- 1. LOAD DATA ON MOUNT ---
+    window.loadCompanyData = async function() {
+
+        try {
+
+            const docSnap = await getDoc(companyDocRef);
+
+            if (docSnap.exists()) {
+
+                const data = docSnap.data();
+
+                if (data.name)
+                    document.getElementById('compName').value = data.name;
+
+                if (data.tagline)
+                    document.getElementById('compTagline').value = data.tagline;
+
+                if (data.address)
+                    document.getElementById('compAddress').value = data.address;
+
+                if (data.branches)
+                    document.getElementById('compBranches').value = data.branches;
+
+                if (data.phone1)
+                    document.getElementById('compPhone1').value = data.phone1;
+
+                if (data.phone2)
+                    document.getElementById('compPhone2').value = data.phone2;
+
+                if (data.email)
+                    document.getElementById('compEmail').value = data.email;
+
+                if (data.website)
+                    document.getElementById('compWebsite').value = data.website;
+
+                if (data.accName)
+                    document.getElementById('compAccName').value = data.accName;
+
+                if (data.accNo)
+                    document.getElementById('compAccNo').value = data.accNo;
+
+                if (data.ifsc)
+                    document.getElementById('compIfsc').value = data.ifsc;
+
+                if (data.upi)
+                    document.getElementById('compUpi').value = data.upi;
             }
 
-            // ROLE-BASED ACCESS CONTROL (RBAC)
-            // If the user is NOT an admin, hide the edit button so they cannot modify the profile
-            if (window.currentUser && window.currentUser.role !== 'admin') {
-                const editBtn = document.getElementById('editCompanyBtn');
-                if(editBtn) editBtn.style.display = 'none';
-            }
-        };
+        } catch (error) {
 
-        window.loadCompanyData();
+            console.error(
+                "Error fetching company details:",
+                error
+            );
 
-        // --- 2. TOGGLE EDIT MODE ---
-        window.toggleEditMode = function() {
-            const inputs = document.querySelectorAll('#company-overview-form .readonly-input');
-            const saveActions = document.getElementById('save-actions');
-            
-            let isEditing = false;
-            
-            inputs.forEach(input => {
-                input.classList.toggle('editable');
-                if (input.hasAttribute('readonly')) {
-                    input.removeAttribute('readonly');
-                    isEditing = true;
-                } else {
-                    input.setAttribute('readonly', true);
-                }
-            });
+        }
 
-            saveActions.style.display = isEditing ? 'block' : 'none';
-        };
+        // Admin access
+        if (
+            window.currentUser &&
+            window.currentUser.role !== 'admin'
+        ) {
 
-        // --- 3. SAVE DATA TO FIREBASE ---
-        window.saveCompanyDetails = async function() {
-            const btn = document.getElementById('saveCompanyBtn');
-            btn.innerText = "Saving...";
-            btn.disabled = true;
+            const editBtn =
+                document.getElementById('editCompanyBtn');
 
-            const payload = {
-                name: document.getElementById('compName').value,
-                tagline: document.getElementById('compTagline').value,
-                address: document.getElementById('compAddress').value,
-                branches: document.getElementById('compBranches').value,
-                phone1: document.getElementById('compPhone1').value,
-                phone2: document.getElementById('compPhone2').value,
-                email: document.getElementById('compEmail').value,
-                website: document.getElementById('compWebsite').value,
-                accName: document.getElementById('compAccName').value,
-                accNo: document.getElementById('compAccNo').value,
-                ifsc: document.getElementById('compIfsc').value,
-                upi: document.getElementById('compUpi').value,
-                updatedAt: new Date()
-            };
+            if (editBtn)
+                editBtn.style.display = 'none';
+        }
+    };
 
-            try {
-                // Using merge: true so it creates the document if it doesn't exist, or updates it if it does
-                await setDoc(companyDocRef, payload, { merge: true });
-                alert("Company details updated successfully!");
-                window.toggleEditMode(); // Automatically exit edit mode
-            } catch (error) {
-                console.error("Firebase Save Error:", error);
-                alert("Failed to save changes. Please check your connection or database rules.");
+    window.loadCompanyData();
+
+
+    // --- 2. TOGGLE EDIT MODE ---
+
+    window.toggleEditMode = function() {
+
+        const inputs =
+            document.querySelectorAll(
+                '#company-overview-form .readonly-input'
+            );
+
+        const saveActions =
+            document.getElementById('save-actions');
+
+        let isEditing = false;
+
+        inputs.forEach(input => {
+
+            input.classList.toggle('editable');
+
+            if (input.hasAttribute('readonly')) {
+
+                input.removeAttribute('readonly');
+                isEditing = true;
+
+            } else {
+
+                input.setAttribute('readonly', true);
+
             }
 
-            btn.innerText = "Save Changes";
-            btn.disabled = false;
+        });
+
+        saveActions.style.display =
+            isEditing ? 'block' : 'none';
+    };
+
+
+    // --- 3. SAVE DATA TO FIREBASE ---
+
+    window.saveCompanyDetails = async function() {
+
+        const btn =
+            document.getElementById('saveCompanyBtn');
+
+        btn.innerText = "Saving...";
+        btn.disabled = true;
+
+        const payload = {
+
+            name:
+                document.getElementById('compName').value,
+
+            tagline:
+                document.getElementById('compTagline').value,
+
+            address:
+                document.getElementById('compAddress').value,
+
+            branches:
+                document.getElementById('compBranches').value,
+
+            phone1:
+                document.getElementById('compPhone1').value,
+
+            phone2:
+                document.getElementById('compPhone2').value,
+
+            email:
+                document.getElementById('compEmail').value,
+
+            website:
+                document.getElementById('compWebsite').value,
+
+            accName:
+                document.getElementById('compAccName').value,
+
+            accNo:
+                document.getElementById('compAccNo').value,
+
+            ifsc:
+                document.getElementById('compIfsc').value,
+
+            upi:
+                document.getElementById('compUpi').value,
+
+            updatedAt: new Date()
         };
 
-    </script>
+        try {
+
+            await setDoc(
+                companyDocRef,
+                payload,
+                { merge: true }
+            );
+
+            alert(
+                "Company details updated successfully!"
+            );
+
+            window.toggleEditMode();
+
+        } catch (error) {
+
+            console.error(
+                "Firebase Save Error:",
+                error
+            );
+
+            alert(
+                "Failed to save changes. Please check your connection or database rules."
+            );
+
+        }
+
+        btn.innerText = "Save Changes";
+        btn.disabled = false;
+    };
+
+</script>
 </div>
 
 </body>
