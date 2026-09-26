@@ -1,32 +1,97 @@
-<style>
-    .bottom-nav { 
-        display: flex; justify-content: space-around; background: var(--surface); 
-        border-top: 1px solid var(--border); padding: 10px 0; 
-        padding-bottom: calc(10px + env(safe-area-inset-bottom)); 
-        position: fixed; bottom: 0; width: 100%; z-index: 900; 
-    }
-    .bottom-nav-item { 
-        display: flex; flex-direction: column; align-items: center; 
-        color: var(--text-muted); text-decoration: none; 
-        font-size: 10px; font-weight: 600; cursor: pointer; 
-        transition: color 0.2s ease;
-    }
-    .bottom-nav-item:hover { color: var(--text-main); }
-    .bottom-nav-item.active { color: var(--primary); }
-    .bottom-nav-icon { font-size: 24px; margin-bottom: 4px; }
-</style>
+/* =========================================================
+   BOTTOM NAVIGATION — SIMPLE COMPACT STYLE
+   ========================================================= */
 
-<div class="bottom-nav">
-    <div class="bottom-nav-item active" onclick="window.switchView('view-dashboard', this)">
-        <span class="material-symbols-rounded bottom-nav-icon">dashboard</span> Home
-    </div>
-    <div class="bottom-nav-item" onclick="window.switchView('view-clients', this)">
-        <span class="material-symbols-rounded bottom-nav-icon">group</span> Clients
-    </div>
-    <div class="bottom-nav-item" onclick="window.switchView('view-appointments', this)">
-        <span class="material-symbols-rounded bottom-nav-icon">calendar_month</span> Sales
-    </div>
-    <div class="bottom-nav-item" onclick="window.toggleSidebar()">
-        <span class="material-symbols-rounded bottom-nav-icon">menu</span> Menu
-    </div>
-</div>
+.bottom-nav {
+  flex-shrink: 0;
+  width: 100%;
+  height: calc(64px + env(safe-area-inset-bottom, 0px));
+  padding: 8px 0 env(safe-area-inset-bottom, 0px);
+
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+
+  background: var(--m3-surface);
+  border-top: 1px solid var(--m3-surface-container);
+
+  z-index: 50;
+}
+
+.nav-item {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  background: transparent;
+  border: none;
+
+  color: var(--m3-text-muted);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  cursor: pointer;
+  padding: 2px 0;
+
+  transition:
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.nav-item:hover {
+  color: var(--m3-text-main);
+}
+
+.nav-item:active {
+  transform: scale(0.94);
+}
+
+/* Icon */
+.nav-icon-container {
+  width: auto;
+  height: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 0;
+
+  background: transparent !important;
+
+  color: inherit;
+
+  transition: color 0.2s ease;
+}
+
+.nav-icon-container svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 2;
+}
+
+/* Active item */
+.nav-item.active {
+  color: var(--m3-primary);
+  font-weight: 600;
+}
+
+.nav-item.active .nav-icon-container {
+  background: transparent !important;
+  color: var(--m3-primary);
+}
+
+/* Label */
+.nav-label {
+  font-size: 10px;
+  line-height: 13px;
+  font-weight: 600;
+}
