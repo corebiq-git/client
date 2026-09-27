@@ -145,6 +145,40 @@
         }
         @media (min-width: 768px) { .input-group { grid-template-columns: 1fr 1fr; } }
 
+        /* --- Segmented Control (Category Select) --- */
+        .category-toggle {
+            display: flex;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+        .category-toggle label {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .category-toggle input[type="radio"] {
+            display: none;
+        }
+        .category-toggle span {
+            display: block;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: 0.2s ease;
+        }
+        .category-toggle input[type="radio"]:checked + span {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
         /* --- File Upload Area --- */
         .file-upload-wrapper {
             border: 2px dashed var(--border);
@@ -218,6 +252,7 @@
         .saas-table tbody tr:hover { background: var(--surface-soft); }
         
         .badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--primary-light); color: var(--primary-dark); }
+        .badge-business { background: #FFF7ED; color: #EA580C; }
     </style>
 
     <div class="section-title">
@@ -241,35 +276,40 @@
     <div id="tab-upload" class="tab-content active">
         <div class="form-card">
             <form id="doc-upload-form">
+                
+                <!-- Category Toggle -->
+                <div class="category-toggle">
+                    <label>
+                        <input type="radio" name="docCategory" value="Personal Docs" checked onchange="updateDocOptions()">
+                        <span>Personal Docs</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="docCategory" value="Business Docs" onchange="updateDocOptions()">
+                        <span>Business Docs</span>
+                    </label>
+                </div>
+
                 <div class="input-group">
+                    <div>
+                        <label class="form-label">Doc Name</label>
+                        <select id="docNameSelect" class="form-select" required onchange="handleDocNameChange()">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
+
                     <div>
                         <label class="form-label">Document ID (Auto)</label>
                         <input type="text" id="docIdInput" class="form-input" readonly>
                     </div>
+
+                    <div>
+                        <label class="form-label">Created At</label>
+                        <input type="text" id="createdAt" class="form-input" readonly>
+                    </div>
                     
                     <div>
-                        <label class="form-label">Document Type</label>
-                        <select id="docTypeSelect" class="form-select" required onchange="updatePreviewName()">
-                            <option value="">Select Document Type...</option>
-                            <optgroup label="Personal or Partners Docs">
-                                <option value="Adhar No">Adhar No</option>
-                                <option value="Pan No">Pan No</option>
-                                <option value="Photo">Photo (Upload Only)</option>
-                            </optgroup>
-                            <optgroup label="Business Docs">
-                                <option value="Rental Agreement">Rental Agreement</option>
-                                <option value="Firm Deed_LLP_MOI_AOI">Firm Deed, LLP Doc, MOI, AOI etc</option>
-                                <option value="Pan of Entity">Pan of Entity</option>
-                                <option value="GST Certificate">GST Certificate</option>
-                                <option value="Trade Licence">Trade Licence</option>
-                                <option value="Udhyam">Udhyam</option>
-                                <option value="IEC">IEC</option>
-                                <option value="Labour Registration Certificate">Labour Registration Certificate</option>
-                                <option value="ITR Statements">ITR Statements</option>
-                                <option value="Trademark Application Certificate">Trademark Application Certificate</option>
-                                <option value="Others">Others</option>
-                            </optgroup>
-                        </select>
+                        <label class="form-label">Updated At</label>
+                        <input type="text" id="updatedAt" class="form-input" readonly>
                     </div>
                 </div>
 
@@ -306,15 +346,17 @@
                     <thead>
                         <tr>
                             <th>Doc ID</th>
-                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Doc Name</th>
                             <th>File Name</th>
-                            <th>Date</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
                             <th style="text-align: right;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="docsTableBody">
                         <!-- Populated via JS -->
-                        <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading documents...</td></tr>
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading documents...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -324,30 +366,87 @@
     <script type="module">
         import { db } from "./firebase-config.js";
         import { collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-        // Note: For actual file storage, Firebase Storage (uploadBytes, getDownloadURL) should be imported.
 
         const docsRef = collection(db, "business_docs");
         let selectedFileExtension = "";
         let libraryDocs = [];
 
-        // --- Tab Switching ---
-        window.switchDocTab = function(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.doc-tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+        // Data Models
+        const docOptions = {
+            "Personal Docs": ["Adhar", "Pan", "Photo"],
+            "Business Docs": [
+                "Rental Agreement", 
+                "Firm Deed, MOI, AOI", 
+                "Pan", 
+                "Tan", 
+                "GST Certificate", 
+                "Trade Licence", 
+                "Udhyam", 
+                "IEC", 
+                "Labour Registration Certificate", 
+                "ITR Statements", 
+                "TM Application Akn", 
+                "Other"
+            ]
+        };
 
-            if (tabId === 'tab-library') loadDocsLibrary();
-            if (tabId === 'tab-upload') generateDocId();
+        // --- Initialization ---
+        window.initForm = function() {
+            setDates();
+            updateDocOptions();
+        };
+
+        function setDates() {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const yyyy = today.getFullYear();
+            const formattedDate = `${dd}-${mm}-${yyyy}`;
+            
+            document.getElementById('createdAt').value = formattedDate;
+            document.getElementById('updatedAt').value = formattedDate;
+        }
+
+        window.updateDocOptions = function() {
+            const category = document.querySelector('input[name="docCategory"]:checked').value;
+            const select = document.getElementById('docNameSelect');
+            
+            select.innerHTML = '<option value="">Select Document Name...</option>';
+            docOptions[category].forEach(opt => {
+                const optionElement = document.createElement('option');
+                optionElement.value = opt;
+                optionElement.innerText = opt;
+                select.appendChild(optionElement);
+            });
+            
+            // Reset ID & file preview
+            document.getElementById('docIdInput').value = "";
+            updatePreviewName();
+        };
+
+        window.handleDocNameChange = function() {
+            generateDocId();
+            updatePreviewName();
         };
 
         // --- Generate Auto ID ---
         function generateDocId() {
+            const docName = document.getElementById('docNameSelect').value;
+            if (!docName) {
+                document.getElementById('docIdInput').value = "";
+                return;
+            }
+
+            // Get first word/abbreviation for prefix
+            const prefix = docName.split(/[, ]+/)[0].toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
             const date = new Date();
             const yy = String(date.getFullYear()).slice(-2);
             const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
             const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const newId = `DOCBIQ-${yy}${mm}-${random}`;
+            
+            const newId = `${prefix}_BIQ${yy}${mm}${dd}_${random}`;
             document.getElementById('docIdInput').value = newId;
             return newId;
         }
@@ -364,35 +463,53 @@
         };
 
         window.updatePreviewName = function() {
-            const typeSelect = document.getElementById('docTypeSelect').value;
+            const docName = document.getElementById('docNameSelect').value;
             const display = document.getElementById('fileNameDisplay');
             
-            if (selectedFileExtension && typeSelect) {
+            if (selectedFileExtension && docName) {
                 const date = new Date();
                 const yy = String(date.getFullYear()).slice(-2);
                 const mm = String(date.getMonth() + 1).padStart(2, '0');
                 const dd = String(date.getDate()).padStart(2, '0');
                 
-                // Format type name: remove spaces/special chars
-                const safeType = typeSelect.replace(/[^a-zA-Z0-9]/g, '');
-                const newFileName = `${safeType}_${yy}${mm}${dd}.${selectedFileExtension}`;
+                // Format name: remove spaces/special chars
+                const safeName = docName.replace(/[^a-zA-Z0-9]/g, '');
+                const newFileName = `${safeName}_${yy}${mm}${dd}.${selectedFileExtension}`;
                 
                 display.innerText = newFileName;
-                display.dataset.filename = newFileName; // Store for upload
+                display.dataset.filename = newFileName; 
             } else if (selectedFileExtension) {
-                display.innerText = "Select Document Type to generate name...";
+                display.innerText = "Select Document Name to generate format...";
+                display.dataset.filename = "";
             }
+        };
+
+        // --- Tab Switching ---
+        window.switchDocTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.doc-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (tabId === 'tab-library') loadDocsLibrary();
+            if (tabId === 'tab-upload') initForm();
         };
 
         // --- Upload Form Submit ---
         document.getElementById('doc-upload-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('uploadBtn');
+            const category = document.querySelector('input[name="docCategory"]:checked').value;
+            const docName = document.getElementById('docNameSelect').value;
             const docId = document.getElementById('docIdInput').value;
-            const docType = document.getElementById('docTypeSelect').value;
+            const createdAt = document.getElementById('createdAt').value;
+            const updatedAt = document.getElementById('updatedAt').value;
             const fileInput = document.getElementById('docFileInput');
             const newFileName = document.getElementById('fileNameDisplay').dataset.filename;
 
+            if (!docName) {
+                alert("Please select a Document Name."); return;
+            }
             if (!fileInput.files[0]) {
                 alert("Please attach a file."); return;
             }
@@ -401,15 +518,14 @@
             btn.disabled = true;
 
             try {
-                // MOCK UPLOAD TO FIRESTORE (Metadata only for demo)
-                // In production, upload `fileInput.files[0]` to Firebase Storage here
-                
                 const docData = {
                     docId: docId,
-                    type: docType,
+                    category: category,
+                    docName: docName,
                     fileName: newFileName,
-                    uploadedAt: new Date().toISOString(),
-                    // mockUrl: "https://storage.googleapis.com/..."
+                    createdAt: createdAt,
+                    updatedAt: updatedAt
+                    // In production, add download URL here after Firebase Storage upload
                 };
 
                 await setDoc(doc(docsRef, docId), docData);
@@ -421,7 +537,7 @@
                 document.getElementById('selectedFileCard').classList.remove('active');
                 document.getElementById('uploadWrapper').style.display = 'block';
                 selectedFileExtension = "";
-                generateDocId();
+                initForm();
 
             } catch (err) {
                 console.error("Upload error:", err);
@@ -435,7 +551,7 @@
         // --- Load Library ---
         window.loadDocsLibrary = async function() {
             const tbody = document.getElementById('docsTableBody');
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Loading...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
             
             try {
                 const snap = await getDocs(docsRef);
@@ -446,30 +562,32 @@
                     const data = docSnap.data();
                     libraryDocs.push(data);
                     
-                    const dateFormatted = new Date(data.uploadedAt).toLocaleDateString('en-GB');
+                    const catBadgeClass = data.category === 'Business Docs' ? 'badge badge-business' : 'badge';
 
                     html += `
                         <tr>
                             <td style="font-weight:700; font-size:12px;">${data.docId}</td>
-                            <td><span class="badge">${data.type}</span></td>
+                            <td><span class="${catBadgeClass}">${data.category}</span></td>
+                            <td>${data.docName}</td>
                             <td style="color:var(--primary); font-weight:600;">${data.fileName}</td>
-                            <td>${dateFormatted}</td>
+                            <td>${data.createdAt}</td>
+                            <td>${data.updatedAt}</td>
                             <td style="text-align:right;">
                                 <div style="display:inline-flex; gap:4px;">
-                                    <button class="btn-icon" title="View" onclick="viewDoc('${data.docId}')"><span class="material-symbols-rounded">visibility</span></button>
-                                    <button class="btn-icon" title="WhatsApp" onclick="shareDoc('${data.docId}', 'whatsapp')"><span class="material-symbols-rounded" style="color:#10B981;">forum</span></button>
-                                    <button class="btn-icon" title="Email" onclick="shareDoc('${data.docId}', 'email')"><span class="material-symbols-rounded">mail</span></button>
-                                    <button class="btn-icon" title="Export to Drive" onclick="exportToDrive('${data.docId}', this)"><span class="material-symbols-rounded" style="color:var(--primary);">add_to_drive</span></button>
+                                    <button type="button" class="btn-icon" title="View" onclick="viewDoc('${data.docId}')"><span class="material-symbols-rounded">visibility</span></button>
+                                    <button type="button" class="btn-icon" title="WhatsApp" onclick="shareDoc('${data.docId}', 'whatsapp')"><span class="material-symbols-rounded" style="color:#10B981;">forum</span></button>
+                                    <button type="button" class="btn-icon" title="Email" onclick="shareDoc('${data.docId}', 'email')"><span class="material-symbols-rounded">mail</span></button>
+                                    <button type="button" class="btn-icon" title="Export to Drive" onclick="exportToDrive('${data.docId}', this)"><span class="material-symbols-rounded" style="color:var(--primary);">add_to_drive</span></button>
                                 </div>
                             </td>
                         </tr>
                     `;
                 });
 
-                tbody.innerHTML = html || '<tr><td colspan="5" style="text-align:center;">No documents uploaded yet.</td></tr>';
+                tbody.innerHTML = html || '<tr><td colspan="7" style="text-align:center;">No documents uploaded yet.</td></tr>';
             } catch (err) {
                 console.error("Error loading docs:", err);
-                tbody.innerHTML = `<tr><td colspan="5" style="color:var(--danger); text-align:center;">Failed to load documents.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="color:var(--danger); text-align:center;">Failed to load documents.</td></tr>`;
             }
         };
 
@@ -482,13 +600,12 @@
             const docData = libraryDocs.find(d => d.docId === id);
             if(!docData) return;
 
-            const text = `Please find the attached document: ${docData.type}\nFile Name: ${docData.fileName}\nRef ID: ${docData.docId}`;
+            const text = `Please find the attached document: ${docData.docName}\nFile Name: ${docData.fileName}\nRef ID: ${docData.docId}`;
             
             if (method === 'whatsapp') {
-                // Mobile WhatsApp intent
                 window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
             } else if (method === 'email') {
-                window.location.href = `mailto:?subject=${encodeURIComponent(docData.type + ' Document')}&body=${encodeURIComponent(text)}`;
+                window.location.href = `mailto:?subject=${encodeURIComponent(docData.docName + ' Document')}&body=${encodeURIComponent(text)}`;
             }
         };
 
@@ -497,7 +614,6 @@
             btnElement.innerHTML = '<span class="material-symbols-rounded">sync</span>';
             btnElement.style.pointerEvents = 'none';
             
-            // Mock Drive Export
             setTimeout(() => {
                 btnElement.innerHTML = '<span class="material-symbols-rounded" style="color:var(--success);">check_circle</span>';
                 setTimeout(() => {
@@ -507,8 +623,8 @@
             }, 1500);
         };
 
-        // Init Form ID
-        generateDocId();
+        // Initialization
+        initForm();
 
     </script>
 </div>
