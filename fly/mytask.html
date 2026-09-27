@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - My Tasks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+</head>
+<body>
+
+<div class="module-container" id="mytask-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --success: #10B981;
+            --success-soft: #ECFDF5;
+            --warning: #F59E0B;
+            --warning-soft: #FFFBEB;
+            --danger: #EF4444;
+            --danger-soft: #FEF2F2;
+        }
+
+        #mytask-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 800px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 24px; 
+            font-weight: 800; 
+            margin-bottom: 24px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            letter-spacing: -0.5px;
+        }
+
+        .title-left {
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+        }
+
+        .form-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+        }
+
+        /* --- Input Area --- */
+        .task-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        @media (min-width: 600px) {
+            .task-input-row {
+                display: flex;
+                gap: 12px;
+                align-items: flex-end;
+            }
+            .task-input-main { flex: 1; }
+            .task-input-date { width: 200px; }
+            .task-input-action { flex-shrink: 0; }
+        }
+
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            background: #FAFAFA; 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* --- Buttons --- */
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); 
+            color: white; 
+            border: none; 
+            padding: 14px 24px; 
+            border-radius: 999px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: 0.2s ease; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--shadow-md);
+            height: 50px;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .btn-icon { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 50%; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center;}
+        .btn-icon:hover { background: var(--danger-soft); color: var(--danger); }
+
+        /* --- Task List --- */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            transition: 0.2s ease;
+        }
+
+        .task-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .task-item.completed {
+            background: var(--surface-soft);
+            opacity: 0.7;
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        /* Checkbox */
+        .task-checkbox {
+            display: none;
+        }
+        
+        .task-check-custom {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s ease;
+            flex-shrink: 0;
+            color: white;
+        }
+
+        .task-item:hover .task-check-custom {
+            border-color: var(--primary);
+        }
+
+        .task-checkbox:checked + .task-check-custom {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-checkbox:checked + .task-check-custom::after {
+            content: "done";
+            font-family: 'Material Symbols Rounded';
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        /* Task Content */
+        .task-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .task-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            word-break: break-word;
+            transition: 0.2s ease;
+        }
+
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .task-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-normal { background: var(--surface-soft); color: var(--text-muted); border: 1px solid var(--border); }
+        .badge-overdue { background: var(--danger-soft); color: var(--danger); }
+        .badge-today { background: var(--warning-soft); color: var(--warning); }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state .material-symbols-rounded {
+            font-size: 48px;
+            color: var(--border);
+            margin-bottom: 12px;
+        }
+
+        /* Tabs for filtering */
+        .task-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+    </style>
+
+    <div class="section-title">
+        <div class="title-left">
+            <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">task_alt</span>
+            My Tasks & Reminders
+        </div>
+    </div>
+
+    <!-- ADD TASK FORM -->
+    <div class="form-card">
+        <form id="task-form">
+            <div class="task-input-wrapper">
+                <div class="task-input-row">
+                    <div class="task-input-main">
+                        <label class="form-label">Task Description</label>
+                        <input type="text" id="taskTitle" class="form-input" placeholder="What do you need to do?" required autocomplete="off">
+                    </div>
+                    
+                    <div class="task-input-date">
+                        <label class="form-label">Due Date & Time</label>
+                        <input type="datetime-local" id="taskDueDate" class="form-input" required>
+                    </div>
+
+                    <div class="task-input-action">
+                        <button type="submit" class="btn-primary" id="addTaskBtn">
+                            <span class="material-symbols-rounded">add</span> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- TASK LIST -->
+    <div class="form-card">
+        
+        <div class="task-filters">
+            <button class="filter-btn active" onclick="setFilter('pending', this)">Pending</button>
+            <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
+        </div>
+
+        <div class="task-list" id="taskListContainer">
+            <div class="empty-state">
+                <span class="material-symbols-rounded">sync</span>
+                <p style="font-weight: 600; color: var(--text-dark);">Loading tasks...</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, query, where, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // State
+        const currentUserEmail = (window.currentUser && window.currentUser.email) ? window.currentUser.email.toLowerCase() : null;
+        let currentFilter = 'pending';
+        let unsubscribeTasks = null;
+        
+        // DOM Elements
+        const taskForm = document.getElementById('task-form');
+        const titleInput = document.getElementById('taskTitle');
+        const dateInput = document.getElementById('taskDueDate');
+        const taskListContainer = document.getElementById('taskListContainer');
+        const addBtn = document.getElementById('addTaskBtn');
+
+        // Set default datetime to today + 1 hour
+        window.setDefaultDateTime = function() {
+            const now = new Date();
+            now.setHours(now.getHours() + 1);
+            now.setMinutes(0); // round to top of hour
+            // Format for datetime-local: YYYY-MM-DDThh:mm
+            const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+            const localISOTime = (new Date(now - tzoffset)).toISOString().slice(0, 16);
+            dateInput.value = localISOTime;
+        };
+        
+        setDefaultDateTime();
+
+        // --- FILTER SWITCHING ---
+        window.setFilter = function(filter, btnElement) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            loadTasks();
+        };
+
+        // --- DETERMINE BADGE BASED ON DATE ---
+        function getStatusBadge(dueDateStr, isCompleted) {
+            if (isCompleted) return '';
+            if (!dueDateStr) return '';
+
+            const dueDate = new Date(dueDateStr);
+            const now = new Date();
+            
+            // Check Overdue
+            if (dueDate < now) {
+                return `<span class="task-badge badge-overdue"><span class="material-symbols-rounded" style="font-size:12px;">error</span> Overdue</span>`;
+            }
+
+            // Check Due Today
+            if (dueDate.toDateString() === now.toDateString()) {
+                return `<span class="task-badge badge-today"><span class="material-symbols-rounded" style="font-size:12px;">schedule</span> Due Today</span>`;
+            }
+
+            // Normal formatting for future dates
+            const formattedDate = dueDate.toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+            return `<span class="task-badge badge-normal"><span class="material-symbols-rounded" style="font-size:12px;">event</span> ${formattedDate}</span>`;
+        }
+
+        // --- LOAD TASKS ---
+        window.loadTasks = function() {
+            if (!currentUserEmail) {
+                taskListContainer.innerHTML = '<div class="empty-state"><span class="material-symbols-rounded">lock</span><p>Authentication required to view tasks.</p></div>';
+                return;
+            }
+
+            if (unsubscribeTasks) {
+                unsubscribeTasks();
+            }
+
+            const tasksRef = collection(db, "personal_tasks");
+            const isCompletedTarget = (currentFilter === 'completed');
+            
+            const q = query(
+                tasksRef, 
+                where("userEmail", "==", currentUserEmail),
+                where("completed", "==", isCompletedTarget),
+                orderBy("dueDate", "asc")
+            );
+
+            unsubscribeTasks = onSnapshot(q, (snapshot) => {
+                taskListContainer.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    taskListContainer.innerHTML = `
+                        <div class="empty-state">
+                            <span class="material-symbols-rounded">${isCompletedTarget ? 'inventory_2' : 'done_all'}</span>
+                            <p style="font-weight: 600; color: var(--text-dark);">${isCompletedTarget ? 'No completed tasks yet.' : 'You are all caught up!'}</p>
+                            <p style="font-size: 13px;">${isCompletedTarget ? '' : 'Add a new task above.'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                snapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const taskId = docSnap.id;
+                    const badgeHtml = getStatusBadge(data.dueDate, data.completed);
+                    
+                    const html = `
+                        <div class="task-item ${data.completed ? 'completed' : ''}">
+                            <label>
+                                <input type="checkbox" class="task-checkbox" ${data.completed ? 'checked' : ''} onchange="window.toggleTaskStatus('${taskId}', this.checked)">
+                                <div class="task-check-custom"></div>
+                            </label>
+                            
+                            <div class="task-content">
+                                <div class="task-title">${data.title}</div>
+                                <div class="task-meta">
+                                    ${badgeHtml}
+                                </div>
+                            </div>
+
+                            <button class="btn-icon" onclick="window.deleteTask('${taskId}')" title="Delete Task">
+                                <span class="material-symbols-rounded">delete</span>
+                            </button>
+                        </div>
+                    `;
+                    taskListContainer.insertAdjacentHTML('beforeend', html);
+                });
+            }, (error) => {
+                console.error("Error loading tasks:", error);
+                taskListContainer.innerHTML = '<div class="empty-state"><span class="material-symbols-rounded">error</span><p>Error loading tasks.</p></div>';
+            });
+        };
+
+        // --- ADD TASK ---
+        taskForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUserEmail) return;
+
+            const title = titleInput.value.trim();
+            const dueDate = dateInput.value;
+
+            if (!title || !dueDate) return;
+
+            addBtn.innerHTML = '<span class="material-symbols-rounded">sync</span>';
+            addBtn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "personal_tasks"), {
+                    userEmail: currentUserEmail,
+                    title: title,
+                    dueDate: dueDate,
+                    completed: false,
+                    createdAt: serverTimestamp()
+                });
+                
+                titleInput.value = '';
+                setDefaultDateTime();
+                
+                // Switch to pending view automatically if added successfully
+                if (currentFilter !== 'pending') {
+                    document.querySelector('.filter-btn').click();
+                }
+
+            } catch (err) {
+                console.error("Failed to add task:", err);
+                alert("Failed to save task.");
+            } finally {
+                addBtn.innerHTML = '<span class="material-symbols-rounded">add</span> Add';
+                addBtn.disabled = false;
+            }
+        });
+
+        // --- TOGGLE STATUS ---
+        window.toggleTaskStatus = async function(taskId, isChecked) {
+            try {
+                const taskRef = doc(db, "personal_tasks", taskId);
+                await updateDoc(taskRef, {
+                    completed: isChecked
+                });
+            } catch (err) {
+                console.error("Failed to update task:", err);
+                alert("Failed to update status.");
+            }
+        };
+
+        // --- DELETE TASK ---
+        window.deleteTask = async function(taskId) {
+            if (!confirm("Delete this task?")) return;
+            try {
+                await deleteDoc(doc(db, "personal_tasks", taskId));
+            } catch (err) {
+                console.error("Failed to delete task:", err);
+                alert("Failed to delete task.");
+            }
+        };
+
+        // Init
+        loadTasks();
+
+    </script>
+</div>
+
+</body>
+</html>
