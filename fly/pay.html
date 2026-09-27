@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Secure Payment Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    
+    <!-- QRCode.js Library for dynamic UPI generation -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="public-payment-wrapper">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --success: #10B981;
+            
+            /* Razorpay Brand Color */
+            --razorpay: #0259FC;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .public-payment-wrapper { 
+            width: 100%; 
+            max-width: 900px;
+            margin: 0 auto; 
+        }
+
+        .payment-container {
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .payment-container {
+                flex-direction: row;
+            }
+        }
+
+        /* --- Left Side: Form --- */
+        .payment-form-section {
+            flex: 1.2;
+            padding: 32px 40px;
+            background: var(--surface);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .header-brand img {
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .header-brand .title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input, .form-textarea { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 15px; 
+            color: var(--text-main); 
+            background: var(--surface-soft); 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 20px;
+        }
+        
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .input-readonly {
+            background: transparent;
+            border: 1px dashed var(--border);
+            color: var(--primary-dark);
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        .amount-input-wrapper {
+            position: relative;
+        }
+
+        .amount-input-wrapper::before {
+            content: '₹';
+            position: absolute;
+            left: 16px;
+            top: 45%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .amount-input-wrapper .form-input {
+            padding-left: 36px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* --- Right Side: Payment Methods --- */
+        .payment-methods-section {
+            flex: 1;
+            padding: 32px 40px;
+            background: var(--surface-soft);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .methods-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* QR Code Card */
+        .qr-card {
+            background: var(--surface);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            text-align: center;
+            width: 100%;
+            max-width: 280px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-code-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 16px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .qr-code-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .upi-id-display {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            padding: 8px 16px;
+            background: var(--primary-light);
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .divider {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 10px 0 24px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        /* Razorpay Button */
+        .btn-razorpay {
+            width: 100%;
+            max-width: 280px;
+            background: var(--razorpay);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(2, 89, 252, 0.2);
+            transition: 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-razorpay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(2, 89, 252, 0.3);
+            background: #0248cc;
+        }
+
+        /* Footer Info */
+        .public-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .public-footer strong {
+            color: var(--text-main);
+        }
+
+        /* Mobile specific padding */
+        @media (max-width: 768px) {
+            .payment-form-section, .payment-methods-section {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+
+    <div class="payment-container">
+        
+        <!-- FORM SECTION -->
+        <div class="payment-form-section">
+            <div class="header-brand">
+                <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
+                <div class="title">Secure Checkout</div>
+            </div>
+
+            <form id="public-payment-form">
+                <div>
+                    <label class="form-label">Transaction Reference (TRN)</label>
+                    <input type="text" id="trnNumber" class="form-input input-readonly" readonly>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="payerName" class="form-input" placeholder="Your Name" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Mobile Number</label>
+                        <input type="tel" id="payerMobile" class="form-input" placeholder="+91 XXXXX XXXXX" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="form-label">Payment Towards (Description)</label>
+                    <textarea id="paymentDesc" class="form-textarea" placeholder="Invoice number, service details, etc." required></textarea>
+                </div>
+
+                <div class="amount-input-wrapper">
+                    <label class="form-label">Amount to Pay</label>
+                    <input type="number" id="paymentAmount" class="form-input" placeholder="0.00" step="0.01" required oninput="updateUPIQR()">
+                </div>
+            </form>
+        </div>
+
+        <!-- PAYMENT METHODS SECTION -->
+        <div class="payment-methods-section">
+            <div class="methods-title">Scan & Pay via UPI</div>
+            
+            <div class="qr-card">
+                <div class="qr-code-container" id="qrcode">
+                    <!-- QR Code generated here -->
+                </div>
+                <div class="upi-id-display">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">qr_code_scanner</span>
+                    corebiq@upi
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 12px; font-weight: 500;">
+                    Supports GPay, PhonePe, Paytm, etc.
+                </div>
+            </div>
+
+            <div class="divider">Or pay using Card / Netbanking</div>
+
+            <a href="https://razorpay.me/@corebiq" target="_blank" class="btn-razorpay">
+                <span class="material-symbols-rounded">account_balance_wallet</span>
+                Pay via Razorpay
+            </a>
+            
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 16px; text-align: center;">
+                <span class="material-symbols-rounded" style="font-size: 12px; vertical-align: middle;">lock</span>
+                100% Secure & Encrypted Payment
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Official Corporate Footer -->
+    <div class="public-footer">
+        <strong>COREBIQ PRIVATE LIMITED</strong><br>
+        1st Floor, Shakthi Complex, Chokli, Kannur District, Kerala 670672<br>
+        Questions? Contact us at support@cmfilings.com
+    </div>
+
+    <script>
+        const UPI_ID = "corebiq@upi";
+        const PAYEE_NAME = "COREBIQ";
+        let currentTRN = "";
+        let qrCodeObj = null;
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            generateTRN();
+            initQR();
+        });
+
+        // Generate Transaction Reference Number (TRN-YYMMDD-6DIGITRANDOM)
+        function generateTRN() {
+            const date = new Date();
+            const yy = String(date.getFullYear()).slice(-2);
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            
+            // Generate 6 random alphanumeric characters
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let randomStr = '';
+            for (let i = 0; i < 6; i++) {
+                randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            currentTRN = `TRN-${yy}${mm}${dd}-${randomStr}`;
+            document.getElementById('trnNumber').value = currentTRN;
+        }
+
+        // Initialize QR Code with base UPI string (0 amount)
+        function initQR() {
+            const qrContainer = document.getElementById('qrcode');
+            const upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&tr=${currentTRN}&cu=INR`;
+            
+            qrCodeObj = new QRCode(qrContainer, {
+                text: upiString,
+                width: 200,
+                height: 200,
+                colorDark : "#0F172A",
+                colorLight : "#FFFFFF",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+
+        // Update QR Code dynamically as user types the amount and description
+        function updateUPIQR() {
+            const amountInput = document.getElementById('paymentAmount').value;
+            const descInput = document.getElementById('paymentDesc').value.trim();
+            
+            let upiString = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&tr=${currentTRN}&cu=INR`;
+            
+            if (amountInput && parseFloat(amountInput) > 0) {
+                upiString += `&am=${parseFloat(amountInput).toFixed(2)}`;
+            }
+            
+            if (descInput) {
+                // Truncate description if too long to prevent QR scanning issues
+                const safeDesc = descInput.substring(0, 30);
+                upiString += `&tn=${encodeURIComponent(safeDesc + ' - ' + currentTRN)}`;
+            } else {
+                upiString += `&tn=${encodeURIComponent(currentTRN)}`;
+            }
+
+            if (qrCodeObj) {
+                qrCodeObj.clear();
+                qrCodeObj.makeCode(upiString);
+            }
+        }
+
+        // Add listeners to update QR when description changes too
+        document.getElementById('paymentDesc').addEventListener('input', updateUPIQR);
+
+    </script>
+</div>
+
+</body>
+</html>
