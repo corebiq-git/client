@@ -1,0 +1,172 @@
+<div class="module-container">
+    
+    <!-- DEV HEADER -->
+    <div class="dashboard-topline">
+        <div class="dashboard-topline-left">
+            <div class="dashboard-kicker">
+                <span class="dashboard-kicker-dot" style="background: var(--warning);"></span>
+                SYSTEM ADMINISTRATION
+            </div>
+            <h1 class="dashboard-page-title">Developer Console</h1>
+            <p class="dashboard-page-subtitle">Diagnostics, local storage management, and experimental feature flags.</p>
+        </div>
+    </div>
+
+    <!-- SYSTEM HEALTH & QUICK ACTIONS -->
+    <div class="dash-top-row">
+        
+        <!-- System Health Card -->
+        <div class="dash-card">
+            <div class="card-title">
+                System Health
+                <span class="badge badge-completed" style="font-size: 10px;">ALL SYSTEMS OPERATIONAL</span>
+            </div>
+            <div class="fin-stat-container">
+                <div class="fin-stat success-box">
+                    <div class="fin-stat-info">
+                        <div class="fin-label">Firestore Database</div>
+                        <div class="fin-amount" style="font-size: 20px;">Connected</div>
+                    </div>
+                    <span class="material-symbols-rounded fin-icon">cloud_done</span>
+                </div>
+                <div class="fin-stat" style="background: var(--primary-soft);">
+                    <div class="fin-stat-info">
+                        <div class="fin-label">Active Session ID</div>
+                        <div class="fin-amount" style="font-size: 18px; color: var(--primary-dark);" id="dev-session-id">Checking...</div>
+                    </div>
+                    <span class="material-symbols-rounded fin-icon" style="color: var(--primary-dark);">security</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="dash-card">
+            <div class="card-title">Diagnostic Actions</div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+                
+                <button class="view-module-btn" style="width: 100%; justify-content: space-between; border-radius: var(--radius-lg); height: 52px;" onclick="window.devClearCache()">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <span class="material-symbols-rounded">delete_sweep</span>
+                        Clear Local Cache
+                    </span>
+                    <span class="material-symbols-rounded" style="font-size:18px;">arrow_forward</span>
+                </button>
+
+                <button class="view-module-btn" style="width: 100%; justify-content: space-between; background: var(--warning-soft); color: var(--warning); border-radius: var(--radius-lg); height: 52px;" onclick="window.devForceReload()">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <span class="material-symbols-rounded">refresh</span>
+                        Force Hard Reload
+                    </span>
+                    <span class="material-symbols-rounded" style="font-size:18px;">arrow_forward</span>
+                </button>
+
+                <button class="view-module-btn" style="width: 100%; justify-content: space-between; background: var(--surface-soft); color: var(--text-main); border-radius: var(--radius-lg); height: 52px;" onclick="window.devLogState()">
+                    <span style="display:flex; align-items:center; gap:8px;">
+                        <span class="material-symbols-rounded">terminal</span>
+                        Dump Global State to Console
+                    </span>
+                    <span class="material-symbols-rounded" style="font-size:18px;">arrow_forward</span>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURE FLAGS TABLE -->
+    <div class="dash-table-wrapper">
+        <div class="dash-table-header">
+            <h4 class="dash-table-title">Feature Flags <span>(Experimental)</span></h4>
+            <span class="material-symbols-rounded" style="color: var(--text-muted); font-size: 20px;">flag</span>
+        </div>
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Flag Key</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ui_v2_dashboard</strong></td>
+                        <td>Enable experimental next-gen dashboard charts</td>
+                        <td><span class="badge badge-pending">Disabled</span></td>
+                        <td>
+                            <button style="border: 1px solid var(--border); background: var(--surface); padding: 6px 16px; border-radius: var(--radius-full); cursor: pointer; font-size: 12px; font-weight: 500;" onclick="this.innerText='Toggled'; this.style.background='var(--primary-light)';">
+                                Toggle
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>offline_sync_mode</strong></td>
+                        <td>Allow database writes while device is offline</td>
+                        <td><span class="badge badge-completed">Enabled</span></td>
+                        <td>
+                            <button style="border: 1px solid var(--border); background: var(--surface); padding: 6px 16px; border-radius: var(--radius-full); cursor: pointer; font-size: 12px; font-weight: 500;" onclick="this.innerText='Toggled'; this.style.background='var(--warning-soft)';">
+                                Toggle
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>debug_verbose_logs</strong></td>
+                        <td>Output all API requests to the browser console</td>
+                        <td><span class="badge badge-pending">Disabled</span></td>
+                        <td>
+                            <button style="border: 1px solid var(--border); background: var(--surface); padding: 6px 16px; border-radius: var(--radius-full); cursor: pointer; font-size: 12px; font-weight: 500;" onclick="this.innerText='Toggled'; this.style.background='var(--primary-light)';">
+                                Toggle
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODULE LOGIC -->
+    <script>
+        // Populate active session info if a user is logged in
+        (function initDevModule() {
+            const sessionEl = document.getElementById('dev-session-id');
+            if (sessionEl && window.currentUser) {
+                // Obfuscate the email slightly for the "Session ID" look
+                const emailPrefix = window.currentUser.email.split('@')[0];
+                sessionEl.innerText = `AUTH_${emailPrefix.toUpperCase()}_${Math.floor(Math.random() * 9999)}`;
+            } else if (sessionEl) {
+                sessionEl.innerText = 'NO_ACTIVE_SESSION';
+                sessionEl.style.color = 'var(--danger)';
+            }
+        })();
+
+        // Define dev functions on the window object so inline onclicks can reach them
+        window.devClearCache = function() {
+            if(confirm("Are you sure you want to clear local browser cache? This will log you out.")) {
+                localStorage.clear();
+                sessionStorage.clear();
+                alert("Cache cleared successfully.");
+                if(window.handleLogout) {
+                    window.handleLogout();
+                } else {
+                    window.location.reload();
+                }
+            }
+        };
+
+        window.devForceReload = function() {
+            // Bypass cache reload
+            window.location.href = window.location.pathname + '?v=' + new Date().getTime();
+        };
+
+        window.devLogState = function() {
+            console.group("COREBIQ Global State Dump");
+            console.log("Current User:", window.currentUser || "Null");
+            console.log("Loaded Appointments:", window.allApts || []);
+            console.log("Current Date String:", window.selectedDateStr);
+            console.log("Calendar View:", window.calMonth + 1, "/", window.calYear);
+            console.groupEnd();
+            alert("Global state dumped to browser console. Press F12 to view.");
+        };
+    </script>
+
+</div>
