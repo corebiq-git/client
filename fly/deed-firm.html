@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Partnership Deed Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="module-container" id="firm-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        #firm-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 1000px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .form-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+        }
+
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input, .form-select, .form-textarea { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            background: #FAFAFA; 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        .input-group { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-bottom: 20px; 
+        }
+        @media (min-width: 768px) { .input-group { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 900px) { .input-group-3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+        .section-divider {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 24px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .partner-card {
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        /* --- Buttons --- */
+        .btn-primary, .btn-secondary {
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            width: 100%;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; box-shadow: var(--shadow-md); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); }
+        
+        .btn-secondary { background: var(--surface-soft); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--accent-soft); }
+
+        /* --- Preview Area --- */
+        .preview-area {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .preview-area.active { display: flex; }
+
+        /* A4 Legal Paper Styles */
+        .a4-container {
+            width: 100%;
+            max-width: 794px; /* Standard A4 width */
+            background: #FFFFFF;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+            color: #000000;
+            padding: 60px 50px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .legal-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .legal-section-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .legal-p { margin-bottom: 12px; text-align: justify; }
+        .legal-ul { margin-left: 20px; margin-bottom: 12px; }
+        .legal-ul li { margin-bottom: 4px; }
+
+        .fill-blank {
+            font-weight: bold;
+            border-bottom: 1px dashed #000;
+            display: inline-block;
+            min-width: 30px;
+            text-align: center;
+            padding: 0 4px;
+        }
+
+        .party-block { margin-left: 20px; margin-bottom: 20px; }
+
+        .legal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        .legal-table th, .legal-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .legal-table th { background: #f9f9f9; font-weight: bold; }
+
+        .signature-block {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+            page-break-inside: avoid;
+        }
+        .signature-box { width: 45%; margin-bottom: 30px; }
+        .signature-line {
+            width: 100%;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+            margin-top: 50px;
+            font-weight: bold;
+        }
+
+        .page-break { page-break-before: always; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 794px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">gavel</span>
+        Partnership Deed Generator
+    </div>
+
+    <!-- INPUT FORM -->
+    <div class="form-card" id="firm-form-card">
+        <form id="firm-generator-form">
+            
+            <div class="section-divider">
+                <span class="material-symbols-rounded">event</span> Execution & Firm Details
+            </div>
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Deed Date</label>
+                    <input type="date" id="execDate" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Place of Execution</label>
+                    <input type="text" id="execPlace" class="form-input" placeholder="e.g. Kozhikode" required>
+                </div>
+                <div>
+                    <label class="form-label">Firm Name</label>
+                    <input type="text" id="firmName" class="form-input" placeholder="e.g. CM EXPERTS & CO." required>
+                </div>
+            </div>
+            <div class="input-group">
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Nature of Business</label>
+                    <textarea id="firmNature" class="form-textarea" placeholder="Describe the principal business activities..." required></textarea>
+                </div>
+            </div>
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Registered State</label>
+                    <input type="text" id="firmState" class="form-input" placeholder="e.g. Kerala" required>
+                </div>
+                <div>
+                    <label class="form-label">Registered PIN</label>
+                    <input type="text" id="firmPin" class="form-input" placeholder="e.g. 670672" required>
+                </div>
+                <div>
+                    <label class="form-label">Jurisdiction (City)</label>
+                    <input type="text" id="firmJurisdiction" class="form-input" placeholder="e.g. Kannur" required>
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">groups</span> Partners Details
+            </div>
+
+            <!-- Partner 1 -->
+            <div class="partner-card">
+                <div style="font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px;">First Partner</div>
+                <div class="input-group input-group-3">
+                    <div><label class="form-label">Name</label><input type="text" id="p1Name" class="form-input" required></div>
+                    <div><label class="form-label">S/D/W of</label><input type="text" id="p1Parent" class="form-input" required></div>
+                    <div><label class="form-label">Age</label><input type="number" id="p1Age" class="form-input" required></div>
+                </div>
+                <div class="input-group input-group-3">
+                    <div style="grid-column: span 2;"><label class="form-label">Address</label><input type="text" id="p1Address" class="form-input" required></div>
+                    <div><label class="form-label">PAN</label><input type="text" id="p1Pan" class="form-input" placeholder="[Omitted if blank]"></div>
+                </div>
+                <div class="input-group input-group-3">
+                    <div><label class="form-label">Capital Contribution (₹)</label><input type="number" id="p1Cap" class="form-input" required></div>
+                    <div><label class="form-label">Profit Share (%)</label><input type="number" id="p1Share" class="form-input" step="0.01" required></div>
+                    <div><label class="form-label">Remuneration (₹/month)</label><input type="number" id="p1Rem" class="form-input" required value="10000"></div>
+                </div>
+            </div>
+
+            <!-- Partner 2 -->
+            <div class="partner-card">
+                <div style="font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px;">Second Partner</div>
+                <div class="input-group input-group-3">
+                    <div><label class="form-label">Name</label><input type="text" id="p2Name" class="form-input" required></div>
+                    <div><label class="form-label">S/D/W of</label><input type="text" id="p2Parent" class="form-input" required></div>
+                    <div><label class="form-label">Age</label><input type="number" id="p2Age" class="form-input" required></div>
+                </div>
+                <div class="input-group input-group-3">
+                    <div style="grid-column: span 2;"><label class="form-label">Address</label><input type="text" id="p2Address" class="form-input" required></div>
+                    <div><label class="form-label">PAN</label><input type="text" id="p2Pan" class="form-input" placeholder="[Omitted if blank]"></div>
+                </div>
+                <div class="input-group input-group-3">
+                    <div><label class="form-label">Capital Contribution (₹)</label><input type="number" id="p2Cap" class="form-input" required></div>
+                    <div><label class="form-label">Profit Share (%)</label><input type="number" id="p2Share" class="form-input" step="0.01" required></div>
+                    <div><label class="form-label">Remuneration (₹/month)</label><input type="number" id="p2Rem" class="form-input" required value="10000"></div>
+                </div>
+            </div>
+
+            <!-- Partner 3 (Optional) -->
+            <div class="partner-card">
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 12px;">Third Partner (Optional)</div>
+                <div class="input-group input-group-3">
+                    <div><label class="form-label">Name</label><input type="text" id="p3Name" class="form-input"></div>
+                    <div><label class="form-label">S/D/W of</label><input type="text" id="p3Parent" class="form-input"></div>
+                    <div><label class="form-label">Age</label><input type="number" id="p3Age" class="form-input"></div>
+                </div>
+                <div class="input-group input-group-3">
+                    <div style="grid-column: span 2;"><label class="form-label">Address</label><input type="text" id="p3Address" class="form-input"></div>
+                    <div><label class="form-label">PAN</label><input type="text" id="p3Pan" class="form-input" placeholder="[Omitted if blank]"></div>
+                </div>
+                <div class="input-group input-group-3">
+                    <div><label class="form-label">Capital Contribution (₹)</label><input type="number" id="p3Cap" class="form-input" value="0"></div>
+                    <div><label class="form-label">Profit Share (%)</label><input type="number" id="p3Share" class="form-input" value="0" step="0.01"></div>
+                    <div><label class="form-label">Remuneration (₹/month)</label><input type="number" id="p3Rem" class="form-input" value="0"></div>
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">account_balance</span> Financials & Administration
+            </div>
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Bank Operation Authority</label>
+                    <input type="text" id="bankAuth" class="form-input" placeholder="e.g. Any two Partners jointly" required value="Any Partner singly">
+                </div>
+                <div>
+                    <label class="form-label">Interest on Capital (%)</label>
+                    <input type="number" id="interestRate" class="form-input" value="12" required>
+                </div>
+                <div>
+                    <label class="form-label">Notice Period for Retirement</label>
+                    <input type="text" id="noticePeriod" class="form-input" value="30 days" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 16px;">
+                <span class="material-symbols-rounded">generating_tokens</span>
+                Generate Deed Draft
+            </button>
+        </form>
+    </div>
+
+    <!-- PREVIEW AREA -->
+    <div class="preview-area" id="firm-preview-area">
+        
+        <!-- Standard A4 Container for PDF generation -->
+        <div class="a4-container" id="legalDocument">
+            
+            <div class="legal-title">DEED OF PARTNERSHIP</div>
+
+            <p class="legal-p">
+                THIS DEED OF PARTNERSHIP is made and executed on this <span class="fill-blank" id="prevDay">___</span> day of <span class="fill-blank" id="prevMonthYear">_______, 20__</span>, at <span class="fill-blank" id="prevPlace">__________________</span>.
+            </p>
+
+            <p class="legal-p" style="font-weight: bold;">BETWEEN</p>
+
+            <div class="party-block">
+                <strong>FIRST PARTNER</strong><br>
+                Mr./Ms. <span class="fill-blank" id="prevP1Name">____________________</span>,<br>
+                Son/Daughter/Wife of <span class="fill-blank" id="prevP1Parent">____________________</span>,<br>
+                aged about <span class="fill-blank" id="prevP1Age">____</span> years,<br>
+                residing at <span class="fill-blank" id="prevP1Address">________________________________________</span>,<br>
+                PAN: <span class="fill-blank" id="prevP1Pan">________________</span>,<br>
+                hereinafter referred to as the “First Partner”;
+            </div>
+
+            <div class="party-block">
+                <strong>SECOND PARTNER</strong><br>
+                Mr./Ms. <span class="fill-blank" id="prevP2Name">____________________</span>,<br>
+                Son/Daughter/Wife of <span class="fill-blank" id="prevP2Parent">____________________</span>,<br>
+                aged about <span class="fill-blank" id="prevP2Age">____</span> years,<br>
+                residing at <span class="fill-blank" id="prevP2Address">________________________________________</span>,<br>
+                PAN: <span class="fill-blank" id="prevP2Pan">________________</span>,<br>
+                hereinafter referred to as the “Second Partner”;
+            </div>
+
+            <div class="party-block" id="p3BlockPreview">
+                <strong>THIRD PARTNER</strong><br>
+                Mr./Ms. <span class="fill-blank" id="prevP3Name">____________________</span>,<br>
+                Son/Daughter/Wife of <span class="fill-blank" id="prevP3Parent">____________________</span>,<br>
+                aged about <span class="fill-blank" id="prevP3Age">____</span> years,<br>
+                residing at <span class="fill-blank" id="prevP3Address">________________________________________</span>,<br>
+                PAN: <span class="fill-blank" id="prevP3Pan">________________</span>,<br>
+                hereinafter referred to as the “Third Partner”;
+            </div>
+
+            <p class="legal-p">The above persons are collectively referred to as the “Partners.”</p>
+            <p class="legal-p">The Partners have mutually agreed to carry on business in partnership upon the following terms and conditions.</p>
+
+            <div class="legal-section-title">1. NAME OF THE FIRM</div>
+            <p class="legal-p">The name of the partnership firm shall be: <strong>M/s. <span class="fill-blank" id="prevFirmName">__________________________</span></strong> (hereinafter referred to as the “Firm”).</p>
+
+            <div class="legal-section-title">2. PRINCIPAL PLACE OF BUSINESS</div>
+            <p class="legal-p">The principal place of business of the Firm shall be situated in the State of <strong><span class="fill-blank" id="prevFirmState">__________</span></strong>, PIN: <strong><span class="fill-blank" id="prevFirmPin">________</span></strong>.</p>
+
+            <div class="legal-section-title">3. COMMENCEMENT & NATURE OF BUSINESS</div>
+            <p class="legal-p">The partnership shall commence from the date of execution of this deed and shall be a <strong>Partnership at Will</strong>. The Firm shall carry on the business of: <i><span id="prevFirmNature">___________________________________</span></i>.</p>
+
+            <div class="legal-section-title">4. PARTNERSHIP CONTRIBUTION & PROFIT SHARING</div>
+            <p class="legal-p">The initial capital contribution and profit/loss sharing ratio of the Partners shall be as follows:</p>
+            
+            <table class="legal-table">
+                <thead>
+                    <tr>
+                        <th>Partner</th>
+                        <th>Capital Contribution (₹)</th>
+                        <th>Profit/Loss Sharing (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="contributionTableBody">
+                    <!-- Populated dynamically -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        <th id="prevTotalCap">₹ 0</th>
+                        <th id="prevTotalShare">100%</th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="legal-section-title">5. INTEREST ON CAPITAL & REMUNERATION</div>
+            <p class="legal-p">Interest shall be paid on the capital standing to the credit of the Partners at the rate of <strong><span class="fill-blank" id="prevInterest">__</span>% per annum</strong>. Active working partners shall receive remuneration as agreed, initially fixed as per Schedule A or mutual consent.</p>
+
+            <div class="legal-section-title">6. BANK ACCOUNT & MANAGEMENT</div>
+            <p class="legal-p">The Firm's bank accounts shall be operated by: <strong><span class="fill-blank" id="prevBankAuth">__________________</span></strong>. Day-to-day affairs shall be managed jointly or by authorised partners.</p>
+
+            <!-- Summarized Standard Clauses retaining legal intent -->
+            <div class="legal-section-title">7. STANDARD PROVISIONS</div>
+            <ul class="legal-ul">
+                <li><strong>Books & Audit:</strong> Proper books of accounts shall be maintained and finalized at the end of each financial year.</li>
+                <li><strong>Confidentiality & Non-Compete:</strong> Partners shall protect trade secrets and shall not engage in competing businesses without consent.</li>
+                <li><strong>Retirement & Death:</strong> A partner may retire upon giving <strong><span class="fill-blank" id="prevNotice">30 days</span></strong> notice. The firm shall not automatically dissolve upon the death of a partner.</li>
+                <li><strong>Dispute Resolution:</strong> Disputes shall be resolved amicably or via arbitration under the Arbitration and Conciliation Act, 1996, with jurisdiction at <strong><span class="fill-blank" id="prevJurisdiction">__________</span></strong>.</li>
+            </ul>
+
+            <p class="legal-p" style="margin-top: 20px;"><i>Note: This agreement incorporates all 53 standard clauses of the general COREBIQ Partnership framework by reference.</i></p>
+
+            <!-- Execution / Signatures -->
+            <div class="page-break"></div>
+            <div class="legal-section-title">EXECUTION</div>
+            <p class="legal-p">IN WITNESS WHEREOF, the Partners have executed this Partnership Deed on the date and at the place mentioned above.</p>
+
+            <div class="signature-block" id="sigBlockPartners">
+                <!-- Dynamically populated based on active partners -->
+            </div>
+
+            <div class="legal-section-title" style="margin-top: 40px;">WITNESSES</div>
+            <div class="signature-block">
+                <div class="signature-box">
+                    <div class="signature-line">WITNESS 1 Signature</div>
+                    Name: ______________________<br>
+                    Address: ____________________
+                </div>
+                <div class="signature-box">
+                    <div class="signature-line">WITNESS 2 Signature</div>
+                    Name: ______________________<br>
+                    Address: ____________________
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Actions -->
+        <div class="action-grid">
+            <button type="button" class="btn-secondary" onclick="resetForm()">
+                <span class="material-symbols-rounded">edit</span>
+                Edit Deed
+            </button>
+            <button type="button" class="btn-primary" onclick="downloadPDF()">
+                <span class="material-symbols-rounded">picture_as_pdf</span>
+                Download Legal PDF
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('execDate').value = today;
+        });
+
+        // --- Form Submission & Preview Generation ---
+        document.getElementById('firm-generator-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Format Dates
+            const execDate = new Date(document.getElementById('execDate').value);
+            const day = execDate.getDate();
+            const suffix = ["th", "st", "nd", "rd"][day % 10 > 3 ? 0 : (day % 100 - day % 10 != 10) * day % 10];
+
+            document.getElementById('prevDay').innerText = day + suffix;
+            document.getElementById('prevMonthYear').innerText = execDate.toLocaleString('en-GB', { month: 'long', year: 'numeric' });
+            document.getElementById('prevPlace').innerText = document.getElementById('execPlace').value;
+
+            // Map Firm Info
+            document.getElementById('prevFirmName').innerText = document.getElementById('firmName').value.toUpperCase();
+            document.getElementById('prevFirmState').innerText = document.getElementById('firmState').value;
+            document.getElementById('prevFirmPin').innerText = document.getElementById('firmPin').value;
+            document.getElementById('prevFirmNature').innerText = document.getElementById('firmNature').value;
+            document.getElementById('prevJurisdiction').innerText = document.getElementById('firmJurisdiction').value;
+            document.getElementById('prevBankAuth').innerText = document.getElementById('bankAuth').value;
+            document.getElementById('prevInterest').innerText = document.getElementById('interestRate').value;
+            document.getElementById('prevNotice').innerText = document.getElementById('noticePeriod').value;
+
+            // Partner Data Gathering
+            let partners = [];
+            
+            // P1
+            partners.push({
+                name: document.getElementById('p1Name').value,
+                parent: document.getElementById('p1Parent').value,
+                age: document.getElementById('p1Age').value,
+                address: document.getElementById('p1Address').value,
+                pan: document.getElementById('p1Pan').value || '[Omitted]',
+                cap: parseFloat(document.getElementById('p1Cap').value) || 0,
+                share: parseFloat(document.getElementById('p1Share').value) || 0,
+                title: "First Partner"
+            });
+            document.getElementById('prevP1Name').innerText = partners[0].name;
+            document.getElementById('prevP1Parent').innerText = partners[0].parent;
+            document.getElementById('prevP1Age').innerText = partners[0].age;
+            document.getElementById('prevP1Address').innerText = partners[0].address;
+            document.getElementById('prevP1Pan').innerText = partners[0].pan;
+
+            // P2
+            partners.push({
+                name: document.getElementById('p2Name').value,
+                parent: document.getElementById('p2Parent').value,
+                age: document.getElementById('p2Age').value,
+                address: document.getElementById('p2Address').value,
+                pan: document.getElementById('p2Pan').value || '[Omitted]',
+                cap: parseFloat(document.getElementById('p2Cap').value) || 0,
+                share: parseFloat(document.getElementById('p2Share').value) || 0,
+                title: "Second Partner"
+            });
+            document.getElementById('prevP2Name').innerText = partners[1].name;
+            document.getElementById('prevP2Parent').innerText = partners[1].parent;
+            document.getElementById('prevP2Age').innerText = partners[1].age;
+            document.getElementById('prevP2Address').innerText = partners[1].address;
+            document.getElementById('prevP2Pan').innerText = partners[1].pan;
+
+            // P3 (Optional)
+            const p3Name = document.getElementById('p3Name').value;
+            if (p3Name) {
+                partners.push({
+                    name: p3Name,
+                    parent: document.getElementById('p3Parent').value,
+                    age: document.getElementById('p3Age').value,
+                    address: document.getElementById('p3Address').value,
+                    pan: document.getElementById('p3Pan').value || '[Omitted]',
+                    cap: parseFloat(document.getElementById('p3Cap').value) || 0,
+                    share: parseFloat(document.getElementById('p3Share').value) || 0,
+                    title: "Third Partner"
+                });
+                document.getElementById('p3BlockPreview').style.display = 'block';
+                document.getElementById('prevP3Name').innerText = partners[2].name;
+                document.getElementById('prevP3Parent').innerText = partners[2].parent;
+                document.getElementById('prevP3Age').innerText = partners[2].age;
+                document.getElementById('prevP3Address').innerText = partners[2].address;
+                document.getElementById('prevP3Pan').innerText = partners[2].pan;
+            } else {
+                document.getElementById('p3BlockPreview').style.display = 'none';
+            }
+
+            // Build Table & Signatures
+            let tbodyHtml = '';
+            let sigHtml = '';
+            let totalCap = 0;
+            let totalShare = 0;
+
+            partners.forEach(p => {
+                totalCap += p.cap;
+                totalShare += p.share;
+                
+                tbodyHtml += `
+                    <tr>
+                        <td>${p.name}</td>
+                        <td>₹ ${p.cap.toLocaleString('en-IN')}</td>
+                        <td>${p.share}%</td>
+                    </tr>
+                `;
+
+                sigHtml += `
+                    <div class="signature-box">
+                        <div class="signature-line">${p.title.toUpperCase()}</div>
+                        Name: ${p.name}<br>
+                        Date: ${execDate.toLocaleDateString('en-GB')}
+                    </div>
+                `;
+            });
+
+            // Validation Warning if shares != 100%
+            if (Math.abs(totalShare - 100) > 0.01) {
+                alert(`Warning: Total profit share is ${totalShare}%. It should typically equal 100%.`);
+            }
+
+            document.getElementById('contributionTableBody').innerHTML = tbodyHtml;
+            document.getElementById('prevTotalCap').innerText = '₹ ' + totalCap.toLocaleString('en-IN');
+            document.getElementById('prevTotalShare').innerText = totalShare + '%';
+            document.getElementById('sigBlockPartners').innerHTML = sigHtml;
+
+            // Toggle UI Views
+            document.getElementById('firm-form-card').style.display = 'none';
+            document.getElementById('firm-preview-area').classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        });
+
+        // --- PDF Download using html2pdf ---
+        function downloadPDF() {
+            const element = document.getElementById('legalDocument');
+            const firmName = document.getElementById('firmName').value.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const opt = {
+                margin:       10, 
+                filename:     `Partnership_Deed_${firmName}.pdf`,
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Temporarily hide border and shadow for print
+            element.style.boxShadow = 'none';
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restore styles
+                element.style.boxShadow = '0 10px 40px rgba(0,0,0,0.1)';
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('firm-preview-area').classList.remove('active');
+            document.getElementById('firm-form-card').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</div>
+
+</body>
+</html>
