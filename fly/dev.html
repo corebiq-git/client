@@ -1,2869 +1,915 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               maximum-scale=1.0, viewport-fit=cover">
-
-<meta name="theme-color" content="#F7F8FC">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<title>COREBIQ</title>
-
-<!-- =========================================================
-     COREBIQ
-     Single-file Development App
-     Firebase + Material 3 / Gemini-inspired UI
-     ========================================================= -->
-
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Text:wght@400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet">
-
-
-<style>
-
-/* =========================================================
-   COREBIQ DESIGN SYSTEM
-   Gemini / Material 3 inspired
-   ========================================================= */
-
-:root {
-
-    --primary: #356AE6;
-    --primary-container: #DCE6FF;
-    --on-primary: #FFFFFF;
-
-    --surface: #F7F8FC;
-    --surface-container: #FFFFFF;
-    --surface-container-low: #F1F3F8;
-    --surface-container-high: #E9ECF3;
-
-    --on-surface: #1A1B20;
-    --on-surface-variant: #5F636D;
-
-    --outline: #D7DAE2;
-    --outline-strong: #B9BDC7;
-
-    --success: #188038;
-    --warning: #B06000;
-    --danger: #C5221F;
-
-    --radius-xs: 10px;
-    --radius-sm: 14px;
-    --radius-md: 20px;
-    --radius-lg: 28px;
-    --radius-xl: 34px;
-
-    --header-height: 70px;
-    --bottom-height: 78px;
-
-    --shadow-soft:
-        0 1px 2px rgba(20,24,35,.05),
-        0 8px 28px rgba(20,24,35,.06);
-
-    --font: "Google Sans", "Google Sans Text", Arial, sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html,
-body {
-    margin: 0;
-    width: 100%;
-    min-height: 100%;
-    font-family: var(--font);
-    background: var(--surface);
-    color: var(--on-surface);
-}
-
-body {
-    overflow-x: hidden;
-}
-
-button,
-input,
-select,
-textarea {
-    font: inherit;
-}
-
-button {
-    border: 0;
-    cursor: pointer;
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-
-/* =========================================================
-   APP
-   ========================================================= */
-
-#app {
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-.app-header {
-
-    height: var(--header-height);
-
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    z-index: 100;
-
-    display: flex;
-    align-items: center;
-
-    padding:
-        0 max(18px, env(safe-area-inset-left))
-        0 max(18px, env(safe-area-inset-right));
-
-    background: rgba(247,248,252,.88);
-
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-
-    border-bottom: 1px solid rgba(215,218,226,.65);
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    min-width: 0;
-}
-
-.brand-logo {
-    height: 32px;
-    width: auto;
-
-    max-width: 145px;
-
-    object-fit: contain;
-}
-
-.header-title {
-    display: none;
-
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: -.3px;
-}
-
-.header-spacer {
-    flex: 1;
-}
-
-.header-action {
-
-    width: 44px;
-    height: 44px;
-
-    border-radius: 50%;
-
-    display: grid;
-    place-items: center;
-
-    color: var(--on-surface);
-    background: transparent;
-}
-
-.header-action:active {
-    background: var(--surface-container-high);
-}
-
-.header-user {
-
-    width: 38px;
-    height: 38px;
-
-    border-radius: 50%;
-
-    display: grid;
-    place-items: center;
-
-    background: var(--primary-container);
-    color: var(--primary);
-
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.app-main {
-
-    width: 100%;
-    max-width: 1200px;
-
-    margin: 0 auto;
-
-    padding:
-        calc(var(--header-height) + 18px)
-        16px
-        calc(var(--bottom-height) + 26px);
-
-    flex: 1;
-}
-
-
-/* =========================================================
-   MODULE CONTAINER
-   ========================================================= */
-
-.module-container {
-
-    width: 100%;
-    min-height: calc(100dvh - 130px);
-
-    animation: moduleIn .22s ease;
-}
-
-@keyframes moduleIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* =========================================================
-   PAGE HEADER
-   ========================================================= */
-
-.page-heading {
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 16px;
-
-    margin-bottom: 20px;
-}
-
-.page-heading h1 {
-
-    margin: 0;
-
-    font-size: clamp(26px, 7vw, 34px);
-
-    line-height: 1.1;
-
-    letter-spacing: -.8px;
-
-    font-weight: 600;
-}
-
-.page-heading p {
-
-    margin: 6px 0 0;
-
-    font-size: 14px;
-
-    color: var(--on-surface-variant);
-}
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-.search-box {
-
-    display: flex;
-    align-items: center;
-
-    width: 100%;
-
-    min-height: 54px;
-
-    padding: 0 16px;
-
-    gap: 10px;
-
-    background: var(--surface-container);
-
-    border: 1px solid var(--outline);
-
-    border-radius: 28px;
-
-    margin-bottom: 18px;
-}
-
-.search-box .material-symbols-rounded {
-
-    color: var(--on-surface-variant);
-}
-
-.search-box input {
-
-    flex: 1;
-
-    min-width: 0;
-
-    border: 0;
-    outline: 0;
-
-    background: transparent;
-
-    font-size: 16px;
-
-    color: var(--on-surface);
-}
-
-.search-box input::placeholder {
-    color: var(--on-surface-variant);
-}
-
-
-/* =========================================================
-   GRID
-   ========================================================= */
-
-.card-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
-}
-
-@media (min-width: 700px) {
-
-    .card-grid {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-    }
-}
-
-@media (min-width: 1000px) {
-
-    .card-grid {
-        grid-template-columns:
-            repeat(4, minmax(0, 1fr));
-    }
-}
-
-
-/* =========================================================
-   MATERIAL CARD
-   ========================================================= */
-
-.material-card {
-
-    background: var(--surface-container);
-
-    border: 1px solid rgba(215,218,226,.7);
-
-    border-radius: var(--radius-md);
-
-    padding: 18px;
-
-    box-shadow: var(--shadow-soft);
-
-    transition:
-        transform .18s ease,
-        box-shadow .18s ease;
-}
-
-.material-card:active {
-    transform: scale(.985);
-}
-
-.card-icon {
-
-    width: 46px;
-    height: 46px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 15px;
-
-    background: var(--primary-container);
-
-    color: var(--primary);
-
-    margin-bottom: 15px;
-}
-
-.card-icon .material-symbols-rounded {
-    font-size: 24px;
-}
-
-.material-card h3 {
-
-    margin: 0;
-
-    font-size: 17px;
-
-    font-weight: 600;
-}
-
-.material-card p {
-
-    margin: 5px 0 0;
-
-    font-size: 13px;
-
-    line-height: 1.4;
-
-    color: var(--on-surface-variant);
-}
-
-
-/* =========================================================
-   STAT CARD
-   ========================================================= */
-
-.stats-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
-
-    margin-bottom: 18px;
-}
-
-.stat-card {
-
-    background: var(--surface-container);
-
-    border-radius: var(--radius-md);
-
-    padding: 18px;
-
-    border: 1px solid rgba(215,218,226,.7);
-}
-
-.stat-label {
-
-    font-size: 13px;
-
-    color: var(--on-surface-variant);
-
-    margin-bottom: 7px;
-}
-
-.stat-value {
-
-    font-size: 27px;
-
-    line-height: 1;
-
-    font-weight: 600;
-
-    letter-spacing: -.5px;
-}
-
-
-/* =========================================================
-   LIST
-   ========================================================= */
-
-.list {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 10px;
-}
-
-.list-item {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 13px;
-
-    padding: 14px;
-
-    background: var(--surface-container);
-
-    border: 1px solid rgba(215,218,226,.65);
-
-    border-radius: var(--radius-md);
-}
-
-.avatar {
-
-    width: 44px;
-    height: 44px;
-
-    flex: 0 0 44px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: var(--primary-container);
-
-    color: var(--primary);
-
-    font-weight: 600;
-}
-
-.list-content {
-
-    min-width: 0;
-
-    flex: 1;
-}
-
-.list-title {
-
-    font-size: 15px;
-
-    font-weight: 600;
-
-    white-space: nowrap;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-}
-
-.list-subtitle {
-
-    margin-top: 3px;
-
-    font-size: 13px;
-
-    color: var(--on-surface-variant);
-}
-
-.list-action {
-
-    width: 40px;
-    height: 40px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 50%;
-
-    background: transparent;
-
-    color: var(--on-surface-variant);
-}
-
-
-/* =========================================================
-   BUTTONS
-   ========================================================= */
-
-.btn {
-
-    min-height: 44px;
-
-    padding: 0 18px;
-
-    border-radius: 22px;
-
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 8px;
-
-    font-size: 14px;
-
-    font-weight: 600;
-}
-
-.btn-primary {
-
-    color: white;
-
-    background: var(--primary);
-}
-
-.btn-tonal {
-
-    color: var(--primary);
-
-    background: var(--primary-container);
-}
-
-.btn-outline {
-
-    background: transparent;
-
-    color: var(--on-surface);
-
-    border: 1px solid var(--outline);
-}
-
-
-/* =========================================================
-   FAB
-   ========================================================= */
-
-.fab {
-
-    position: fixed;
-
-    right: 20px;
-
-    bottom:
-        calc(var(--bottom-height) + 20px);
-
-    width: 58px;
-    height: 58px;
-
-    z-index: 110;
-
-    border-radius: 18px;
-
-    display: grid;
-    place-items: center;
-
-    color: var(--on-primary);
-
-    background: var(--primary);
-
-    box-shadow:
-        0 5px 18px rgba(53,106,230,.28);
-}
-
-.fab .material-symbols-rounded {
-    font-size: 27px;
-}
-
-
-/* =========================================================
-   BOTTOM NAVIGATION
-   ========================================================= */
-
-.bottom-nav {
-
-    position: fixed;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    z-index: 100;
-
-    height:
-        calc(var(--bottom-height) + env(safe-area-inset-bottom));
-
-    padding-bottom: env(safe-area-inset-bottom);
-
-    display: flex;
-
-    align-items: flex-start;
-
-    background: rgba(247,248,252,.94);
-
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-
-    border-top: 1px solid rgba(215,218,226,.7);
-}
-
-.bottom-inner {
-
-    width: 100%;
-    max-width: 600px;
-
-    height: var(--bottom-height);
-
-    margin: 0 auto;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    align-items: center;
-
-    padding: 4px 8px;
-}
-
-.nav-item {
-
-    height: 62px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 3px;
-
-    color: var(--on-surface-variant);
-
-    background: transparent;
-
-    border-radius: 20px;
-
-    font-size: 11px;
-
-    font-weight: 500;
-}
-
-.nav-item .material-symbols-rounded {
-
-    font-size: 24px;
-
-    font-variation-settings:
-        'FILL' 0,
-        'wght' 450,
-        'GRAD' 0,
-        'opsz' 24;
-}
-
-.nav-item.active {
-
-    color: var(--primary);
-}
-
-.nav-item.active .nav-icon-wrap {
-
-    background: var(--primary-container);
-
-    border-radius: 18px;
-
-    padding: 2px 15px;
-}
-
-.nav-icon-wrap {
-
-    min-height: 28px;
-
-    display: flex;
-    align-items: center;
-}
-
-
-/* =========================================================
-   SECTION
-   ========================================================= */
-
-.section {
-
-    margin-top: 24px;
-}
-
-.section-header {
-
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 12px;
-}
-
-.section-header h2 {
-
-    margin: 0;
-
-    font-size: 19px;
-
-    font-weight: 600;
-
-    letter-spacing: -.2px;
-}
-
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
-.empty-state {
-
-    min-height: 260px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 30px;
-}
-
-.empty-icon {
-
-    width: 68px;
-    height: 68px;
-
-    border-radius: 22px;
-
-    display: grid;
-    place-items: center;
-
-    background: var(--surface-container-high);
-
-    color: var(--on-surface-variant);
-
-    margin-bottom: 14px;
-}
-
-.empty-state h3 {
-
-    margin: 0;
-
-    font-size: 18px;
-}
-
-.empty-state p {
-
-    max-width: 300px;
-
-    margin: 7px 0 18px;
-
-    font-size: 14px;
-
-    line-height: 1.5;
-
-    color: var(--on-surface-variant);
-}
-
-
-/* =========================================================
-   FORM
-   ========================================================= */
-
-.form-card {
-
-    background: var(--surface-container);
-
-    border: 1px solid var(--outline);
-
-    border-radius: var(--radius-lg);
-
-    padding: 18px;
-}
-
-.form-group {
-
-    margin-bottom: 16px;
-}
-
-.form-label {
-
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-    color: var(--on-surface-variant);
-}
-
-.form-control {
-
-    width: 100%;
-
-    min-height: 52px;
-
-    padding: 0 15px;
-
-    border-radius: 15px;
-
-    border: 1px solid var(--outline);
-
-    background: var(--surface-container);
-
-    color: var(--on-surface);
-
-    outline: none;
-}
-
-textarea.form-control {
-
-    padding-top: 14px;
-
-    min-height: 110px;
-
-    resize: vertical;
-}
-
-.form-control:focus {
-
-    border-color: var(--primary);
-
-    box-shadow:
-        0 0 0 3px rgba(53,106,230,.12);
-}
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-#login-screen {
-
-    min-height: 100dvh;
-
-    display: none;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 24px;
-}
-
-.login-card {
-
-    width: 100%;
-
-    max-width: 420px;
-
-    background: var(--surface-container);
-
-    border: 1px solid var(--outline);
-
-    border-radius: 30px;
-
-    padding: 30px;
-
-    box-shadow: var(--shadow-soft);
-
-    text-align: center;
-}
-
-.login-logo {
-
-    width: 180px;
-
-    max-width: 75%;
-
-    margin-bottom: 25px;
-}
-
-.login-card h1 {
-
-    margin: 0;
-
-    font-size: 27px;
-
-    letter-spacing: -.6px;
-}
-
-.login-card p {
-
-    color: var(--on-surface-variant);
-
-    font-size: 14px;
-
-    line-height: 1.5;
-
-    margin: 8px 0 25px;
-}
-
-.google-login {
-
-    width: 100%;
-
-    min-height: 52px;
-
-    border-radius: 26px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    background: var(--surface-container);
-
-    border: 1px solid var(--outline);
-
-    color: var(--on-surface);
-
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-.toast {
-
-    position: fixed;
-
-    left: 50%;
-
-    bottom:
-        calc(var(--bottom-height) + 20px);
-
-    transform:
-        translate(-50%, 20px);
-
-    z-index: 300;
-
-    padding: 12px 18px;
-
-    border-radius: 18px;
-
-    background: #25262B;
-
-    color: white;
-
-    font-size: 13px;
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition: .25s ease;
-}
-
-.toast.show {
-
-    opacity: 1;
-
-    transform:
-        translate(-50%, 0);
-}
-
-
-/* =========================================================
-   LOADER
-   ========================================================= */
-
-.loader {
-
-    width: 24px;
-    height: 24px;
-
-    border-radius: 50%;
-
-    border: 3px solid var(--primary-container);
-
-    border-top-color: var(--primary);
-
-    animation: spin .7s linear infinite;
-}
-
-@keyframes spin {
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-
-/* =========================================================
-   DESKTOP
-   ========================================================= */
-
-@media (min-width: 800px) {
-
-    :root {
-        --header-height: 76px;
-    }
-
-    .app-main {
-        padding-left: 28px;
-        padding-right: 28px;
-    }
-
-    .bottom-nav {
-
-        left: 50%;
-        right: auto;
-        bottom: 18px;
-
-        width: min(600px, calc(100% - 32px));
-
-        height: 76px;
-
-        transform: translateX(-50%);
-
-        border: 1px solid var(--outline);
-
-        border-radius: 28px;
-
-        box-shadow: var(--shadow-soft);
-
-        padding: 0;
-
-    }
-
-    .bottom-inner {
-        height: 76px;
-    }
-
-    .fab {
-        bottom: 110px;
-        right: max(30px, calc((100vw - 1200px) / 2 + 30px));
-    }
-
-}
-
-
-/* =========================================================
-   SMALL PHONES
-   ========================================================= */
-
-@media (max-width: 360px) {
-
-    .app-main {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .material-card {
-        padding: 14px;
-    }
-
-    .card-icon {
-        width: 40px;
-        height: 40px;
-    }
-
-    .nav-item {
-        font-size: 10px;
-    }
-
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        transition-duration: .01ms !important;
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Catalogs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
-
-
 <body>
 
+<div class="module-container" id="catalog-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --success: #10B981;
+        }
 
-<!-- =========================================================
-     LOGIN SCREEN
-     ========================================================= -->
+        #catalog-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 1100px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
 
-<section id="login-screen">
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .form-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+        }
 
-    <div class="login-card">
+        /* --- Tabs --- */
+        .cat-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+        .cat-tabs::-webkit-scrollbar { display: none; }
+        
+        .cat-tab-btn {
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cat-tab-btn.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: var(--accent-soft);
+        }
+        
+        .tab-content { display: none; animation: fadeIn 0.3s ease forwards; }
+        .tab-content.active { display: block; }
 
-        <img
-            src="assets/name.png"
-            class="login-logo"
-            alt="COREBIQ">
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        <h1>Welcome to COREBIQ</h1>
+        /* --- Forms & Inputs --- */
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input, .form-select, .form-textarea { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            background: #FAFAFA; 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
 
-        <p>
-            Your business management workspace.
-            Sign in to continue.
-        </p>
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
 
-        <button
-            class="google-login"
-            id="google-login">
+        .input-group { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-bottom: 20px; 
+        }
+        @media (min-width: 768px) { .input-group { grid-template-columns: 1fr 1fr; } }
+        
+        /* Category Toggle */
+        .type-toggle {
+            display: flex;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+        .type-toggle label {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .type-toggle input[type="radio"] { display: none; }
+        .type-toggle span {
+            display: block;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: 0.2s ease;
+        }
+        .type-toggle input[type="radio"]:checked + span {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
 
-            <span
-                class="material-symbols-rounded">
-                account_circle
-            </span>
+        /* Image Upload */
+        .image-upload-wrapper {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface-soft);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+        .image-upload-wrapper:hover { border-color: var(--primary); }
+        .image-upload-wrapper input[type="file"] {
+            position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2;
+        }
+        .image-preview {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; display: none;
+        }
+        .image-preview.active { display: block; }
+        .upload-content { text-align: center; position: relative; z-index: 0; }
+        .image-upload-wrapper.has-image .upload-content { display: none; }
 
-            Continue with Google
+        /* --- Buttons --- */
+        .btn-primary, .btn-secondary {
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; box-shadow: var(--shadow-md); width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); }
+        .btn-secondary { background: var(--surface-soft); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--accent-soft); }
+        .btn-icon { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 8px; transition: 0.2s; display: inline-flex; }
+        .btn-icon:hover { background: var(--primary-light); color: var(--primary); }
 
+        /* --- Catalog Filter Bar --- */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            background: var(--surface);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .filter-input {
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            font-family: 'Outfit';
+            font-size: 13px;
+            outline: none;
+            background: var(--surface-soft);
+        }
+
+        /* --- Catalog Grid --- */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .catalog-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .catalog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 180px;
+            background: var(--surface-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-type-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255,255,255,0.9);
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-body {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-category {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .card-spec {
+            font-size: 13px;
+            color: var(--text-main);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* --- Print PDF Layout --- */
+        #pdf-export-container {
+            display: none;
+            background: white;
+            padding: 40px;
+            width: 794px; /* A4 width */
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .pdf-header img { height: 40px; margin-bottom: 10px; }
+        .pdf-header h1 { font-size: 24px; color: var(--text-dark); margin-bottom: 4px; }
+        .pdf-header p { font-size: 12px; color: var(--text-muted); }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .pdf-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            break-inside: avoid;
+        }
+        
+        .pdf-card-img { width: 100px; height: 100px; object-fit: cover; border-radius: 6px; }
+        .pdf-card-info { flex: 1; }
+        .pdf-card-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #111827; }
+        .pdf-card-cat { font-size: 10px; color: #64748B; text-transform: uppercase; margin-bottom: 6px; }
+        .pdf-card-desc { font-size: 11px; color: #4B5563; margin-bottom: 8px; line-height: 1.4; }
+        .pdf-card-price { font-size: 14px; font-weight: 800; color: #4F46E5; }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">auto_stories</span>
+        Service & Product Catalogs
+    </div>
+
+    <!-- TABS -->
+    <div class="cat-tabs">
+        <button class="cat-tab-btn active" onclick="switchTab('tab-view')">
+            <span class="material-symbols-rounded">grid_view</span> View Catalog
         </button>
+        <button class="cat-tab-btn" onclick="switchTab('tab-form')">
+            <span class="material-symbols-rounded">add_circle</span> Add / Edit Item
+        </button>
+    </div>
+
+    <!-- ==========================================
+         TAB: VIEW CATALOG 
+    =========================================== -->
+    <div id="tab-view" class="tab-content active">
+        
+        <div class="filter-bar">
+            <div class="filter-controls">
+                <input type="text" id="searchInput" class="filter-input" placeholder="Search by name..." oninput="filterCatalog()">
+                
+                <select id="filterType" class="filter-input" onchange="filterCatalog()">
+                    <option value="All">All Types</option>
+                    <option value="Item">Items</option>
+                    <option value="Service">Services</option>
+                </select>
+
+                <select id="sortPrice" class="filter-input" onchange="filterCatalog()">
+                    <option value="default">Sort by</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-secondary" style="width: auto; padding: 10px 16px;" onclick="downloadCatalogPDF()">
+                <span class="material-symbols-rounded">download</span> Download PDF
+            </button>
+        </div>
+
+        <div class="catalog-grid" id="catalogGrid">
+            <!-- Populated via JS -->
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading catalog...</div>
+        </div>
 
     </div>
 
-</section>
+    <!-- ==========================================
+         TAB: ADD / EDIT ITEM
+    =========================================== -->
+    <div id="tab-form" class="tab-content">
+        <div class="form-card">
+            <form id="catalog-form">
+                
+                <div class="type-toggle">
+                    <label>
+                        <input type="radio" name="itemType" value="Item" checked>
+                        <span>Product / Item</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="itemType" value="Service">
+                        <span>Service</span>
+                    </label>
+                </div>
 
+                <div class="input-group">
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Item / Service Name</label>
+                        <input type="text" id="itemName" class="form-input" placeholder="e.g. Standard Website Package" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Category</label>
+                        <input type="text" id="itemCategory" class="form-input" placeholder="e.g. Software Development" required list="catList">
+                        <datalist id="catList">
+                            <option value="Software Development">
+                            <option value="Tax Consultation">
+                            <option value="Digital Marketing">
+                            <option value="Hardware">
+                        </datalist>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Sub Category</label>
+                        <input type="text" id="itemSubCategory" class="form-input" placeholder="e.g. E-Commerce">
+                    </div>
+                </div>
 
-<!-- =========================================================
-     MAIN APP
-     ========================================================= -->
+                <div class="input-group">
+                    <div>
+                        <label class="form-label">Currency</label>
+                        <select id="itemCurrency" class="form-select" required>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AED">Dirham (AED)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Amount</label>
+                        <input type="number" id="itemAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                    </div>
+                </div>
 
-<div id="app" style="display:none;">
+                <div class="input-group">
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Specification / Description</label>
+                        <textarea id="itemSpecs" class="form-textarea" placeholder="Detail the features, deliverables, or specifications..." required></textarea>
+                    </div>
+                </div>
 
+                <div class="input-group">
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Item Photo</label>
+                        <div class="image-upload-wrapper" id="photoWrapper">
+                            <img src="" id="photoPreview" class="image-preview">
+                            <div class="upload-content">
+                                <span class="material-symbols-rounded" style="font-size: 36px; color: var(--primary); margin-bottom: 8px;">add_photo_alternate</span>
+                                <div style="font-size: 14px; font-weight: 600; color: var(--text-main);">Upload Image</div>
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">JPG, PNG (Aspect Ratio 16:9 recommended)</div>
+                            </div>
+                            <input type="file" id="itemPhoto" accept="image/*" onchange="previewImage(this)">
+                            <input type="hidden" id="photoBase64">
+                        </div>
+                        <button type="button" class="btn-icon" style="margin-top: 8px; font-size: 12px; display: none;" onclick="clearImage()" id="clearImgBtn">Clear Image</button>
+                    </div>
+                </div>
 
-    <!-- HEADER -->
-
-    <header class="app-header">
-
-        <div class="header-left">
-
-            <img
-                src="assets/name.png"
-                class="brand-logo"
-                alt="COREBIQ">
-
-            <span
-                class="header-title"
-                id="header-title">
-                Dashboard
-            </span>
-
+                <button type="submit" class="btn-primary" id="saveBtn">
+                    <span class="material-symbols-rounded">save</span> Save to Catalog
+                </button>
+                <input type="hidden" id="editingId">
+            </form>
         </div>
+    </div>
 
-
-        <div class="header-spacer"></div>
-
-
-        <button
-            class="header-action"
-            onclick="showToast('Notifications coming soon')">
-
-            <span class="material-symbols-rounded">
-                notifications
-            </span>
-
-        </button>
-
-
-        <button
-            class="header-user"
-            id="header-user"
-            onclick="showProfile()">
-
-            U
-
-        </button>
-
-    </header>
-
-
-    <!-- MAIN -->
-
-    <main class="app-main">
-
-        <div
-            id="module-container"
-            class="module-container">
-
+    <!-- Hidden PDF Export Container -->
+    <div id="pdf-export-container">
+        <div class="pdf-header">
+            <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
+            <h1>Service & Product Catalog</h1>
+            <p>1st Floor, Shakthi Complex, Chokli, Kannur District, Kerala 670672 | support@cmfilings.com</p>
         </div>
-
-    </main>
-
-
-    <!-- FAB -->
-
-    <button
-        class="fab"
-        id="global-fab"
-        onclick="globalAction()">
-
-        <span class="material-symbols-rounded">
-            add
-        </span>
-
-    </button>
-
-
-    <!-- BOTTOM NAV -->
-
-    <nav class="bottom-nav">
-
-        <div class="bottom-inner">
-
-
-            <button
-                class="nav-item active"
-                data-module="dashboard"
-                onclick="loadModule('dashboard')">
-
-                <span class="nav-icon-wrap">
-
-                    <span class="material-symbols-rounded">
-                        home
-                    </span>
-
-                </span>
-
-                Home
-
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-module="clients"
-                onclick="loadModule('clients')">
-
-                <span class="nav-icon-wrap">
-
-                    <span class="material-symbols-rounded">
-                        groups
-                    </span>
-
-                </span>
-
-                Clients
-
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-module="contacts"
-                onclick="loadModule('contacts')">
-
-                <span class="nav-icon-wrap">
-
-                    <span class="material-symbols-rounded">
-                        contacts
-                    </span>
-
-                </span>
-
-                Contacts
-
-            </button>
-
-
-            <button
-                class="nav-item"
-                data-module="more"
-                onclick="loadModule('more')">
-
-                <span class="nav-icon-wrap">
-
-                    <span class="material-symbols-rounded">
-                        apps
-                    </span>
-
-                </span>
-
-                More
-
-            </button>
-
-
+        <div class="pdf-grid" id="pdfGrid">
+            <!-- Populated dynamically before print -->
         </div>
-
-    </nav>
-
-</div>
-
-
-<!-- TOAST -->
-
-<div
-    id="toast"
-    class="toast">
-</div>
-
-
-<!-- =========================================================
-     FIREBASE + APP
-     ========================================================= -->
-
-<script type="module">
-
-import {
-    initializeApp
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-
-import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-
-import {
-    getFirestore,
-    collection,
-    getDocs,
-    query,
-    where,
-    orderBy,
-    limit
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-
-
-/* =========================================================
-   FIREBASE CONFIG
-   ========================================================= */
-
-import {
-    firebaseConfig
-} from "./firebase.config.js";
-
-
-/* =========================================================
-   FIREBASE INITIALIZATION
-   ========================================================= */
-
-const firebaseApp =
-    initializeApp(firebaseConfig);
-
-const auth =
-    getAuth(firebaseApp);
-
-const db =
-    getFirestore(firebaseApp);
-
-const provider =
-    new GoogleAuthProvider();
-
-
-/* =========================================================
-   GLOBAL APP STATE
-   ========================================================= */
-
-window.COREBIQ = {
-
-    firebaseApp,
-
-    auth,
-
-    db,
-
-    user: null,
-
-    currentModule: "dashboard"
-
-};
-
-
-/* =========================================================
-   DOM
-   ========================================================= */
-
-const app =
-    document.getElementById("app");
-
-const loginScreen =
-    document.getElementById("login-screen");
-
-const moduleContainer =
-    document.getElementById("module-container");
-
-const headerTitle =
-    document.getElementById("header-title");
-
-const headerUser =
-    document.getElementById("header-user");
-
-
-/* =========================================================
-   GOOGLE LOGIN
-   ========================================================= */
-
-document
-    .getElementById("google-login")
-    .addEventListener("click", async () => {
-
-        try {
-
-            await signInWithPopup(
-                auth,
-                provider
-            );
-
-        } catch (error) {
-
-            console.error(error);
-
-            showToast(
-                error.message ||
-                "Unable to sign in"
-            );
-
-        }
-
-    });
-
-
-/* =========================================================
-   AUTH STATE
-   ========================================================= */
-
-onAuthStateChanged(
-    auth,
-    user => {
-
-        if (user) {
-
-            COREBIQ.user = user;
-
-            loginScreen.style.display =
-                "none";
-
-            app.style.display =
-                "flex";
-
-            updateUserUI();
-
-            loadModule("dashboard");
-
-        } else {
-
-            COREBIQ.user = null;
-
-            app.style.display =
-                "none";
-
-            loginScreen.style.display =
-                "flex";
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   USER UI
-   ========================================================= */
-
-function updateUserUI() {
-
-    const user =
-        COREBIQ.user;
-
-    if (!user) return;
-
-    const name =
-        user.displayName ||
-        user.email ||
-        "User";
-
-    headerUser.textContent =
-        name.charAt(0).toUpperCase();
-
-}
-
-
-/* =========================================================
-   MODULE SYSTEM
-   ========================================================= */
-
-window.loadModule =
-async function(moduleName) {
-
-    COREBIQ.currentModule =
-        moduleName;
-
-
-    /* Navigation */
-
-    document
-        .querySelectorAll(".nav-item")
-        .forEach(item => {
-
-            item.classList.toggle(
-                "active",
-                item.dataset.module === moduleName
-            );
-
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, getDocs, doc, setDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const catalogRef = collection(db, "catalog_items");
+        let allItems = [];
+
+        // --- Tabs ---
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.cat-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            if (tabId === 'tab-view') {
+                document.getElementById('catalog-form').reset();
+                clearImage();
+                document.getElementById('editingId').value = "";
+                loadCatalog();
+            }
+        };
+
+        // --- Image Handling ---
+        window.previewImage = function(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photoPreview').src = e.target.result;
+                    document.getElementById('photoPreview').classList.add('active');
+                    document.getElementById('photoWrapper').classList.add('has-image');
+                    document.getElementById('photoBase64').value = e.target.result;
+                    document.getElementById('clearImgBtn').style.display = 'inline-flex';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        window.clearImage = function() {
+            document.getElementById('itemPhoto').value = "";
+            document.getElementById('photoPreview').src = "";
+            document.getElementById('photoPreview').classList.remove('active');
+            document.getElementById('photoWrapper').classList.remove('has-image');
+            document.getElementById('photoBase64').value = "";
+            document.getElementById('clearImgBtn').style.display = 'none';
+        };
+
+        // --- Save Item ---
+        document.getElementById('catalog-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('saveBtn');
+            btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Saving...';
+            btn.disabled = true;
+
+            const editId = document.getElementById('editingId').value;
+            const payload = {
+                type: document.querySelector('input[name="itemType"]:checked').value,
+                name: document.getElementById('itemName').value,
+                category: document.getElementById('itemCategory').value,
+                subCategory: document.getElementById('itemSubCategory').value,
+                currency: document.getElementById('itemCurrency').value,
+                amount: parseFloat(document.getElementById('itemAmount').value),
+                specs: document.getElementById('itemSpecs').value,
+                photo: document.getElementById('photoBase64').value, // In prod, upload file to Firebase Storage
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                if (editId) {
+                    await setDoc(doc(catalogRef, editId), payload, { merge: true });
+                    alert("Item updated successfully.");
+                } else {
+                    await addDoc(catalogRef, payload);
+                    alert("Item added successfully.");
+                }
+                document.querySelector('.cat-tab-btn').click(); // Switch to view tab
+            } catch (err) {
+                console.error(err);
+                alert("Failed to save item.");
+            } finally {
+                btn.innerHTML = '<span class="material-symbols-rounded">save</span> Save to Catalog';
+                btn.disabled = false;
+            }
         });
 
-
-    /* Header */
-
-    const titles = {
-
-        dashboard: "Dashboard",
-        clients: "Clients",
-        contacts: "Contacts",
-        more: "More"
-
-    };
-
-    headerTitle.textContent =
-        titles[moduleName] ||
-        "COREBIQ";
-
-
-    /* Render */
-
-    moduleContainer.innerHTML = "";
-
-    moduleContainer.style.animation =
-        "none";
-
-    void moduleContainer.offsetWidth;
-
-    moduleContainer.style.animation =
-        "moduleIn .22s ease";
-
-
-    switch (moduleName) {
-
-        case "dashboard":
-
-            renderDashboard();
-
-            break;
-
-
-        case "clients":
-
-            renderClients();
-
-            break;
-
-
-        case "contacts":
-
-            renderContacts();
-
-            break;
-
-
-        case "more":
-
-            renderMore();
-
-            break;
-
-
-        default:
-
-            renderDashboard();
-
-    }
-
-};
-
-
-/* =========================================================
-   DASHBOARD
-   ========================================================= */
-
-function renderDashboard() {
-
-    const user =
-        COREBIQ.user;
-
-    const name =
-        user?.displayName ||
-        "there";
-
-    moduleContainer.innerHTML = `
-
-        <section>
-
-            <div class="page-heading">
-
-                <div>
-
-                    <h1>
-                        Hello, ${escapeHtml(
-                            name.split(" ")[0]
-                        )}
-                    </h1>
-
-                    <p>
-                        Your business at a glance.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="stats-grid">
-
-                <div class="stat-card">
-
-                    <div class="stat-label">
-                        Clients
-                    </div>
-
-                    <div
-                        class="stat-value"
-                        id="client-count">
-
-                        —
-
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-label">
-                        Contacts
-                    </div>
-
-                    <div
-                        class="stat-value"
-                        id="contact-count">
-
-                        —
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="section">
-
-                <div class="section-header">
-
-                    <h2>
-                        Quick access
-                    </h2>
-
-                </div>
-
-
-                <div class="card-grid">
-
-
-                    <button
-                        class="material-card"
-                        onclick="loadModule('clients')">
-
-                        <div class="card-icon">
-
-                            <span
-                                class="material-symbols-rounded">
-                                groups
-                            </span>
-
+        // --- Load & Render Catalog ---
+        window.loadCatalog = async function() {
+            const grid = document.getElementById('catalogGrid');
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading catalog...</div>';
+            
+            try {
+                const snap = await getDocs(catalogRef);
+                allItems = [];
+                snap.forEach(docSnap => {
+                    allItems.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderGrid(allItems);
+            } catch (err) {
+                console.error("Load error:", err);
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #EF4444;">Failed to load catalog.</div>';
+            }
+        };
+
+        window.renderGrid = function(items) {
+            const grid = document.getElementById('catalogGrid');
+            if (items.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">No items found.</div>';
+                return;
+            }
+
+            let html = '';
+            items.forEach(item => {
+                const symbol = item.currency === 'AED' ? 'AED' : '₹';
+                const priceFormatted = item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                const imgSrc = item.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="%23f1f5f9"><rect width="100%" height="100%"/></svg>';
+
+                html += `
+                    <div class="catalog-card">
+                        <div class="card-image-wrapper">
+                            <span class="card-type-badge">${item.type}</span>
+                            <img src="${imgSrc}" class="card-image" alt="${item.name}">
                         </div>
-
-                        <h3>
-                            Clients
-                        </h3>
-
-                        <p>
-                            Manage your business clients.
-                        </p>
-
-                    </button>
-
-
-                    <button
-                        class="material-card"
-                        onclick="loadModule('contacts')">
-
-                        <div class="card-icon">
-
-                            <span
-                                class="material-symbols-rounded">
-                                contacts
-                            </span>
-
+                        <div class="card-body">
+                            <div class="card-category">${item.category} ${item.subCategory ? ' • ' + item.subCategory : ''}</div>
+                            <div class="card-title">${item.name}</div>
+                            <div class="card-spec">${item.specs}</div>
+                            <div class="card-footer">
+                                <div class="card-price">${symbol} ${priceFormatted}</div>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn-icon" title="Share to WhatsApp" onclick="shareToWhatsApp('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px; color:var(--success);">forum</span></button>
+                                    <button class="btn-icon" title="Edit Item" onclick="editItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                                    <button class="btn-icon" title="Delete Item" onclick="deleteItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px; color:#EF4444;">delete</span></button>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        };
 
-                        <h3>
-                            Contacts
-                        </h3>
+        // --- WhatsApp Sharing Logic ---
+        window.shareToWhatsApp = async function(id) {
+            const item = allItems.find(i => i.id === id);
+            if(!item) return;
 
-                        <p>
-                            Manage contact information.
-                        </p>
+            const symbol = item.currency === 'AED' ? 'AED' : '₹';
+            const priceFormatted = item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+            
+            // 1. Prepare Text Message
+            let message = `*${item.name}*\n`;
+            message += `_${item.type} | ${item.category}_\n\n`;
+            message += `*Price:* ${symbol} ${priceFormatted}\n\n`;
+            message += `*Description:*\n${item.specs}\n\n`;
+            message += `Shared via COREBIQ Catalog`;
 
-                    </button>
+            // 2. Generate JPEG image of the catalog item
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 800; // Square format for better mobile sharing
+            const ctx = canvas.getContext('2d');
 
+            // Draw white background
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    <button
-                        class="material-card"
-                        onclick="showToast('Transactions module')">
+            // Load and draw image (if exists)
+            const imgSrc = item.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="%23f1f5f9"><rect width="100%" height="100%"/></svg>';
+            try {
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                await new Promise((resolve) => {
+                    img.onload = resolve;
+                    img.onerror = resolve; // Continue even if image fails
+                    img.src = imgSrc;
+                });
+                
+                if (img.width > 0) {
+                     // Center-crop image into top half (800x450)
+                     const targetW = 800;
+                     const targetH = 450;
+                     const ratio = Math.max(targetW / img.width, targetH / img.height);
+                     const w = img.width * ratio;
+                     const h = img.height * ratio;
+                     ctx.drawImage(img, (targetW-w)/2, 0, w, h);
+                }
+            } catch(e) {}
 
-                        <div class="card-icon">
+            // Draw Card Background for text
+            ctx.fillStyle = '#F8FAFF';
+            ctx.fillRect(0, 450, 800, 350);
+            ctx.fillStyle = '#4F46E5';
+            ctx.fillRect(0, 450, 800, 8); // Primary color accent line
 
-                            <span
-                                class="material-symbols-rounded">
-                                receipt_long
-                            </span>
+            // Draw Text Details
+            ctx.fillStyle = '#111827';
+            ctx.font = 'bold 36px Arial';
+            ctx.fillText(item.name, 40, 520);
 
+            ctx.fillStyle = '#4F46E5';
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText(`${symbol} ${priceFormatted}`, 40, 570);
+
+            ctx.fillStyle = '#64748B';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText(`${item.type.toUpperCase()} | ${item.category.toUpperCase()}`, 40, 610);
+
+            // Wrap specs text
+            ctx.fillStyle = '#4B5563';
+            ctx.font = '22px Arial';
+            const words = item.specs.split(' ');
+            let line = '';
+            let y = 660;
+            const maxWidth = 720;
+            
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) {
+                    ctx.fillText(line, 40, y);
+                    line = words[n] + ' ';
+                    y += 30;
+                    if(y > 750) { 
+                        ctx.fillText('...', 40, y);
+                        break; 
+                    }
+                } else {
+                    line = testLine;
+                }
+            }
+            if (y <= 750) ctx.fillText(line, 40, y);
+
+            // 3. Trigger Download and Open WhatsApp
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = `Catalog_${item.name.replace(/[^a-zA-Z0-9]/g, '_')}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            alert("Note: WhatsApp requires you to manually attach images. We have downloaded the item image to your device. Please attach it in the chat.");
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        };
+
+        // --- Filter & Sort ---
+        window.filterCatalog = function() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value;
+            const sortOrder = document.getElementById('sortPrice').value;
+
+            let filtered = allItems.filter(item => {
+                const matchQuery = item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query);
+                const matchType = typeFilter === 'All' || item.type === typeFilter;
+                return matchQuery && matchType;
+            });
+
+            if (sortOrder === 'low-high') {
+                filtered.sort((a, b) => a.amount - b.amount);
+            } else if (sortOrder === 'high-low') {
+                filtered.sort((a, b) => b.amount - a.amount);
+            }
+
+            renderGrid(filtered);
+        };
+
+        // --- Edit / Delete ---
+        window.editItem = function(id) {
+            const item = allItems.find(i => i.id === id);
+            if(!item) return;
+
+            document.getElementById('editingId').value = item.id;
+            document.querySelector(`input[name="itemType"][value="${item.type}"]`).checked = true;
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemCategory').value = item.category;
+            document.getElementById('itemSubCategory').value = item.subCategory || '';
+            document.getElementById('itemCurrency').value = item.currency;
+            document.getElementById('itemAmount').value = item.amount;
+            document.getElementById('itemSpecs').value = item.specs;
+
+            if (item.photo) {
+                document.getElementById('photoPreview').src = item.photo;
+                document.getElementById('photoPreview').classList.add('active');
+                document.getElementById('photoWrapper').classList.add('has-image');
+                document.getElementById('photoBase64').value = item.photo;
+                document.getElementById('clearImgBtn').style.display = 'inline-flex';
+            } else {
+                clearImage();
+            }
+
+            document.querySelectorAll('.cat-tab-btn')[1].click(); // Switch to form
+        };
+
+        window.deleteItem = async function(id) {
+            if(!confirm("Are you sure you want to delete this item?")) return;
+            try {
+                await deleteDoc(doc(catalogRef, id));
+                loadCatalog();
+            } catch(e) {
+                console.error(e);
+                alert("Failed to delete.");
+            }
+        };
+
+        // --- Download PDF ---
+        window.downloadCatalogPDF = function() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value;
+            const sortOrder = document.getElementById('sortPrice').value;
+
+            let filtered = allItems.filter(item => {
+                const matchQuery = item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query);
+                const matchType = typeFilter === 'All' || item.type === typeFilter;
+                return matchQuery && matchType;
+            });
+            
+            if (sortOrder === 'low-high') filtered.sort((a, b) => a.amount - b.amount);
+            else if (sortOrder === 'high-low') filtered.sort((a, b) => b.amount - a.amount);
+
+            if(filtered.length === 0) { alert("No items to export."); return; }
+
+            const exportGrid = document.getElementById('pdfGrid');
+            let pdfHtml = '';
+            filtered.forEach(item => {
+                const symbol = item.currency === 'AED' ? 'AED' : '₹';
+                const imgSrc = item.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="%23f1f5f9"><rect width="100%" height="100%"/></svg>';
+                pdfHtml += `
+                    <div class="pdf-card">
+                        <img src="${imgSrc}" class="pdf-card-img" alt="${item.name}">
+                        <div class="pdf-card-info">
+                            <div class="pdf-card-cat">${item.type} | ${item.category}</div>
+                            <div class="pdf-card-title">${item.name}</div>
+                            <div class="pdf-card-desc">${item.specs.substring(0, 150)}${item.specs.length > 150 ? '...' : ''}</div>
+                            <div class="pdf-card-price">${symbol} ${item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
                         </div>
-
-                        <h3>
-                            Transactions
-                        </h3>
-
-                        <p>
-                            Track business transactions.
-                        </p>
-
-                    </button>
-
-
-                    <button
-                        class="material-card"
-                        onclick="showToast('Reports module')">
-
-                        <div class="card-icon">
-
-                            <span
-                                class="material-symbols-rounded">
-                                analytics
-                            </span>
-
-                        </div>
-
-                        <h3>
-                            Reports
-                        </h3>
-
-                        <p>
-                            View business insights.
-                        </p>
-
-                    </button>
-
-
-                </div>
-
-            </div>
-
-
-            <div class="section">
-
-                <div class="section-header">
-
-                    <h2>
-                        Recent activity
-                    </h2>
-
-                </div>
-
-
-                <div class="material-card">
-
-                    <div class="empty-state">
-
-                        <div class="empty-icon">
-
-                            <span
-                                class="material-symbols-rounded">
-                                history
-                            </span>
-
-                        </div>
-
-                        <h3>
-                            No recent activity
-                        </h3>
-
-                        <p>
-                            Your recent business activity
-                            will appear here.
-                        </p>
-
                     </div>
-
-                </div>
-
-            </div>
-
-        </section>
-    `;
-
-}
-
-
-/* =========================================================
-   CLIENTS
-   ========================================================= */
-
-function renderClients() {
-
-    moduleContainer.innerHTML = `
-
-        <section>
-
-            <div class="page-heading">
-
-                <div>
-
-                    <h1>
-                        Clients
-                    </h1>
-
-                    <p>
-                        Manage your business clients.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="search-box">
-
-                <span
-                    class="material-symbols-rounded">
-                    search
-                </span>
-
-                <input
-                    id="client-search"
-                    type="search"
-                    placeholder="Search clients..."
-                    autocomplete="off">
-
-            </div>
-
-
-            <div
-                id="clients-list"
-                class="list">
-
-                <div class="material-card">
-
-                    <div
-                        style="
-                        display:flex;
-                        justify-content:center;
-                        padding:30px;">
-
-                        <div class="loader"></div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-    `;
-
-
-    loadClients();
-
-
-    document
-        .getElementById("client-search")
-        .addEventListener(
-            "input",
-            filterClients
-        );
-
-}
-
-
-/* =========================================================
-   CLIENT DATA
-   ========================================================= */
-
-let cachedClients = [];
-
-
-async function loadClients() {
-
-    const list =
-        document.getElementById(
-            "clients-list"
-        );
-
-    if (!COREBIQ.user) return;
-
-
-    try {
-
-        /*
-         Expected Firestore structure:
-
-         clients/{clientId}
-
-         {
-            name,
-            mobile,
-            email,
-            businessName,
-            tenantId,
-            createdAt
-         }
-
-         Add your tenant/domain security
-         rules before production.
-        */
-
-
-        const q =
-            query(
-                collection(db, "clients"),
-                limit(100)
-            );
-
-
-        const snapshot =
-            await getDocs(q);
-
-
-        cachedClients =
-            snapshot.docs.map(
-                doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                })
-            );
-
-
-        renderClientList(
-            cachedClients
-        );
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        list.innerHTML = `
-
-            <div class="material-card">
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-
-                        <span
-                            class="material-symbols-rounded">
-                            cloud_off
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Unable to load clients
-                    </h3>
-
-                    <p>
-                        Check your Firebase configuration
-                        and Firestore permissions.
-                    </p>
-
-                </div>
-
-            </div>
-        `;
-
-    }
-
-}
-
-
-function renderClientList(clients) {
-
-    const list =
-        document.getElementById(
-            "clients-list"
-        );
-
-    if (!clients.length) {
-
-        list.innerHTML = `
-
-            <div class="material-card">
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-
-                        <span
-                            class="material-symbols-rounded">
-                            person_add
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        No clients yet
-                    </h3>
-
-                    <p>
-                        Add your first client using
-                        the + button.
-                    </p>
-
-                    <button
-                        class="btn btn-primary"
-                        onclick="globalAction()">
-
-                        <span
-                            class="material-symbols-rounded">
-                            add
-                        </span>
-
-                        Add Client
-
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-        return;
-    }
-
-
-    list.innerHTML =
-        clients.map(client => {
-
-            const name =
-                client.name ||
-                client.businessName ||
-                "Unnamed Client";
-
-            const mobile =
-                client.mobile ||
-                client.phone ||
-                "No mobile number";
-
-            const initial =
-                name
-                    .trim()
-                    .charAt(0)
-                    .toUpperCase();
-
-
-            return `
-
-                <div class="list-item">
-
-                    <div class="avatar">
-                        ${escapeHtml(initial)}
-                    </div>
-
-                    <div class="list-content">
-
-                        <div class="list-title">
-                            ${escapeHtml(name)}
-                        </div>
-
-                        <div class="list-subtitle">
-                            ${escapeHtml(mobile)}
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="list-action"
-                        onclick="showToast('Client: ${escapeHtml(name)}')">
-
-                        <span
-                            class="material-symbols-rounded">
-                            chevron_right
-                        </span>
-
-                    </button>
-
-                </div>
-
-            `;
-
-        }).join("");
-
-}
-
-
-function filterClients(event) {
-
-    const value =
-        event.target.value
-            .toLowerCase()
-            .trim();
-
-
-    const filtered =
-        cachedClients.filter(client => {
-
-            const text =
-                [
-                    client.name,
-                    client.businessName,
-                    client.mobile,
-                    client.email
-                ]
-                .filter(Boolean)
-                .join(" ")
-                .toLowerCase();
-
-            return text.includes(value);
-
-        });
-
-
-    renderClientList(filtered);
-
-}
-
-
-/* =========================================================
-   CONTACTS
-   ========================================================= */
-
-function renderContacts() {
-
-    moduleContainer.innerHTML = `
-
-        <section>
-
-            <div class="page-heading">
-
-                <div>
-
-                    <h1>
-                        Contacts
-                    </h1>
-
-                    <p>
-                        Your business contacts.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="search-box">
-
-                <span
-                    class="material-symbols-rounded">
-                    search
-                </span>
-
-                <input
-                    type="search"
-                    placeholder="Search contacts...">
-
-            </div>
-
-
-            <div class="material-card">
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-
-                        <span
-                            class="material-symbols-rounded">
-                            contacts
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Contacts
-                    </h3>
-
-                    <p>
-                        Your contact management
-                        module will appear here.
-                    </p>
-
-                    <button
-                        class="btn btn-primary"
-                        onclick="showToast('Add contact')">
-
-                        <span
-                            class="material-symbols-rounded">
-                            add
-                        </span>
-
-                        Add Contact
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-    `;
-
-}
-
-
-/* =========================================================
-   MORE
-   ========================================================= */
-
-function renderMore() {
-
-    moduleContainer.innerHTML = `
-
-        <section>
-
-            <div class="page-heading">
-
-                <div>
-
-                    <h1>
-                        More
-                    </h1>
-
-                    <p>
-                        COREBIQ tools and settings.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="card-grid">
-
-
-                <button
-                    class="material-card"
-                    onclick="showLicense()">
-
-                    <div class="card-icon">
-
-                        <span
-                            class="material-symbols-rounded">
-                            verified
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        License
-                    </h3>
-
-                    <p>
-                        View your COREBIQ license.
-                    </p>
-
-                </button>
-
-
-                <button
-                    class="material-card"
-                    onclick="showProfile()">
-
-                    <div class="card-icon">
-
-                        <span
-                            class="material-symbols-rounded">
-                            person
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Profile
-                    </h3>
-
-                    <p>
-                        Manage your account.
-                    </p>
-
-                </button>
-
-
-                <button
-                    class="material-card"
-                    onclick="showToast('Settings coming soon')">
-
-                    <div class="card-icon">
-
-                        <span
-                            class="material-symbols-rounded">
-                            settings
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Settings
-                    </h3>
-
-                    <p>
-                        Application preferences.
-                    </p>
-
-                </button>
-
-
-                <button
-                    class="material-card"
-                    onclick="logout()">
-
-                    <div class="card-icon">
-
-                        <span
-                            class="material-symbols-rounded">
-                            logout
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Sign out
-                    </h3>
-
-                    <p>
-                        Sign out of COREBIQ.
-                    </p>
-
-                </button>
-
-
-            </div>
-
-        </section>
-    `;
-
-}
-
-
-/* =========================================================
-   LICENSE
-   ========================================================= */
-
-window.showLicense =
-function() {
-
-    moduleContainer.innerHTML = `
-
-        <section>
-
-            <div class="page-heading">
-
-                <div>
-
-                    <h1>
-                        License
-                    </h1>
-
-                    <p>
-                        COREBIQ license information.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="material-card">
-
-                <div
-                    style="
-                    display:flex;
-                    align-items:center;
-                    gap:14px;
-                    margin-bottom:22px;">
-
-                    <div class="card-icon"
-                         style="margin:0">
-
-                        <span
-                            class="material-symbols-rounded">
-                            verified
-                        </span>
-
-                    </div>
-
-                    <div>
-
-                        <div
-                            style="
-                            font-size:18px;
-                            font-weight:600;">
-
-                            COREBIQ License
-
-                        </div>
-
-                        <div
-                            style="
-                            font-size:13px;
-                            color:var(--success);">
-
-                            ● Active
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                ${licenseRow(
-                    "License No.",
-                    "CBQ-LIC-000001"
-                )}
-
-                ${licenseRow(
-                    "License Name",
-                    "COREBIQ Professional"
-                )}
-
-                ${licenseRow(
-                    "License Type",
-                    "Annual Subscription"
-                )}
-
-                ${licenseRow(
-                    "Purchase Date",
-                    "27 September 2026"
-                )}
-
-                ${licenseRow(
-                    "Expiry Date",
-                    "26 September 2027"
-                )}
-
-                ${licenseRow(
-                    "Users / Seats",
-                    "5 Users"
-                )}
-
-                ${licenseRow(
-                    "Status",
-                    "Active"
-                )}
-
-            </div>
-
-        </section>
-    `;
-
-}
-
-
-function licenseRow(label, value) {
-
-    return `
-
-        <div
-            style="
-            display:flex;
-            justify-content:space-between;
-            gap:20px;
-            padding:13px 0;
-            border-bottom:1px solid var(--outline);">
-
-            <span
-                style="
-                color:var(--on-surface-variant);
-                font-size:13px;">
-
-                ${label}
-
-            </span>
-
-            <strong
-                style="
-                text-align:right;
-                font-size:14px;">
-
-                ${value}
-
-            </strong>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-window.showProfile =
-function() {
-
-    const user =
-        COREBIQ.user;
-
-    if (!user) return;
-
-
-    moduleContainer.innerHTML = `
-
-        <section>
-
-            <div class="page-heading">
-
-                <div>
-
-                    <h1>
-                        Profile
-                    </h1>
-
-                    <p>
-                        Your COREBIQ account.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="material-card">
-
-                <div
-                    style="
-                    display:flex;
-                    align-items:center;
-                    gap:15px;
-                    margin-bottom:20px;">
-
-                    <div
-                        class="avatar"
-                        style="
-                        width:60px;
-                        height:60px;
-                        flex-basis:60px;
-                        font-size:22px;">
-
-                        ${escapeHtml(
-                            (
-                                user.displayName ||
-                                user.email ||
-                                "U"
-                            )
-                            .charAt(0)
-                            .toUpperCase()
-                        )}
-
-                    </div>
-
-                    <div>
-
-                        <h3 style="margin:0">
-                            ${escapeHtml(
-                                user.displayName ||
-                                "COREBIQ User"
-                            )}
-                        </h3>
-
-                        <p
-                            style="
-                            margin:4px 0 0;
-                            color:var(--on-surface-variant);
-                            font-size:13px;">
-
-                            ${escapeHtml(
-                                user.email || ""
-                            )}
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="btn btn-outline"
-                    onclick="logout()">
-
-                    <span
-                        class="material-symbols-rounded">
-                        logout
-                    </span>
-
-                    Sign out
-
-                </button>
-
-            </div>
-
-        </section>
-    `;
-
-};
-
-
-/* =========================================================
-   GLOBAL ACTION
-   ========================================================= */
-
-window.globalAction =
-function() {
-
-    if (
-        COREBIQ.currentModule ===
-        "clients"
-    ) {
-
-        showToast(
-            "Client creation form coming next"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        COREBIQ.currentModule ===
-        "contacts"
-    ) {
-
-        showToast(
-            "Contact creation form coming next"
-        );
-
-        return;
-
-    }
-
-
-    showToast(
-        "Create new item"
-    );
-
-};
-
-
-/* =========================================================
-   LOGOUT
-   ========================================================= */
-
-window.logout =
-async function() {
-
-    try {
-
-        await signOut(auth);
-
-        showToast(
-            "Signed out"
-        );
-
-    } catch (error) {
-
-        console.error(error);
-
-        showToast(
-            "Unable to sign out"
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   TOAST
-   ========================================================= */
-
-window.showToast =
-function(message) {
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-    toast.textContent =
-        message;
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        window.__toastTimer
-    );
-
-
-    window.__toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2500
-        );
-
-};
-
-
-/* =========================================================
-   HTML ESCAPE
-   ========================================================= */
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-}
-
-
-/* =========================================================
-   START
-   ========================================================= */
-
-window.loadModule =
-    window.loadModule;
-
-</script>
+                `;
+            });
+            exportGrid.innerHTML = pdfHtml;
+
+            const element = document.getElementById('pdf-export-container');
+            element.style.display = 'block';
+
+            const opt = {
+                margin:       10,
+                filename:     `Catalog_Export.pdf`,
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none';
+            });
+        };
+
+        // Init
+        loadCatalog();
+
+    </script>
+</div>
 
 </body>
 </html>
