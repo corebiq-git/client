@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Catalogs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="module-container" id="catalog-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --success: #10B981;
+        }
+
+        #catalog-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 1100px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .form-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+        }
+
+        /* --- Tabs --- */
+        .cat-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+        .cat-tabs::-webkit-scrollbar { display: none; }
+        
+        .cat-tab-btn {
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cat-tab-btn.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: var(--accent-soft);
+        }
+        
+        .tab-content { display: none; animation: fadeIn 0.3s ease forwards; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Forms & Inputs --- */
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input, .form-select, .form-textarea { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            background: #FAFAFA; 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .input-group { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-bottom: 20px; 
+        }
+        @media (min-width: 768px) { .input-group { grid-template-columns: 1fr 1fr; } }
+        
+        /* Category Toggle */
+        .type-toggle {
+            display: flex;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+        .type-toggle label {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        .type-toggle input[type="radio"] { display: none; }
+        .type-toggle span {
+            display: block;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: 0.2s ease;
+        }
+        .type-toggle input[type="radio"]:checked + span {
+            background: var(--surface);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        /* Image Upload */
+        .image-upload-wrapper {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            background: var(--surface-soft);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+        }
+        .image-upload-wrapper:hover { border-color: var(--primary); }
+        .image-upload-wrapper input[type="file"] {
+            position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2;
+        }
+        .image-preview {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; display: none;
+        }
+        .image-preview.active { display: block; }
+        .upload-content { text-align: center; position: relative; z-index: 0; }
+        .image-upload-wrapper.has-image .upload-content { display: none; }
+
+        /* --- Buttons --- */
+        .btn-primary, .btn-secondary {
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; box-shadow: var(--shadow-md); width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); }
+        .btn-secondary { background: var(--surface-soft); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--accent-soft); }
+        .btn-icon { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 8px; transition: 0.2s; display: inline-flex; }
+        .btn-icon:hover { background: var(--primary-light); color: var(--primary); }
+        .btn-danger { color: #EF4444; background: #FEF2F2; padding: 6px 12px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer;}
+
+        /* --- Catalog Filter Bar --- */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            background: var(--surface);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .filter-input {
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            font-family: 'Outfit';
+            font-size: 13px;
+            outline: none;
+            background: var(--surface-soft);
+        }
+
+        /* --- Catalog Grid --- */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .catalog-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .catalog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 180px;
+            background: var(--surface-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-type-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255,255,255,0.9);
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-body {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-category {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .card-spec {
+            font-size: 13px;
+            color: var(--text-main);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* --- Print PDF Layout --- */
+        #pdf-export-container {
+            display: none;
+            background: white;
+            padding: 40px;
+            width: 794px; /* A4 width */
+        }
+
+        .pdf-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .pdf-header img { height: 40px; margin-bottom: 10px; }
+        .pdf-header h1 { font-size: 24px; color: var(--text-dark); margin-bottom: 4px; }
+        .pdf-header p { font-size: 12px; color: var(--text-muted); }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .pdf-card {
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            break-inside: avoid;
+        }
+        
+        .pdf-card-img { width: 100px; height: 100px; object-fit: cover; border-radius: 6px; }
+        .pdf-card-info { flex: 1; }
+        .pdf-card-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #111827; }
+        .pdf-card-cat { font-size: 10px; color: #64748B; text-transform: uppercase; margin-bottom: 6px; }
+        .pdf-card-desc { font-size: 11px; color: #4B5563; margin-bottom: 8px; line-height: 1.4; }
+        .pdf-card-price { font-size: 14px; font-weight: 800; color: #4F46E5; }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">auto_stories</span>
+        Service & Product Catalogs
+    </div>
+
+    <!-- TABS -->
+    <div class="cat-tabs">
+        <button class="cat-tab-btn active" onclick="switchTab('tab-view')">
+            <span class="material-symbols-rounded">grid_view</span> View Catalog
+        </button>
+        <button class="cat-tab-btn" onclick="switchTab('tab-form')">
+            <span class="material-symbols-rounded">add_circle</span> Add / Edit Item
+        </button>
+    </div>
+
+    <!-- ==========================================
+         TAB: VIEW CATALOG 
+    =========================================== -->
+    <div id="tab-view" class="tab-content active">
+        
+        <div class="filter-bar">
+            <div class="filter-controls">
+                <input type="text" id="searchInput" class="filter-input" placeholder="Search by name..." oninput="filterCatalog()">
+                
+                <select id="filterType" class="filter-input" onchange="filterCatalog()">
+                    <option value="All">All Types</option>
+                    <option value="Item">Items</option>
+                    <option value="Service">Services</option>
+                </select>
+
+                <select id="sortPrice" class="filter-input" onchange="filterCatalog()">
+                    <option value="default">Sort by</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-secondary" style="width: auto; padding: 10px 16px;" onclick="downloadCatalogPDF()">
+                <span class="material-symbols-rounded">download</span> Download PDF
+            </button>
+        </div>
+
+        <div class="catalog-grid" id="catalogGrid">
+            <!-- Populated via JS -->
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading catalog...</div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         TAB: ADD / EDIT ITEM
+    =========================================== -->
+    <div id="tab-form" class="tab-content">
+        <div class="form-card">
+            <form id="catalog-form">
+                
+                <div class="type-toggle">
+                    <label>
+                        <input type="radio" name="itemType" value="Item" checked>
+                        <span>Product / Item</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="itemType" value="Service">
+                        <span>Service</span>
+                    </label>
+                </div>
+
+                <div class="input-group">
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Item / Service Name</label>
+                        <input type="text" id="itemName" class="form-input" placeholder="e.g. Standard Website Package" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Category</label>
+                        <input type="text" id="itemCategory" class="form-input" placeholder="e.g. Software Development" required list="catList">
+                        <datalist id="catList">
+                            <option value="Software Development">
+                            <option value="Tax Consultation">
+                            <option value="Digital Marketing">
+                            <option value="Hardware">
+                        </datalist>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Sub Category</label>
+                        <input type="text" id="itemSubCategory" class="form-input" placeholder="e.g. E-Commerce">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div>
+                        <label class="form-label">Currency</label>
+                        <select id="itemCurrency" class="form-select" required>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AED">Dirham (AED)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Amount</label>
+                        <input type="number" id="itemAmount" class="form-input" placeholder="0.00" step="0.01" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Specification / Description</label>
+                        <textarea id="itemSpecs" class="form-textarea" placeholder="Detail the features, deliverables, or specifications..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Item Photo</label>
+                        <div class="image-upload-wrapper" id="photoWrapper">
+                            <img src="" id="photoPreview" class="image-preview">
+                            <div class="upload-content">
+                                <span class="material-symbols-rounded" style="font-size: 36px; color: var(--primary); margin-bottom: 8px;">add_photo_alternate</span>
+                                <div style="font-size: 14px; font-weight: 600; color: var(--text-main);">Upload Image</div>
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">JPG, PNG (Aspect Ratio 16:9 recommended)</div>
+                            </div>
+                            <input type="file" id="itemPhoto" accept="image/*" onchange="previewImage(this)">
+                            <input type="hidden" id="photoBase64">
+                        </div>
+                        <button type="button" class="btn-icon" style="margin-top: 8px; font-size: 12px;" onclick="clearImage()" id="clearImgBtn" style="display:none;">Clear Image</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="saveBtn">
+                    <span class="material-symbols-rounded">save</span> Save to Catalog
+                </button>
+                <input type="hidden" id="editingId">
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden PDF Export Container -->
+    <div id="pdf-export-container">
+        <div class="pdf-header">
+            <img src="assets/name.png" alt="COREBIQ" onerror="this.style.display='none'">
+            <h1>Service & Product Catalog</h1>
+            <p>1st Floor, Shakthi Complex, Chokli, Kannur District, Kerala 670672 | support@cmfilings.com</p>
+        </div>
+        <div class="pdf-grid" id="pdfGrid">
+            <!-- Populated dynamically before print -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, getDocs, doc, setDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const catalogRef = collection(db, "catalog_items");
+        let allItems = [];
+
+        // --- Tabs ---
+        window.switchTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.cat-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            if (tabId === 'tab-view') {
+                document.getElementById('catalog-form').reset();
+                clearImage();
+                document.getElementById('editingId').value = "";
+                loadCatalog();
+            }
+        };
+
+        // --- Image Handling ---
+        window.previewImage = function(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photoPreview').src = e.target.result;
+                    document.getElementById('photoPreview').classList.add('active');
+                    document.getElementById('photoWrapper').classList.add('has-image');
+                    document.getElementById('photoBase64').value = e.target.result;
+                    document.getElementById('clearImgBtn').style.display = 'inline-flex';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        window.clearImage = function() {
+            document.getElementById('itemPhoto').value = "";
+            document.getElementById('photoPreview').src = "";
+            document.getElementById('photoPreview').classList.remove('active');
+            document.getElementById('photoWrapper').classList.remove('has-image');
+            document.getElementById('photoBase64').value = "";
+            document.getElementById('clearImgBtn').style.display = 'none';
+        };
+
+        // --- Save Item ---
+        document.getElementById('catalog-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('saveBtn');
+            btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Saving...';
+            btn.disabled = true;
+
+            const editId = document.getElementById('editingId').value;
+            const payload = {
+                type: document.querySelector('input[name="itemType"]:checked').value,
+                name: document.getElementById('itemName').value,
+                category: document.getElementById('itemCategory').value,
+                subCategory: document.getElementById('itemSubCategory').value,
+                currency: document.getElementById('itemCurrency').value,
+                amount: parseFloat(document.getElementById('itemAmount').value),
+                specs: document.getElementById('itemSpecs').value,
+                photo: document.getElementById('photoBase64').value, // In prod, upload file to Firebase Storage
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                if (editId) {
+                    await setDoc(doc(catalogRef, editId), payload, { merge: true });
+                    alert("Item updated successfully.");
+                } else {
+                    await addDoc(catalogRef, payload);
+                    alert("Item added successfully.");
+                }
+                document.querySelector('.cat-tab-btn').click(); // Switch to view tab
+            } catch (err) {
+                console.error(err);
+                alert("Failed to save item.");
+            } finally {
+                btn.innerHTML = '<span class="material-symbols-rounded">save</span> Save to Catalog';
+                btn.disabled = false;
+            }
+        });
+
+        // --- Load & Render Catalog ---
+        window.loadCatalog = async function() {
+            const grid = document.getElementById('catalogGrid');
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">Loading catalog...</div>';
+            
+            try {
+                const snap = await getDocs(catalogRef);
+                allItems = [];
+                snap.forEach(docSnap => {
+                    allItems.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderGrid(allItems);
+            } catch (err) {
+                console.error("Load error:", err);
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--danger);">Failed to load catalog.</div>';
+            }
+        };
+
+        window.renderGrid = function(items) {
+            const grid = document.getElementById('catalogGrid');
+            if (items.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">No items found.</div>';
+                return;
+            }
+
+            let html = '';
+            items.forEach(item => {
+                const symbol = item.currency === 'AED' ? 'AED' : '₹';
+                const priceFormatted = item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                const imgSrc = item.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="%23f1f5f9"><rect width="100%" height="100%"/></svg>';
+
+                html += `
+                    <div class="catalog-card">
+                        <div class="card-image-wrapper">
+                            <span class="card-type-badge">${item.type}</span>
+                            <img src="${imgSrc}" class="card-image" alt="${item.name}">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-category">${item.category} ${item.subCategory ? ' • ' + item.subCategory : ''}</div>
+                            <div class="card-title">${item.name}</div>
+                            <div class="card-spec">${item.specs}</div>
+                            <div class="card-footer">
+                                <div class="card-price">${symbol} ${priceFormatted}</div>
+                                <div>
+                                    <button class="btn-icon" onclick="editItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                                    <button class="btn-icon" onclick="deleteItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px; color:var(--danger);">delete</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        };
+
+        // --- Filter & Sort ---
+        window.filterCatalog = function() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value;
+            const sortOrder = document.getElementById('sortPrice').value;
+
+            let filtered = allItems.filter(item => {
+                const matchQuery = item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query);
+                const matchType = typeFilter === 'All' || item.type === typeFilter;
+                return matchQuery && matchType;
+            });
+
+            if (sortOrder === 'low-high') {
+                filtered.sort((a, b) => a.amount - b.amount);
+            } else if (sortOrder === 'high-low') {
+                filtered.sort((a, b) => b.amount - a.amount);
+            }
+
+            renderGrid(filtered);
+        };
+
+        // --- Edit / Delete ---
+        window.editItem = function(id) {
+            const item = allItems.find(i => i.id === id);
+            if(!item) return;
+
+            document.getElementById('editingId').value = item.id;
+            document.querySelector(`input[name="itemType"][value="${item.type}"]`).checked = true;
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemCategory').value = item.category;
+            document.getElementById('itemSubCategory').value = item.subCategory || '';
+            document.getElementById('itemCurrency').value = item.currency;
+            document.getElementById('itemAmount').value = item.amount;
+            document.getElementById('itemSpecs').value = item.specs;
+
+            if (item.photo) {
+                document.getElementById('photoPreview').src = item.photo;
+                document.getElementById('photoPreview').classList.add('active');
+                document.getElementById('photoWrapper').classList.add('has-image');
+                document.getElementById('photoBase64').value = item.photo;
+                document.getElementById('clearImgBtn').style.display = 'inline-flex';
+            } else {
+                clearImage();
+            }
+
+            document.querySelectorAll('.cat-tab-btn')[1].click(); // Switch to form
+        };
+
+        window.deleteItem = async function(id) {
+            if(!confirm("Are you sure you want to delete this item?")) return;
+            try {
+                await deleteDoc(doc(catalogRef, id));
+                loadCatalog();
+            } catch(e) {
+                console.error(e);
+                alert("Failed to delete.");
+            }
+        };
+
+        // --- Download PDF ---
+        window.downloadCatalogPDF = function() {
+            // Re-run current filter to get exact visible items
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('filterType').value;
+            const sortOrder = document.getElementById('sortPrice').value;
+
+            let filtered = allItems.filter(item => {
+                const matchQuery = item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query);
+                const matchType = typeFilter === 'All' || item.type === typeFilter;
+                return matchQuery && matchType;
+            });
+            
+            if (sortOrder === 'low-high') filtered.sort((a, b) => a.amount - b.amount);
+            else if (sortOrder === 'high-low') filtered.sort((a, b) => b.amount - a.amount);
+
+            if(filtered.length === 0) { alert("No items to export."); return; }
+
+            // Populate hidden export container
+            const exportGrid = document.getElementById('pdfGrid');
+            let pdfHtml = '';
+            filtered.forEach(item => {
+                const symbol = item.currency === 'AED' ? 'AED' : '₹';
+                const imgSrc = item.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="%23f1f5f9"><rect width="100%" height="100%"/></svg>';
+                pdfHtml += `
+                    <div class="pdf-card">
+                        <img src="${imgSrc}" class="pdf-card-img" alt="${item.name}">
+                        <div class="pdf-card-info">
+                            <div class="pdf-card-cat">${item.type} | ${item.category}</div>
+                            <div class="pdf-card-title">${item.name}</div>
+                            <div class="pdf-card-desc">${item.specs.substring(0, 150)}${item.specs.length > 150 ? '...' : ''}</div>
+                            <div class="pdf-card-price">${symbol} ${item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            exportGrid.innerHTML = pdfHtml;
+
+            const element = document.getElementById('pdf-export-container');
+            element.style.display = 'block';
+
+            const opt = {
+                margin:       10,
+                filename:     `Catalog_Export.pdf`,
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none';
+            });
+        };
+
+        // Init
+        loadCatalog();
+
+    </script>
+</div>
+
+</body>
+</html>
