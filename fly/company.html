@@ -47,6 +47,19 @@
         #company-module .btn-primary:active { opacity: 0.8; }
         #company-module .btn-primary:disabled { background: var(--border); cursor: not-allowed; }
         #company-module .section-header { color: var(--primary); margin-top: 24px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 14px; font-weight: 700; text-transform: uppercase;}
+        
+        /* --- Image Upload Styles --- */
+        .image-upload-wrapper { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+        .image-preview { width: 100px; height: 100px; border-radius: 12px; border: 1px dashed var(--border); background: #FAFAFA; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .image-preview img { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
+        .image-preview.has-image img { display: block; }
+        .image-preview.has-image .placeholder-icon { display: none; }
+        .image-upload-wrapper input[type="file"] { display: none; }
+        .upload-btn { background: var(--surface); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--text-main); transition: 0.2s; display: none;}
+        .readonly-input.editable ~ .upload-btn { display: inline-block; }
+        .upload-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        .horizontal-preview { width: 200px; height: 60px; }
     </style>
 
     <div class="section-title">
@@ -58,7 +71,36 @@
 
     <div class="form-card">
         <form id="company-overview-form">
-            <div class="section-header" style="margin-top: 0;">General Information</div>
+            <div class="section-header" style="margin-top: 0;">Brand Assets</div>
+            <div class="input-group">
+                <div class="image-upload-wrapper">
+                    <label class="form-label">1x1 Logo (Square)</label>
+                    <div class="image-preview" id="logoSquarePreview">
+                        <span class="material-symbols-rounded placeholder-icon" style="color: var(--border); font-size: 32px;">image</span>
+                        <img id="logoSquareImg" src="" alt="Square Logo">
+                    </div>
+                    <label class="upload-btn">
+                        Upload Image
+                        <input type="file" id="compLogoSquare" accept="image/*" class="readonly-input" disabled onchange="previewImage(this, 'logoSquareImg', 'logoSquarePreview')">
+                    </label>
+                    <input type="hidden" id="compLogoSquareUrl">
+                </div>
+                
+                <div class="image-upload-wrapper">
+                    <label class="form-label">Horizontal Logo (Name)</label>
+                    <div class="image-preview horizontal-preview" id="logoHorizontalPreview">
+                        <span class="material-symbols-rounded placeholder-icon" style="color: var(--border); font-size: 32px;">image</span>
+                        <img id="logoHorizontalImg" src="" alt="Horizontal Logo">
+                    </div>
+                    <label class="upload-btn">
+                        Upload Image
+                        <input type="file" id="compLogoHorizontal" accept="image/*" class="readonly-input" disabled onchange="previewImage(this, 'logoHorizontalImg', 'logoHorizontalPreview')">
+                    </label>
+                     <input type="hidden" id="compLogoHorizontalUrl">
+                </div>
+            </div>
+
+            <div class="section-header">General Information</div>
             <div class="input-group">
                 <div>
                     <label class="form-label">Company Name</label>
@@ -90,7 +132,7 @@
                 </div>
                 <div>
                     <label class="form-label">Email Address</label>
-                    <input type="email" id="compEmail" class="form-input readonly-input" value="info@domain.com" readonly>
+                    <input type="email" id="compEmail" class="form-input readonly-input" value="support@cmfilings.com" readonly>
                 </div>
                 <div>
                     <label class="form-label">Website</label>
@@ -127,18 +169,29 @@
     <script type="module">
 
     import { db } from "./firebase-config.js";
+    import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    // NOTE: Import Firebase Storage functions if you want to actually upload files to Firebase Storage.
+    // This example uses Base64 strings for simplicity/demonstration within Firestore.
+    // import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
-    import {
-        doc,
-        getDoc,
-        setDoc
-    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    const companyDocRef = doc(db, "settings", "company_profile");
 
-    const companyDocRef = doc(
-        db,
-        "settings",
-        "company_profile"
-    );
+    // Helper for image preview
+    window.previewImage = function(input, imgId, previewContainerId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                document.getElementById(imgId).src = e.target.result;
+                document.getElementById(previewContainerId).classList.add('has-image');
+                // Store base64 in hidden input for easy saving to Firestore
+                document.getElementById(input.id + 'Url').value = e.target.result; 
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
 
     // --- 1. LOAD DATA ON MOUNT ---
     window.loadCompanyData = async function() {
@@ -151,63 +204,44 @@
 
                 const data = docSnap.data();
 
-                if (data.name)
-                    document.getElementById('compName').value = data.name;
-
-                if (data.tagline)
-                    document.getElementById('compTagline').value = data.tagline;
-
-                if (data.address)
-                    document.getElementById('compAddress').value = data.address;
-
-                if (data.branches)
-                    document.getElementById('compBranches').value = data.branches;
-
-                if (data.phone1)
-                    document.getElementById('compPhone1').value = data.phone1;
-
-                if (data.phone2)
-                    document.getElementById('compPhone2').value = data.phone2;
-
-                if (data.email)
-                    document.getElementById('compEmail').value = data.email;
-
-                if (data.website)
-                    document.getElementById('compWebsite').value = data.website;
-
-                if (data.accName)
-                    document.getElementById('compAccName').value = data.accName;
-
-                if (data.accNo)
-                    document.getElementById('compAccNo').value = data.accNo;
-
-                if (data.ifsc)
-                    document.getElementById('compIfsc').value = data.ifsc;
-
-                if (data.upi)
-                    document.getElementById('compUpi').value = data.upi;
+                if (data.name) document.getElementById('compName').value = data.name;
+                if (data.tagline) document.getElementById('compTagline').value = data.tagline;
+                if (data.address) document.getElementById('compAddress').value = data.address;
+                if (data.branches) document.getElementById('compBranches').value = data.branches;
+                if (data.phone1) document.getElementById('compPhone1').value = data.phone1;
+                if (data.phone2) document.getElementById('compPhone2').value = data.phone2;
+                // Using explicit instruction to update email
+                if (data.email) document.getElementById('compEmail').value = data.email; 
+                if (data.website) document.getElementById('compWebsite').value = data.website;
+                if (data.accName) document.getElementById('compAccName').value = data.accName;
+                if (data.accNo) document.getElementById('compAccNo').value = data.accNo;
+                if (data.ifsc) document.getElementById('compIfsc').value = data.ifsc;
+                if (data.upi) document.getElementById('compUpi').value = data.upi;
+                
+                // Load Images
+                if(data.logoSquare) {
+                     document.getElementById('logoSquareImg').src = data.logoSquare;
+                     document.getElementById('logoSquarePreview').classList.add('has-image');
+                     document.getElementById('compLogoSquareUrl').value = data.logoSquare;
+                }
+                if(data.logoHorizontal) {
+                     document.getElementById('logoHorizontalImg').src = data.logoHorizontal;
+                     document.getElementById('logoHorizontalPreview').classList.add('has-image');
+                     document.getElementById('compLogoHorizontalUrl').value = data.logoHorizontal;
+                }
+            } else {
+                 // Set default email from instructions if doc doesn't exist
+                 document.getElementById('compEmail').value = "support@cmfilings.com";
             }
 
         } catch (error) {
-
-            console.error(
-                "Error fetching company details:",
-                error
-            );
-
+            console.error("Error fetching company details:", error);
         }
 
         // Admin access
-        if (
-            window.currentUser &&
-            window.currentUser.role !== 'admin'
-        ) {
-
-            const editBtn =
-                document.getElementById('editCompanyBtn');
-
-            if (editBtn)
-                editBtn.style.display = 'none';
+        if (window.currentUser && window.currentUser.role !== 'admin') {
+            const editBtn = document.getElementById('editCompanyBtn');
+            if (editBtn) editBtn.style.display = 'none';
         }
     };
 
@@ -217,36 +251,33 @@
     // --- 2. TOGGLE EDIT MODE ---
 
     window.toggleEditMode = function() {
-
-        const inputs =
-            document.querySelectorAll(
-                '#company-overview-form .readonly-input'
-            );
-
-        const saveActions =
-            document.getElementById('save-actions');
+        const textInputs = document.querySelectorAll('#company-overview-form .readonly-input:not([type="file"])');
+        const fileInputs = document.querySelectorAll('#company-overview-form input[type="file"]');
+        const saveActions = document.getElementById('save-actions');
 
         let isEditing = false;
 
-        inputs.forEach(input => {
-
+        textInputs.forEach(input => {
             input.classList.toggle('editable');
-
             if (input.hasAttribute('readonly')) {
-
                 input.removeAttribute('readonly');
                 isEditing = true;
-
             } else {
-
                 input.setAttribute('readonly', true);
-
             }
-
         });
 
-        saveActions.style.display =
-            isEditing ? 'block' : 'none';
+        // Handle file inputs separately (disabled instead of readonly)
+        fileInputs.forEach(input => {
+            input.classList.toggle('editable');
+            if(input.hasAttribute('disabled')) {
+                input.removeAttribute('disabled');
+            } else {
+                input.setAttribute('disabled', true);
+            }
+        });
+
+        saveActions.style.display = isEditing ? 'block' : 'none';
     };
 
 
@@ -254,78 +285,35 @@
 
     window.saveCompanyDetails = async function() {
 
-        const btn =
-            document.getElementById('saveCompanyBtn');
-
+        const btn = document.getElementById('saveCompanyBtn');
         btn.innerText = "Saving...";
         btn.disabled = true;
 
         const payload = {
-
-            name:
-                document.getElementById('compName').value,
-
-            tagline:
-                document.getElementById('compTagline').value,
-
-            address:
-                document.getElementById('compAddress').value,
-
-            branches:
-                document.getElementById('compBranches').value,
-
-            phone1:
-                document.getElementById('compPhone1').value,
-
-            phone2:
-                document.getElementById('compPhone2').value,
-
-            email:
-                document.getElementById('compEmail').value,
-
-            website:
-                document.getElementById('compWebsite').value,
-
-            accName:
-                document.getElementById('compAccName').value,
-
-            accNo:
-                document.getElementById('compAccNo').value,
-
-            ifsc:
-                document.getElementById('compIfsc').value,
-
-            upi:
-                document.getElementById('compUpi').value,
-
+            name: document.getElementById('compName').value,
+            tagline: document.getElementById('compTagline').value,
+            address: document.getElementById('compAddress').value,
+            branches: document.getElementById('compBranches').value,
+            phone1: document.getElementById('compPhone1').value,
+            phone2: document.getElementById('compPhone2').value,
+            email: document.getElementById('compEmail').value,
+            website: document.getElementById('compWebsite').value,
+            accName: document.getElementById('compAccName').value,
+            accNo: document.getElementById('compAccNo').value,
+            ifsc: document.getElementById('compIfsc').value,
+            upi: document.getElementById('compUpi').value,
+            logoSquare: document.getElementById('compLogoSquareUrl').value,
+            logoHorizontal: document.getElementById('compLogoHorizontalUrl').value,
             updatedAt: new Date()
         };
 
         try {
-
-            await setDoc(
-                companyDocRef,
-                payload,
-                { merge: true }
-            );
-
-            alert(
-                "Company details updated successfully!"
-            );
-
+            await setDoc(companyDocRef, payload, { merge: true });
+            alert("Company details updated successfully!");
             window.toggleEditMode();
-
         } catch (error) {
-
-            console.error(
-                "Firebase Save Error:",
-                error
-            );
-
-            alert(
-                "Failed to save changes. Please check your connection or database rules."
-            );
-
+            console.error("Firebase Save Error:", error);
+            alert("Failed to save changes. Please check your connection or database rules.");
         }
 
         btn.innerText = "Save Changes";
