@@ -227,7 +227,6 @@
         .btn-secondary:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--accent-soft); }
         .btn-icon { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 8px; transition: 0.2s; display: inline-flex; }
         .btn-icon:hover { background: var(--primary-light); color: var(--primary); }
-        .btn-danger { color: #EF4444; background: #FEF2F2; padding: 6px 12px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer;}
 
         /* --- Catalog Filter Bar --- */
         .filter-bar {
@@ -527,7 +526,7 @@
                             <input type="file" id="itemPhoto" accept="image/*" onchange="previewImage(this)">
                             <input type="hidden" id="photoBase64">
                         </div>
-                        <button type="button" class="btn-icon" style="margin-top: 8px; font-size: 12px;" onclick="clearImage()" id="clearImgBtn" style="display:none;">Clear Image</button>
+                        <button type="button" class="btn-icon" style="margin-top: 8px; font-size: 12px; display: none;" onclick="clearImage()" id="clearImgBtn">Clear Image</button>
                     </div>
                 </div>
 
@@ -649,7 +648,7 @@
                 renderGrid(allItems);
             } catch (err) {
                 console.error("Load error:", err);
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--danger);">Failed to load catalog.</div>';
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #EF4444;">Failed to load catalog.</div>';
             }
         };
 
@@ -678,9 +677,10 @@
                             <div class="card-spec">${item.specs}</div>
                             <div class="card-footer">
                                 <div class="card-price">${symbol} ${priceFormatted}</div>
-                                <div>
-                                    <button class="btn-icon" onclick="editItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
-                                    <button class="btn-icon" onclick="deleteItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px; color:var(--danger);">delete</span></button>
+                                <div style="display: flex; gap: 4px;">
+                                    <button class="btn-icon" title="Share to WhatsApp" onclick="shareToWhatsApp('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px; color:var(--success);">forum</span></button>
+                                    <button class="btn-icon" title="Edit Item" onclick="editItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px;">edit</span></button>
+                                    <button class="btn-icon" title="Delete Item" onclick="deleteItem('${item.id}')"><span class="material-symbols-rounded" style="font-size:18px; color:#EF4444;">delete</span></button>
                                 </div>
                             </div>
                         </div>
@@ -688,6 +688,110 @@
                 `;
             });
             grid.innerHTML = html;
+        };
+
+        // --- WhatsApp Sharing Logic ---
+        window.shareToWhatsApp = async function(id) {
+            const item = allItems.find(i => i.id === id);
+            if(!item) return;
+
+            const symbol = item.currency === 'AED' ? 'AED' : '₹';
+            const priceFormatted = item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+            
+            // 1. Prepare Text Message
+            let message = `*${item.name}*\n`;
+            message += `_${item.type} | ${item.category}_\n\n`;
+            message += `*Price:* ${symbol} ${priceFormatted}\n\n`;
+            message += `*Description:*\n${item.specs}\n\n`;
+            message += `Shared via COREBIQ Catalog`;
+
+            // 2. Generate JPEG image of the catalog item
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 800; // Square format for better mobile sharing
+            const ctx = canvas.getContext('2d');
+
+            // Draw white background
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Load and draw image (if exists)
+            const imgSrc = item.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="%23f1f5f9"><rect width="100%" height="100%"/></svg>';
+            try {
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                await new Promise((resolve) => {
+                    img.onload = resolve;
+                    img.onerror = resolve; // Continue even if image fails
+                    img.src = imgSrc;
+                });
+                
+                if (img.width > 0) {
+                     // Center-crop image into top half (800x450)
+                     const targetW = 800;
+                     const targetH = 450;
+                     const ratio = Math.max(targetW / img.width, targetH / img.height);
+                     const w = img.width * ratio;
+                     const h = img.height * ratio;
+                     ctx.drawImage(img, (targetW-w)/2, 0, w, h);
+                }
+            } catch(e) {}
+
+            // Draw Card Background for text
+            ctx.fillStyle = '#F8FAFF';
+            ctx.fillRect(0, 450, 800, 350);
+            ctx.fillStyle = '#4F46E5';
+            ctx.fillRect(0, 450, 800, 8); // Primary color accent line
+
+            // Draw Text Details
+            ctx.fillStyle = '#111827';
+            ctx.font = 'bold 36px Arial';
+            ctx.fillText(item.name, 40, 520);
+
+            ctx.fillStyle = '#4F46E5';
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText(`${symbol} ${priceFormatted}`, 40, 570);
+
+            ctx.fillStyle = '#64748B';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText(`${item.type.toUpperCase()} | ${item.category.toUpperCase()}`, 40, 610);
+
+            // Wrap specs text
+            ctx.fillStyle = '#4B5563';
+            ctx.font = '22px Arial';
+            const words = item.specs.split(' ');
+            let line = '';
+            let y = 660;
+            const maxWidth = 720;
+            
+            for(let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth && n > 0) {
+                    ctx.fillText(line, 40, y);
+                    line = words[n] + ' ';
+                    y += 30;
+                    if(y > 750) { 
+                        ctx.fillText('...', 40, y);
+                        break; 
+                    }
+                } else {
+                    line = testLine;
+                }
+            }
+            if (y <= 750) ctx.fillText(line, 40, y);
+
+            // 3. Trigger Download and Open WhatsApp
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = `Catalog_${item.name.replace(/[^a-zA-Z0-9]/g, '_')}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            alert("Note: WhatsApp requires you to manually attach images. We have downloaded the item image to your device. Please attach it in the chat.");
+            window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         };
 
         // --- Filter & Sort ---
@@ -751,7 +855,6 @@
 
         // --- Download PDF ---
         window.downloadCatalogPDF = function() {
-            // Re-run current filter to get exact visible items
             const query = document.getElementById('searchInput').value.toLowerCase();
             const typeFilter = document.getElementById('filterType').value;
             const sortOrder = document.getElementById('sortPrice').value;
@@ -767,7 +870,6 @@
 
             if(filtered.length === 0) { alert("No items to export."); return; }
 
-            // Populate hidden export container
             const exportGrid = document.getElementById('pdfGrid');
             let pdfHtml = '';
             filtered.forEach(item => {
