@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+
+<meta name="theme-color" content="#F7F8FC">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<title>COREBIQ</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Text:wght@400;500;600&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0"
+      rel="stylesheet">
+
+<style>
+
+/* =========================================================
+   COREBIQ
+   GitHub Development Shell
+   No Firebase / No Login
+   ========================================================= */
+
+:root {
+    --primary: #356AE6;
+    --primary-container: #DCE6FF;
+
+    --surface: #F7F8FC;
+    --surface-container: #FFFFFF;
+    --surface-low: #F1F3F8;
+    --surface-high: #E9ECF3;
+
+    --text: #1A1B20;
+    --text-secondary: #62656F;
+
+    --outline: #D7DAE2;
+
+    --success: #188038;
+    --danger: #C5221F;
+
+    --header-height: 68px;
+    --nav-height: 76px;
+
+    --radius-sm: 14px;
+    --radius-md: 20px;
+    --radius-lg: 28px;
+
+    --shadow:
+        0 1px 3px rgba(20,24,35,.05),
+        0 8px 28px rgba(20,24,35,.06);
+
+    --font:
+        "Google Sans",
+        "Google Sans Text",
+        Arial,
+        sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font);
+}
+
+body {
+    overflow-x: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: 0;
+}
+
+button:focus-visible {
+    outline: 3px solid rgba(53,106,230,.25);
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app {
+    min-height: 100dvh;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    position: fixed;
+    z-index: 100;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: var(--header-height);
+
+    display: flex;
+    align-items: center;
+
+    padding:
+        0 max(16px, env(safe-area-inset-left))
+        0 max(16px, env(safe-area-inset-right));
+
+    background: rgba(247,248,252,.90);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border-bottom: 1px solid rgba(215,218,226,.65);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+}
+
+.brand img {
+    display: block;
+
+    width: auto;
+    height: 31px;
+
+    max-width: 150px;
+
+    object-fit: contain;
+}
+
+.header-title {
+    display: none;
+
+    margin-left: 12px;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.header-spacer {
+    flex: 1;
+}
+
+.header-button {
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--text);
+}
+
+.header-button:active {
+    background: var(--surface-high);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: auto;
+
+    padding:
+        calc(var(--header-height) + 18px)
+        15px
+        calc(var(--nav-height) + 28px);
+}
+
+
+/* =========================================================
+   MODULE FRAME
+   ========================================================= */
+
+.module-frame {
+    width: 100%;
+
+    min-height:
+        calc(100dvh - var(--header-height) - var(--nav-height));
+
+    border: 0;
+
+    background: transparent;
+
+    display: block;
+}
+
+
+/* =========================================================
+   MODULE FALLBACK
+   ========================================================= */
+
+.module-error {
+    margin-top: 20px;
+
+    padding: 30px;
+
+    background: var(--surface-container);
+
+    border: 1px solid var(--outline);
+
+    border-radius: var(--radius-lg);
+
+    text-align: center;
+
+    box-shadow: var(--shadow);
+}
+
+.module-error .icon {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 16px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 22px;
+
+    background: #FCE8E6;
+    color: var(--danger);
+}
+
+.module-error h2 {
+    margin: 0;
+
+    font-size: 20px;
+}
+
+.module-error p {
+    margin: 8px auto 20px;
+
+    max-width: 360px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BOTTOM NAVIGATION
+   ========================================================= */
+
+.bottom-nav {
+    position: fixed;
+
+    z-index: 100;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height:
+        calc(
+            var(--nav-height) +
+            env(safe-area-inset-bottom)
+        );
+
+    padding-bottom:
+        env(safe-area-inset-bottom);
+
+    background: rgba(247,248,252,.95);
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    border-top: 1px solid rgba(215,218,226,.70);
+}
+
+.nav-inner {
+    width: 100%;
+    max-width: 600px;
+
+    height: var(--nav-height);
+
+    margin: auto;
+
+    padding: 4px 8px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    align-items: center;
+}
+
+.nav-item {
+    height: 62px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 3px;
+
+    color: var(--text-secondary);
+
+    background: transparent;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.nav-icon {
+    min-width: 52px;
+    min-height: 28px;
+
+    padding: 2px 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+}
+
+.nav-item.active {
+    color: var(--primary);
+}
+
+.nav-item.active .nav-icon {
+    background: var(--primary-container);
+}
+
+.nav-item .material-symbols-rounded {
+    font-size: 24px;
+}
+
+
+/* =========================================================
+   FAB
+   ========================================================= */
+
+.fab {
+    position: fixed;
+
+    z-index: 110;
+
+    right: 20px;
+
+    bottom:
+        calc(
+            var(--nav-height) +
+            env(safe-area-inset-bottom) +
+            18px
+        );
+
+    width: 56px;
+    height: 56px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 18px;
+
+    background: var(--primary);
+    color: white;
+
+    box-shadow:
+        0 5px 18px rgba(53,106,230,.28);
+}
+
+.fab:active {
+    transform: scale(.95);
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 800px) {
+
+    .main {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .bottom-nav {
+        left: 50%;
+        right: auto;
+        bottom: 18px;
+
+        width:
+            min(600px, calc(100% - 32px));
+
+        height: 76px;
+
+        transform: translateX(-50%);
+
+        border:
+            1px solid var(--outline);
+
+        border-radius: 28px;
+
+        box-shadow: var(--shadow);
+
+        padding: 0;
+    }
+
+    .nav-inner {
+        height: 76px;
+    }
+
+    .fab {
+        bottom: 110px;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .main {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .nav-item {
+        font-size: 10px;
+    }
+
+    .nav-icon {
+        min-width: 46px;
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="header">
+
+        <div class="brand">
+
+            <img
+                src="assets/name.png"
+                alt="COREBIQ">
+
+            <span
+                class="header-title"
+                id="headerTitle">
+                Dashboard
+            </span>
+
+        </div>
+
+        <div class="header-spacer"></div>
+
+        <button
+            class="header-button"
+            onclick="showMessage('Development mode')">
+
+            <span class="material-symbols-rounded">
+                more_vert
+            </span>
+
+        </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN MODULE AREA
+         ===================================================== -->
+
+    <main class="main">
+
+        <iframe
+            id="moduleFrame"
+            class="module-frame"
+            title="COREBIQ Module"
+            loading="eager">
+        </iframe>
+
+    </main>
+
+
+    <!-- =====================================================
+         GLOBAL FAB
+         ===================================================== -->
+
+    <button
+        class="fab"
+        id="globalFab"
+        onclick="moduleAction()"
+        aria-label="Add">
+
+        <span class="material-symbols-rounded">
+            add
+        </span>
+
+    </button>
+
+
+    <!-- =====================================================
+         BOTTOM NAV
+         ===================================================== -->
+
+    <nav class="bottom-nav">
+
+        <div class="nav-inner">
+
+
+            <button
+                class="nav-item active"
+                data-module="dashboard"
+                onclick="openModule('dashboard')">
+
+                <span class="nav-icon">
+
+                    <span class="material-symbols-rounded">
+                        home
+                    </span>
+
+                </span>
+
+                <span>
+                    Home
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-module="clients"
+                onclick="openModule('clients')">
+
+                <span class="nav-icon">
+
+                    <span class="material-symbols-rounded">
+                        groups
+                    </span>
+
+                </span>
+
+                <span>
+                    Clients
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-module="contacts"
+                onclick="openModule('contacts')">
+
+                <span class="nav-icon">
+
+                    <span class="material-symbols-rounded">
+                        contacts
+                    </span>
+
+                </span>
+
+                <span>
+                    Contacts
+                </span>
+
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-module="more"
+                onclick="openModule('more')">
+
+                <span class="nav-icon">
+
+                    <span class="material-symbols-rounded">
+                        apps
+                    </span>
+
+                </span>
+
+                <span>
+                    More
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </nav>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   COREBIQ GITHUB MODULE SYSTEM
+   ========================================================= */
+
+const MODULES = {
+
+    dashboard: {
+        file: "modules/dashboard.html",
+        title: "Dashboard",
+        action: "dashboard"
+    },
+
+    clients: {
+        file: "modules/clients.html",
+        title: "Clients",
+        action: "clients"
+    },
+
+    contacts: {
+        file: "modules/contacts.html",
+        title: "Contacts",
+        action: "contacts"
+    },
+
+    more: {
+        file: "modules/more.html",
+        title: "More",
+        action: "more"
+    }
+
+};
+
+
+const frame =
+    document.getElementById("moduleFrame");
+
+const headerTitle =
+    document.getElementById("headerTitle");
+
+const fab =
+    document.getElementById("globalFab");
+
+
+/* =========================================================
+   OPEN MODULE
+   ========================================================= */
+
+function openModule(name) {
+
+    const module =
+        MODULES[name];
+
+    if (!module) {
+
+        showMessage(
+            "Module not configured"
+        );
+
+        return;
+    }
+
+
+    /* Active navigation */
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(item => {
+
+            item.classList.toggle(
+                "active",
+                item.dataset.module === name
+            );
+
+        });
+
+
+    /* Header */
+
+    headerTitle.textContent =
+        module.title;
+
+
+    /* FAB */
+
+    fab.style.display =
+        ["clients", "contacts"].includes(name)
+            ? "grid"
+            : "none";
+
+
+    /*
+       Load the HTML file from the same
+       GitHub-hosted application.
+
+       Example:
+
+       modules/clients.html
+    */
+
+    frame.src =
+        module.file;
+
+
+    /* URL state */
+
+    try {
+
+        history.replaceState(
+            null,
+            "",
+            "#" + name
+        );
+
+    } catch (error) {}
+
+}
+
+
+/* =========================================================
+   FAB ACTION
+   ========================================================= */
+
+function moduleAction() {
+
+    const hash =
+        location.hash
+            .replace("#", "");
+
+    if (hash === "clients") {
+
+        sendToModule("add-client");
+
+        return;
+    }
+
+    if (hash === "contacts") {
+
+        sendToModule("add-contact");
+
+        return;
+    }
+
+    showMessage(
+        "Add action"
+    );
+
+}
+
+
+/* =========================================================
+   MESSAGE TO MODULE
+   ========================================================= */
+
+function sendToModule(action) {
+
+    frame.contentWindow.postMessage(
+        {
+            source: "COREBIQ",
+            action: action
+        },
+        "*"
+    );
+
+}
+
+
+/* =========================================================
+   MODULE → SHELL MESSAGE
+   ========================================================= */
+
+window.addEventListener(
+    "message",
+    event => {
+
+        if (
+            !event.data ||
+            event.data.source !== "COREBIQ_MODULE"
+        ) {
+            return;
+        }
+
+
+        if (
+            event.data.title
+        ) {
+
+            headerTitle.textContent =
+                event.data.title;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SIMPLE MESSAGE
+   ========================================================= */
+
+function showMessage(message) {
+
+    const old =
+        document.getElementById(
+            "corebiq-message"
+        );
+
+    if (old) {
+        old.remove();
+    }
+
+
+    const toast =
+        document.createElement("div");
+
+    toast.id =
+        "corebiq-message";
+
+
+    toast.textContent =
+        message;
+
+
+    Object.assign(
+        toast.style,
+        {
+            position: "fixed",
+            zIndex: "500",
+            left: "50%",
+            bottom: "110px",
+            transform: "translateX(-50%)",
+            padding: "12px 18px",
+            borderRadius: "18px",
+            background: "#25262B",
+            color: "#fff",
+            fontSize: "13px",
+            boxShadow:
+                "0 8px 25px rgba(0,0,0,.18)"
+        }
+    );
+
+
+    document.body.appendChild(toast);
+
+
+    setTimeout(
+        () => toast.remove(),
+        2200
+    );
+
+}
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+function startApp() {
+
+    const requested =
+        location.hash
+            .replace("#", "")
+            .trim();
+
+
+    if (
+        requested &&
+        MODULES[requested]
+    ) {
+
+        openModule(requested);
+
+    } else {
+
+        openModule("dashboard");
+
+    }
+
+}
+
+
+/* =========================================================
+   BROWSER BACK / FORWARD
+   ========================================================= */
+
+window.addEventListener(
+    "hashchange",
+    () => {
+
+        const name =
+            location.hash
+                .replace("#", "")
+                .trim();
+
+        if (
+            name &&
+            MODULES[name]
+        ) {
+
+            openModule(name);
+
+        }
+
+    }
+);
+
+
+startApp();
+
+</script>
+
+</body>
+</html>
