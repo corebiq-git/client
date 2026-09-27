@@ -198,12 +198,25 @@
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
             background: #fff;
+            padding: 24px;
         }
 
-        #qr-image-container img {
+        #qr-image-container img.qr-code-img {
             width: 100%;
             height: auto;
             display: block;
+            margin: 20px 0;
+        }
+        
+        .qr-logo-top {
+            max-height: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .qr-logo-bottom {
+            max-height: 30px;
+            opacity: 0.6;
+            margin-top: 20px;
         }
 
         .action-grid {
@@ -289,7 +302,10 @@
         <div class="form-label" style="margin-bottom: 16px;">Generated QR Code</div>
         
         <div id="qr-image-container">
-            <img id="finalQrImg" src="" alt="Payment QR Code">
+            <img src="assets/name.png" alt="COREBIQ" class="qr-logo-top" onerror="this.style.display='none'">
+            <img id="finalQrImg" src="" alt="Payment QR Code" class="qr-code-img">
+            <div id="qr-details" style="text-align: center; color: var(--text-main); font-weight: 600; margin-bottom: 10px;"></div>
+            <img src="assets/poweredby.png" alt="Powered by COREBIQ" class="qr-logo-bottom" onerror="this.style.display='none'">
         </div>
 
         <div class="action-grid">
@@ -419,89 +435,19 @@
             if (note) upiString += `&tn=${encodeURIComponent(note)}`;
 
             try {
-                // Generate raw QR to a temporary canvas
-                const rawQrCanvas = document.createElement('canvas');
-                await QRCode.toCanvas(rawQrCanvas, upiString, {
+                // Generate QR Code as Data URL directly
+                generatedQrDataUrl = await QRCode.toDataURL(upiString, {
                     width: 300,
                     margin: 2,
                     color: { dark: '#0F172A', light: '#FFFFFF' }
                 });
 
-                // Composite Image (Logos + QR)
-                const finalCanvas = document.createElement('canvas');
-                const ctx = finalCanvas.getContext('2d');
-                
-                // Set final dimensions (e.g., 400x550)
-                finalCanvas.width = 400;
-                finalCanvas.height = 550;
-
-                // Fill white background
-                ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-
-                // Helper to load image
-                const loadImage = (src) => new Promise((resolve) => {
-                    const img = new Image();
-                    img.crossOrigin = 'Anonymous';
-                    img.onload = () => resolve(img);
-                    img.onerror = () => resolve(null); // Resolve null if fails
-                    img.src = src;
-                });
-
-                // Load assets
-                const [logoTop, logoBottom] = await Promise.all([
-                    loadImage('assets/name.png'),
-                    loadImage('assets/poweredby.png')
-                ]);
-
-                // Draw Top Logo
-                if (logoTop) {
-                    // Scale down logo to fit width (max 200px wide, max 60px high)
-                    const ratio = Math.min(200 / logoTop.width, 60 / logoTop.height);
-                    const w = logoTop.width * ratio;
-                    const h = logoTop.height * ratio;
-                    ctx.drawImage(logoTop, (400 - w) / 2, 30, w, h);
-                } else {
-                    // Fallback text
-                    ctx.fillStyle = '#4F46E5';
-                    ctx.font = 'bold 24px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('COREBIQ', 200, 60);
-                }
-
-                // Draw QR Code in center
-                ctx.drawImage(rawQrCanvas, 50, 110, 300, 300);
-
-                // Draw Note / Amount below QR
-                ctx.fillStyle = '#0F172A';
-                ctx.font = 'bold 22px sans-serif';
-                ctx.textAlign = 'center';
-                if(amount) {
-                    ctx.fillText(`₹ ${amount}`, 200, 440);
-                }
-                ctx.fillStyle = '#64748B';
-                ctx.font = '14px sans-serif';
-                ctx.fillText(payeeName, 200, amount ? 465 : 440);
-
-                // Draw Bottom Logo
-                if (logoBottom) {
-                    const ratio = Math.min(150 / logoBottom.width, 40 / logoBottom.height);
-                    const w = logoBottom.width * ratio;
-                    const h = logoBottom.height * ratio;
-                    // Draw semi-transparent
-                    ctx.globalAlpha = 0.6;
-                    ctx.drawImage(logoBottom, (400 - w) / 2, 490, w, h);
-                    ctx.globalAlpha = 1.0;
-                } else {
-                    ctx.fillStyle = '#CBD5E1';
-                    ctx.font = '12px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('Powered by COREBIQ', 200, 510);
-                }
-
-                // Export to UI
-                generatedQrDataUrl = finalCanvas.toDataURL('image/jpeg', 0.9);
                 document.getElementById('finalQrImg').src = generatedQrDataUrl;
+                
+                // Update Details text in preview
+                let detailsHtml = `<div>${payeeName}</div>`;
+                if (amount) detailsHtml = `<div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">₹ ${amount}</div>` + detailsHtml;
+                document.getElementById('qr-details').innerHTML = detailsHtml;
 
                 // Switch UI Views
                 document.getElementById('qr-form-card').style.display = 'none';
@@ -521,7 +467,7 @@
             if (!generatedQrDataUrl) return;
             const a = document.createElement('a');
             a.href = generatedQrDataUrl;
-            a.download = `QR_${transactionId}.jpg`;
+            a.download = `QR_${transactionId}.png`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
