@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COREBIQ | Calculator</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           COREBIQ PREMIUM CORPORATE SAAS - MD3 CALCULATOR
+        ========================================================= */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            
+            --border: #E2E8F0;
+            
+            --danger: #EF4444;
+            --danger-soft: #FEF2F2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--surface);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .material-symbols-rounded {
+            font-family: 'Material Symbols Rounded';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            display: inline-block;
+            white-space: nowrap;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =========================================================
+           CALCULATOR LAYOUT
+        ========================================================= */
+        .calc-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: var(--surface);
+        }
+
+        /* DISPLAY SECTION */
+        .calc-display-container {
+            flex: 0 0 35%;
+            min-height: 120px;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+            background: var(--surface-soft);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .calc-history {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 500;
+            min-height: 24px;
+            margin-bottom: 8px;
+            word-wrap: break-word;
+            max-width: 100%;
+            text-align: right;
+            opacity: 0.8;
+        }
+
+        .calc-current {
+            color: var(--text-dark);
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            word-wrap: break-word;
+            max-width: 100%;
+            text-align: right;
+            line-height: 1.1;
+            transition: font-size 0.2s ease;
+        }
+
+        /* KEYPAD SECTION */
+        .calc-keypad {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 12px;
+            padding: 20px;
+            background: var(--surface);
+        }
+
+        /* BUTTONS */
+        .calc-btn {
+            border: none;
+            border-radius: 999px; /* MD3 fully rounded */
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .calc-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* Button Variants */
+        .btn-num {
+            background: var(--bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-num:hover {
+            background: var(--border);
+        }
+
+        .btn-op {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-size: 24px;
+        }
+
+        .btn-op:hover {
+            background: var(--accent-soft);
+            color: var(--primary);
+        }
+
+        .btn-action {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .btn-action:hover {
+            background: #FEE2E2;
+        }
+
+        .btn-equal {
+            background: var(--primary);
+            color: white;
+            grid-row: span 2;
+            border-radius: 24px; /* Squircle for tall button */
+            font-size: 28px;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-equal:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-zero {
+            grid-column: span 2;
+        }
+
+        /* =========================================================
+           RESPONSIVE ADJUSTMENTS
+        ========================================================= */
+        @media (max-height: 500px) {
+            .calc-display-container {
+                flex: 0 0 25%;
+                padding: 12px 20px;
+            }
+            .calc-current {
+                font-size: 32px;
+            }
+            .calc-keypad {
+                gap: 8px;
+                padding: 12px;
+            }
+            .calc-btn {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calc-wrapper">
+        
+        <!-- Display -->
+        <div class="calc-display-container">
+            <div class="calc-history" id="calc-history"></div>
+            <div class="calc-current" id="calc-current">0</div>
+        </div>
+
+        <!-- Keypad -->
+        <div class="calc-keypad">
+            <!-- Row 1 -->
+            <button class="calc-btn btn-action" onclick="clearAll()">AC</button>
+            <button class="calc-btn btn-action" onclick="deleteLast()">
+                <span class="material-symbols-rounded">backspace</span>
+            </button>
+            <button class="calc-btn btn-op" onclick="inputOp('%')">%</button>
+            <button class="calc-btn btn-op" onclick="inputOp('/')">÷</button>
+
+            <!-- Row 2 -->
+            <button class="calc-btn btn-num" onclick="inputNum('7')">7</button>
+            <button class="calc-btn btn-num" onclick="inputNum('8')">8</button>
+            <button class="calc-btn btn-num" onclick="inputNum('9')">9</button>
+            <button class="calc-btn btn-op" onclick="inputOp('*')">×</button>
+
+            <!-- Row 3 -->
+            <button class="calc-btn btn-num" onclick="inputNum('4')">4</button>
+            <button class="calc-btn btn-num" onclick="inputNum('5')">5</button>
+            <button class="calc-btn btn-num" onclick="inputNum('6')">6</button>
+            <button class="calc-btn btn-op" onclick="inputOp('-')">−</button>
+
+            <!-- Row 4 -->
+            <button class="calc-btn btn-num" onclick="inputNum('1')">1</button>
+            <button class="calc-btn btn-num" onclick="inputNum('2')">2</button>
+            <button class="calc-btn btn-num" onclick="inputNum('3')">3</button>
+            <button class="calc-btn btn-op" onclick="inputOp('+')">+</button>
+
+            <!-- Row 5 -->
+            <button class="calc-btn btn-num btn-zero" onclick="inputNum('0')">0</button>
+            <button class="calc-btn btn-num" onclick="inputDot()">.</button>
+            <button class="calc-btn btn-equal" onclick="calculate()">=</button>
+        </div>
+
+    </div>
+
+    <script>
+        /* =========================================================
+           CALCULATOR LOGIC
+        ========================================================= */
+        const displayCurrent = document.getElementById('calc-current');
+        const displayHistory = document.getElementById('calc-history');
+
+        let currentInput = '0';
+        let previousInput = '';
+        let operator = null;
+        let shouldResetDisplay = false;
+
+        function updateDisplay() {
+            // Auto-resize font for large numbers
+            if (currentInput.length > 12) {
+                displayCurrent.style.fontSize = '28px';
+            } else if (currentInput.length > 8) {
+                displayCurrent.style.fontSize = '34px';
+            } else {
+                displayCurrent.style.fontSize = '42px';
+            }
+
+            // Format numbers nicely, keeping trailing dots if typing
+            displayCurrent.innerText = currentInput;
+            
+            if (operator != null) {
+                const opSymbol = operator === '*' ? '×' : operator === '/' ? '÷' : operator === '-' ? '−' : operator;
+                displayHistory.innerText = `${previousInput} ${opSymbol}`;
+            } else {
+                displayHistory.innerText = '';
+            }
+        }
+
+        function inputNum(num) {
+            if (currentInput === '0' || shouldResetDisplay) {
+                currentInput = num;
+                shouldResetDisplay = false;
+            } else {
+                if (currentInput.length >= 15) return; // Prevent overflow
+                currentInput += num;
+            }
+            updateDisplay();
+        }
+
+        function inputDot() {
+            if (shouldResetDisplay) {
+                currentInput = '0.';
+                shouldResetDisplay = false;
+            } else if (!currentInput.includes('.')) {
+                currentInput += '.';
+            }
+            updateDisplay();
+        }
+
+        function clearAll() {
+            currentInput = '0';
+            previousInput = '';
+            operator = null;
+            shouldResetDisplay = false;
+            updateDisplay();
+        }
+
+        function deleteLast() {
+            if (shouldResetDisplay) return;
+            currentInput = currentInput.toString().slice(0, -1);
+            if (currentInput === '' || currentInput === '-') {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        function inputOp(op) {
+            if (operator !== null && !shouldResetDisplay) {
+                calculate();
+            }
+            
+            // Special handling for percentage
+            if (op === '%') {
+                currentInput = (parseFloat(currentInput) / 100).toString();
+                updateDisplay();
+                return;
+            }
+
+            previousInput = currentInput;
+            operator = op;
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
+
+        function calculate() {
+            if (operator === null || shouldResetDisplay) return;
+
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operator) {
+                case '+': result = prev + current; break;
+                case '-': result = prev - current; break;
+                case '*': result = prev * current; break;
+                case '/': 
+                    if (current === 0) {
+                        alert("Cannot divide by zero");
+                        clearAll();
+                        return;
+                    }
+                    result = prev / current; 
+                    break;
+                default: return;
+            }
+
+            // Fix floating point issues and strip unnecessary zeroes
+            currentInput = parseFloat(result.toPrecision(12)).toString();
+            operator = null;
+            previousInput = '';
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
+
+        // Keyboard Support
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') inputNum(e.key);
+            if (e.key === '.') inputDot();
+            if (e.key === '=' || e.key === 'Enter') { e.preventDefault(); calculate(); }
+            if (e.key === 'Backspace') deleteLast();
+            if (e.key === 'Escape') clearAll();
+            if (['+', '-', '*', '/', '%'].includes(e.key)) inputOp(e.key);
+        });
+
+    </script>
+</body>
+</html>
