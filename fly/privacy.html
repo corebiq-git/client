@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Privacy Policy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+</head>
+<body>
+
+<div class="module-container" id="privacy-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        #privacy-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 800px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 24px; 
+            font-weight: 800; 
+            margin-bottom: 24px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+        
+        .policy-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 32px 40px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .policy-card {
+                padding: 24px 20px;
+            }
+        }
+
+        .policy-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .policy-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .update-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .policy-intro {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Content Styling --- */
+        .policy-section {
+            margin-bottom: 32px;
+        }
+
+        .policy-section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .policy-section h2::before {
+            content: "";
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .policy-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .policy-section p {
+            margin-bottom: 16px;
+            color: var(--text-main);
+            font-size: 15px;
+        }
+
+        .policy-section ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .policy-section ul li {
+            position: relative;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-size: 15px;
+            padding-left: 24px;
+        }
+
+        .policy-section ul li::before {
+            content: "done";
+            font-family: 'Material Symbols Rounded';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 16px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .contact-box {
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .contact-box a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .contact-box a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .policy-footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">privacy_tip</span>
+        Privacy Policy
+    </div>
+
+    <div class="policy-card">
+        
+        <div class="policy-header">
+            <div class="policy-logo">
+                <span class="material-symbols-rounded">shield_locked</span>
+                COREBIQ
+            </div>
+            <div class="update-badge">Last Updated: 27 September 2026</div>
+            <p class="policy-intro">
+                COREBIQ (“we”, “our”, “us”) respects your privacy and is committed to protecting the information you provide while using the COREBIQ application (“App”). This Privacy Policy explains what information we may collect, how we use it, how we protect it, and your choices regarding your information.
+            </p>
+        </div>
+
+        <div class="policy-section">
+            <h2>1. Information We Collect</h2>
+            <p>Depending on how you use COREBIQ, we may collect:</p>
+            
+            <h3>Account Information</h3>
+            <ul>
+                <li>Name</li>
+                <li>Email address</li>
+                <li>Profile information associated with your login</li>
+                <li>User ID and authentication information</li>
+            </ul>
+
+            <h3>Client and Business Information</h3>
+            <p>If you use COREBIQ to manage business or client information, you may enter information such as:</p>
+            <ul>
+                <li>Client name</li>
+                <li>Mobile number</li>
+                <li>WhatsApp number</li>
+                <li>Email address</li>
+                <li>Business name</li>
+                <li>Address</li>
+                <li>GST or tax-related information</li>
+                <li>Services associated with a client</li>
+                <li>Notes and follow-up information</li>
+                <li>Other information you choose to store in the App</li>
+            </ul>
+
+            <h3>Usage and Technical Information</h3>
+            <p>We may collect limited technical information required to operate and improve the App, such as:</p>
+            <ul>
+                <li>Device and operating system information</li>
+                <li>App version</li>
+                <li>Basic diagnostic information</li>
+                <li>Authentication and security information</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2>2. How We Use Information</h2>
+            <p>We use information to:</p>
+            <ul>
+                <li>Provide and operate COREBIQ services</li>
+                <li>Authenticate users and maintain secure accounts</li>
+                <li>Store and manage business and client information</li>
+                <li>Synchronize information across supported devices</li>
+                <li>Provide requested features and functionality</li>
+                <li>Maintain application security</li>
+                <li>Troubleshoot technical problems</li>
+                <li>Improve the performance and reliability of the App</li>
+                <li>Comply with applicable legal obligations</li>
+            </ul>
+            <p>We do not use your client information for unrelated purposes without an appropriate legal basis or your permission where required.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>3. Client Information</h2>
+            <p>COREBIQ may allow authorized users to store information about their customers, clients, employees, suppliers, or other business contacts.</p>
+            <p>The user or organization entering such information is responsible for ensuring that they have the appropriate authority and lawful basis to collect and process that information.</p>
+            <p>COREBIQ is intended to provide tools for managing such information and does not determine the purposes for which users collect or use their client information.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>4. Firebase and Cloud Storage</h2>
+            <p>COREBIQ may use Firebase and related Google Cloud services for authentication, database storage, application functionality, and security.</p>
+            <p>Information stored through these services may include account information and business/client data entered by authorized users.</p>
+            <p>Access to stored information is controlled through authentication and application security rules designed to prevent unauthorized access.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>5. Account and Data Separation</h2>
+            <p>COREBIQ may support multiple organizations, domains, or business accounts.</p>
+            <p>Where this functionality is enabled, information belonging to one organization or account is logically separated from information belonging to another organization or account.</p>
+            <p>Users are only permitted to access information for which they have appropriate authorization.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>6. Information Sharing</h2>
+            <p>We do not sell personal information or client information.</p>
+            <p>We may disclose information when reasonably necessary to:</p>
+            <ul>
+                <li>Provide the requested service</li>
+                <li>Maintain or secure the App</li>
+                <li>Comply with applicable law, regulation, legal process, or government request</li>
+                <li>Protect the rights, safety, and security of COREBIQ, its users, or others</li>
+                <li>Work with service providers that process information on our behalf and under appropriate safeguards</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2>7. Data Security</h2>
+            <p>We use reasonable technical and organizational measures to protect information against unauthorized access, alteration, disclosure, or destruction.</p>
+            <p>However, no electronic storage or transmission system can be guaranteed to be completely secure. Users should also maintain the confidentiality of their account credentials and devices.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>8. Data Retention</h2>
+            <p>We retain information for as long as reasonably necessary to provide the services, maintain business records, meet legal or regulatory requirements, resolve disputes, and enforce agreements.</p>
+            <p>When information is no longer required, it may be deleted or securely disposed of, subject to applicable legal and operational requirements.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>9. Your Rights and Choices</h2>
+            <p>Depending on applicable law, you may have rights to:</p>
+            <ul>
+                <li>Access your personal information</li>
+                <li>Request correction of inaccurate information</li>
+                <li>Request deletion of information</li>
+                <li>Withdraw consent where processing is based on consent</li>
+                <li>Request information about how your data is processed</li>
+            </ul>
+            <p>Requests can be made through the contact details provided below.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>10. Children's Privacy</h2>
+            <p>COREBIQ is intended for business and professional use and is not specifically directed toward children.</p>
+            <p>We do not knowingly collect personal information from children where such collection is prohibited by applicable law.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>11. Third-Party Services</h2>
+            <p>COREBIQ may rely on third-party services such as Firebase, Google authentication services, hosting providers, analytics services, or other infrastructure providers.</p>
+            <p>These services may process information according to their own privacy policies and applicable terms.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>12. External Links</h2>
+            <p>The App may contain links to third-party websites or services.</p>
+            <p>We are not responsible for the privacy practices, content, or security of third-party websites or services. Users should review the privacy policies of those services before providing information.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>13. Changes to This Privacy Policy</h2>
+            <p>We may update this Privacy Policy from time to time to reflect changes to COREBIQ, applicable laws, technologies, or our data practices.</p>
+            <p>The updated version will be made available through the App or the relevant COREBIQ website. The “Last Updated” date at the beginning of this policy indicates when the policy was most recently revised.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2>14. Contact Us</h2>
+            <p>If you have questions, concerns, or requests regarding this Privacy Policy or your information, please contact us:</p>
+            
+            <div class="contact-box">
+                <p><strong>COREBIQ</strong></p>
+                <p>Website: <a href="https://corebiq.com" target="_blank">https://corebiq.com</a></p>
+                <p>Email: <a href="mailto:support@corebiq.com">support@corebiq.com</a></p>
+            </div>
+        </div>
+
+        <div class="policy-section">
+            <h2>15. Acceptance</h2>
+            <p>By using COREBIQ, you acknowledge that you have read and understood this Privacy Policy.</p>
+            <p>If you do not agree with this Privacy Policy, please discontinue use of the App.</p>
+        </div>
+
+        <div class="policy-footer">
+            © 2026 COREBIQ. All rights reserved.
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
