@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Rental Agreement Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="module-container" id="deed-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        #deed-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 1000px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .form-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+        }
+
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input, .form-select, .form-textarea { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            background: #FAFAFA; 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        .input-group { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-bottom: 20px; 
+        }
+        @media (min-width: 768px) { .input-group { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 900px) { .input-group-3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+        .section-divider {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 24px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Buttons --- */
+        .btn-primary, .btn-secondary {
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            width: 100%;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; box-shadow: var(--shadow-md); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); }
+        
+        .btn-secondary { background: var(--surface-soft); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--accent-soft); }
+
+        /* --- Preview Area --- */
+        .preview-area {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .preview-area.active { display: flex; }
+
+        /* A4 Legal Paper Styles */
+        .a4-container {
+            width: 100%;
+            max-width: 794px; /* Standard A4 width at 96 DPI */
+            background: #FFFFFF;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+            /* Legal documents look best with standard serif or clear sans */
+            font-family: 'Times New Roman', Times, serif;
+            color: #000000;
+            padding: 60px 50px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .legal-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .legal-section-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .legal-p {
+            margin-bottom: 16px;
+            text-align: justify;
+        }
+
+        .fill-blank {
+            font-weight: bold;
+            border-bottom: 1px dashed #000;
+            display: inline-block;
+            min-width: 50px;
+            text-align: center;
+            padding: 0 4px;
+        }
+
+        .party-block {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .legal-list {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .legal-list li { margin-bottom: 8px; }
+
+        .legal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .legal-table th, .legal-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .signature-block {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            margin-bottom: 40px;
+        }
+        .signature-line {
+            width: 250px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+            margin-top: 60px;
+        }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 794px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">gavel</span>
+        Rental Agreement Generator
+    </div>
+
+    <!-- INPUT FORM -->
+    <div class="form-card" id="deed-form-card">
+        <form id="deed-generator-form">
+            
+            <div class="section-divider">
+                <span class="material-symbols-rounded">event</span> Execution Details
+            </div>
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Agreement Date</label>
+                    <input type="date" id="execDate" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Place of Execution</label>
+                    <input type="text" id="execPlace" class="form-input" placeholder="e.g. Kozhikode, Kerala" required>
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">real_estate_agent</span> 1. Landlord / Lessor Details
+            </div>
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="lName" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Son/Daughter/Wife of</label>
+                    <input type="text" id="lParent" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Age</label>
+                    <input type="number" id="lAge" class="form-input" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Residential Address</label>
+                    <textarea id="lAddress" class="form-textarea" required></textarea>
+                </div>
+                <div>
+                    <label class="form-label">PAN No. (Optional)</label>
+                    <input type="text" id="lPan" class="form-input" placeholder="[Omitted if blank]">
+                </div>
+                <div>
+                    <label class="form-label">ID / Aadhaar No. (Optional)</label>
+                    <input type="text" id="lAadhaar" class="form-input" placeholder="[Omitted if blank]">
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">person</span> 2. Tenant / Lessee Details
+            </div>
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="tName" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Son/Daughter/Wife of</label>
+                    <input type="text" id="tParent" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Age</label>
+                    <input type="number" id="tAge" class="form-input" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Residential/Registered Address</label>
+                    <textarea id="tAddress" class="form-textarea" required></textarea>
+                </div>
+                <div>
+                    <label class="form-label">PAN No. (Optional)</label>
+                    <input type="text" id="tPan" class="form-input" placeholder="[Omitted if blank]">
+                </div>
+                <div>
+                    <label class="form-label">ID / Aadhaar No. (Optional)</label>
+                    <input type="text" id="tAadhaar" class="form-input" placeholder="[Omitted if blank]">
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">apartment</span> 3. Property & Term
+            </div>
+            <div class="input-group">
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Full Property Address to be Rented</label>
+                    <textarea id="propAddress" class="form-textarea" required></textarea>
+                </div>
+                <div>
+                    <label class="form-label">Property Type & Purpose</label>
+                    <input type="text" id="propType" class="form-input" placeholder="e.g. 2BHK Residential Flat" required>
+                </div>
+                <div>
+                    <label class="form-label">Built-up Area / Floor</label>
+                    <input type="text" id="propArea" class="form-input" placeholder="e.g. 1200 Sq.Ft, 1st Floor" required>
+                </div>
+            </div>
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Commencement Date</label>
+                    <input type="date" id="termStart" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Tenancy Duration (Months)</label>
+                    <input type="number" id="termMonths" class="form-input" value="11" required>
+                </div>
+                <div>
+                    <label class="form-label">Lock-in Period (Months)</label>
+                    <input type="number" id="lockinMonths" class="form-input" value="0">
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">payments</span> 4. Financials
+            </div>
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Monthly Rent (₹)</label>
+                    <input type="number" id="rentAmount" class="form-input" required oninput="updateWords('rentAmount', 'rentWordsPreview')">
+                </div>
+                <div>
+                    <label class="form-label">Security Deposit (₹)</label>
+                    <input type="number" id="depositAmount" class="form-input" required oninput="updateWords('depositAmount', 'depositWordsPreview')">
+                </div>
+                <div>
+                    <label class="form-label">Rent Due Date</label>
+                    <input type="number" id="rentDueDate" class="form-input" placeholder="e.g. 5th of every month" min="1" max="31" value="5">
+                </div>
+            </div>
+            
+            <div style="font-size: 12px; color: var(--primary-dark); font-weight: 600; margin-bottom: 20px; background: var(--primary-light); padding: 10px 16px; border-radius: 8px;">
+                Rent: <span id="rentWordsPreview">Zero</span> | Deposit: <span id="depositWordsPreview">Zero</span>
+            </div>
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Notice Period for Termination</label>
+                    <input type="text" id="noticePeriod" class="form-input" placeholder="e.g. 1 month" value="1 month">
+                </div>
+                <div>
+                    <label class="form-label">Payment Method</label>
+                    <select id="paymentMethod" class="form-select">
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="Cash">Cash</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 16px;">
+                <span class="material-symbols-rounded">gavel</span>
+                Generate Agreement Draft
+            </button>
+        </form>
+    </div>
+
+    <!-- PREVIEW AREA -->
+    <div class="preview-area" id="deed-preview-area">
+        
+        <!-- Standard A4 Container for PDF generation -->
+        <div class="a4-container" id="legalDocument">
+            
+            <div class="legal-title">RENTAL AGREEMENT</div>
+
+            <p class="legal-p">
+                This Rental Agreement (“Agreement”) is made and executed on this <span class="fill-blank" id="prevDay">___</span> day of <span class="fill-blank" id="prevMonthYear">_______, 20__</span>, at <span class="fill-blank" id="prevPlace">__________________</span>.
+            </p>
+
+            <p class="legal-p" style="font-weight: bold;">BETWEEN</p>
+
+            <p class="legal-p" style="font-weight: bold;">1. LANDLORD / LESSOR</p>
+            <div class="party-block">
+                Mr./Ms./M/s. <span class="fill-blank" id="prevLName">____________________</span>,<br>
+                Son/Daughter/Wife of <span class="fill-blank" id="prevLParent">____________________</span>,<br>
+                aged about <span class="fill-blank" id="prevLAge">____</span> years,<br>
+                residing at <span class="fill-blank" id="prevLAddress">________________________________________</span>,<br>
+                PAN: <span class="fill-blank" id="prevLPan">________________</span>,<br>
+                ID No.: <span class="fill-blank" id="prevLAadhaar">________________</span>,<br><br>
+                hereinafter referred to as the “Landlord” / “Lessor”, which expression shall, unless repugnant to the context, include his/her/their legal heirs, representatives, successors and permitted assigns;
+            </div>
+
+            <p class="legal-p" style="font-weight: bold;">AND</p>
+
+            <p class="legal-p" style="font-weight: bold;">2. TENANT / LESSEE</p>
+            <div class="party-block">
+                Mr./Ms./M/s. <span class="fill-blank" id="prevTName">____________________</span>,<br>
+                Son/Daughter/Wife of <span class="fill-blank" id="prevTParent">____________________</span>,<br>
+                aged about <span class="fill-blank" id="prevTAge">____</span> years,<br>
+                residing at <span class="fill-blank" id="prevTAddress">________________________________________</span>,<br>
+                PAN: <span class="fill-blank" id="prevTPan">________________</span>,<br>
+                ID No.: <span class="fill-blank" id="prevTAadhaar">________________</span>,<br><br>
+                hereinafter referred to as the “Tenant” / “Lessee”, which expression shall, unless repugnant to the context, include his/her/their legal heirs, representatives, successors and permitted assigns.
+            </div>
+
+            <p class="legal-p">The Landlord and Tenant are collectively referred to as the “Parties”.</p>
+
+            <div class="legal-section-title">1. PROPERTY</div>
+            <p class="legal-p">The Landlord hereby agrees to let out to the Tenant, and the Tenant agrees to take on rent, the property situated at:</p>
+            <p class="legal-p">
+                <strong>Full Property Address:</strong> <span class="fill-blank" id="prevPropAddress">____________________________________</span><br>
+                <strong>Property type & Floor:</strong> <span class="fill-blank" id="prevPropType">_________________</span>, <span class="fill-blank" id="prevPropFloor">___________</span><br>
+            </p>
+            <p class="legal-p">The above property, together with the fixtures, fittings and facilities provided therein, shall hereinafter be referred to as the “Premises.” The Premises shall be used only for the purpose specified in this Agreement.</p>
+
+            <div class="legal-section-title">2. PURPOSE OF RENTAL</div>
+            <p class="legal-p">The Premises shall be used for: <span class="fill-blank" id="prevPurpose">_________________</span> purposes.</p>
+            <p class="legal-p">The Tenant shall not use the Premises for any unlawful, hazardous, immoral, commercial or prohibited activity without the prior written consent of the Landlord and without obtaining any licence or permission required by law.</p>
+
+            <div class="legal-section-title">3. TERM OF TENANCY</div>
+            <p class="legal-p">
+                The tenancy shall commence from: <strong><span class="fill-blank" id="prevTermStart">__/__/____</span></strong><br>
+                and shall remain in force until: <strong><span class="fill-blank" id="prevTermEnd">__/__/____</span></strong><br>
+                The total term of the tenancy shall be <strong><span class="fill-blank" id="prevTermMonths">__</span> months</strong>.
+            </p>
+            <p class="legal-p">Any renewal or extension shall be subject to mutual agreement between the Parties and shall preferably be recorded in writing.</p>
+
+            <div class="legal-section-title">4. MONTHLY RENT</div>
+            <p class="legal-p">
+                The Tenant shall pay the Landlord a monthly rent of: <strong>₹ <span class="fill-blank" id="prevRent">_______</span></strong><br>
+                (Rupees <span class="fill-blank" id="prevRentWords">__________________________________</span> only).
+            </p>
+            <p class="legal-p">
+                The rent shall be payable on or before the <strong><span class="fill-blank" id="prevRentDay">__</span>th</strong> day of every calendar month. Payment shall be made by <strong><span class="fill-blank" id="prevPaymentMode">_________</span></strong>.
+            </p>
+
+            <div class="legal-section-title">5. SECURITY DEPOSIT</div>
+            <p class="legal-p">
+                The Tenant shall pay the Landlord a refundable security deposit of: <strong>₹ <span class="fill-blank" id="prevDeposit">_______</span></strong><br>
+                (Rupees <span class="fill-blank" id="prevDepositWords">__________________________________</span> only).
+            </p>
+            <p class="legal-p">The security deposit shall be held by the Landlord as security for the Tenant’s obligations under this Agreement. The security deposit shall not be treated as payment of rent unless expressly agreed by the Landlord in writing.</p>
+            <p class="legal-p">Upon termination or expiry of the tenancy, the Landlord shall refund the balance security deposit after adjusting unpaid rent, utility charges, or damages beyond normal wear and tear.</p>
+
+            <div class="legal-section-title">6. UTILITIES AND MAINTENANCE</div>
+            <p class="legal-p">The Tenant shall be responsible for payment of Electricity, Water, Gas, Internet, and other property-related user/maintenance charges directly to the relevant service provider or association wherever applicable.</p>
+            <p class="legal-p">The Tenant shall keep the Premises clean and in reasonable condition and shall be responsible for minor day-to-day maintenance. The Landlord shall generally be responsible for major structural repairs.</p>
+
+            <div class="legal-section-title">7. ALTERATIONS & SUBLETTING</div>
+            <p class="legal-p">The Tenant shall not demolish or alter any structural portion of the Premises, install permanent fixtures, or make unauthorized additions without the Landlord’s prior written consent.</p>
+            <p class="legal-p">The Tenant shall not sublet, assign, license or otherwise transfer possession of the whole or any part of the Premises to another person.</p>
+
+            <div class="legal-section-title">8. TERMINATION & LOCK-IN PERIOD</div>
+            <p class="legal-p">
+                The tenancy shall have a lock-in period of <strong><span class="fill-blank" id="prevLockin">__</span> months</strong> from the commencement date. 
+            </p>
+            <p class="legal-p">
+                After the lock-in period, either party may terminate this Agreement by giving written notice of <strong><span class="fill-blank" id="prevNotice">_________</span></strong>.
+            </p>
+
+            <div class="legal-section-title">9. HANDOVER OF PREMISES</div>
+            <p class="legal-p">Upon expiry or lawful termination of this Agreement, the Tenant shall vacate the Premises, remove personal belongings, clear all dues, return keys, and hand over peaceful possession to the Landlord.</p>
+
+            <div class="legal-section-title">10. GOVERNING LAW & JURISDICTION</div>
+            <p class="legal-p">This Agreement shall be governed by the laws applicable in India. Courts having jurisdiction over the location of the Premises (<span class="fill-blank" id="prevPlaceJur">___________</span>) shall have jurisdiction over matters arising from this Agreement.</p>
+
+            <div class="legal-section-title">11. DECLARATION</div>
+            <p class="legal-p">The Parties declare that they have read and understood the terms of this Agreement, including all standard 50 clauses of the general COREBIQ framework hereby incorporated by reference, and have entered into it voluntarily.</p>
+
+            <!-- Signatures -->
+            <div class="signature-block">
+                <div>
+                    <div class="signature-line">LANDLORD / LESSOR</div>
+                    <span id="sigLName">Name</span>
+                </div>
+                <div>
+                    <div class="signature-line">TENANT / LESSEE</div>
+                    <span id="sigTName">Name</span>
+                </div>
+            </div>
+
+            <div class="legal-section-title">WITNESSES</div>
+            <div class="signature-block" style="margin-top: 40px;">
+                <div>
+                    <div class="signature-line">WITNESS 1 Signature</div>
+                    Name: ______________________<br>
+                    Address: ____________________
+                </div>
+                <div>
+                    <div class="signature-line">WITNESS 2 Signature</div>
+                    Name: ______________________<br>
+                    Address: ____________________
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Actions -->
+        <div class="action-grid">
+            <button type="button" class="btn-secondary" onclick="resetForm()">
+                <span class="material-symbols-rounded">edit</span>
+                Edit Agreement
+            </button>
+            <button type="button" class="btn-primary" onclick="downloadPDF()">
+                <span class="material-symbols-rounded">picture_as_pdf</span>
+                Download Legal PDF
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('execDate').value = today;
+            document.getElementById('termStart').value = today;
+        });
+
+        // Number to Words Converter
+        function numberToWords(num) {
+            if (!num || isNaN(num) || num === 0) return 'Zero';
+            
+            const a = ['','One ','Two ','Three ','Four ', 'Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
+            const b = ['', '', 'Twenty','Thirty','Forty','Fifty', 'Sixty','Seventy','Eighty','Ninety'];
+
+            const format = (n) => {
+                if (n < 20) return a[n];
+                if (n < 100) return b[Math.floor(n/10)] + (n%10 !== 0 ? ' ' + a[n%10] : '');
+                if (n < 1000) return a[Math.floor(n/100)] + 'Hundred ' + (n%100 !== 0 ? 'and ' + format(n%100) : '');
+                if (n < 100000) return format(Math.floor(n/1000)) + 'Thousand ' + (n%1000 !== 0 ? format(n%1000) : '');
+                if (n < 10000000) return format(Math.floor(n/100000)) + 'Lakh ' + (n%100000 !== 0 ? format(n%100000) : '');
+                return format(Math.floor(n/10000000)) + 'Crore ' + (n%10000000 !== 0 ? format(n%10000000) : '');
+            };
+
+            return format(Math.floor(num)).trim();
+        }
+
+        function updateWords(inputId, previewId) {
+            const val = parseFloat(document.getElementById(inputId).value);
+            document.getElementById(previewId).innerText = numberToWords(val) + " Rupees";
+        }
+
+        // --- Form Submission & Preview Generation ---
+        document.getElementById('deed-generator-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Format Dates
+            const execDate = new Date(document.getElementById('execDate').value);
+            const day = execDate.getDate();
+            const suffix = ["th", "st", "nd", "rd"][day % 10 > 3 ? 0 : (day % 100 - day % 10 != 10) * day % 10];
+            document.getElementById('prevDay').innerText = day + suffix;
+            document.getElementById('prevMonthYear').innerText = execDate.toLocaleString('en-GB', { month: 'long', year: 'numeric' });
+            
+            document.getElementById('prevPlace').innerText = document.getElementById('execPlace').value;
+            document.getElementById('prevPlaceJur').innerText = document.getElementById('execPlace').value;
+
+            // Map Landlord
+            document.getElementById('prevLName').innerText = document.getElementById('lName').value;
+            document.getElementById('sigLName').innerText = document.getElementById('lName').value;
+            document.getElementById('prevLParent').innerText = document.getElementById('lParent').value;
+            document.getElementById('prevLAge').innerText = document.getElementById('lAge').value;
+            document.getElementById('prevLAddress').innerText = document.getElementById('lAddress').value.replace(/\n/g, ', ');
+            document.getElementById('prevLPan').innerText = document.getElementById('lPan').value || '[Omitted]';
+            document.getElementById('prevLAadhaar').innerText = document.getElementById('lAadhaar').value || '[Omitted]';
+
+            // Map Tenant
+            document.getElementById('prevTName').innerText = document.getElementById('tName').value;
+            document.getElementById('sigTName').innerText = document.getElementById('tName').value;
+            document.getElementById('prevTParent').innerText = document.getElementById('tParent').value;
+            document.getElementById('prevTAge').innerText = document.getElementById('tAge').value;
+            document.getElementById('prevTAddress').innerText = document.getElementById('tAddress').value.replace(/\n/g, ', ');
+            document.getElementById('prevTPan').innerText = document.getElementById('tPan').value || '[Omitted]';
+            document.getElementById('prevTAadhaar').innerText = document.getElementById('tAadhaar').value || '[Omitted]';
+
+            // Map Property & Term
+            document.getElementById('prevPropAddress').innerText = document.getElementById('propAddress').value.replace(/\n/g, ', ');
+            document.getElementById('prevPropType').innerText = document.getElementById('propType').value;
+            document.getElementById('prevPurpose').innerText = document.getElementById('propType').value; // Using type as purpose fallback
+            document.getElementById('prevPropFloor').innerText = document.getElementById('propArea').value;
+            
+            const startDate = new Date(document.getElementById('termStart').value);
+            const months = parseInt(document.getElementById('termMonths').value) || 11;
+            const endDate = new Date(startDate);
+            endDate.setMonth(endDate.getMonth() + months);
+            endDate.setDate(endDate.getDate() - 1); // Ends day before anniversary
+
+            document.getElementById('prevTermStart').innerText = startDate.toLocaleDateString('en-GB');
+            document.getElementById('prevTermEnd').innerText = endDate.toLocaleDateString('en-GB');
+            document.getElementById('prevTermMonths').innerText = months;
+
+            // Map Financials
+            const rent = parseFloat(document.getElementById('rentAmount').value);
+            document.getElementById('prevRent').innerText = rent.toLocaleString('en-IN');
+            document.getElementById('prevRentWords').innerText = numberToWords(rent);
+            document.getElementById('prevRentDay').innerText = document.getElementById('rentDueDate').value;
+            
+            const deposit = parseFloat(document.getElementById('depositAmount').value);
+            document.getElementById('prevDeposit').innerText = deposit.toLocaleString('en-IN');
+            document.getElementById('prevDepositWords').innerText = numberToWords(deposit);
+            
+            document.getElementById('prevPaymentMode').innerText = document.getElementById('paymentMethod').value;
+            document.getElementById('prevNotice').innerText = document.getElementById('noticePeriod').value;
+            
+            const lockin = document.getElementById('lockinMonths').value;
+            document.getElementById('prevLockin').innerText = lockin > 0 ? lockin : "0 (Zero)";
+
+            // Toggle UI Views
+            document.getElementById('deed-form-card').style.display = 'none';
+            document.getElementById('deed-preview-area').classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        });
+
+        // --- PDF Download using html2pdf ---
+        function downloadPDF() {
+            const element = document.getElementById('legalDocument');
+            const tenant = document.getElementById('tName').value.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const opt = {
+                margin:       10, // Margin for printing
+                filename:     `Rental_Agreement_${tenant}.pdf`,
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Temporarily hide border and shadow for realistic print output
+            element.style.boxShadow = 'none';
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restore styles
+                element.style.boxShadow = '0 10px 40px rgba(0,0,0,0.1)';
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('deed-preview-area').classList.remove('active');
+            document.getElementById('deed-form-card').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</div>
+
+</body>
+</html>
