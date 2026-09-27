@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - ID & Certificates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+</head>
+<body>
+
+<div class="module-container" id="docs-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --success: #10B981;
+        }
+
+        #docs-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            color: var(--text-main); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .form-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+        }
+
+        /* --- Tabs --- */
+        .doc-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+        .doc-tabs::-webkit-scrollbar { display: none; }
+        
+        .doc-tab-btn {
+            padding: 10px 20px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .doc-tab-btn.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: var(--accent-soft);
+        }
+        
+        .tab-content { display: none; animation: fadeIn 0.3s ease forwards; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Forms & Inputs --- */
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input, .form-select { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            background: #FAFAFA; 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-input[readonly] {
+            background: var(--surface-soft);
+            color: var(--text-muted);
+            font-weight: 600;
+            cursor: not-allowed;
+            border-style: dashed;
+        }
+
+        .input-group { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-bottom: 20px; 
+        }
+        @media (min-width: 768px) { .input-group { grid-template-columns: 1fr 1fr; } }
+
+        /* --- File Upload Area --- */
+        .file-upload-wrapper {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: 32px 20px;
+            text-align: center;
+            background: var(--surface-soft);
+            transition: 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .file-upload-wrapper:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .upload-icon { font-size: 40px; color: var(--primary); margin-bottom: 8px; }
+        .upload-text { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+        .upload-subtext { font-size: 12px; color: var(--text-muted); }
+        
+        .selected-file-card {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--primary-light);
+            border: 1px solid var(--accent-soft);
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+        }
+        .selected-file-card.active { display: flex; }
+        .file-name-display { flex: 1; font-size: 13px; font-weight: 600; color: var(--primary-dark); word-break: break-all; }
+
+        /* --- Buttons --- */
+        .btn-primary, .btn-secondary {
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; box-shadow: var(--shadow-md); width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); }
+        
+        .btn-secondary { background: var(--surface-soft); color: var(--text-main); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--accent-soft); }
+
+        .btn-icon { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 6px; border-radius: 8px; transition: 0.2s; display: inline-flex; }
+        .btn-icon:hover { background: var(--primary-light); color: var(--primary); }
+
+        /* --- Table --- */
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border); }
+        .saas-table { width: 100%; border-collapse: collapse; text-align: left; background: var(--surface); }
+        .saas-table th { padding: 12px 16px; background: var(--surface-soft); color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        .saas-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text-main); white-space: nowrap;}
+        .saas-table tr:last-child td { border-bottom: none; }
+        .saas-table tbody tr:hover { background: var(--surface-soft); }
+        
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--primary-light); color: var(--primary-dark); }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary);">folder_shared</span>
+        ID & Certificates
+    </div>
+
+    <!-- TABS -->
+    <div class="doc-tabs">
+        <button class="doc-tab-btn active" onclick="switchDocTab('tab-upload')">
+            <span class="material-symbols-rounded">upload_file</span> Upload Document
+        </button>
+        <button class="doc-tab-btn" onclick="switchDocTab('tab-library')">
+            <span class="material-symbols-rounded">snippet_folder</span> Document Library
+        </button>
+    </div>
+
+    <!-- ==========================================
+         TAB: UPLOAD DOCUMENT 
+    =========================================== -->
+    <div id="tab-upload" class="tab-content active">
+        <div class="form-card">
+            <form id="doc-upload-form">
+                <div class="input-group">
+                    <div>
+                        <label class="form-label">Document ID (Auto)</label>
+                        <input type="text" id="docIdInput" class="form-input" readonly>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Document Type</label>
+                        <select id="docTypeSelect" class="form-select" required onchange="updatePreviewName()">
+                            <option value="">Select Document Type...</option>
+                            <optgroup label="Personal or Partners Docs">
+                                <option value="Adhar No">Adhar No</option>
+                                <option value="Pan No">Pan No</option>
+                                <option value="Photo">Photo (Upload Only)</option>
+                            </optgroup>
+                            <optgroup label="Business Docs">
+                                <option value="Rental Agreement">Rental Agreement</option>
+                                <option value="Firm Deed_LLP_MOI_AOI">Firm Deed, LLP Doc, MOI, AOI etc</option>
+                                <option value="Pan of Entity">Pan of Entity</option>
+                                <option value="GST Certificate">GST Certificate</option>
+                                <option value="Trade Licence">Trade Licence</option>
+                                <option value="Udhyam">Udhyam</option>
+                                <option value="IEC">IEC</option>
+                                <option value="Labour Registration Certificate">Labour Registration Certificate</option>
+                                <option value="ITR Statements">ITR Statements</option>
+                                <option value="Trademark Application Certificate">Trademark Application Certificate</option>
+                                <option value="Others">Others</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+
+                <label class="form-label">Attach File</label>
+                <div class="file-upload-wrapper" id="uploadWrapper">
+                    <span class="material-symbols-rounded upload-icon">cloud_upload</span>
+                    <div class="upload-text">Click to browse or drag file here</div>
+                    <div class="upload-subtext">Supports PDF, JPG, PNG</div>
+                    <input type="file" id="docFileInput" required onchange="handleFileSelect(event)">
+                </div>
+
+                <!-- File Selection Preview -->
+                <div class="selected-file-card" id="selectedFileCard">
+                    <span class="material-symbols-rounded" style="color: var(--primary);">description</span>
+                    <div class="file-name-display" id="fileNameDisplay">No file selected</div>
+                    <span class="material-symbols-rounded" style="color: var(--success); font-size: 20px;">check_circle</span>
+                </div>
+
+                <button type="submit" class="btn-primary" id="uploadBtn">
+                    <span class="material-symbols-rounded">save</span>
+                    Save Document
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         TAB: DOCUMENT LIBRARY 
+    =========================================== -->
+    <div id="tab-library" class="tab-content">
+        <div class="form-card">
+            <div class="table-responsive">
+                <table class="saas-table">
+                    <thead>
+                        <tr>
+                            <th>Doc ID</th>
+                            <th>Type</th>
+                            <th>File Name</th>
+                            <th>Date</th>
+                            <th style="text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="docsTableBody">
+                        <!-- Populated via JS -->
+                        <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading documents...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        // Note: For actual file storage, Firebase Storage (uploadBytes, getDownloadURL) should be imported.
+
+        const docsRef = collection(db, "business_docs");
+        let selectedFileExtension = "";
+        let libraryDocs = [];
+
+        // --- Tab Switching ---
+        window.switchDocTab = function(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.doc-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (tabId === 'tab-library') loadDocsLibrary();
+            if (tabId === 'tab-upload') generateDocId();
+        };
+
+        // --- Generate Auto ID ---
+        function generateDocId() {
+            const date = new Date();
+            const yy = String(date.getFullYear()).slice(-2);
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const newId = `DOCBIQ-${yy}${mm}-${random}`;
+            document.getElementById('docIdInput').value = newId;
+            return newId;
+        }
+
+        // --- File Handling & Renaming Logic ---
+        window.handleFileSelect = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                selectedFileExtension = file.name.split('.').pop();
+                updatePreviewName();
+                document.getElementById('selectedFileCard').classList.add('active');
+                document.getElementById('uploadWrapper').style.display = 'none';
+            }
+        };
+
+        window.updatePreviewName = function() {
+            const typeSelect = document.getElementById('docTypeSelect').value;
+            const display = document.getElementById('fileNameDisplay');
+            
+            if (selectedFileExtension && typeSelect) {
+                const date = new Date();
+                const yy = String(date.getFullYear()).slice(-2);
+                const mm = String(date.getMonth() + 1).padStart(2, '0');
+                const dd = String(date.getDate()).padStart(2, '0');
+                
+                // Format type name: remove spaces/special chars
+                const safeType = typeSelect.replace(/[^a-zA-Z0-9]/g, '');
+                const newFileName = `${safeType}_${yy}${mm}${dd}.${selectedFileExtension}`;
+                
+                display.innerText = newFileName;
+                display.dataset.filename = newFileName; // Store for upload
+            } else if (selectedFileExtension) {
+                display.innerText = "Select Document Type to generate name...";
+            }
+        };
+
+        // --- Upload Form Submit ---
+        document.getElementById('doc-upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('uploadBtn');
+            const docId = document.getElementById('docIdInput').value;
+            const docType = document.getElementById('docTypeSelect').value;
+            const fileInput = document.getElementById('docFileInput');
+            const newFileName = document.getElementById('fileNameDisplay').dataset.filename;
+
+            if (!fileInput.files[0]) {
+                alert("Please attach a file."); return;
+            }
+
+            btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Uploading...';
+            btn.disabled = true;
+
+            try {
+                // MOCK UPLOAD TO FIRESTORE (Metadata only for demo)
+                // In production, upload `fileInput.files[0]` to Firebase Storage here
+                
+                const docData = {
+                    docId: docId,
+                    type: docType,
+                    fileName: newFileName,
+                    uploadedAt: new Date().toISOString(),
+                    // mockUrl: "https://storage.googleapis.com/..."
+                };
+
+                await setDoc(doc(docsRef, docId), docData);
+
+                alert("Document saved successfully!");
+                
+                // Reset Form
+                document.getElementById('doc-upload-form').reset();
+                document.getElementById('selectedFileCard').classList.remove('active');
+                document.getElementById('uploadWrapper').style.display = 'block';
+                selectedFileExtension = "";
+                generateDocId();
+
+            } catch (err) {
+                console.error("Upload error:", err);
+                alert("Failed to save document.");
+            } finally {
+                btn.innerHTML = '<span class="material-symbols-rounded">save</span> Save Document';
+                btn.disabled = false;
+            }
+        });
+
+        // --- Load Library ---
+        window.loadDocsLibrary = async function() {
+            const tbody = document.getElementById('docsTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Loading...</td></tr>';
+            
+            try {
+                const snap = await getDocs(docsRef);
+                libraryDocs = [];
+                let html = '';
+
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    libraryDocs.push(data);
+                    
+                    const dateFormatted = new Date(data.uploadedAt).toLocaleDateString('en-GB');
+
+                    html += `
+                        <tr>
+                            <td style="font-weight:700; font-size:12px;">${data.docId}</td>
+                            <td><span class="badge">${data.type}</span></td>
+                            <td style="color:var(--primary); font-weight:600;">${data.fileName}</td>
+                            <td>${dateFormatted}</td>
+                            <td style="text-align:right;">
+                                <div style="display:inline-flex; gap:4px;">
+                                    <button class="btn-icon" title="View" onclick="viewDoc('${data.docId}')"><span class="material-symbols-rounded">visibility</span></button>
+                                    <button class="btn-icon" title="WhatsApp" onclick="shareDoc('${data.docId}', 'whatsapp')"><span class="material-symbols-rounded" style="color:#10B981;">forum</span></button>
+                                    <button class="btn-icon" title="Email" onclick="shareDoc('${data.docId}', 'email')"><span class="material-symbols-rounded">mail</span></button>
+                                    <button class="btn-icon" title="Export to Drive" onclick="exportToDrive('${data.docId}', this)"><span class="material-symbols-rounded" style="color:var(--primary);">add_to_drive</span></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                tbody.innerHTML = html || '<tr><td colspan="5" style="text-align:center;">No documents uploaded yet.</td></tr>';
+            } catch (err) {
+                console.error("Error loading docs:", err);
+                tbody.innerHTML = `<tr><td colspan="5" style="color:var(--danger); text-align:center;">Failed to load documents.</td></tr>`;
+            }
+        };
+
+        // --- Action Handlers ---
+        window.viewDoc = function(id) {
+            alert(`Opening document viewer for ${id}...\n(Requires Firebase Storage URL implementation)`);
+        };
+
+        window.shareDoc = function(id, method) {
+            const docData = libraryDocs.find(d => d.docId === id);
+            if(!docData) return;
+
+            const text = `Please find the attached document: ${docData.type}\nFile Name: ${docData.fileName}\nRef ID: ${docData.docId}`;
+            
+            if (method === 'whatsapp') {
+                // Mobile WhatsApp intent
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            } else if (method === 'email') {
+                window.location.href = `mailto:?subject=${encodeURIComponent(docData.type + ' Document')}&body=${encodeURIComponent(text)}`;
+            }
+        };
+
+        window.exportToDrive = function(id, btnElement) {
+            const originalIcon = btnElement.innerHTML;
+            btnElement.innerHTML = '<span class="material-symbols-rounded">sync</span>';
+            btnElement.style.pointerEvents = 'none';
+            
+            // Mock Drive Export
+            setTimeout(() => {
+                btnElement.innerHTML = '<span class="material-symbols-rounded" style="color:var(--success);">check_circle</span>';
+                setTimeout(() => {
+                    btnElement.innerHTML = originalIcon;
+                    btnElement.style.pointerEvents = 'auto';
+                }, 2000);
+            }, 1500);
+        };
+
+        // Init Form ID
+        generateDocId();
+
+    </script>
+</div>
+
+</body>
+</html>
