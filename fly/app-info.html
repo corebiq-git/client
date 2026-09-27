@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - App Information</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+</head>
+<body>
+
+<div class="module-container" id="appinfo-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        #appinfo-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 800px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 24px; 
+            font-weight: 800; 
+            margin-bottom: 24px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            letter-spacing: -0.5px;
+        }
+        
+        .info-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 32px 40px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .info-card {
+                padding: 24px 20px;
+            }
+        }
+
+        .info-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .info-intro {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+
+        /* --- Content Styling --- */
+        .info-section {
+            margin-bottom: 32px;
+        }
+
+        .info-section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-section h2::before {
+            content: "";
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .info-section p {
+            margin-bottom: 16px;
+            color: var(--text-main);
+            font-size: 15px;
+        }
+
+        .info-section ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .info-section ul li {
+            position: relative;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            font-size: 15px;
+            padding-left: 24px;
+        }
+
+        .info-section ul li::before {
+            content: "done";
+            font-family: 'Material Symbols Rounded';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 16px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .contact-box {
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .contact-box a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .contact-box a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .info-footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">info</span>
+        License Information
+    </div>
+
+    <div class="info-card">
+        
+        <div class="info-header">
+            <div class="info-logo">
+                <span class="material-symbols-rounded">verified</span>
+                COREBIQ
+            </div>
+            <div class="version-badge">Version 1.0</div>
+            <p class="info-intro">
+                © 2026 COREBIQ. All rights reserved.
+            </p>
+        </div>
+
+        <div class="info-section">
+            <h2>1. About COREBIQ</h2>
+            <p>COREBIQ is a business management application designed to help businesses manage clients, contacts, records, transactions, and other business activities.</p>
+            <p>The COREBIQ application, including its original source code, user interface, visual design, branding, logos, graphics, and original content, is owned by or licensed to COREBIQ unless otherwise stated.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>2. COREBIQ Software License</h2>
+            <p>Subject to the applicable terms of service, COREBIQ grants authorized users a limited, non-exclusive, non-transferable, revocable license to use the application for its intended business purposes.</p>
+            <p>This license does not transfer ownership of the COREBIQ application or any intellectual property to the user.</p>
+            <p>Unless expressly permitted by applicable law or written authorization from COREBIQ, users may not:</p>
+            <ul>
+                <li>Copy, reproduce, or redistribute the application</li>
+                <li>Modify or create derivative versions of the application</li>
+                <li>Reverse engineer or decompile the application</li>
+                <li>Extract or reuse proprietary source code</li>
+                <li>Remove copyright, trademark, or proprietary notices</li>
+                <li>Resell, sublicense, or commercially redistribute the application</li>
+                <li>Use COREBIQ branding or assets without permission</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>3. User Data</h2>
+            <p>Users retain responsibility for the business and client information they enter into COREBIQ.</p>
+            <p>Use of the application does not transfer ownership of user-provided business or client data to COREBIQ.</p>
+            <p>Users are responsible for ensuring that they have the appropriate rights, permissions, and lawful basis to collect and manage information entered into the application.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>4. Third-Party Software</h2>
+            <p>COREBIQ may use open-source software, libraries, frameworks, APIs, fonts, icons, and other third-party components.</p>
+            <p>Such components remain subject to their respective licenses and copyright notices.</p>
+            <p>Nothing in this page is intended to modify or override the terms of an applicable third-party license.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>5. Firebase and Google Services</h2>
+            <p>COREBIQ may use Firebase and other Google services to provide authentication, cloud database, hosting, storage, analytics, security, or other application functionality.</p>
+            <p>These services are provided under their respective terms, licenses, and policies.</p>
+            <p>COREBIQ does not claim ownership of third-party services or technologies.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>6. Fonts, Icons and Design Resources</h2>
+            <p>COREBIQ may use third-party fonts, icons, and design resources under their respective licenses.</p>
+            <p>Examples may include:</p>
+            <ul>
+                <li>Google Fonts</li>
+                <li>Material Symbols</li>
+                <li>Material Design resources</li>
+                <li>Other properly licensed open-source resources</li>
+            </ul>
+            <p>The respective owners retain all rights to their original resources.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>7. Trademarks</h2>
+            <p>COREBIQ and associated logos, names, marks, and branding elements are trademarks or proprietary assets of their respective owner unless otherwise stated.</p>
+            <p>Third-party names, trademarks, product names, and logos appearing within COREBIQ belong to their respective owners.</p>
+            <p>Their appearance does not necessarily imply endorsement or affiliation.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>8. Open-Source Licenses</h2>
+            <p>Where COREBIQ incorporates open-source software, the applicable license terms and copyright notices remain applicable.</p>
+            <p>Where required by an open-source license, the relevant copyright notices and license text are made available within the application or through the appropriate documentation.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>9. No Transfer of Ownership</h2>
+            <p>Use of COREBIQ does not grant the user ownership of:</p>
+            <ul>
+                <li>COREBIQ source code</li>
+                <li>COREBIQ trademarks</li>
+                <li>COREBIQ logos</li>
+                <li>COREBIQ interface designs</li>
+                <li>COREBIQ proprietary technology</li>
+                <li>COREBIQ documentation or original content</li>
+            </ul>
+            <p>The user receives only the rights expressly granted under the applicable license or terms of service.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>10. License Updates</h2>
+            <p>COREBIQ may update this License Information page when new software components, libraries, services, or technologies are introduced.</p>
+            <p>The latest version may be made available within the application or on the COREBIQ website.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>11. Contact</h2>
+            <p>For licensing questions, permissions, or intellectual-property matters, contact:</p>
+            
+            <div class="contact-box">
+                <p><strong>COREBIQ</strong></p>
+                <p>Website: <a href="https://corebiq.com" target="_blank">https://corebiq.com</a></p>
+                <p>Email: <a href="mailto:support@corebiq.com">support@corebiq.com</a></p>
+            </div>
+        </div>
+
+        <div class="info-footer">
+            © 2026 COREBIQ. All rights reserved.
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
