@@ -1,337 +1,271 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
-<title>COREBIQ | Sales</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+<div class="module-container" id="appointment-module">
 <style>
-:root{
-  --primary:#4285F4;--primary-dark:#1A73E8;--primary-soft:#E8F0FE;
-  --bg:#F8FAFC;--surface:#FFFFFF;--surface-soft:#F8F9FA;
-  --text:#202124;--muted:#5F6368;--border:#DADCE0;
-  --success:#188038;--success-soft:#E6F4EA;--danger:#D93025;
-  --warning:#B06000;--warning-soft:#FEF7E0;
-  --shadow:0 1px 2px rgba(60,64,67,.08),0 2px 6px rgba(60,64,67,.08);
+:root {
+    /* Gemini Signature */
+    --gemini-blue: #4285F4;
+    --gemini-purple: #9b72cb;
+    --gemini-red: #d96570;
+    
+    /* MD3 Primary Tones */
+    --primary: #0B57D0;
+    --on-primary: #FFFFFF;
+    --primary-light: #D3E3FD;
+    --on-primary-container: #041E49;
+    
+    /* Surfaces & Backgrounds */
+    --surface: #FFFFFF;
+    --bg: #F3F4F6;
+    --surface-high: #E8EAED;
+    --text: #1F1F1F;
+    --muted: #444746;
+    --border: #C4C7C5;
+
+    /* Semantics */
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
-#sales-module{font-family:'Outfit',sans-serif;width:100%;max-width:1180px;color:var(--text);letter-spacing:.01em}
-#sales-module *{box-sizing:border-box;font-family:'Outfit',sans-serif}
-.material-symbols-rounded{font-family:'Material Symbols Rounded'!important;font-variation-settings:'FILL' 0,'wght' 500,'GRAD' 0,'opsz' 24;vertical-align:middle}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
-.title h2{font-size:28px;line-height:1.15;font-weight:600;letter-spacing:-.025em;margin:0}
-.title p{font-size:14px;color:var(--muted);margin:6px 0 0}
-.new-btn,.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
-.new-btn{height:42px;padding:0 17px;border:0;border-radius:999px;font-weight:600;display:inline-flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 1px 2px rgba(66,133,244,.22)}
-.btn{height:40px;padding:0 14px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--text);font-size:13px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:7px;cursor:pointer}
-.btn:hover,.icon-btn:hover{background:#F8F9FA}
-.btn.small{height:36px;padding:0 12px;font-size:12px}
-.btn.danger{color:var(--danger);border-color:#F4C7C3}.btn.success{color:var(--success);border-color:#A8DAB5}
-.icon-btn{width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#3C4043}
-.toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.tool{position:relative}.dropdown{display:none;position:absolute;right:0;top:47px;min-width:210px;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:0 12px 32px rgba(60,64,67,.16);padding:7px;z-index:5000}.tool.open .dropdown{display:block}
-.drop-item{width:100%;border:0;background:#fff;text-align:left;padding:10px;border-radius:10px;font-size:13px;display:flex;gap:9px;align-items:center;cursor:pointer;color:var(--text)}.drop-item:hover{background:var(--surface-soft)}.drop-item.active{background:var(--primary-soft);color:var(--primary-dark);font-weight:600}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:15px 16px;box-shadow:var(--shadow)}
-.kpi .label{font-size:12px;color:var(--muted);font-weight:500}.kpi .num{font-size:23px;font-weight:600;margin-top:5px;letter-spacing:-.02em}.kpi .hint{font-size:11px;color:var(--muted);margin-top:3px}.kpi.blue .num{color:var(--primary)}.kpi.green .num{color:var(--success)}.kpi.orange .num{color:var(--warning)}
-.panel{background:#fff;border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow);overflow:visible;margin-bottom:16px}
-.panel-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.panel-title{font-size:15px;font-weight:600}.panel-sub{font-size:12px;color:var(--muted);margin-top:2px}
-.searchbar{display:none;padding:10px 14px;border-bottom:1px solid var(--border);background:#FBFCFE}.searchbar.show{display:flex}
-.searchbox{display:flex;align-items:center;gap:7px;width:100%;background:#fff;border:1px solid var(--border);border-radius:14px;padding:0 10px}.searchbox input{height:40px;width:100%;border:0;outline:0;font-size:13px;background:transparent}
-.filters{display:none;padding:10px 14px;border-bottom:1px solid var(--border);background:#FBFCFE;gap:8px;flex-wrap:wrap;align-items:center}.filters.show{display:flex}
-.form-input{width:100%;height:42px;padding:0 12px;border-radius:12px;border:1px solid var(--border);font-size:13px;color:var(--text);background:#fff;outline:none;transition:.15s}
-textarea.form-input{height:auto;padding:11px 12px;resize:vertical}
-.form-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(66,133,244,.12)}
-.filter-input{width:auto;min-width:130px;height:38px;padding:0 10px}
-.table-wrap{overflow-x:auto}.table{width:100%;min-width:980px;border-collapse:collapse}
-.table th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;text-align:left;padding:11px 14px;background:#FBFCFE;border-bottom:1px solid var(--border);white-space:nowrap}
-.table td{font-size:13px;padding:13px 14px;border-bottom:1px solid #EEF0F2;vertical-align:top}.table tr:hover td{background:#FCFDFF}.table tr:last-child td{border-bottom:0}
-.client-name{font-weight:600;font-size:14px}.sub{font-size:11px;color:var(--muted);margin-top:3px}
-.amount{font-weight:600}.positive{color:var(--success)}.due{color:var(--danger)}
-.badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:600}
-.paid{background:var(--success-soft);color:var(--success)}.partial{background:var(--warning-soft);color:var(--warning)}.unpaid{background:#FCE8E6;color:var(--danger)}.draft{background:#F1F3F4;color:#5F6368}
-.actions{display:flex;gap:6px;justify-content:flex-end}.act{width:34px;height:34px;border:1px solid var(--border);background:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.act:hover{background:#F8F9FA}.act.edit{color:#5F6368}.act.view{color:var(--primary)}.act.delete{color:var(--danger)}
-.cards{display:none;padding:12px;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:10px}.cards.show{display:grid}
-.sale-card{border:1px solid var(--border);border-radius:18px;padding:14px;background:#fff}.card-top{display:flex;justify-content:space-between;gap:8px}.card-line{font-size:12px;color:var(--muted);margin-top:7px}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px;padding-top:11px;border-top:1px solid #EEF0F2}.card-actions{display:flex;gap:7px;margin-top:12px}
-.empty{text-align:center;padding:45px 15px;color:var(--muted);font-size:13px}
-.modal{display:none;position:fixed;inset:0;background:rgba(32,33,36,.42);z-index:10000;align-items:center;justify-content:center;padding:14px;backdrop-filter:blur(3px)}.modal.show{display:flex}
-.modal-box{background:#fff;width:min(920px,100%);max-height:94vh;overflow:auto;border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,.2)}
-.modal-head{position:sticky;top:0;z-index:2;background:#fff;padding:15px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h3{font-size:18px;margin:0;font-weight:600}.modal-body{padding:18px}
-.close{width:38px;height:38px;border:1px solid var(--border);border-radius:50%;background:#fff;cursor:pointer}
-.section{border:1px solid var(--border);border-radius:18px;margin-bottom:13px;padding:14px}.section h4{font-size:13px;color:var(--primary-dark);margin:0 0 13px;font-weight:600}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}.grid.three{grid-template-columns:repeat(3,1fr)}.grid.four{grid-template-columns:repeat(4,1fr)}.span2{grid-column:1/-1}
-.field label{display:block;font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px}
-.money-card{background:#F8FAFC;border-radius:15px;padding:12px}.money-card .label{font-size:11px;color:var(--muted)}.money-card .value{font-size:18px;font-weight:600;margin-top:4px}
-.line-items{width:100%;border-collapse:collapse}.line-items th{font-size:10px;color:var(--muted);text-transform:uppercase;text-align:left;padding:8px;border-bottom:1px solid var(--border)}.line-items td{padding:7px;border-bottom:1px solid #EEF0F2}.line-items input{height:38px;border:1px solid var(--border);border-radius:10px;padding:0 9px;width:100%;font:inherit}.line-items .remove{width:34px;height:34px;border:0;background:#FCE8E6;color:var(--danger);border-radius:50%;cursor:pointer}
-.totals{margin-left:auto;width:min(330px,100%);margin-top:12px}.total-row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13px}.total-row.grand{font-size:18px;font-weight:600;border-top:1px solid var(--border);margin-top:5px;padding-top:11px}
-.form-actions{display:flex;justify-content:flex-end;gap:8px;padding-top:4px}
-.toast{position:fixed;right:18px;bottom:18px;background:#202124;color:#fff;padding:12px 15px;border-radius:14px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.18);display:none;z-index:20000}.toast.show{display:block}
-@media(max-width:800px){.kpis{grid-template-columns:repeat(2,1fr)}.grid.three,.grid.four{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.topbar{align-items:flex-start}.title h2{font-size:23px}.new-btn{height:40px;padding:0 14px}.new-btn .text{display:none}.kpis{gap:8px}.kpi{padding:12px}.kpi .num{font-size:20px}.grid,.grid.three,.grid.four{grid-template-columns:1fr}.span2{grid-column:auto}.modal{padding:7px}.modal-box{max-height:96vh;border-radius:20px}.panel-head{align-items:flex-start}.panel-title{width:100%}}
-@media print{#sales-module .no-print,#sales-module .toolbar,#sales-module .new-btn,.kpis{display:none!important}.panel{box-shadow:none;border:0}.table{min-width:100%}}
+
+body {
+    background-color: var(--bg);
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+#appointment-module {
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    max-width: 1120px;
+    color: var(--text);
+}
+#appointment-module * { box-sizing: border-box; }
+
+h1, h2, h3, h4, .panel-title, .num, .drop-title, .table th, .kpi .label {
+    font-family: 'Outfit', sans-serif;
+}
+
+.material-symbols-rounded { font-size: 20px; vertical-align: middle; }
+
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+.title h2 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; color: var(--text); }
+.title p { font-size: 14px; color: var(--muted); margin: 5px 0 0; }
+
+/* Buttons - Material 3 Pill Shapes */
+.btn {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    height: 40px;
+    padding: 0 24px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Roboto', sans-serif;
+}
+.btn:hover { background: var(--surface-high); }
+.btn.primary { background: var(--primary); border: none; color: var(--on-primary); }
+.btn.primary:hover { background: #0842a⁰0; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.btn.danger { color: var(--danger); border-color: #FECACA; background: #FEF2F2; }
+.btn.blue { color: var(--on-primary-container); border-color: transparent; background: var(--primary-light); }
+.btn.small { height: 36px; padding: 0 16px; font-size: 13px; }
+
+/* Gemini Inspired Main Action Button */
+.new-btn {
+    height: 44px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, var(--gemini-purple), var(--gemini-red));
+    color: white;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(217, 101, 112, 0.3);
+    font-family: 'Roboto', sans-serif;
+}
+.new-btn:hover { opacity: 0.9; box-shadow: 0 6px 12px rgba(217, 101, 112, 0.4); }
+
+/* KPIs - MD3 Elevated Cards */
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi {
+    background: var(--surface);
+    border: none;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+.kpi::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--border); opacity: 0.3;
+}
+.kpi.today::before { background: linear-gradient(to right, var(--gemini-blue), var(--gemini-purple)); opacity: 1; }
+.kpi.done::before { background: var(--success); opacity: 1; }
+.kpi.pending::before { background: var(--warning); opacity: 1; }
+
+.kpi .label { font-size: 14px; color: var(--muted); font-weight: 500; letter-spacing: 0.3px; }
+.kpi .num { font-size: 28px; font-weight: 700; margin-top: 8px; color: var(--text); }
+
+/* Panels - MD3 Filled/Elevated Hybrid */
+.panel {
+    background: var(--surface);
+    border: none;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    overflow: visible;
+    margin-bottom: 24px;
+    position: relative;
+}
+.panel::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(to right, var(--gemini-blue), var(--gemini-purple), var(--gemini-red));
+    border-top-left-radius: 24px; border-top-right-radius: 24px;
+}
+.panel-head { padding: 20px 24px; border-bottom: 1px solid var(--surface-high); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.panel-title { font-size: 18px; font-weight: 600; color: var(--text); }
+
+/* Toolbar & Icons */
+.toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tool { position: relative; }
+.icon-btn {
+    width: 40px; height: 40px; border: none; border-radius: 50%;
+    background: transparent; display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--muted); transition: background 0.2s, color 0.2s;
+}
+.icon-btn:hover { background: var(--surface-high); color: var(--text); }
+.icon-btn.active { background: var(--primary-light); color: var(--on-primary-container); }
+
+.dropdown { display: none; position: absolute; right: 0; top: 48px; min-width: 220px; background: var(--surface); border: 1px solid var(--surface-high); border-radius: 16px; box-shadow: 0 12px 24px rgba(0,0,0,0.1); padding: 8px; z-index: 5000; }
+.tool.open .dropdown { display: block; }
+.drop-title { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; }
+.drop-item { width: 100%; border: 0; background: transparent; text-align: left; padding: 10px 12px; border-radius: 8px; font-size: 14px; display: flex; gap: 12px; align-items: center; cursor: pointer; color: var(--text); font-family: 'Roboto', sans-serif; transition: background 0.2s; }
+.drop-item:hover { background: var(--surface-high); }
+.drop-item.active { background: var(--primary-light); color: var(--on-primary-container); font-weight: 500; }
+
+.searchbar, .filters, .bulkbar { padding: 16px 24px; border-bottom: 1px solid var(--surface-high); background: var(--surface); }
+.searchbar { display: none; } .searchbar.show { display: flex; }
+.searchbox { display: flex; align-items: center; gap: 8px; width: 100%; background: var(--surface-high); border-radius: 9999px; padding: 4px 16px; border: 1px solid transparent; transition: border 0.2s, background 0.2s; }
+.searchbox:focus-within { background: var(--surface); border-color: var(--primary); }
+.searchbox input { height: 40px; width: 100%; border: 0; outline: 0; font-size: 14px; background: transparent; color: var(--text); font-family: 'Roboto', sans-serif; }
+
+.filters { display: none; gap: 12px; flex-wrap: wrap; align-items: center; } .filters.show { display: flex; }
+
+/* Form Inputs - MD3 Rounded Styling */
+.form-input {
+    width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);
+    font-size: 14px; color: var(--text); background: transparent; outline: none; font-family: 'Roboto', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.filter-input { width: auto; min-width: 140px; height: 40px; padding: 8px 12px; }
+
+.bulkbar { display: none; background: var(--primary-light); border-bottom: none; align-items: center; gap: 12px; flex-wrap: wrap; } .bulkbar.show { display: flex; }
+.bulkbar strong { font-size: 14px; color: var(--on-primary-container); font-family: 'Outfit', sans-serif; }
+
+/* Table */
+.table-wrap { overflow-x: auto; padding: 0 24px; }
+.table { width: 100%; min-width: 930px; border-collapse: collapse; }
+.table th { font-size: 12px; color: var(--muted); font-weight: 600; text-align: left; padding: 16px 12px; border-bottom: 2px solid var(--surface-high); white-space: nowrap; letter-spacing: 0.3px; }
+.table td { font-size: 14px; padding: 16px 12px; border-bottom: 1px solid var(--surface-high); vertical-align: top; }
+.table tr:last-child td { border-bottom: 0; }
+.patient-name { font-weight: 600; font-size: 15px; color: var(--text); }
+.sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.actions { display: flex; gap: 8px; justify-content: flex-end; }
+.act { width: 36px; height: 36px; border: none; background: transparent; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
+.act:hover { background: var(--surface-high); }
+.act.note { color: #8B5CF6; } .act.inv { color: var(--primary); } .act.edit { color: var(--text); }
+
+.no-due { color: var(--muted); font-weight: 500; } .excess { color: var(--success); font-weight: 600; } .due { color: var(--danger); font-weight: 600; }
+
+/* Badges - Pill styling */
+.badge { display: inline-flex; padding: 6px 12px; border-radius: 9999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.pending { background: #FFF3E0; color: #E65100; }
+.reported { background: var(--primary-light); color: var(--primary); }
+.completed { background: #E8F5E9; color: #2E7D32; }
+.rescheduled { background: var(--surface-high); color: var(--text); }
+.cancelled { background: #FFEBEE; color: #C62828; }
+.cat { background: var(--surface-high); color: var(--text); border: none; padding: 4px 10px; font-size: 10px; }
+
+/* Cards View */
+.cards { display: none; padding: 24px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; } .cards.show { display: grid; }
+.apt-card { border: 1px solid var(--surface-high); border-radius: 20px; padding: 20px; background: var(--surface); box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: box-shadow 0.2s; }
+.apt-card:hover { box-shadow: var(--shadow); }
+.card-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.card-patient { display: flex; gap: 12px; }
+.card-check { padding-top: 2px; }
+.card-line { font-size: 13px; color: var(--muted); margin-top: 12px; display: flex; gap: 8px; align-items: center; }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--surface-high); }
+.card-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+
+.empty { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 14px; font-family: 'Outfit', sans-serif; }
+
+/* Modals */
+.modal { display: none; position: fixed; inset: 0; background: rgba(31, 31, 31, 0.4); backdrop-filter: blur(4px); z-index: 10000; align-items: center; justify-content: center; padding: 24px; } .modal.show { display: flex; }
+.modal-box { background: var(--surface); width: min(900px, 100%); max-height: 90vh; overflow: auto; border-radius: 28px; box-shadow: 0 24px 48px rgba(0,0,0,0.2); position: relative; }
+.modal-box::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(to right, var(--gemini-blue), var(--gemini-purple), var(--gemini-red));
+    z-index: 10;
+}
+.modal-head { position: sticky; top: 0; z-index: 5; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 20px 24px; border-bottom: 1px solid var(--surface-high); display: flex; justify-content: space-between; align-items: center; }
+.modal-head h3 { font-size: 20px; margin: 0; color: var(--text); }
+.modal-body { padding: 24px; }
+.close { width: 40px; height: 40px; border: none; border-radius: 50%; background: transparent; cursor: pointer; color: var(--muted); display: inline-flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.close:hover { background: var(--surface-high); color: var(--text); }
+
+.section { border: 1px solid var(--surface-high); border-radius: 20px; margin-bottom: 24px; padding: 24px; background: #FCFCFD; }
+.section h4 { font-size: 16px; color: var(--primary); margin: 0 0 20px; display: flex; align-items: center; gap: 8px; }
+.section h4::before { content: ''; display: block; width: 4px; height: 16px; background: var(--primary); border-radius: 2px; }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; } .grid.three { grid-template-columns: repeat(3, 1fr); }
+.field label { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
+.span2 { grid-column: 1 / -1; }
+.location-row { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; }
+.money-box { background: var(--surface); border: 1px solid var(--surface-high); border-radius: 16px; padding: 16px; }
+.form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; }
+.readonly { background: var(--surface-high) !important; border-color: transparent !important; font-weight: 600; color: var(--muted); }
+
+.notes-content { padding: 20px; line-height: 1.6; white-space: pre-wrap; font-size: 14px; min-height: 150px; background: var(--surface-high); border: none; border-radius: 16px; color: var(--text); font-family: 'Roboto Mono', monospace; }
+
+.confirm-box { max-width: 480px; }
+.confirm-message { font-size: 15px; line-height: 1.6; color: var(--muted); padding: 24px; }
+
+/* Custom Checkbox */
+input[type="checkbox"] { accent-color: var(--primary); width: 18px; height: 18px; border-radius: 4px; cursor: pointer; }
+
+@media (max-width: 700px) {
+    body { padding: 0.5rem; }
+    .topbar { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .title h2 { font-size: 24px; }
+    .new-btn { width: 100%; justify-content: center; }
+    .kpis { grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
+    .grid, .grid.three { grid-template-columns: 1fr; }
+    .span2 { grid-column: auto; }
+    .modal { padding: 12px; }
+    .modal-box { max-height: 96vh; border-radius: 20px; }
+    .toolbar { width: 100%; justify-content: flex-end; }
+    .panel-head { align-items: flex-start; flex-direction: column; gap: 16px; }
+    .panel-title { width: 100%; }
+    .section { padding: 16px; }
+}
+@media print {
+    body { background: #fff; padding: 0; }
+    #appointment-module .no-print, #appointment-module .toolbar, #appointment-module .new-btn, .kpis { display: none !important; }
+    .panel { box-shadow: none; border: 0; }
+    .panel::before { display: none; }
+    .table { min-width: 100%; }
+}
 </style>
-</head>
-<body>
-<div id="sales-module">
-  <div class="topbar">
-    <div class="title">
-      <h2>Sales</h2>
-      <p>Manage professional services, invoices, billing and collections.</p>
-    </div>
-    <button class="new-btn" onclick="window.openSaleForm()"><span class="material-symbols-rounded">add</span><span class="text">New Sale</span></button>
-  </div>
-
-  <div class="kpis">
-    <div class="kpi blue"><div class="label">Sales Today</div><div class="num" id="kpiToday">₹0.00</div><div class="hint">Billed today</div></div>
-    <div class="kpi green"><div class="label">Collected Today</div><div class="num" id="kpiCollected">₹0.00</div><div class="hint">Receipts recorded</div></div>
-    <div class="kpi orange"><div class="label">Outstanding</div><div class="num" id="kpiOutstanding">₹0.00</div><div class="hint">Pending collection</div></div>
-    <div class="kpi"><div class="label">Invoices</div><div class="num" id="kpiCount">0</div><div class="hint">Current view</div></div>
-  </div>
-
-  <div class="panel">
-    <div class="panel-head">
-      <div><div class="panel-title">Sales Register</div><div class="panel-sub">Professional service billing and invoice records</div></div>
-      <div class="toolbar no-print">
-        <div class="tool" id="searchTool"><button class="icon-btn" title="Search" onclick="window.toggleTool('searchTool')"><span class="material-symbols-rounded">search</span></button></div>
-        <div class="tool" id="filterTool">
-          <button class="icon-btn" title="Filter" onclick="window.toggleTool('filterTool')"><span class="material-symbols-rounded">filter_list</span></button>
-          <div class="dropdown">
-            <button class="drop-item" onclick="window.showFilters()"><span class="material-symbols-rounded">tune</span>Filters</button>
-            <button class="drop-item" onclick="window.setToday()"><span class="material-symbols-rounded">today</span>Today</button>
-            <button class="drop-item" onclick="window.clearFilters()"><span class="material-symbols-rounded">filter_alt_off</span>Clear filters</button>
-          </div>
-        </div>
-        <div class="tool">
-          <button class="icon-btn" title="View" onclick="window.setView(window.viewMode==='list'?'card':'list')"><span class="material-symbols-rounded">view_agenda</span></button>
-        </div>
-        <div class="tool" id="moreTool">
-          <button class="icon-btn" title="More" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button>
-          <div class="dropdown">
-            <button class="drop-item" onclick="window.exportCSV()"><span class="material-symbols-rounded">download</span>Export CSV</button>
-            <button class="drop-item" onclick="window.printRegister()"><span class="material-symbols-rounded">print</span>Print register</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="searchbar no-print" id="searchBar">
-      <div class="searchbox"><span class="material-symbols-rounded">search</span><input id="saleSearch" placeholder="Search invoice, client, mobile, service..." oninput="window.renderSales()"><button class="close" onclick="document.getElementById('saleSearch').value='';window.renderSales()"><span class="material-symbols-rounded">close</span></button></div>
-    </div>
-
-    <div class="filters no-print" id="filtersBar">
-      <input type="date" id="filterFrom" class="form-input filter-input" onchange="window.renderSales()">
-      <span class="sub">to</span>
-      <input type="date" id="filterTo" class="form-input filter-input" onchange="window.renderSales()">
-      <select id="filterPayment" class="form-input filter-input" onchange="window.renderSales()"><option value="">All payment status</option><option value="Paid">Paid</option><option value="Partial">Partial</option><option value="Unpaid">Unpaid</option></select>
-      <select id="filterBranch" class="form-input filter-input" onchange="window.renderSales()"><option value="">All branches</option></select>
-      <button class="btn small" onclick="window.clearFilters()">Clear</button>
-    </div>
-
-    <div class="table-wrap" id="listView">
-      <table class="table">
-        <thead><tr><th>Invoice</th><th>Date</th><th>Client</th><th>Service / Consultant</th><th>Amount</th><th>Payment</th><th class="no-print">Actions</th></tr></thead>
-        <tbody id="salesBody"></tbody>
-      </table>
-    </div>
-    <div class="cards" id="cardView"></div>
-  </div>
-</div>
-
-<div class="modal" id="saleModal">
-  <div class="modal-box">
-    <div class="modal-head"><h3 id="saleFormTitle">New Sale</h3><button class="close" onclick="window.closeSaleForm()"><span class="material-symbols-rounded">close</span></button></div>
-    <div class="modal-body">
-      <form onsubmit="event.preventDefault();window.saveSale()">
-        <input type="hidden" id="saleDocId">
-        <input type="hidden" id="saleTxnId">
-        <div class="section">
-          <h4>1. Invoice & Client</h4>
-          <div class="grid four">
-            <div class="field"><label>Invoice No.</label><input id="saleInvoice" class="form-input" readonly></div>
-            <div class="field"><label>Invoice Date *</label><input id="saleDate" type="date" class="form-input" required></div>
-            <div class="field"><label>Client / Customer *</label><input id="saleName" class="form-input" placeholder="Client name" required></div>
-            <div class="field"><label>Mobile</label><input id="saleMobile" class="form-input" maxlength="10" placeholder="10-digit mobile"></div>
-            <div class="field"><label>Branch</label><select id="saleBranch" class="form-input"><option value="">Select branch</option></select></div>
-            <div class="field"><label>Consultant / Professional</label><input id="saleConsultant" class="form-input" placeholder="Consultant / staff"></div>
-            <div class="field span2"><label>Billing Reference</label><input id="saleRef" class="form-input" placeholder="PO / reference / engagement reference"></div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h4>2. Professional Services</h4>
-          <table class="line-items">
-            <thead><tr><th style="width:38%">Service / Description</th><th style="width:12%">Qty</th><th style="width:16%">Rate</th><th style="width:14%">Discount</th><th style="width:16%">Amount</th><th></th></tr></thead>
-            <tbody id="lineItems"></tbody>
-          </table>
-          <div style="margin-top:10px"><button type="button" class="btn small" onclick="window.addLine()"><span class="material-symbols-rounded">add</span>Add service</button></div>
-          <div class="totals">
-            <div class="total-row"><span>Subtotal</span><strong id="subTotal">₹0.00</strong></div>
-            <div class="total-row"><span>Tax</span><span><input id="saleTax" type="number" step="0.01" value="0" class="form-input" style="width:110px;height:34px;text-align:right" oninput="window.calculateSale()"> <span id="taxAmount">₹0.00</span></span></div>
-            <div class="total-row grand"><span>Total</span><strong id="grandTotal">₹0.00</strong></div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h4>3. Collection</h4>
-          <div class="grid four">
-            <div class="field"><label>Payment Status</label><select id="salePaymentStatus" class="form-input" onchange="window.calculateSale()"><option>Paid</option><option>Partial</option><option>Unpaid</option></select></div>
-            <div class="field"><label>Amount Received</label><input id="saleReceived" type="number" step="0.01" class="form-input" value="0" oninput="window.calculateSale()"></div>
-            <div class="field"><label>Payment Mode</label><select id="saleMode" class="form-input"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Card</option><option>Cheque</option><option>Other</option></select></div>
-            <div class="field"><label>Payment Reference</label><input id="salePaymentRef" class="form-input" placeholder="Transaction / cheque no."></div>
-            <div class="field span2"><label>Notes</label><textarea id="saleNotes" class="form-input" rows="3" placeholder="Service notes, engagement details, internal remarks..."></textarea></div>
-            <div class="money-card"><div class="label">Received</div><div class="value" id="receivedDisplay">₹0.00</div></div>
-            <div class="money-card"><div class="label">Balance</div><div class="value due" id="balanceDisplay">₹0.00</div></div>
-          </div>
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn" onclick="window.closeSaleForm()">Cancel</button>
-          <button type="submit" class="btn primary" id="saveSaleBtn"><span class="material-symbols-rounded">save</span>Save Sale</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
-
-<script type="module">
-import { auth, db } from './firebase-config.js';
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { collection, addDoc, query, where, getDocs, updateDoc, doc, deleteDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-let sales=[], user=null, editingId=null;
-window.viewMode='list';
-
-const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-const money=v=>(Number(v)||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-const dateDMY=v=>{if(!v)return'';const p=String(v).split('-');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:v};
-const toast=m=>{const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2500)};
-function closeTools(){document.querySelectorAll('.tool.open').forEach(x=>x.classList.remove('open'))}
-window.toggleTool=id=>{const e=document.getElementById(id);if(!e)return;const was=e.classList.contains('open');closeTools();if(!was)e.classList.add('open');if(id==='searchTool')document.getElementById('searchBar').classList.toggle('show',!was)}
-document.addEventListener('click',e=>{if(!e.target.closest('.tool'))closeTools()});
-
-function lineRow(item={description:'',qty:1,rate:0,discount:0}){
-  const tr=document.createElement('tr');
-  tr.innerHTML=`<td><input class="li-desc" value="${esc(item.description)}" placeholder="Service / professional fee"></td>
-  <td><input class="li-qty" type="number" min="0" step="1" value="${item.qty??1}" oninput="window.calculateSale()"></td>
-  <td><input class="li-rate" type="number" min="0" step="0.01" value="${item.rate??0}" oninput="window.calculateSale()"></td>
-  <td><input class="li-disc" type="number" min="0" step="0.01" value="${item.discount??0}" oninput="window.calculateSale()"></td>
-  <td class="li-amount amount">₹0.00</td>
-  <td><button type="button" class="remove" onclick="this.closest('tr').remove();window.calculateSale()"><span class="material-symbols-rounded">close</span></button></td>`;
-  document.getElementById('lineItems').appendChild(tr);window.calculateSale();
-}
-window.addLine=()=>lineRow();
-
-window.calculateSale=()=>{
-  let sub=0;
-  document.querySelectorAll('#lineItems tr').forEach(tr=>{
-    const q=Number(tr.querySelector('.li-qty').value)||0,r=Number(tr.querySelector('.li-rate').value)||0,d=Number(tr.querySelector('.li-disc').value)||0;
-    const a=Math.max(0,q*r-d);sub+=a;tr.querySelector('.li-amount').textContent='₹'+money(a);
-  });
-  const taxRate=Number(document.getElementById('saleTax').value)||0,tax=sub*taxRate/100,total=sub+tax,received=Number(document.getElementById('saleReceived').value)||0,balance=Math.max(0,total-received);
-  document.getElementById('subTotal').textContent='₹'+money(sub);document.getElementById('taxAmount').textContent='₹'+money(tax);document.getElementById('grandTotal').textContent='₹'+money(total);
-  document.getElementById('receivedDisplay').textContent='₹'+money(received);document.getElementById('balanceDisplay').textContent='₹'+money(balance);
-  return {sub,tax,total,received,balance};
-};
-function getLines(){return [...document.querySelectorAll('#lineItems tr')].map(tr=>({description:tr.querySelector('.li-desc').value.trim(),qty:Number(tr.querySelector('.li-qty').value)||0,rate:Number(tr.querySelector('.li-rate').value)||0,discount:Number(tr.querySelector('.li-disc').value)||0})).filter(x=>x.description||x.rate)}
-function nextInvoice(){const nums=sales.map(x=>String(x.txnId||'').match(/(\d+)$/)?.[1]).filter(Boolean).map(Number);return 'INV-'+String((Math.max(0,...nums)+1)).padStart(5,'0')}
-
-async function loadBranches(){
-  const sel=document.getElementById('saleBranch');
-  const fil=document.getElementById('filterBranch');
-  try{
-    const s=await getDocs(collection(db,'branches'));let arr=[];s.forEach(d=>{if(d.data().name)arr.push(d.data().name)});arr.sort();
-    sel.innerHTML='<option value="">Select branch</option>'+arr.map(x=>`<option>${esc(x)}</option>`).join('');
-    fil.innerHTML='<option value="">All branches</option>'+arr.map(x=>`<option>${esc(x)}</option>`).join('');
-    if(user&&user.role!=='admin'&&user.branch){sel.value=user.branch;sel.disabled=true;fil.value=user.branch;fil.disabled=true}
-  }catch(e){console.error(e)}
-}
-
-async function loadSales(){
-  try{
-    let q=query(collection(db,'transactions'),where('type','==','Sales'));
-    if(user&&user.role!=='admin'&&user.branch)q=query(collection(db,'transactions'),where('type','==','Sales'),where('branch','==',user.branch));
-    const s=await getDocs(q);sales=[];s.forEach(d=>sales.push({id:d.id,...d.data()}));
-    sales.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
-    renderSales();
-  }catch(e){console.error(e);toast('Unable to load sales records')}
-}
-function filtered(){
-  const q=(document.getElementById('saleSearch').value||'').toLowerCase().trim(),from=document.getElementById('filterFrom').value,to=document.getElementById('filterTo').value,pay=document.getElementById('filterPayment').value,branch=document.getElementById('filterBranch').value;
-  return sales.filter(x=>{
-    const hay=[x.txnId,x.name,x.mobile,x.notes,x.ref,x.branch].join(' ').toLowerCase();
-    return (!q||hay.includes(q))&&(!from||x.date>=from)&&(!to||x.date<=to)&&(!pay||x.paymentStatus===pay)&&(!branch||x.branch===branch);
-  });
-}
-function statusBadge(x){const s=x.paymentStatus||((Number(x.cashIn)||0)>=(Number(x.cashOut)||0)?'Paid':((Number(x.cashIn)||0)>0?'Partial':'Unpaid'));return `<span class="badge ${s.toLowerCase()}">${esc(s)}</span>`}
-function renderSales(){
-  const list=filtered(),body=document.getElementById('salesBody'),cards=document.getElementById('cardView');body.innerHTML='';cards.innerHTML='';
-  document.getElementById('kpiCount').textContent=list.length;
-  const today=todayISO();let billed=0,collected=0,outstanding=0;
-  list.forEach(x=>{const total=Number(x.cashOut)||0,received=Number(x.cashIn)||0;if(x.date===today)billed+=total;if(x.date===today)collected+=received;outstanding+=Math.max(0,total-received)});
-  document.getElementById('kpiToday').textContent='₹'+money(billed);document.getElementById('kpiCollected').textContent='₹'+money(collected);document.getElementById('kpiOutstanding').textContent='₹'+money(outstanding);
-  if(!list.length){body.innerHTML='<tr><td colspan="7" class="empty">No sales found for the selected filters.</td></tr>';cards.innerHTML='<div class="empty" style="grid-column:1/-1">No sales found for the selected filters.</div>';return}
-  list.forEach(x=>{
-    const total=Number(x.cashOut)||0,received=Number(x.cashIn)||0,balance=Math.max(0,total-received);
-    const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${esc(x.txnId||'—')}</strong><div class="sub">${esc(x.ref||'')}</div></td><td><strong>${dateDMY(x.date)}</strong></td><td><div class="client-name">${esc(x.name||'—')}</div><div class="sub">${esc(x.mobile||'')}</div></td><td><strong>${esc((x.notes||'Professional Service').split(' • ')[0])}</strong><div class="sub">${esc(x.consultant||'')}</div></td><td><div class="amount">₹${money(total)}</div><div class="sub">Received ₹${money(received)} • Due ₹${money(balance)}</div></td><td>${statusBadge(x)}<div class="sub">${esc(x.mode||'')}</div></td><td class="no-print"><div class="actions"><button class="act view" title="View" onclick="window.viewSale('${x.id}')"><span class="material-symbols-rounded">visibility</span></button><button class="act edit" title="Edit" onclick="window.editSale('${x.id}')"><span class="material-symbols-rounded">edit</span></button><button class="act delete" title="Delete" onclick="window.deleteSale('${x.id}')"><span class="material-symbols-rounded">delete</span></button></div></td>`;
-    body.appendChild(tr);
-    const card=document.createElement('div');card.className='sale-card';card.innerHTML=`<div class="card-top"><div><div class="client-name">${esc(x.name||'—')}</div><div class="sub">${esc(x.txnId||'—')} • ${dateDMY(x.date)}</div></div>${statusBadge(x)}</div><div class="card-line">${esc((x.notes||'Professional Service').split(' • ')[0])}</div><div class="card-grid"><div><div class="sub">Total</div><b>₹${money(total)}</b></div><div><div class="sub">Due</div><b class="${balance?'due':'positive'}">₹${money(balance)}</b></div><div><div class="sub">Branch</div><b>${esc(x.branch||'—')}</b></div><div><div class="sub">Mode</div><b>${esc(x.mode||'—')}</b></div></div><div class="card-actions"><button class="btn small" onclick="window.viewSale('${x.id}')"><span class="material-symbols-rounded">visibility</span>View</button><button class="btn small" onclick="window.editSale('${x.id}')"><span class="material-symbols-rounded">edit</span>Edit</button></div>`;
-    cards.appendChild(card);
-  });
-}
-window.renderSales=renderSales;
-window.setView=m=>{window.viewMode=m;document.getElementById('listView').style.display=m==='list'?'block':'none';document.getElementById('cardView').classList.toggle('show',m==='card')};
-window.showFilters=()=>{closeTools();document.getElementById('filtersBar').classList.add('show')};
-window.setToday=()=>{const t=todayISO();document.getElementById('filterFrom').value=t;document.getElementById('filterTo').value=t;renderSales()};
-window.clearFilters=()=>{['filterFrom','filterTo','filterPayment','filterBranch','saleSearch'].forEach(id=>document.getElementById(id).value='');renderSales()};
-function resetForm(){
-  editingId=null;document.getElementById('saleDocId').value='';document.getElementById('saleTxnId').value='';
-  document.getElementById('saleFormTitle').textContent='New Sale';document.getElementById('saveSaleBtn').innerHTML='<span class="material-symbols-rounded">save</span>Save Sale';
-  document.getElementById('saleInvoice').value=nextInvoice();document.getElementById('saleDate').value=todayISO();document.getElementById('saleName').value='';document.getElementById('saleMobile').value='';document.getElementById('saleConsultant').value='';document.getElementById('saleRef').value='';document.getElementById('saleTax').value='0';document.getElementById('salePaymentStatus').value='Paid';document.getElementById('saleReceived').value='0';document.getElementById('saleMode').value='Cash';document.getElementById('salePaymentRef').value='';document.getElementById('saleNotes').value='';
-  const b=document.getElementById('saleBranch');if(!b.disabled)b.value=user&&user.branch?user.branch:'';document.getElementById('lineItems').innerHTML='';lineRow({description:'Professional Service',qty:1,rate:0,discount:0});document.getElementById('saleModal').classList.add('show');window.calculateSale();
-}
-window.openSaleForm=resetForm;
-window.closeSaleForm=()=>document.getElementById('saleModal').classList.remove('show');
-
-function fillForm(x){
-  editingId=x.id;document.getElementById('saleDocId').value=x.id;document.getElementById('saleTxnId').value=x.txnId||'';document.getElementById('saleFormTitle').textContent='Edit Sale';document.getElementById('saveSaleBtn').innerHTML='<span class="material-symbols-rounded">save</span>Update Sale';
-  document.getElementById('saleInvoice').value=x.txnId||'';document.getElementById('saleDate').value=x.date||todayISO();document.getElementById('saleName').value=x.name||'';document.getElementById('saleMobile').value=x.mobile||'';document.getElementById('saleBranch').value=x.branch||'';document.getElementById('saleConsultant').value=x.consultant||'';document.getElementById('saleRef').value=x.ref||'';document.getElementById('saleTax').value=x.taxRate||0;document.getElementById('salePaymentStatus').value=x.paymentStatus||'Paid';document.getElementById('saleReceived').value=x.cashIn||0;document.getElementById('saleMode').value=x.mode||'Cash';document.getElementById('salePaymentRef').value=x.paymentReference||'';document.getElementById('saleNotes').value=x.userNotes||x.notes||'';
-  document.getElementById('lineItems').innerHTML='';(x.lines||[{description:String(x.notes||'Professional Service').split(' • ')[0],qty:1,rate:Number(x.cashOut)||0,discount:0}]).forEach(lineRow);document.getElementById('saleModal').classList.add('show');window.calculateSale();
-}
-window.editSale=id=>{const x=sales.find(s=>s.id===id);if(x)fillForm(x)};
-window.viewSale=id=>{const x=sales.find(s=>s.id===id);if(x)fillForm(x)};
-window.saveSale=async()=>{
-  const calc=window.calculateSale(),name=document.getElementById('saleName').value.trim(),date=document.getElementById('saleDate').value,branch=document.getElementById('saleBranch').value;
-  if(!name||!date)return alert('Please enter client and invoice date.');
-  const lines=getLines();if(!lines.length)return alert('Add at least one professional service.');
-  const invoice=document.getElementById('saleInvoice').value.trim()||nextInvoice(),received=Number(document.getElementById('saleReceived').value)||0;
-  const status=calc.balance<=0.005?'Paid':received>0?'Partial':'Unpaid';
-  const notes=(lines.map(x=>x.description).join(', '))+' • '+(document.getElementById('saleNotes').value.trim()||'Professional Service');
-  const payload={txnId:invoice,date,type:'Sales',mobile:document.getElementById('saleMobile').value.trim(),name,mode:document.getElementById('saleMode').value,ref:document.getElementById('saleRef').value.trim(),cashIn:received,cashOut:calc.total,notes, userNotes:document.getElementById('saleNotes').value.trim(), lines, taxRate:Number(document.getElementById('saleTax').value)||0,taxAmount:calc.tax,subtotal:calc.sub,paymentStatus:status,paymentReference:document.getElementById('salePaymentRef').value.trim(),consultant:document.getElementById('saleConsultant').value.trim(),branch,updatedAt:new Date()};
-  const btn=document.getElementById('saveSaleBtn');btn.disabled=true;
-  try{
-    if(editingId)await updateDoc(doc(db,'transactions',editingId),payload);else await addDoc(collection(db,'transactions'),{...payload,createdAt:new Date()});
-    toast(editingId?'Sale updated':'Sale saved');window.closeSaleForm();await loadSales();
-  }catch(e){console.error(e);alert('Unable to save sale. Check database permissions.')}finally{btn.disabled=false}
-};
-window.deleteSale=async id=>{
-  const x=sales.find(s=>s.id===id);if(!x)return;
-  if(!confirm(`Delete ${x.txnId||'this sale'}?`))return;
-  try{await deleteDoc(doc(db,'transactions',id));toast('Sale deleted');await loadSales()}catch(e){console.error(e);alert('Unable to delete sale.')}
-};
-window.exportCSV=()=>{
-  const rows=filtered(),head=['Invoice','Date','Client','Mobile','Branch','Consultant','Total','Received','Balance','Payment Status','Payment Mode','Reference','Notes'];
-  const csv=[head,...rows.map(x=>[x.txnId,x.date,x.name,x.mobile,x.branch,x.consultant,x.cashOut,x.cashIn,Math.max(0,(Number(x.cashOut)||0)-(Number(x.cashIn)||0)),x.paymentStatus,x.mode,x.ref,x.userNotes||x.notes])].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='sales-register.csv';a.click();URL.revokeObjectURL(a.href);
-};
-window.printRegister=()=>window.print();
-
-onAuthStateChanged(auth,async u=>{
-  user=u;if(!u){document.getElementById('sales-module').innerHTML='<div style="padding:50px;text-align:center;color:#D93025">Access denied. Please log in.</div>';return}
-  await loadBranches();await loadSales();
-});
-</script>
-</body>
-</html>
