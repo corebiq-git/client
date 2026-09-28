@@ -1,271 +1,1090 @@
-<div class="module-container" id="appointment-module">
-<style>
-:root {
-    /* Gemini Signature */
-    --gemini-blue: #4285F4;
-    --gemini-purple: #9b72cb;
-    --gemini-red: #d96570;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.corebiq.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Sales</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+</head>
+<body>
+
+<div class="module-container" id="Sales-module">
     
-    /* MD3 Primary Tones */
-    --primary: #0B57D0;
-    --on-primary: #FFFFFF;
-    --primary-light: #D3E3FD;
-    --on-primary-container: #041E49;
     
-    /* Surfaces & Backgrounds */
-    --surface: #FFFFFF;
-    --bg: #F3F4F6;
-    --surface-high: #E8EAED;
-    --text: #1F1F1F;
-    --muted: #444746;
-    --border: #C4C7C5;
 
-    /* Semantics */
-    --success: #10B981;
-    --danger: #EF4444;
-    --warning: #F59E0B;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-}
+    <div class="section-title">
+        <h2 class="cb-inline-0018">Sales & Quotations</h2>
+    </div>
 
-body {
-    background-color: var(--bg);
-    margin: 0;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-}
+    <div class="form-card no-print" id="aptFormCard">
+        <form id="add-Sales-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="aptDocId" value="">
+            
+            <h4 class="cb-inline-0060">1. Client Details</h4>
+            
+            <div class="input-group four-cols">
+                <div>
+                    <label class="form-label">Client Mobile (Auto-Fill) *</label>
+                    <div class="cb-inline-0025">
+                        <input type="tel" id="aptMobile" class="form-input" placeholder="10-digit number" maxlength="10" required>
+                        <button type="button" class="btn-verify" id="verifyAptBtn" onclick="window.verifyClientMobile()">Check</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="form-label">Client Name *</label>
+                    <input type="text" id="aptName" class="form-input" placeholder="Full Name" required>
+                </div>
+                <div>
+                    <label class="form-label">Age</label>
+                    <input type="number" id="aptAge" class="form-input" placeholder="Years" min="1" max="120">
+                </div>
+                <div>
+                    <label class="form-label">Client Category *</label>
+                    <select id="aptCategory" class="form-input" required>
+                        <option value="Normal">Normal</option>
+                        <option value="Regular">Regular</option>
+                        <option value="Both">Both (Admin Mark)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <div class="cb-inline-0029">
+                    <label class="form-label">Client Location (Text or Google Map Link)</label>
+                    <div class="cb-inline-0061">
+                        <button type="button" class="btn-outline cb-inline-0062" onclick="window.getCurrentLocation(this)"><span class="material-symbols-rounded">my_location</span> Current</button>
+                        <input type="text" id="aptLocation" class="form-input cb-inline-0063" placeholder="Paste address or Maps URL, or click Current...">
+                        <button type="button" class="btn-outline cb-inline-0064" onclick="window.openLocationMap()"><span class="material-symbols-rounded">map</span> Map</button>
+                    </div>
+                </div>
+                <div class="cb-inline-0029">
+                    <label class="form-label">Client Medical History / Admin Notes</label>
+                    <textarea id="aptClientNotes" class="form-input" rows="2" placeholder="Pre-existing conditions, allergies, or Client background..."></textarea>
+                </div>
+            </div>
 
-#appointment-module {
-    font-family: 'Roboto', sans-serif;
-    width: 100%;
-    max-width: 1120px;
-    color: var(--text);
-}
-#appointment-module * { box-sizing: border-box; }
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Branch *</label>
+                    <select id="aptBranch" class="form-input" required>
+                        <option value="">Loading Branches...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Scheduled Date *</label>
+                    <input type="date" id="aptDate" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Scheduled Time *</label>
+                    <input type="time" id="aptTime" class="form-input" required>
+                </div>
+            </div>
 
-h1, h2, h3, h4, .panel-title, .num, .drop-title, .table th, .kpi .label {
-    font-family: 'Outfit', sans-serif;
-}
+            <h4 class="cb-inline-0065">2. Administration & Billing</h4>
 
-.material-symbols-rounded { font-size: 20px; vertical-align: middle; }
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Sales Executive Assigned *</label>
+                    <select id="aptSales Executive" class="form-input" required>
+                        <option value="">Loading Sales Executives...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Sales Status *</label>
+                    <select id="aptStatus" class="form-input" onchange="window.toggleReschedule(this)" required>
+                        <option value="Pending">Pending</option>
+                        <option value="Reported">Reported</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Rescheduled">Rescheduled</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div id="reschedule-container">
+                    <label class="form-label cb-inline-0031">Pick New Reschedule Date</label>
+                    <input type="date" id="aptRescheduleDate" class="form-input cb-inline-0032">
+                </div>
+                <div class="cb-inline-0029">
+                    <label class="form-label">Administrative Notes / Symptoms</label>
+                    <textarea id="aptNotes" class="form-input" rows="2" placeholder="Record symptoms or log reschedule/cancellation history here..."></textarea>
+                </div>
+            </div>
 
-.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
-.title h2 { font-size: 28px; line-height: 1.2; margin: 0; font-weight: 700; color: var(--text); }
-.title p { font-size: 14px; color: var(--muted); margin: 5px 0 0; }
+            <div class="input-group cb-inline-0033">
+                <div>
+                    <label class="form-label">Total Fee (₹)</label>
+                    <input type="number" id="aptFee" class="form-input" placeholder="0.00" oninput="window.calcBalance()">
+                </div>
+                <div>
+                    <label class="form-label" title="Outstanding balance from previous visits">Prev. Dues (OP) (₹)</label>
+                    <input type="number" id="aptPrevDues" class="form-input cb-inline-0066" placeholder="0.00" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Advance Paid (₹)</label>
+                    <input type="number" id="aptAdvance" class="form-input" placeholder="0.00" oninput="window.calcBalance()">
+                </div>
+                <div>
+                    <label class="form-label" title="Total Fee + Prev Dues - Advance">Net Balance (₹)</label>
+                    <input type="number" id="aptBalance" class="form-input cb-inline-0066" placeholder="0.00" readonly>
+                </div>
+            </div>
 
-/* Buttons - Material 3 Pill Shapes */
-.btn {
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    height: 40px;
-    padding: 0 24px;
-    border-radius: 9999px;
-    font-size: 14px;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Roboto', sans-serif;
-}
-.btn:hover { background: var(--surface-high); }
-.btn.primary { background: var(--primary); border: none; color: var(--on-primary); }
-.btn.primary:hover { background: #0842a⁰0; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-.btn.danger { color: var(--danger); border-color: #FECACA; background: #FEF2F2; }
-.btn.blue { color: var(--on-primary-container); border-color: transparent; background: var(--primary-light); }
-.btn.small { height: 36px; padding: 0 16px; font-size: 13px; }
+            <div class="cb-inline-0067">
+                <button type="button" class="btn-outline cb-inline-0068" onclick="window.resetAptForm()">Clear Form</button>
+                <button type="button" class="btn-primary" id="saveAptBtn" onclick="window.saveSales()">Save Sales</button>
+            </div>
+        </form>
+    </div>
 
-/* Gemini Inspired Main Action Button */
-.new-btn {
-    height: 44px;
-    padding: 0 24px;
-    border: none;
-    border-radius: 9999px;
-    background: linear-gradient(135deg, var(--gemini-purple), var(--gemini-red));
-    color: white;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: opacity 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 8px rgba(217, 101, 112, 0.3);
-    font-family: 'Roboto', sans-serif;
-}
-.new-btn:hover { opacity: 0.9; box-shadow: 0 6px 12px rgba(217, 101, 112, 0.4); }
+    <!-- Notes View Modal -->
+    <div class="notes-modal-overlay" id="notesModal">
+        <div class="notes-modal-content">
+            <div class="notes-modal-header no-print">
+                <h3 class="cb-inline-0038">Admin Client Notes</h3>
+                <button class="btn-outline cb-inline-0039" onclick="document.getElementById('notesModal').style.display='none'"><span class="material-symbols-rounded">close</span></button>
+            </div>
+            <div id="printNotesArea">
+                <h4 id="modalClientName" class="cb-inline-0040">---</h4>
+                <p id="modalClientMeta" class="cb-inline-0041">---</p>
+                <div id="modalClientNotesText" class="cb-inline-0042"></div>
+            </div>
+            <div class="no-print cb-inline-0043">
+                <button class="btn-primary" onclick="window.printModalNotes()"><span class="material-symbols-rounded">print</span> Print Notes</button>
+            </div>
+        </div>
+    </div>
 
-/* KPIs - MD3 Elevated Cards */
-.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.kpi {
-    background: var(--surface);
-    border: none;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: var(--shadow);
-    position: relative;
-    overflow: hidden;
-}
-.kpi::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: var(--border); opacity: 0.3;
-}
-.kpi.today::before { background: linear-gradient(to right, var(--gemini-blue), var(--gemini-purple)); opacity: 1; }
-.kpi.done::before { background: var(--success); opacity: 1; }
-.kpi.pending::before { background: var(--warning); opacity: 1; }
+    <div class="table-container">
+        
+        <div class="table-header">
+            
+            <div class="cb-inline-0069">
+                <h4>Schedule Directory</h4>
+                <div class="cb-inline-0025">
+                    <button class="btn-outline no-print cb-inline-0070" onclick="window.executeBulkDelete()" title="Delete Cancelled or Pending Bookings">
+                        <span class="material-symbols-rounded cb-inline-0071">delete</span> Bulk Delete
+                    </button>
+                    <button class="btn-outline no-print cb-inline-0072" onclick="window.openBulkReschedule()">
+                        <span class="material-symbols-rounded cb-inline-0071">event_repeat</span> Move to Next Schedule
+                    </button>
+                    <button class="btn-outline no-print cb-inline-0073" onclick="window.exportAptPDF()">
+                        <span class="material-symbols-rounded cb-inline-0074">picture_as_pdf</span> Export
+                    </button>
+                </div>
+            </div>
 
-.kpi .label { font-size: 14px; color: var(--muted); font-weight: 500; letter-spacing: 0.3px; }
-.kpi .num { font-size: 28px; font-weight: 700; margin-top: 8px; color: var(--text); }
+            <div class="no-print cb-inline-0075">
+                
+                <div class="cb-inline-0076">
+                    <input type="date" id="filterDateFrom" class="form-input cb-inline-0077" onchange="window.filterTable()" title="From Date">
+                    <span class="cb-inline-0049">to</span>
+                    <input type="date" id="filterDateTo" class="form-input cb-inline-0077" onchange="window.filterTable()" title="To Date">
+                    <button class="btn-outline cb-inline-0078" onclick="window.setFilterToday()">Today</button>
+                </div>
+                
+                <select id="filterStatus" class="form-input cb-inline-0077" onchange="window.filterTable()">
+                    <option value="">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="reported">Reported</option>
+                    <option value="completed">Completed</option>
+                    <option value="rescheduled">Rescheduled</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
 
-/* Panels - MD3 Filled/Elevated Hybrid */
-.panel {
-    background: var(--surface);
-    border: none;
-    border-radius: 24px;
-    box-shadow: var(--shadow);
-    overflow: visible;
-    margin-bottom: 24px;
-    position: relative;
-}
-.panel::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(to right, var(--gemini-blue), var(--gemini-purple), var(--gemini-red));
-    border-top-left-radius: 24px; border-top-right-radius: 24px;
-}
-.panel-head { padding: 20px 24px; border-bottom: 1px solid var(--surface-high); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.panel-title { font-size: 18px; font-weight: 600; color: var(--text); }
+                <select id="filterCategory" class="form-input cb-inline-0077" onchange="window.filterTable()">
+                    <option value="">All Categories</option>
+                    <option value="normal">Normal</option>
+                    <option value="regular">Regular</option>
+                    <option value="both">Both</option>
+                </select>
 
-/* Toolbar & Icons */
-.toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.tool { position: relative; }
-.icon-btn {
-    width: 40px; height: 40px; border: none; border-radius: 50%;
-    background: transparent; display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer; color: var(--muted); transition: background 0.2s, color 0.2s;
-}
-.icon-btn:hover { background: var(--surface-high); color: var(--text); }
-.icon-btn.active { background: var(--primary-light); color: var(--on-primary-container); }
+                <select id="filterPayment" class="form-input cb-inline-0077" onchange="window.filterTable()">
+                    <option value="">All Payments</option>
+                    <option value="pending">Balance Pending</option>
+                    <option value="paid">Fully Paid</option>
+                </select>
 
-.dropdown { display: none; position: absolute; right: 0; top: 48px; min-width: 220px; background: var(--surface); border: 1px solid var(--surface-high); border-radius: 16px; box-shadow: 0 12px 24px rgba(0,0,0,0.1); padding: 8px; z-index: 5000; }
-.tool.open .dropdown { display: block; }
-.drop-title { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; }
-.drop-item { width: 100%; border: 0; background: transparent; text-align: left; padding: 10px 12px; border-radius: 8px; font-size: 14px; display: flex; gap: 12px; align-items: center; cursor: pointer; color: var(--text); font-family: 'Roboto', sans-serif; transition: background 0.2s; }
-.drop-item:hover { background: var(--surface-high); }
-.drop-item.active { background: var(--primary-light); color: var(--on-primary-container); font-weight: 500; }
+                <select id="filterBranch" class="form-input cb-inline-0077" onchange="window.filterTable()">
+                    <option value="">Loading Branches...</option>
+                </select>
 
-.searchbar, .filters, .bulkbar { padding: 16px 24px; border-bottom: 1px solid var(--surface-high); background: var(--surface); }
-.searchbar { display: none; } .searchbar.show { display: flex; }
-.searchbox { display: flex; align-items: center; gap: 8px; width: 100%; background: var(--surface-high); border-radius: 9999px; padding: 4px 16px; border: 1px solid transparent; transition: border 0.2s, background 0.2s; }
-.searchbox:focus-within { background: var(--surface); border-color: var(--primary); }
-.searchbox input { height: 40px; width: 100%; border: 0; outline: 0; font-size: 14px; background: transparent; color: var(--text); font-family: 'Roboto', sans-serif; }
+                <div class="cb-inline-0079">
+                    <span class="material-symbols-rounded cb-inline-0080">search</span>
+                    <input type="text" id="aptSearchInput" onkeyup="window.filterTable()" placeholder="Search Name, Mobile, Doctor..." class="cb-inline-0081">
+                </div>
 
-.filters { display: none; gap: 12px; flex-wrap: wrap; align-items: center; } .filters.show { display: flex; }
+                <button class="btn-outline cb-inline-0082" onclick="window.clearFilters()" title="Clear Filters">
+                    <span class="material-symbols-rounded cb-inline-0083">close</span>
+                </button>
+            </div>
+            
+        </div>
 
-/* Form Inputs - MD3 Rounded Styling */
-.form-input {
-    width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);
-    font-size: 14px; color: var(--text); background: transparent; outline: none; font-family: 'Roboto', sans-serif;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-.form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
-.filter-input { width: auto; min-width: 140px; height: 40px; padding: 8px 12px; }
+        <div id="bulk-reschedule-container" class="no-print cb-inline-0084">
+            <strong class="cb-inline-0057">Copy selected to:</strong>
+            <input type="date" id="bulkDateInput" class="form-input cb-inline-0085">
+            <button class="btn-primary cb-inline-0086" onclick="window.executeBulkReschedule()">Confirm Schedule</button>
+            <button class="btn-outline cb-inline-0087" onclick="document.getElementById('bulk-reschedule-container').classList.remove('active')">Cancel</button>
+        </div>
 
-.bulkbar { display: none; background: var(--primary-light); border-bottom: none; align-items: center; gap: 12px; flex-wrap: wrap; } .bulkbar.show { display: flex; }
-.bulkbar strong { font-size: 14px; color: var(--on-primary-container); font-family: 'Outfit', sans-serif; }
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th class="no-print"><input type="checkbox" onclick="window.toggleAllCheckboxes(this)" class="cb-inline-0088"></th>
+                        <th>Date & Time</th>
+                        <th>Client Details</th>
+                        <th>Branch / Sales Executive</th>
+                        <th>Financials</th>
+                        <th>Status & Notes</th>
+                        <th class="no-print cb-inline-0059">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="aptTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-/* Table */
-.table-wrap { overflow-x: auto; padding: 0 24px; }
-.table { width: 100%; min-width: 930px; border-collapse: collapse; }
-.table th { font-size: 12px; color: var(--muted); font-weight: 600; text-align: left; padding: 16px 12px; border-bottom: 2px solid var(--surface-high); white-space: nowrap; letter-spacing: 0.3px; }
-.table td { font-size: 14px; padding: 16px 12px; border-bottom: 1px solid var(--surface-high); vertical-align: top; }
-.table tr:last-child td { border-bottom: 0; }
-.patient-name { font-weight: 600; font-size: 15px; color: var(--text); }
-.sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+<script type="module">
+        // 1. Import from your central config instead of re-initializing Firebase
+        import { auth, db } from './firebase-config.js'; 
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { collection, addDoc, query, where, getDocs, updateDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-.actions { display: flex; gap: 8px; justify-content: flex-end; }
-.act { width: 36px; height: 36px; border: none; background: transparent; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
-.act:hover { background: var(--surface-high); }
-.act.note { color: #8B5CF6; } .act.inv { color: var(--primary); } .act.edit { color: var(--text); }
+        // Make deleteDoc globally accessible for the bulk delete function
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
 
-.no-due { color: var(--muted); font-weight: 500; } .excess { color: var(--success); font-weight: 600; } .due { color: var(--danger); font-weight: 600; }
+        window.SalessDataCache = {};
+        window.allBranchesString = "";
 
-/* Badges - Pill styling */
-.badge { display: inline-flex; padding: 6px 12px; border-radius: 9999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-.pending { background: #FFF3E0; color: #E65100; }
-.reported { background: var(--primary-light); color: var(--primary); }
-.completed { background: #E8F5E9; color: #2E7D32; }
-.rescheduled { background: var(--surface-high); color: var(--text); }
-.cancelled { background: #FFEBEE; color: #C62828; }
-.cat { background: var(--surface-high); color: var(--text); border: none; padding: 4px 10px; font-size: 10px; }
+// --- AUTHENTICATION GATEKEEPER ---
+        // This ensures the page content only loads if a valid user session exists
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // User is NOT logged in. Destroy the module content and show a warning.
+                document.getElementById('Sales-module').innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; background: #FEF2F2; border-radius: 16px; border: 1px solid #FCA5A5; margin-top: 20px;">
+                        <span class="material-symbols-rounded" style="font-size: 48px; color: #EF4444; margin-bottom: 12px;">gpp_bad</span>
+                        <h2 style="color: #991B1B; margin-bottom: 8px;">Access Denied</h2>
+                        <p style="color: #7F1D1D; font-size: 14px;">You must be logged into the administrative dashboard to view this module.</p>
+                    </div>
+                `;
+                return; // Stop execution
+            }
 
-/* Cards View */
-.cards { display: none; padding: 24px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; } .cards.show { display: grid; }
-.apt-card { border: 1px solid var(--surface-high); border-radius: 20px; padding: 20px; background: var(--surface); box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: box-shadow 0.2s; }
-.apt-card:hover { box-shadow: var(--shadow); }
-.card-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
-.card-patient { display: flex; gap: 12px; }
-.card-check { padding-top: 2px; }
-.card-line { font-size: 13px; color: var(--muted); margin-top: 12px; display: flex; gap: 8px; align-items: center; }
-.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--surface-high); }
-.card-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+            // --- NEW: HIDE DELETE BUTTON IF NOT ADMIN ---
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const bulkDeleteBtn = document.querySelector('button[onclick="window.executeBulkDelete()"]');
+                if(bulkDeleteBtn) bulkDeleteBtn.style.display = 'none';
+            }
+            // --------------------------------------------
 
-.empty { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 14px; font-family: 'Outfit', sans-serif; }
+            // User IS logged in. Proceed with bootstrapping the module.
+            window.loadBranchesForApt();
+            window.loadSales ExecutivesForApt();
+            setMinBookingDate();
+            window.loadSaless().then(() => {
+                window.setFilterToday();
+            });
+        });
 
-/* Modals */
-.modal { display: none; position: fixed; inset: 0; background: rgba(31, 31, 31, 0.4); backdrop-filter: blur(4px); z-index: 10000; align-items: center; justify-content: center; padding: 24px; } .modal.show { display: flex; }
-.modal-box { background: var(--surface); width: min(900px, 100%); max-height: 90vh; overflow: auto; border-radius: 28px; box-shadow: 0 24px 48px rgba(0,0,0,0.2); position: relative; }
-.modal-box::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(to right, var(--gemini-blue), var(--gemini-purple), var(--gemini-red));
-    z-index: 10;
-}
-.modal-head { position: sticky; top: 0; z-index: 5; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 20px 24px; border-bottom: 1px solid var(--surface-high); display: flex; justify-content: space-between; align-items: center; }
-.modal-head h3 { font-size: 20px; margin: 0; color: var(--text); }
-.modal-body { padding: 24px; }
-.close { width: 40px; height: 40px; border: none; border-radius: 50%; background: transparent; cursor: pointer; color: var(--muted); display: inline-flex; align-items: center; justify-content: center; transition: background 0.2s; }
-.close:hover { background: var(--surface-high); color: var(--text); }
+        window.formatIndianDate = function(dateStr) {
+            if(!dateStr) return '';
+            const p = dateStr.split('-');
+            if(p.length !== 3) return dateStr;
+            return `${p[2]}/${p[1]}/${p[0]}`;
+        }
 
-.section { border: 1px solid var(--surface-high); border-radius: 20px; margin-bottom: 24px; padding: 24px; background: #FCFCFD; }
-.section h4 { font-size: 16px; color: var(--primary); margin: 0 0 20px; display: flex; align-items: center; gap: 8px; }
-.section h4::before { content: ''; display: block; width: 4px; height: 16px; background: var(--primary); border-radius: 2px; }
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; } .grid.three { grid-template-columns: repeat(3, 1fr); }
-.field label { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
-.span2 { grid-column: 1 / -1; }
-.location-row { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; }
-.money-box { background: var(--surface); border: 1px solid var(--surface-high); border-radius: 16px; padding: 16px; }
-.form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; }
-.readonly { background: var(--surface-high) !important; border-color: transparent !important; font-weight: 600; color: var(--muted); }
+        function setMinBookingDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const dateStr = `${yyyy}-${mm}-${dd}`;
+            
+            const aptDateEl = document.getElementById('aptDate');
+            const bulkDateEl = document.getElementById('bulkDateInput');
+            const rescheduleDateEl = document.getElementById('aptRescheduleDate');
+            
+            if(aptDateEl) aptDateEl.min = dateStr;
+            if(bulkDateEl) bulkDateEl.min = dateStr;
+            if(rescheduleDateEl) rescheduleDateEl.min = dateStr;
+        }
 
-.notes-content { padding: 20px; line-height: 1.6; white-space: pre-wrap; font-size: 14px; min-height: 150px; background: var(--surface-high); border: none; border-radius: 16px; color: var(--text); font-family: 'Roboto Mono', monospace; }
+        // --- LOCATION HELPERS ---
+        window.openLocationMap = function() {
+            const loc = document.getElementById('aptLocation').value;
+            if(!loc) return alert("Please paste a location link or address first.");
+            if(loc.startsWith('http')) {
+                window.open(loc, '_blank');
+            } else {
+                window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc), '_blank');
+            }
+        }
 
-.confirm-box { max-width: 480px; }
-.confirm-message { font-size: 15px; line-height: 1.6; color: var(--muted); padding: 24px; }
+        window.getCurrentLocation = function(btn) {
+            if (navigator.geolocation) {
+                const oldText = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Wait...';
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    document.getElementById('aptLocation').value = `https://www.google.com/maps?q=${lat},${lon}`;
+                    btn.innerHTML = oldText;
+                }, function(error) {
+                    alert("Error getting location. Please ensure location services are enabled.");
+                    btn.innerHTML = oldText;
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
 
-/* Custom Checkbox */
-input[type="checkbox"] { accent-color: var(--primary); width: 18px; height: 18px; border-radius: 4px; cursor: pointer; }
+        // --- 0. SAFE DYNAMIC LOADERS ---
+        window.loadBranchesForApt = async function() {
+            const branchSelect = document.getElementById('aptBranch');
+            const filterSelect = document.getElementById('filterBranch');
+            
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const userBranch = window.currentUser.branch;
+                branchSelect.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                filterSelect.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                branchSelect.style.pointerEvents = 'none';
+                branchSelect.style.background = 'var(--grey-med)';
+                filterSelect.style.pointerEvents = 'none';
+                filterSelect.style.background = 'var(--grey-med)';
+                window.allBranchesString = userBranch;
+                return; 
+            }
 
-@media (max-width: 700px) {
-    body { padding: 0.5rem; }
-    .topbar { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
-    .title h2 { font-size: 24px; }
-    .new-btn { width: 100%; justify-content: center; }
-    .kpis { grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
-    .grid, .grid.three { grid-template-columns: 1fr; }
-    .span2 { grid-column: auto; }
-    .modal { padding: 12px; }
-    .modal-box { max-height: 96vh; border-radius: 20px; }
-    .toolbar { width: 100%; justify-content: flex-end; }
-    .panel-head { align-items: flex-start; flex-direction: column; gap: 16px; }
-    .panel-title { width: 100%; }
-    .section { padding: 16px; }
-}
-@media print {
-    body { background: #fff; padding: 0; }
-    #appointment-module .no-print, #appointment-module .toolbar, #appointment-module .new-btn, .kpis { display: none !important; }
-    .panel { box-shadow: none; border: 0; }
-    .panel::before { display: none; }
-    .table { min-width: 100%; }
-}
-</style>
+            try {
+                const snap = await getDocs(collection(db, "branches"));
+                let branchList = [];
+                snap.forEach(doc => {
+                    const bName = doc.data().name;
+                    if(bName) branchList.push(bName);
+                });
+                branchList.sort();
+                
+                window.allBranchesString = branchList.join(" | ");
+
+                let bHtml = '<option value="">Select Branch</option>';
+                let fHtml = '<option value="">All Branches</option>';
+                branchList.forEach(bName => {
+                    bHtml += `<option value="${bName}">${bName}</option>`;
+                    fHtml += `<option value="${bName}">${bName}</option>`;
+                });
+                
+                branchSelect.innerHTML = bHtml;
+                filterSelect.innerHTML = fHtml;
+            } catch(e) {
+                branchSelect.innerHTML = '<option value="">Select Branch</option>';
+            }
+        };
+
+        window.loadSales ExecutivesForApt = async function() {
+            const Sales ExecutiveSelect = document.getElementById('aptSales Executive');
+            try {
+                const snap = await getDocs(collection(db, "Sales Executives"));
+                let thList = [];
+                snap.forEach(doc => { 
+                    const tName = doc.data().name;
+                    if(tName) thList.push(tName); 
+                });
+                thList.sort();
+
+                let html = '<option value="">Select Sales Executive</option>';
+                thList.forEach(tName => html += `<option value="${tName}">${tName}</option>`);
+                Sales ExecutiveSelect.innerHTML = html;
+            } catch(e) {
+                Sales ExecutiveSelect.innerHTML = '<option value="">Select Sales Executive</option>';
+            }
+        };
+
+        // --- 1. FORM UI LOGIC ---
+        window.toggleReschedule = function(select) {
+            const container = document.getElementById('reschedule-container');
+            if (select.value === 'Rescheduled') container.classList.add('active');
+            else {
+                container.classList.remove('active');
+                document.getElementById('aptRescheduleDate').value = '';
+            }
+        }
+
+        window.calcBalance = function() {
+            const fee = parseFloat(document.getElementById('aptFee').value) || 0;
+            const advance = parseFloat(document.getElementById('aptAdvance').value) || 0;
+            const prev = parseFloat(document.getElementById('aptPrevDues').value) || 0;
+            
+            const netBalance = (fee + prev) - advance;
+            document.getElementById('aptBalance').value = netBalance.toFixed(2);
+        }
+
+        window.resetAptForm = function() {
+            document.getElementById('add-Sales-form').reset();
+            document.getElementById('aptDocId').value = ''; 
+            document.getElementById('saveAptBtn').innerText = "Save Sales";
+            document.getElementById('reschedule-container').classList.remove('active');
+            document.getElementById('aptPrevDues').value = '';
+            document.getElementById('aptLocation').value = '';
+            document.getElementById('aptCategory').value = 'Normal';
+            setMinBookingDate();
+            
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                document.getElementById('aptBranch').value = window.currentUser.branch;
+            }
+        }
+
+        function isPastDateTime(dateStr, timeStr) {
+            if(!dateStr) return false;
+            
+            const targetParts = dateStr.split('-');
+            const year = parseInt(targetParts[0]);
+            const month = parseInt(targetParts[1]) - 1;
+            const day = parseInt(targetParts[2]);
+            
+            let hours = 0, minutes = 0;
+            if(timeStr) {
+                const timeParts = timeStr.split(':');
+                hours = parseInt(timeParts[0]);
+                minutes = parseInt(timeParts[1]);
+            }
+            
+            const target = new Date(year, month, day, hours, minutes);
+            const now = new Date();
+            
+            return target < now;
+        }
+
+        // --- 2. AUTO-FILL Client & OP BALANCE ---
+        window.verifyClientMobile = async function() {
+            const mobile = document.getElementById('aptMobile').value;
+            const btn = document.getElementById('verifyAptBtn');
+
+            if (mobile.length !== 10) return alert("Enter 10-digit mobile number first.");
+            btn.innerText = "...";
+            try {
+                const pSnap = await getDocs(query(collection(db, "Clients"), where("mobile", "==", mobile)));
+                if (!pSnap.empty) {
+                    const pData = pSnap.docs[0].data();
+                    document.getElementById('aptName').value = pData.name || '';
+                    document.getElementById('aptAge').value = pData.age || '';
+                    document.getElementById('aptClientNotes').value = pData.notes || '';
+                    document.getElementById('aptLocation').value = pData.location || '';
+                    document.getElementById('aptCategory').value = pData.category || 'Normal';
+                    alert("Client Found! Details auto-filled.");
+                } else {
+                    document.getElementById('aptName').value = '';
+                    document.getElementById('aptAge').value = '';
+                    document.getElementById('aptClientNotes').value = '';
+                    document.getElementById('aptLocation').value = '';
+                    document.getElementById('aptCategory').value = 'Normal';
+                    alert("No Client found. Details will be auto-registered upon saving.");
+                }
+
+                let opBalance = 0;
+                const currentDocId = document.getElementById('aptDocId').value;
+                const aptsSnap = await getDocs(query(collection(db, "Saless"), where("mobile", "==", mobile)));
+                
+                aptsSnap.forEach(doc => {
+                    if (doc.id !== currentDocId) {
+                        opBalance += parseFloat(doc.data().balance) || 0;
+                    }
+                });
+                
+                document.getElementById('aptPrevDues').value = opBalance.toFixed(2);
+                window.calcBalance();
+
+            } catch(e) { console.error(e); }
+            btn.innerText = "Check";
+        }
+
+        // --- 3. LOAD SalesS (DOCTOR-WISE GROUPING) ---
+        window.loadSaless = async function() {
+            const tableBody = document.getElementById('aptTableBody');
+            tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">Loading Saless...</td></tr>';
+
+            try {
+                let q;
+                if (window.currentUser && window.currentUser.role !== 'admin') {
+                    q = query(collection(db, "Saless"), where("branch", "==", window.currentUser.branch));
+                } else {
+                    q = query(collection(db, "Saless"));
+                }
+                
+                const querySnapshot = await getDocs(q);
+                tableBody.innerHTML = ''; 
+                window.SalessDataCache = {}; 
+                
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px; color: var(--text-muted);">No Saless found.</td></tr>';
+                    return;
+                }
+
+                let aptsList = [];
+                querySnapshot.forEach(docSnap => {
+                    aptsList.push({ id: docSnap.id, data: docSnap.data() });
+                });
+
+                aptsList.sort((a, b) => {
+                    const dateCompare = new Date(b.data.date || 0) - new Date(a.data.date || 0);
+                    if (dateCompare !== 0) return dateCompare;
+                    return (a.data.branch || '').localeCompare(b.data.branch || '');
+                });
+
+                const groupedApts = {};
+                aptsList.forEach(item => {
+                    const th = item.data.Sales Executive || 'Unassigned Sales Executive';
+                    if (!groupedApts[th]) groupedApts[th] = [];
+                    groupedApts[th].push(item);
+                });
+
+                const sortedSales Executives = Object.keys(groupedApts).sort();
+
+                sortedSales Executives.forEach(Sales Executive => {
+                    const thRow = document.createElement('tr');
+                    thRow.className = "Sales Executive-group-header";
+                    thRow.innerHTML = `
+                        <td colspan="7" style="background: #fef5e8; padding: 12px 20px; border-bottom: 2px solid var(--primary); border-top: 1px solid var(--border);">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span class="material-symbols-rounded" style="color: var(--primary);">medical_services</span>
+                                <strong style="font-size: 15px; color: var(--primary); text-transform: uppercase;">Dr. ${Sales Executive}</strong>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(thRow);
+
+                    groupedApts[Sales Executive].forEach((item) => {
+                        const data = item.data;
+                        const docId = item.id; 
+                        window.SalessDataCache[docId] = data;
+                        
+                        let statusBadge = '';
+                        if(data.status === 'Completed') statusBadge = '<span class="badge badge-completed">Completed</span>';
+                        else if(data.status === 'Reported') statusBadge = '<span class="badge badge-reported">Reported</span>';
+                        else if(data.status === 'Rescheduled') statusBadge = `<span class="badge badge-rescheduled">Rescheduled</span>`;
+                        else if(data.status === 'Cancelled') statusBadge = `<span class="badge badge-cancelled">Cancelled</span>`;
+                        else statusBadge = '<span class="badge badge-pending">Pending</span>';
+
+                        let noteSnippet = data.notes ? `<div style="margin-top: 6px; font-size: 11px; color: var(--secondary); background: #FAFAFA; padding: 4px; border-radius: 4px; line-height: 1.4;">${data.notes}</div>` : '';
+                        let categoryBadge = data.category ? `<span class="badge badge-category">${data.category}</span>` : '';
+                        
+                        const indDate = window.formatIndianDate(data.date);
+                        const waText = encodeURIComponent(`Hello ${data.name}, your Sales at STRA CARE (${data.branch}) is booked for ${indDate}. Total Fee: ₹${data.fee||0}, Advance: ₹${data.advance||0}, Balance: ₹${data.balance||0}.`);
+
+                        let locLink = data.location ? `<a href="${data.location.startsWith('http') ? data.location : 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(data.location)}" class="cta-link" target="_blank" title="View Location on Map"><span class="material-symbols-rounded" style="font-size: 16px; color: #3B82F6;">map</span></a>` : '';
+
+                        const tr = document.createElement('tr');
+                        tr.className = "apt-row"; 
+                        tr.setAttribute("data-branch", (data.branch || '').toLowerCase());
+                        tr.setAttribute("data-status", (data.status || '').toLowerCase());
+                        tr.setAttribute("data-category", (data.category || '').toLowerCase());
+                        tr.setAttribute("data-date", data.date || '');
+                        tr.setAttribute("data-balance", data.balance || 0);
+                        tr.setAttribute("data-search", `${data.name || ''} ${data.mobile || ''} ${data.Sales Executive || ''} ${indDate}`.toLowerCase());
+
+                        const prevDuesSafe = data.prevDues || 0;
+
+                        tr.innerHTML = `
+                            <td class="no-print"><input type="checkbox" class="apt-checkbox" value="${docId}" data-current-date="${data.date}" style="transform: scale(1.2);"></td>
+                            <td data-label="Date/Time"><strong>${indDate}</strong><br><span style="font-size:12px; color:var(--text-muted);">${data.time}</span></td>
+                            <td data-label="Client">
+                                <span style="font-weight: 700; font-size: 15px;">${data.name}</span> <span style="font-size:11px; color:var(--text-muted);">(${data.age || '--'} Yrs)</span><br>
+                                <span style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px; display:inline-block;">${data.mobile}</span><br>
+                                ${categoryBadge}
+                                <div class="no-print" style="display: flex; gap: 8px; margin-top: 6px;">
+                                    <a href="tel:${data.mobile}" class="cta-link" title="Call"><span class="material-symbols-rounded" style="font-size: 16px; color: var(--secondary);">call</span></a>
+                                    <a href="https://wa.me/91${data.mobile}?text=${waText}" class="cta-link" target="_blank" title="WhatsApp"><span class="material-symbols-rounded" style="font-size: 16px; color: var(--success);">chat</span></a>
+                                    ${locLink}
+                                </div>
+                            </td>
+                            <td data-label="Details"><strong>${data.branch}</strong><br><span style="font-size:12px; color:var(--text-muted);">${data.Sales Executive}</span></td>
+                            <td data-label="Financials">
+                                Fee: ₹${data.fee || 0}<br>
+                                <span style="color: var(--success); font-size: 12px;">Adv: ₹${data.advance || 0}</span><br>
+                                <strong style="color: var(--danger); font-size: 12px;">Bal: ₹${data.balance || 0}</strong>
+                            </td>
+                            <td data-label="Status">${statusBadge} ${noteSnippet}</td>
+                            <td class="no-print" data-label="Actions" style="text-align: right;">
+                                <div style="display:flex; gap: 10px; align-items:center; justify-content: flex-end;">
+                                    <span class="material-symbols-rounded" style="color: #8B5CF6; cursor: pointer; font-size: 20px;" title="View Notes" onclick="window.viewNotes('${docId}')">sticky_note_2</span>
+                                    <span class="material-symbols-rounded" style="color: var(--primary); cursor: pointer; font-size: 22px;" title="Print Invoice" onclick="window.printInvoice('${data.name}', '${data.mobile}', '${indDate}', '${data.branch}', '${data.fee}', '${data.advance}', '${data.balance}', '${prevDuesSafe}')">receipt_long</span>
+                                    <span class="material-symbols-rounded" style="color: var(--text-muted); cursor: pointer; font-size: 20px;" title="Edit" onclick="window.editSales('${docId}')">edit</span>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                });
+            } catch (error) {
+                tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px; color: var(--danger);">Error loading data. Check Firestore rules.</td></tr>';
+            }
+        };
+
+        window.setFilterToday = function() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const todayStr = `${yyyy}-${mm}-${dd}`;
+            
+            document.getElementById("filterDateFrom").value = todayStr;
+            document.getElementById("filterDateTo").value = todayStr;
+            window.filterTable();
+        }
+
+        // --- NOTES MODAL LOGIC ---
+        window.viewNotes = function(docId) {
+            const data = window.SalessDataCache[docId];
+            if(!data) return;
+            document.getElementById('modalClientName').innerText = data.name;
+            document.getElementById('modalClientMeta').innerText = `Mobile: +91 ${data.mobile} | Scheduled: ${window.formatIndianDate(data.date)} | Category: ${data.category || 'Normal'}`;
+            
+            let fullNotes = "";
+            if(data.ClientNotes) fullNotes += `[Medical History]\n${data.ClientNotes}\n\n`;
+            if(data.notes) fullNotes += `[Admin Remarks]\n${data.notes}`;
+            
+            document.getElementById('modalClientNotesText').innerText = fullNotes || "No notes recorded for this Client.";
+            document.getElementById('notesModal').style.display = 'flex';
+        };
+
+        window.printModalNotes = function() {
+            const content = document.getElementById('printNotesArea').innerHTML;
+            const win = window.open('', '_blank');
+            win.document.write(`
+                <html><head><title>Client Notes</title>
+                <style>body{font-family:sans-serif; padding:40px; line-height:1.6; color:#111;}</style>
+                </head><body>
+                <h2 style="color:#e16349; border-bottom:2px solid #e16349; padding-bottom:10px; text-transform:uppercase;">STRA CARE - Medical Record</h2>
+                ${content}
+                <script>window.onload=function(){window.print();}<\/script>
+                </body></html>
+            `);
+            win.document.close();
+        };
+
+        // --- 4. ADVANCED TABLE FILTERING (WITH FROM/TO DATE) ---
+        window.filterTable = function() {
+            const branchQuery = document.getElementById("filterBranch").value.toLowerCase();
+            const statusQuery = document.getElementById("filterStatus").value.toLowerCase();
+            const categoryQuery = document.getElementById("filterCategory").value.toLowerCase();
+            const paymentQuery = document.getElementById("filterPayment").value;
+            const dateFromQuery = document.getElementById("filterDateFrom").value;
+            const dateToQuery = document.getElementById("filterDateTo").value;
+            const textQuery = document.getElementById("aptSearchInput").value.toLowerCase();
+
+            const trs = document.getElementById("aptTableBody").getElementsByTagName("tr");
+            
+            let currentSales ExecutiveHeader = null;
+            let visibleInGroup = 0;
+
+            for (let i = 0; i < trs.length; i++) {
+                if (trs[i].classList.contains('Sales Executive-group-header')) {
+                    if (currentSales ExecutiveHeader && visibleInGroup === 0) {
+                        currentSales ExecutiveHeader.style.display = "none";
+                    }
+                    currentSales ExecutiveHeader = trs[i];
+                    visibleInGroup = 0;
+                    currentSales ExecutiveHeader.style.display = ""; 
+                    continue;
+                }
+
+                if (trs[i].cells.length === 1) continue; 
+                
+                const rowBranch = trs[i].getAttribute("data-branch");
+                const rowStatus = trs[i].getAttribute("data-status");
+                const rowCategory = trs[i].getAttribute("data-category");
+                const rowDate = trs[i].getAttribute("data-date");
+                const rowBalance = parseFloat(trs[i].getAttribute("data-balance"));
+                const rowSearch = trs[i].getAttribute("data-search");
+
+                let show = true;
+                if (branchQuery && rowBranch !== branchQuery) show = false;
+                if (statusQuery && rowStatus !== statusQuery) show = false;
+                if (categoryQuery && rowCategory !== categoryQuery) show = false;
+                if (dateFromQuery && rowDate < dateFromQuery) show = false;
+                if (dateToQuery && rowDate > dateToQuery) show = false;
+                if (paymentQuery === "pending" && rowBalance <= 0) show = false;
+                if (paymentQuery === "paid" && rowBalance > 0) show = false;
+                if (textQuery && rowSearch.indexOf(textQuery) === -1) show = false;
+
+                if(show) {
+                    trs[i].style.display = "";
+                    visibleInGroup++;
+                } else {
+                    trs[i].style.display = "none";
+                }
+            }
+            
+            if (currentSales ExecutiveHeader && visibleInGroup === 0) {
+                currentSales ExecutiveHeader.style.display = "none";
+            }
+        }
+
+        window.clearFilters = function() {
+            if (window.currentUser && window.currentUser.role === 'admin') {
+                document.getElementById("filterBranch").value = "";
+            }
+            document.getElementById("filterStatus").value = "";
+            document.getElementById("filterCategory").value = "";
+            document.getElementById("filterPayment").value = "";
+            document.getElementById("filterDateFrom").value = "";
+            document.getElementById("filterDateTo").value = "";
+            document.getElementById("aptSearchInput").value = "";
+            window.filterTable();
+        }
+
+        // --- 5. EDIT Sales ---
+        window.editSales = async function(docId) {
+            const data = window.SalessDataCache[docId];
+            if(!data) return;
+            
+            document.getElementById('aptDate').removeAttribute('min');
+
+            document.getElementById('aptDocId').value = docId; 
+            document.getElementById('aptMobile').value = data.mobile || '';
+            document.getElementById('aptName').value = data.name || '';
+            document.getElementById('aptAge').value = data.age || '';
+            document.getElementById('aptCategory').value = data.category || 'Normal';
+            document.getElementById('aptLocation').value = data.location || '';
+            document.getElementById('aptClientNotes').value = data.ClientNotes || '';
+            document.getElementById('aptBranch').value = data.branch || '';
+            document.getElementById('aptDate').value = data.date || '';
+            document.getElementById('aptTime').value = data.time || '';
+            document.getElementById('aptSales Executive').value = data.Sales Executive || '';
+            document.getElementById('aptStatus').value = data.status || 'Pending';
+            document.getElementById('aptFee').value = data.fee || '';
+            document.getElementById('aptAdvance').value = data.advance || '';
+            document.getElementById('aptNotes').value = data.notes || '';
+
+            let opBalance = 0;
+            const aptsSnap = await getDocs(query(collection(db, "Sales"), where("mobile", "==", data.mobile)));
+            aptsSnap.forEach(d => {
+                if (d.id !== docId) opBalance += parseFloat(d.data().balance) || 0;
+            });
+            document.getElementById('aptPrevDues').value = opBalance.toFixed(2);
+            window.calcBalance();
+
+            window.toggleReschedule(document.getElementById('aptStatus'));
+            document.getElementById('saveAptBtn').innerText = "Update Sales";
+            
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- 6. BULK ACTIONS (COPY / DELETE) ---
+        window.toggleAllCheckboxes = function(masterCheckbox) {
+            const checkboxes = document.querySelectorAll('.apt-row:not([style*="display: none"]) .apt-checkbox');
+            checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
+        }
+
+        window.openBulkReschedule = function() {
+            const checked = document.querySelectorAll('.apt-checkbox:checked');
+            if (checked.length === 0) return alert("Please select at least one Sales to move.");
+            document.getElementById('bulk-reschedule-container').classList.add('active');
+        }
+
+        window.executeBulkReschedule = async function() {
+            const newDate = document.getElementById('bulkDateInput').value;
+            if (!newDate) return alert("Please pick a new date.");
+            if(isPastDateTime(newDate, '23:59')) return alert("Cannot schedule to a past date!");
+
+            const checkboxes = document.querySelectorAll('.apt-checkbox:checked');
+            
+            try {
+                for (let cb of checkboxes) {
+                    const existingData = window.SalessDataCache[cb.value];
+                    if(!existingData) continue;
+
+                    const oldDateInd = window.formatIndianDate(existingData.date);
+                    let cleanNotes = (existingData.notes || '').replace(/\[Moved from: .*?\]/g, '').trim();
+                    const finalNotes = (cleanNotes ? cleanNotes + '\n' : '') + `[Moved from: ${oldDateInd}]`;
+
+                    const newSales = {
+                        mobile: existingData.mobile,
+                        name: existingData.name,
+                        age: existingData.age || '',
+                        category: existingData.category || 'Normal',
+                        location: existingData.location || '',
+                        ClientNotes: existingData.ClientNotes || '',
+                        branch: existingData.branch,
+                        date: newDate, 
+                        time: existingData.time,
+                        Sales Executive: existingData.Sales Executive,
+                        status: "Pending", 
+                        fee: existingData.fee || 0,
+                        advance: existingData.advance || 0,
+                        balance: existingData.balance || 0,
+                        prevDues: existingData.prevDues || 0,
+                        notes: finalNotes,
+                        createdAt: new Date(),
+                        updatedAt: new Date()
+                    };
+
+                    await addDoc(collection(db, "Saless"), newSales);
+                }
+                
+                alert(`Successfully copied ${checkboxes.length} Saless to ${window.formatIndianDate(newDate)}!`);
+                document.getElementById('bulk-reschedule-container').classList.remove('active');
+                document.getElementById('bulkDateInput').value = ""; 
+                window.loadSaless(); 
+
+            } catch(e) {
+                alert("Failed to perform bulk copy.");
+            }
+        }
+
+        window.executeBulkDelete = async function() {
+            const checkboxes = document.querySelectorAll('.apt-checkbox:checked');
+            if (checkboxes.length === 0) return alert("Please select Saless to delete.");
+
+            for(let cb of checkboxes) {
+                const data = window.SalessDataCache[cb.value];
+                if (data && data.status !== 'Pending' && data.status !== 'Cancelled') {
+                    return alert("You can only bulk delete Pending or Cancelled Saless. Deselect Reported/Completed/Rescheduled items first.");
+                }
+            }
+
+            if (!confirm(`Are you sure you want to permanently delete the ${checkboxes.length} selected Pending/Cancelled Saless?`)) return;
+
+            try {
+                let deletedCount = 0;
+                for (let cb of checkboxes) {
+                    await window.deleteDoc(window.doc(db, "Saless", cb.value));
+                    deletedCount++;
+                }
+                
+                alert(`Successfully deleted ${deletedCount} Saless.`);
+                window.loadSaless(); 
+            } catch(e) {
+                console.error(e);
+                alert("Error deleting Saless. Check permissions.");
+            }
+        }
+
+        // --- 7. AUTO-TRANSACTIONS ENGINE ---
+        window.syncTransactions = async function(aptId, payload) {
+            const tSnap = await getDocs(query(collection(db, "transactions"), where("linkedAptId", "==", aptId)));
+            let salesDoc = null;
+            let receiptDoc = null;
+            tSnap.forEach(d => {
+                if(d.data().type === "Sales") salesDoc = d.id;
+                if(d.data().type === "Receipt") receiptDoc = d.id;
+            });
+
+            if(parseFloat(payload.fee) > 0) {
+                const sData = { date: payload.date, type: "Sales", mobile: payload.mobile, name: payload.name, mode: "Cash", ref: "Auto-Bill", cashIn: 0, cashOut: parseFloat(payload.fee), notes: "Consultation Billed", linkedAptId: aptId, updatedAt: new Date(), branch: payload.branch };
+                if(salesDoc) await updateDoc(doc(db, "transactions", salesDoc), sData);
+                else await addDoc(collection(db, "transactions"), { ...sData, txnId: "TRN"+Math.floor(Math.random()*900000+100000), createdAt: new Date() });
+            }
+
+            if(parseFloat(payload.advance) > 0) {
+                const rData = { date: payload.date, type: "Receipt", mobile: payload.mobile, name: payload.name, mode: "Cash", ref: "Auto-Advance", cashIn: parseFloat(payload.advance), cashOut: 0, notes: "Advance Received", linkedAptId: aptId, updatedAt: new Date(), branch: payload.branch };
+                if(receiptDoc) await updateDoc(doc(db, "transactions", receiptDoc), rData);
+                else await addDoc(collection(db, "transactions"), { ...rData, txnId: "TRN"+Math.floor(Math.random()*900000+100000), createdAt: new Date() });
+            }
+        }
+
+        // --- 8. SAVE Sales + AUTO-Clients ---
+        window.saveSales = async function() {
+            const saveBtn = document.getElementById('saveAptBtn');
+            const docId = document.getElementById('aptDocId').value; 
+            
+            const mobile = document.getElementById('aptMobile').value;
+            const name = document.getElementById('aptName').value;
+            const age = document.getElementById('aptAge').value;
+            const category = document.getElementById('aptCategory').value;
+            const location = document.getElementById('aptLocation').value;
+            const ClientNotes = document.getElementById('aptClientNotes').value;
+            const branch = document.getElementById('aptBranch').value;
+            const date = document.getElementById('aptDate').value;
+            const time = document.getElementById('aptTime').value;
+            const Sales Executive = document.getElementById('aptSales Executive').value;
+            const status = document.getElementById('aptStatus').value;
+            const rescheduleDate = document.getElementById('aptRescheduleDate').value;
+            
+            const fee = parseFloat(document.getElementById('aptFee').value) || 0;
+            const advance = parseFloat(document.getElementById('aptAdvance').value) || 0;
+            const prevDues = parseFloat(document.getElementById('aptPrevDues').value) || 0;
+            
+            const dbBalance = fee - advance; 
+            
+            let notes = document.getElementById('aptNotes').value;
+
+            if (!name || !mobile || !date || !branch || !Sales Executive || !category) return alert("Please fill all required (*) fields!");
+
+            if(!docId && isPastDateTime(date, time)) {
+                return alert("You cannot book a new Sales in the past!");
+            }
+            if(status === 'Rescheduled' && isPastDateTime(rescheduleDate, time)) {
+                return alert("You cannot reschedule to a past date!");
+            }
+
+            let finalDate = date;
+            if (status === 'Rescheduled') {
+                if(!rescheduleDate) return alert("Please pick a new reschedule date.");
+                finalDate = rescheduleDate; 
+                let cleanNotes = notes.replace(/\[Moved from: .*?\]/g, '').trim();
+                notes = (cleanNotes ? cleanNotes + '\n' : '') + `[Moved from: ${window.formatIndianDate(date)}]`; 
+            }
+
+            saveBtn.innerText = "Saving...";
+            saveBtn.disabled = true;
+
+            const payload = {
+                mobile: mobile, name: name, age: age, category: category, location: location, ClientNotes: ClientNotes, branch: branch, date: finalDate, time: time, Sales Executive: Sales Executive,
+                status: status, fee: fee, advance: advance, balance: dbBalance, prevDues: prevDues, notes: notes, updatedAt: new Date()
+            };
+
+            try {
+                const pSnap = await getDocs(query(collection(db, "Clients"), where("mobile", "==", mobile)));
+                if (pSnap.empty) {
+                    const genId = "P" + Math.floor(Math.random() * 90000 + 10000);
+                    await addDoc(collection(db, "Clients"), { ClientId: genId, mobile: mobile, name: name, age: age, category: category, location: location, notes: ClientNotes, branch: branch, createdAt: new Date() });
+                } else {
+                    const pDoc = pSnap.docs[0];
+                    if (pDoc.data().category !== category) {
+                        await updateDoc(doc(db, "Clients", pDoc.id), { category: category });
+                    }
+                }
+
+                if(docId) {
+                    await updateDoc(doc(db, "Saless", docId), payload);
+                    await window.syncTransactions(docId, payload);
+                    alert(`Sales updated successfully!`);
+                } else {
+                    payload.createdAt = new Date();
+                    const newApt = await addDoc(collection(db, "Saless"), payload);
+                    await window.syncTransactions(newApt.id, payload);
+                    alert(`New Sales saved successfully!`);
+                }
+                
+                window.resetAptForm();
+                window.loadSaless();
+
+            } catch (error) {
+                alert("Failed to save Sales. Check your database permissions.");
+            }
+
+            saveBtn.innerText = "Save Sales";
+            saveBtn.disabled = false;
+        }
+
+        // --- 9. INVOICE PRINTING (WITH OP BALANCE LOGIC) ---
+        window.printInvoice = function(name, mobile, indDate, branch, fee, advance, balance, prevDues) {
+            fee = parseFloat(fee) || 0;
+            advance = parseFloat(advance) || 0;
+            balance = parseFloat(balance) || 0; 
+            prevDues = parseFloat(prevDues) || 0;
+            const netBalance = fee + prevDues - advance;
+
+            const branchesText = window.allBranchesString || 'Mahe | Chokli | Panoor | Koothuparamba';
+
+            const invoiceWindow = window.open('', '_blank');
+            invoiceWindow.document.write(`
+                <html>
+                <head>
+                    <title>Invoice - ${name}</title>
+                    <style>
+                        body { font-family: 'Helvetica Neue', sans-serif; padding: 40px; color: #0a0a0a; margin: 0; background: #fff; }
+                        .header-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #e16349; padding-bottom: 24px; margin-bottom: 30px; }
+                        .logo-area { display: flex; align-items: center; gap: 12px; }
+                        .logo-area img { max-height: 40px; object-fit: contain; display: block; }
+                        .company-info { text-align: right; font-size: 13px; color: #555; line-height: 1.6; }
+                        .bill-to { display: flex; justify-content: space-between; margin-bottom: 40px; }
+                        .bill-to h3 { margin: 0 0 8px 0; color: #e16349; font-size: 14px; text-transform: uppercase; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                        th { background: #FAFAFA; color: #777; font-size: 12px; text-transform: uppercase; padding: 12px; text-align: left; border-bottom: 2px solid #E8E5E1; }
+                        td { padding: 16px 12px; font-size: 15px; border-bottom: 1px solid #E8E5E1; }
+                        .totals-box { float: right; width: 300px; }
+                        .totals-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 15px; }
+                        .totals-row.balance { font-size: 20px; font-weight: 800; color: #e16349; border-top: 2px solid #0a0a0a; padding-top: 15px; margin-top: 5px; }
+                        .bank-details { clear: both; margin-top: 60px; padding: 20px; background: #FAFAFA; border-radius: 8px; font-size: 13px; border: 1px solid #E8E5E1; }
+                        .bank-details h4 { margin: 0 0 10px 0; color: #e16349; text-transform: uppercase; font-size: 12px; }
+                        .footer-text { margin-top: 40px; text-align: center; font-size: 10px; color: #999; opacity: 0.3; text-transform: uppercase; letter-spacing: 0.5px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-row">
+                        <div class="logo-area">
+                            <img src="assets/logo.png" alt="Logo">
+                            <img src="assets/name.png" alt="STRA CARE">
+                        </div>
+                        <div class="company-info">
+                            <strong>+91 97449 02555 | +91 90612 07871</strong><br>
+                            info@stracares.in | www.stracares.in<br>
+                            Branches: ${branchesText}
+                        </div>
+                    </div>
+                    
+                    <div class="bill-to">
+                        <div>
+                            <h3>Billed To:</h3>
+                            <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">${name}</div>
+                            <div style="color: #555;">Mobile: +91 ${mobile}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <h3>Invoice Details</h3>
+                            <div style="margin-bottom: 4px;"><strong>Date:</strong> ${indDate}</div>
+                            <div style="color: #555; margin-top: 6px;">
+                                <strong>Branch:</strong> 
+                                <span style="background: #fef5e8; color: #e16349; padding: 4px 8px; border-radius: 6px; font-weight: bold; border: 1px solid #e16349;">
+                                    ${branch.toUpperCase()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table>
+                        <tr>
+                            <th>Description</th>
+                            <th style="text-align: right;">Amount (₹)</th>
+                        </tr>
+                        <tr>
+                            <td>Current Visit Fee (Consultation & Therapy)</td>
+                            <td style="text-align: right;">${fee.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td>Previous Dues (OP Balance)</td>
+                            <td style="text-align: right;">${prevDues.toFixed(2)}</td>
+                        </tr>
+                        <tr style="font-weight: bold; background: #FAFAFA;">
+                            <td style="text-align: right;">Sub Total:</td>
+                            <td style="text-align: right;">${(fee + prevDues).toFixed(2)}</td>
+                        </tr>
+                    </table>
+
+                    <div class="totals-box">
+                        <div class="totals-row"><span>Advance Paid:</span> <span>₹${advance.toFixed(2)}</span></div>
+                        <div class="totals-row balance"><span>Net Balance Due:</span> <span>₹${netBalance.toFixed(2)}</span></div>
+                    </div>
+
+                    <div class="bank-details">
+                        <h4>Bank Details for Payment Remittance</h4>
+                        <strong>Account Name:</strong> STRA CARE <br>
+                        <strong>Account No:</strong> 50200120597389 | <strong>IFSC:</strong> HDFC0000465<br>
+                        <strong>UPI ID:</strong> 9744902555@hdfc
+                    </div>
+
+                    <div class="footer-text">
+                        Generated by CM/ERP&CRM
+                    </div>
+
+                    <script>
+                        window.onload = function() { window.print(); }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            invoiceWindow.document.close();
+        }
+
+        window.exportAptPDF = function() { window.print(); }
+    </script>
+</div>
+</body>
+</html>
