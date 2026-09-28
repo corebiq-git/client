@@ -331,21 +331,8 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, updateDoc, addDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
-            authDomain: "cmf001stra.firebaseapp.com",
-            projectId: "cmf001stra",
-            storageBucket: "cmf001stra.firebasestorage.app",
-            messagingSenderId: "763958641347",
-            appId: "1:763958641347:web:316876bc2340b26bd21876",
-            measurementId: "G-770FBR88LJ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        import { collection, getDocs, updateDoc, addDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { db } from "./firebase-config.js";
 
         window.branchDataCache = {};
 
