@@ -64,8 +64,8 @@
         .cta-link { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: #FAFAFA; border: 1px solid var(--border); transition: 0.2s; text-decoration: none; }
         .cta-link:hover { background: var(--surface); transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-        /* Patient Summary Dash */
-        #patientSummaryDash { display: none; background: #fef5e8; border: 1px dashed var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        /* CUSTOMER Summary Dash */
+        #CUSTOMERSummaryDash { display: none; background: #fef5e8; border: 1px dashed var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
         .summary-metric { display: flex; flex-direction: column; }
         .summary-metric span { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;}
         .summary-metric strong { font-size: 18px; font-weight: 800; color: var(--text-main); }
@@ -114,7 +114,7 @@
 
             <div class="input-group three-cols">
                 <div>
-                    <label class="form-label">Client/Patient Mobile</label>
+                    <label class="form-label">Client/CUSTOMER Mobile</label>
                     <div style="display: flex; gap: 8px;">
                         <input type="tel" id="mobileInput" class="form-input" placeholder="10-digit number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         <button type="button" class="btn-verify" id="verifyTxnBtn" onclick="window.verifyTxnMobile()">Search</button>
@@ -122,7 +122,7 @@
                 </div>
                 <div>
                     <label class="form-label">Client/Ledger Name *</label>
-                    <input type="text" id="patientName" class="form-input" placeholder="Name for the ledger" required>
+                    <input type="text" id="CUSTOMERName" class="form-input" placeholder="Name for the ledger" required>
                 </div>
                 <div>
                     <label class="form-label">Branch *</label>
@@ -132,8 +132,8 @@
                 </div>
             </div>
 
-            <!-- PATIENT SUMMARY DASHBOARD -->
-            <div id="patientSummaryDash">
+            <!-- CUSTOMER SUMMARY DASHBOARD -->
+            <div id="CUSTOMERSummaryDash">
                 <div class="summary-metric">
                     <span>Total Services Billed</span>
                     <strong id="dashTotalBilled">₹0.00</strong>
@@ -211,7 +211,7 @@
 
                 <div style="display: flex; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; flex: 1; min-width: 200px;">
                     <span class="material-symbols-rounded" style="font-size: 16px; color: var(--text-muted);">search</span>
-                    <input type="text" id="txnSearchInput" onkeyup="window.filterTxnTable()" placeholder="Search Patient Name or Mobile..." style="border: none; background: transparent; outline: none; font-size: 12px; width: 100%; margin-left: 6px;">
+                    <input type="text" id="txnSearchInput" onkeyup="window.filterTxnTable()" placeholder="Search CUSTOMER Name or Mobile..." style="border: none; background: transparent; outline: none; font-size: 12px; width: 100%; margin-left: 6px;">
                 </div>
                 
                 <button class="btn-outline" onclick="window.clearTxnFilters()" style="padding: 8px; font-size: 12px;" title="Clear Filters">
@@ -225,7 +225,7 @@
                 <thead>
                     <tr>
                         <th>Date & ID</th>
-                        <th>Ledger / Patient</th>
+                        <th>Ledger / CUSTOMER</th>
                         <th>Branch</th>
                         <th>Type & Mode</th>
                         <th>Ref & Notes</th>
@@ -299,22 +299,22 @@
 
         window.loadBranchesForTxn();
 
-        // --- 1. AUTO-FILL PATIENT & LOAD DUE DASHBOARD ---
+        // --- 1. AUTO-FILL CUSTOMER & LOAD DUE DASHBOARD ---
         window.verifyTxnMobile = async function() {
             const mobile = document.getElementById('mobileInput').value;
             const btn = document.getElementById('verifyTxnBtn');
-            const dash = document.getElementById('patientSummaryDash');
+            const dash = document.getElementById('CUSTOMERSummaryDash');
             
             if (mobile.length !== 10) return alert("Enter 10-digit mobile number.");
             
             btn.innerText = "...";
             try {
                 // Fetch Name
-                const pSnap = await getDocs(query(collection(db, "patients"), where("mobile", "==", mobile)));
+                const pSnap = await getDocs(query(collection(db, "CUSTOMERs"), where("mobile", "==", mobile)));
                 if (!pSnap.empty) {
-                    document.getElementById('patientName').value = pSnap.docs[0].data().name;
+                    document.getElementById('CUSTOMERName').value = pSnap.docs[0].data().name;
                 } else {
-                    alert("No patient found. Type name manually.");
+                    alert("No CUSTOMER found. Type name manually.");
                     dash.style.display = 'none';
                 }
 
@@ -414,7 +414,7 @@
                         <td data-label="Amount">${amountHtml}</td>
                         <td class="no-print" data-label="Actions" style="text-align: right;">
                             <div style="display:flex; gap: 8px; align-items:center; justify-content: flex-end;">
-                                <span class="material-symbols-rounded" style="color: #8B5CF6; cursor: pointer; font-size: 20px;" title="Print Statement Ledger" onclick="window.printPatientStatement('${data.mobile}', '${data.name}')">account_box</span>
+                                <span class="material-symbols-rounded" style="color: #8B5CF6; cursor: pointer; font-size: 20px;" title="Print Statement Ledger" onclick="window.printCUSTOMERStatement('${data.mobile}', '${data.name}')">account_box</span>
                                 <span class="material-symbols-rounded" style="color: var(--primary); cursor: pointer; font-size: 20px;" title="Print Receipt" onclick="window.printReceipt('${data.txnId}', '${data.name}', '${data.date}', '${data.type}', '${data.mode}', '${data.cashIn}', '${data.cashOut}')">receipt_long</span>
                                 <span class="material-symbols-rounded" style="color: var(--secondary); cursor: pointer; font-size: 18px;" title="Edit" onclick="window.editTxn('${docId}')">edit</span>
                                 <span class="material-symbols-rounded" style="color: var(--danger); cursor: pointer; font-size: 18px;" title="Delete" onclick="window.deleteTxn('${docId}')">delete</span>
@@ -521,8 +521,8 @@
             win.document.close();
         }
 
-        // --- 4B. PRINT FULL PATIENT LEDGER STATEMENT ---
-        window.printPatientStatement = async function(mobile, name) {
+        // --- 4B. PRINT FULL CUSTOMER LEDGER STATEMENT ---
+        window.printCUSTOMERStatement = async function(mobile, name) {
             if(!mobile || mobile === "undefined") return alert("Cannot generate statement. Invalid mobile number.");
 
             try {
@@ -540,7 +540,7 @@
                     totalPaid += parseFloat(d.cashIn) || 0;    // Receipts
                 });
                 
-                if (txns.length === 0) return alert("No transaction history found for this patient.");
+                if (txns.length === 0) return alert("No transaction history found for this CUSTOMER.");
 
                 // Sort ascending for chronological ledger view
                 txns.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
@@ -599,7 +599,7 @@
 
                         <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                             <div>
-                                <strong>Patient Name:</strong> <span style="font-size: 16px;">${name}</span><br>
+                                <strong>CUSTOMER Name:</strong> <span style="font-size: 16px;">${name}</span><br>
                                 <strong>Mobile Number:</strong> +91 ${mobile}
                             </div>
                             <div style="text-align: right;">
@@ -653,7 +653,7 @@
             document.getElementById('txnDate').value = data.date || '';
             document.getElementById('txnType').value = data.type || 'Sales';
             document.getElementById('mobileInput').value = data.mobile || '';
-            document.getElementById('patientName').value = data.name || '';
+            document.getElementById('CUSTOMERName').value = data.name || '';
             document.getElementById('txnBranch').value = data.branch || '';
             document.getElementById('txnMode').value = data.mode || 'Cash';
             document.getElementById('txnRef').value = data.ref || '';
@@ -682,7 +682,7 @@
             document.getElementById('txnIdDisplay').value = 'Auto-Generated'; 
             document.getElementById('txnDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('saveTxnBtn').innerText = "Save Transaction";
-            document.getElementById('patientSummaryDash').style.display = 'none';
+            document.getElementById('CUSTOMERSummaryDash').style.display = 'none';
             
             if (window.currentUser && window.currentUser.role !== 'admin') {
                 document.getElementById('txnBranch').value = window.currentUser.branch;
@@ -698,7 +698,7 @@
             const type = document.getElementById('txnType').value;
             const branch = document.getElementById('txnBranch').value;
             const mobile = document.getElementById('mobileInput').value;
-            const name = document.getElementById('patientName').value;
+            const name = document.getElementById('CUSTOMERName').value;
             const mode = document.getElementById('txnMode').value;
             const ref = document.getElementById('txnRef').value;
             const cashIn = document.getElementById('txnCashIn').value || 0;
