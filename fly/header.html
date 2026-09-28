@@ -1,7 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Updated Header</title>
+<!-- Include Google Fonts for Outfit and Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+
 <style>
 /* =========================================================
    COREBIQ HEADER - CORPORATE MINIMAL
    ========================================================= */
+body {
+    margin: 0;
+    background-color: #f1f5f9; /* Just for contrast in preview */
+}
+
 #cb-header {
     width: 100%;
     min-height: 72px;
@@ -11,92 +26,22 @@
     box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Space out items */
+    justify-content: flex-end; /* Align remaining items to the right by default */
     padding: 0 24px;
     position: relative;
     z-index: 900;
     flex-shrink: 0;
-    font-family: 'Outfit', sans-serif; /* Update font */
+    font-family: 'Outfit', sans-serif;
     gap: 24px;
-}
-
-/* =========================================================
-   LOGO SECTION
-   ========================================================= */
-.cb-header-logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
-
-.cb-header-logo img {
-    height: 32px; /* Adjust as needed */
-    width: auto;
-    object-fit: contain;
-}
-
-/* =========================================================
-   DATETIME SECTION
-   ========================================================= */
-.cb-datetime-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: max-content;
-    padding: 10px 16px;
-    background: #FFFFFF;
-    border: 1px solid rgba(203, 213, 225, .5);
-    border-radius: 10px;
-    backdrop-filter: blur(4px);
-}
-
-.cb-datetime-icon {
-    font-size: 18px;
-    color: #64748b;
-}
-
-.cb-datetime-content {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.cb-datetime-main {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.cb-date-separator {
-    font-size: 13px;
-    font-weight: 600;
-    color: #94a3b8;
-}
-
-.cb-date-highlight {
-    background: #F3F4F6;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #1E293B;
-    min-width: 32px;
-    text-align: center;
-}
-
-.cb-time-display {
-    font-size: 10px;
-    font-weight: 500;
-    color: #94A3B8;
-    letter-spacing: 0.2px;
 }
 
 /* =========================================================
    SEARCH BAR - LENGTHY
    ========================================================= */
 .cb-search-wrapper {
-    flex: 1;
+    flex: 1; /* Allow search to take up available space */
     max-width: 500px;
+    margin-right: auto; /* Push icons to the right if there is space */
 }
 
 .cb-search-container {
@@ -181,7 +126,7 @@
 }
 
 /* =========================================================
-   HEADER ICON BUTTON
+   HEADER ICON BUTTON (Notifications)
    ========================================================= */
 .header-icon-btn {
     width: 40px;
@@ -360,18 +305,6 @@
     .cb-search-wrapper {
         max-width: 350px;
     }
-
-    .cb-datetime-section {
-        padding: 8px 12px;
-    }
-
-    .cb-date-highlight {
-        font-size: 13px;
-    }
-
-    .cb-time-display {
-        font-size: 9px;
-    }
 }
 
 @media (max-width: 768px) {
@@ -379,28 +312,16 @@
         gap: 12px;
         min-height: 64px;
         padding: 0 12px;
-        justify-content: space-between;
-    }
-    
-    .cb-header-logo {
-        display: flex; /* Show logo on mobile */
-    }
-
-    .cb-datetime-section {
-        display: none;
+        justify-content: flex-end; /* Keep right aligned */
     }
 
     .cb-search-wrapper {
-        flex: 1;
-        max-width: none;
         display: none;
     }
 
     .mobile-search-btn {
         display: flex;
     }
-    
-    /* Removed .mobile-menu-btn block */
 
     .header-icon-btn,
     .cb-profile-btn,
@@ -431,32 +352,12 @@
         width: 36px;
         height: 36px;
     }
-    
-    .cb-header-logo img {
-        height: 28px;
-    }
 }
 </style>
+</head>
+<body>
 
 <header id="cb-header">
-
-    <!-- LOGO SECTION -->
-    <div class="cb-header-logo">
-        <img src="assets/name.png" alt="COREBIQ Logo">
-    </div>
-
-    <!-- DATETIME SECTION -->
-    <div class="cb-datetime-section">
-        <span class="material-symbols-rounded cb-datetime-icon">schedule</span>
-        <div class="cb-datetime-content">
-            <div class="cb-datetime-main">
-                <span class="cb-date-highlight" id="cb-date-dd">26</span>
-                <span class="cb-date-separator">|</span>
-                <span class="cb-date-highlight" id="cb-date-mm">09</span>
-            </div>
-            <div class="cb-time-display" id="cb-time-display">12:00:00</div>
-        </div>
-    </div>
 
     <!-- SEARCH BAR -->
     <div class="cb-search-wrapper">
@@ -525,32 +426,6 @@
    HEADER COMPONENT FUNCTIONS
    ========================================================= */
 (function () {
-    /* UPDATE DATETIME - INDIAN TIME */
-    window.updateHeaderDateTime = function () {
-        const dateDD = document.getElementById('cb-date-dd');
-        const dateMM = document.getElementById('cb-date-mm');
-        const timeDisplay = document.getElementById('cb-time-display');
-
-        if (!dateDD || !dateMM || !timeDisplay) return;
-
-        const now = new Date();
-        const istTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-
-        const day = String(istTime.getDate()).padStart(2, '0');
-        const month = String(istTime.getMonth() + 1).padStart(2, '0');
-        const hours = String(istTime.getHours()).padStart(2, '0');
-        const minutes = String(istTime.getMinutes()).padStart(2, '0');
-        const seconds = String(istTime.getSeconds()).padStart(2, '0');
-
-        dateDD.textContent = day;
-        dateMM.textContent = month;
-        timeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
-    };
-
-    /* INITIALIZE DATETIME AND UPDATE EVERY SECOND */
-    window.updateHeaderDateTime();
-    setInterval(window.updateHeaderDateTime, 1000);
-
     /* MOBILE SEARCH */
     window.toggleMobileSearch = function () {
         const panel = document.getElementById('mobile-search-panel');
@@ -591,3 +466,5 @@
     }
 })();
 </script>
+</body>
+</html>
